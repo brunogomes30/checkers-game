@@ -1,4 +1,4 @@
-import { CGFinterface, CGFapplication, dat } from '../lib/CGF.js';
+import { CGFinterface, CGFapplication, dat } from '../../lib/CGF.js';
 
 /**
 * MyInterface class, creating a GUI interface.

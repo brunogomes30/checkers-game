@@ -1,4 +1,4 @@
-import { CGFapplication } from '../lib/CGF.js';
+import { CGFapplication } from '../../lib/CGF.js';
 import { XMLscene } from './XMLScene.js';
 import { MyInterface } from './MyInterface.js';
 import { MySceneGraph } from './MySceneGraph.js';

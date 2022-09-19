@@ -1,4 +1,4 @@
-<lxs>
+<sxs>
     <scene root="demoRoot" axis_length="5"/>
 
     <views default="defaultCamera">
@@ -64,4 +64,4 @@
             </children>
         </component>
     </components>
-</lxs>
+</sxs>
