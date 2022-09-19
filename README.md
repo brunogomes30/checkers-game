@@ -3,8 +3,8 @@
 ## Group T0xG0y
 | Name             | Number    | E-Mail             |
 | ---------------- | --------- | ------------------ |
-| John Doe         | 201801010 | ...                |
-| Jane Doe         | 201801011 | ...                |
+| Bruno Gomes      | 201906401 | up201906401@edu.fe.up.pt |
+| José Costa       | 201907216 | up201907216@edu.fe.up.pt |
 
 ----
 
