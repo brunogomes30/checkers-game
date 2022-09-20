@@ -86,40 +86,44 @@ export class MySceneGraph {
      */
     parseXMLFile() {
         let rootElement = this.reader.xmlDoc.documentElement;
-
         if (rootElement.nodeName != "sxs")
             return "root tag <sxs> missing";
 
         let nodes = rootElement.children;
-        let error;
 
-        // Processes each node, verifying errors.    
+        // Processes each node, verifying errors.
+        let parsable_blocks = Object.keys(PARSE_FUNCTION);
         let blocks_missing = Object.keys(XML_SEQUENCE_POSITION);
-
         for (let i = 0; i < nodes.length; i++) {
             let nodeName = nodes[i].nodeName;
 
-            if (!(blocks_missing.includes(nodeName))) {
-                if ((nodeName in XML_SEQUENCE_POSITION)) {
+            if (!(parsable_blocks.includes(nodeName))) {
+                if ((nodeName in PARSE_FUNCTION)) {
                     this.onXMLMinorError(`More than one <${nodeName}> block was detected, only the first one declared is considered`);
                 }
                 continue;
             }
 
-            if (XML_SEQUENCE_POSITION[nodeName] != i) {
+            if (nodeName in XML_SEQUENCE_POSITION && (XML_SEQUENCE_POSITION[nodeName] != i)) {
                 this.onXMLMinorError(`Block <${nodeName}> out of order`);
             }
 
             let error;
-            if (error = PARSE_FUNCTION[nodeName](nodes[i], this) != null) {
+            if (nodeName in PARSE_FUNCTION && (error = PARSE_FUNCTION[nodeName](nodes[i], this) != null)) {
                 this.onXMLError(error);
                 return;
             }
 
             blocks_missing = blocks_missing.filter(b => b !== nodeName);
+            parsable_blocks = parsable_blocks.filter(b => b !== nodeName)
         }
 
-        if (nodes.length > Object.keys(XML_SEQUENCE_POSITION).length) {
+        if (blocks_missing.length > 0) {
+            this.onXMLError(`Blocks missing: ${blocks_missing.toString()}`);
+            return;
+        }
+
+        if (nodes.length > Object.keys(PARSE_FUNCTION).length) {
             this.onXMLMinorError("Extra blocks on the document were't parsed");
         }
 
