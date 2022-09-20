@@ -1,39 +1,39 @@
 import { CGFXMLreader } from '../../lib/CGF.js';
-import {parseScene} from './parser/scene.js';
-import {parseView} from './parser/view.js';
-import {parseAmbient} from './parser/ambient.js';
-import {parseLights} from './parser/lights.js';
-import {parseTextures} from './parser/textures.js';
-import {parseMaterials} from './parser/materials.js';
-import {parseTransformations} from './parser/transformations.js';
-import {parsePrimitives} from './parser/primitives.js';
-import {parseComponents} from './parser/components.js';
+import { parseScene } from './parser/scene.js';
+import { parseView } from './parser/view.js';
+import { parseAmbient } from './parser/ambient.js';
+import { parseLights } from './parser/lights.js';
+import { parseTextures } from './parser/textures.js';
+import { parseMaterials } from './parser/materials.js';
+import { parseTransformations } from './parser/transformations.js';
+import { parsePrimitives } from './parser/primitives.js';
+import { parseComponents } from './parser/components.js';
 
 var DEGREE_TO_RAD = Math.PI / 180;
 
 // Order of the groups in the XML document.
 let XML_SEQUENCE_POSITION = {
-    'scene' : 0,
-    'views' : 1,
-    'ambient' : 2,
-    'lights' : 3,
-    'textures' : 4,
-    'materials' : 5,
-    'transformations' : 6,
-    'primitives' : 7,
-    'components' : 8
+    'scene': 0,
+    'views': 1,
+    'ambient': 2,
+    'lights': 3,
+    'textures': 4,
+    'materials': 5,
+    'transformations': 6,
+    'primitives': 7,
+    'components': 8
 }
 
 let PARSE_FUNCTION = {
-    'scene' : parseScene,
-    'views' : parseView,
-    'ambient' : parseAmbient,
-    'lights' : parseLights,
-    'textures' : parseTextures,
-    'materials' : parseMaterials,
-    'transformations' : parseTransformations,
-    'primitives' : parsePrimitives,
-    'components' : parseComponents
+    'scene': parseScene,
+    'views': parseView,
+    'ambient': parseAmbient,
+    'lights': parseLights,
+    'textures': parseTextures,
+    'materials': parseMaterials,
+    'transformations': parseTransformations,
+    'primitives': parsePrimitives,
+    'components': parseComponents
 }
 
 /**
@@ -75,9 +75,9 @@ export class MySceneGraph {
      */
     onXMLReady() {
         this.log("XML Loading finished.");
-        
+
         // Here should go the calls for different functions to parse the various blocks
-        this.parseXMLFile();      
+        this.parseXMLFile();
     }
 
     /**
@@ -93,17 +93,34 @@ export class MySceneGraph {
         let nodes = rootElement.children;
         let error;
 
-        // Processes each node, verifying errors.
-        for (let tag in XML_SEQUENCE_POSITION){
-            error = this.genericParse(nodes, tag, XML_SEQUENCE_POSITION[tag], PARSE_FUNCTION[tag])
-            if(error != null){
+        // Processes each node, verifying errors.    
+        let blocks_missing = Object.keys(XML_SEQUENCE_POSITION);
+
+        for (let i = 0; i < nodes.length; i++) {
+            let nodeName = nodes[i].nodeName;
+
+            if (!(blocks_missing.includes(nodeName))) {
+                if ((nodeName in XML_SEQUENCE_POSITION)) {
+                    this.onXMLMinorError(`More than one <${nodeName}> block was detected, only the first one declared is considered`);
+                }
+                continue;
+            }
+
+            if (XML_SEQUENCE_POSITION[nodeName] != i) {
+                this.onXMLMinorError(`Block <${nodeName}> out of order`);
+            }
+
+            let error;
+            if (error = PARSE_FUNCTION[nodeName](nodes[i], this) != null) {
                 this.onXMLError(error);
                 return;
             }
+
+            blocks_missing = blocks_missing.filter(b => b !== nodeName);
         }
-        
-        if (nodes.length > XML_SEQUENCE_POSITION.length){
-            this.onXMLMinorError("Extra blocks on the document were't parsed")
+
+        if (nodes.length > Object.keys(XML_SEQUENCE_POSITION).length) {
+            this.onXMLMinorError("Extra blocks on the document were't parsed");
         }
 
         this.loadedOk = true;
@@ -111,30 +128,6 @@ export class MySceneGraph {
 
         // As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
         this.scene.onGraphLoaded();
-    }    
-
-    genericParse(nodes, tagname, tagIndex, parserFunction){
-        let index = -1;
-
-        //Search nodes for desired tag
-        for(let i=0; i<nodes.length; i++){
-            if(nodes[i].nodeName === tagname){
-                index = i;
-                break;
-            }
-        }
-        
-        if (index == -1)
-            return `tag <${tagname}> missing`;
-        else {
-            if (index != tagIndex)
-                this.onXMLMinorError(`tag <${tagname}> out of order`);
-
-            //Parse components block
-            let error;
-            if (error = parserFunction(nodes[index], this) != null)
-                return error;
-        }
     }
 
     /*
