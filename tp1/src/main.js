@@ -1,5 +1,5 @@
 import { CGFapplication } from '../../lib/CGF.js';
-import { XMLscene } from './XMLScene.js';
+import { XMLscene } from './XMLscene.js';
 import { MyInterface } from './MyInterface.js';
 import { MySceneGraph } from './MySceneGraph.js';
 
@@ -23,7 +23,7 @@ function main() {
 
     app.setScene(myScene);
     app.setInterface(myInterface);
-
+    
     myInterface.setActiveCamera(myScene.camera);
 
 	// get file name provided in URL, e.g. http://localhost/myproj/?file=myfile.xml 

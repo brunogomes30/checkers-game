@@ -1,4 +1,4 @@
-import {parseCoordinates3D, parseCoordinates4D, parseColor} from "./utils.js"
+import {parseColor} from "./utils.js"
 
 /**
      * Parses the <ambient> node.
