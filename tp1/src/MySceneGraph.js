@@ -9,10 +9,10 @@ import { parseTransformations } from './parser/transformations.js';
 import { parsePrimitives } from './parser/primitives.js';
 import { parseComponents } from './parser/components.js';
 
-var DEGREE_TO_RAD = Math.PI / 180;
+const DEGREE_TO_RAD = Math.PI / 180;
 
 // Order of the groups in the XML document.
-let XML_SEQUENCE_POSITION = {
+const XML_SEQUENCE_POSITION = {
     'scene': 0,
     'views': 1,
     'ambient': 2,
@@ -24,7 +24,7 @@ let XML_SEQUENCE_POSITION = {
     'components': 8
 }
 
-let PARSE_FUNCTION = {
+const PARSE_FUNCTION = {
     'scene': parseScene,
     'views': parseView,
     'ambient': parseAmbient,
@@ -115,7 +115,7 @@ export class MySceneGraph {
             }
 
             blocks_missing = blocks_missing.filter(b => b !== nodeName);
-            parsable_blocks = parsable_blocks.filter(b => b !== nodeName)
+            parsable_blocks = parsable_blocks.filter(b => b !== nodeName);
         }
 
         if (blocks_missing.length > 0) {
