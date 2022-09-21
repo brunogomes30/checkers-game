@@ -10,7 +10,6 @@ export class MyRectangle extends CGFobject {
 	constructor(scene, id, values) {
 		super(scene);
 		this.id = id;
-		console.log(values);
 		this.x1 = values.x1;
 		this.x2 = values.x2;
 		this.y1 = values.y1;

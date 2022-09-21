@@ -14,7 +14,6 @@ export class RectangleFactory{
     }
 
     build(reader, node, scene, id){
-        console.log(node);
         const values = buildValues(this.attributes, reader, node);
         return new MyRectangle(scene, id, values);
     }
