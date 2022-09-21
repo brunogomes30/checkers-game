@@ -12,10 +12,13 @@ export function buildValues(attributes, reader, node){
                     return `unable to parse ${key} of the primitive coordinates for ID = ${id}`;
                 break;
             case 'integer':
-                //bloat
+                value = reader.getInteger(node, key);
+                if (!(value != null && !isNaN(value)))
+                    return `unable to parse ${key} of the primitive coordinates for ID = ${id}`;
                 break;
         }
         values[key] = value;
     }
+    console.log(values);
     return values;
 }

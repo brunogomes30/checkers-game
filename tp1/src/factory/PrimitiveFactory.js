@@ -1,5 +1,6 @@
 import {RectangleFactory} from "./RectangleFactory.js"
 import {TriangleFactory} from "./TriangleFactory.js"
+import {CylinderFactory} from "./CylinderFactory.js"
 
 export class PrimitiveFactory{
     
@@ -7,7 +8,8 @@ export class PrimitiveFactory{
         this.reader = reader;
         this.PRIMITIVE_CONSTRUCTORS = {
             rectangle: new RectangleFactory(),
-            triangle: new TriangleFactory()
+            triangle: new TriangleFactory(),
+            cylinder: new CylinderFactory()
         };
     }
 
@@ -25,7 +27,6 @@ export class PrimitiveFactory{
         if(!type in this.PRIMITIVE_CONSTRUCTORS){
             console.warn(`Warning: Unkown primitive ${type}`);
         }
-        
         const factory = this.PRIMITIVE_CONSTRUCTORS[type];
         return factory.build(reader, grandChild, scene, id);
     }

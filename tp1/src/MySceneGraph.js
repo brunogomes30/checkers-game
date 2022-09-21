@@ -167,6 +167,7 @@ export class MySceneGraph {
         //To do: Create display loop for transversing the scene graph
 
         //To test the parsing/creation of the primitives, call the display function directly
-        this.primitives['demoRectangle'].display();
+        //this.primitives['demoCylinder'].enableNormalViz();
+        this.primitives['demoCylinder'].display();
     }
 }
