@@ -1,3 +1,4 @@
+import { PrimitiveFactory } from '../factory/PrimitiveFactory.js';
 import { MyRectangle } from '../primitives/MyRectangle.js';
 
 /**
@@ -20,7 +21,7 @@ export function parsePrimitives(primitivesNode, graph) {
         }
 
         // Get id of the current primitive.
-        var primitiveId = graph.reader.getString(children[i], 'id');
+        let primitiveId = graph.reader.getString(children[i], 'id');
         if (primitiveId == null)
             return "no ID defined for texture";
 
@@ -28,19 +29,25 @@ export function parsePrimitives(primitivesNode, graph) {
         if (graph.primitives[primitiveId] != null)
             return "ID must be unique for each primitive (conflict: ID = " + primitiveId + ")";
 
-        grandChildren = children[i].children;
-
-        // Validate the primitive type
-        if (grandChildren.length != 1 ||
-            (grandChildren[0].nodeName != 'rectangle' && grandChildren[0].nodeName != 'triangle' &&
-                grandChildren[0].nodeName != 'cylinder' && grandChildren[0].nodeName != 'sphere' &&
-                grandChildren[0].nodeName != 'torus')) {
-            return "There must be exactly 1 primitive type (rectangle, triangle, cylinder, sphere or torus)"
-        }
+        
 
         // Specifications for the current primitive.
-        var primitiveType = grandChildren[0].nodeName;
+        
+        const primitive = graph.factory.build(children[i], graph.reader, graph.scene);
+        console.log(primitive);
+        graph.primitives[primitiveId] = primitive;
+        
+        /*
+            var primitiveType = grandChildren[0].nodeName;
+            grandChildren = children[i].children;
 
+            // Validate the primitive type
+            if (grandChildren.length != 1 ||
+                (grandChildren[0].nodeName != 'rectangle' && grandChildren[0].nodeName != 'triangle' &&
+                    grandChildren[0].nodeName != 'cylinder' && grandChildren[0].nodeName != 'sphere' &&
+                    grandChildren[0].nodeName != 'torus')) {
+                return "There must be exactly 1 primitive type (rectangle, triangle, cylinder, sphere or torus)"
+            }
         // Retrieves the primitive coordinates.
         if (primitiveType == 'rectangle') {
             // x1
@@ -70,6 +77,8 @@ export function parsePrimitives(primitivesNode, graph) {
         else {
             console.warn("To do: Parse other primitives.");
         }
+        */
+        
     }
 
     graph.log("Parsed primitives");

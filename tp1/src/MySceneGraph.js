@@ -8,6 +8,7 @@ import { parseMaterials } from './parser/materials.js';
 import { parseTransformations } from './parser/transformations.js';
 import { parsePrimitives } from './parser/primitives.js';
 import { parseComponents } from './parser/components.js';
+import { PrimitiveFactory } from './factory/PrimitiveFactory.js';
 
 const DEGREE_TO_RAD = Math.PI / 180;
 
@@ -61,7 +62,7 @@ export class MySceneGraph {
 
         // File reading 
         this.reader = new CGFXMLreader();
-
+        this.factory = new PrimitiveFactory(this.reader);
         /*
          * Read the contents of the xml file, and refer to this class for loading and error handlers.
          * After the file is read, the reader calls onXMLReady on this object.
