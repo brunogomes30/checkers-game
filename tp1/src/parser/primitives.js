@@ -35,8 +35,10 @@ export function parsePrimitives(primitivesNode, graph) {
         
         const primitive = graph.factory.build(children[i], graph.reader, graph.scene);
         console.log(primitive);
-        graph.primitives[primitiveId] = primitive;
+        console.log(primitiveId);
         
+        graph.primitives[primitiveId] = primitive;
+        console.log(graph);
         /*
             var primitiveType = grandChildren[0].nodeName;
             grandChildren = children[i].children;
