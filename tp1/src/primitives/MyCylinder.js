@@ -72,7 +72,7 @@ export class MyCylinder extends CGFobject {
         }
 
         for(let i = 0; i < this.vertices.length; i+=3){
-            this.normals.push(this.vertices[i], this.vertices[i + 1], 0);
+            this.normals.push(this.vertices[i], this.vertices[i + 1], -radiusIncrease);
         }
 		
 		/*
