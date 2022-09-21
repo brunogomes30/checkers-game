@@ -16,14 +16,14 @@ export class PrimitiveFactory{
         const grandChildren = node.children;
         
         if(grandChildren.length !== 1){
-            //print warning
+            console.warn(`Warning: primitive can only have one child`);
         }
 
         //Melhorar nomes das variaveis ig
         const grandChild = grandChildren[0];
         const type = grandChild.nodeName;
         if(!type in this.PRIMITIVE_CONSTRUCTORS){
-            //Print warning
+            console.warn(`Warning: Unkown primitive ${type}`);
         }
         
         const factory = this.PRIMITIVE_CONSTRUCTORS[type];
