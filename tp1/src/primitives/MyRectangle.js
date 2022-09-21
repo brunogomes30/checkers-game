@@ -7,12 +7,13 @@ import { CGFobject } from '../../../lib/CGF.js';
  * @param y - Scale of rectangle in Y
  */
 export class MyRectangle extends CGFobject {
-	constructor(scene, id, x1, x2, y1, y2) {
+	constructor(scene, id, values) {
 		super(scene);
-		this.x1 = x1;
-		this.x2 = x2;
-		this.y1 = y1;
-		this.y2 = y2;
+		this.id = id;
+		this.x1 = values.x1;
+		this.x2 = values.x2;
+		this.y1 = values.y1;
+		this.y2 = values.y2;
 
 		this.initBuffers();
 	}

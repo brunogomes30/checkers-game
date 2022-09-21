@@ -1,4 +1,4 @@
-import {parseCoordinates3D, parseCoordinates4D, parseColor} from "./utils.js"
+import {parseCoordinates3D} from "./utils.js"
 
 /**
      * Parses the <transformations> block.

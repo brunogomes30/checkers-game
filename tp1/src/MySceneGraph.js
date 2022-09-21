@@ -1,26 +1,41 @@
 import { CGFXMLreader } from '../../lib/CGF.js';
-import {parseScene} from './parser/scene.js';
-import {parseView} from './parser/view.js';
-import {parseAmbient} from './parser/ambient.js';
-import {parseLights} from './parser/lights.js';
-import {parseTextures} from './parser/textures.js';
-import {parseMaterials} from './parser/materials.js';
-import {parseTransformations} from './parser/transformations.js';
-import {parsePrimitives} from './parser/primitives.js';
-import {parseComponents} from './parser/components.js';
+import { parseScene } from './parser/scene.js';
+import { parseView } from './parser/view.js';
+import { parseAmbient } from './parser/ambient.js';
+import { parseLights } from './parser/lights.js';
+import { parseTextures } from './parser/textures.js';
+import { parseMaterials } from './parser/materials.js';
+import { parseTransformations } from './parser/transformations.js';
+import { parsePrimitives } from './parser/primitives.js';
+import { parseComponents } from './parser/components.js';
+import { PrimitiveFactory } from './factory/PrimitiveFactory.js';
 
-var DEGREE_TO_RAD = Math.PI / 180;
+const DEGREE_TO_RAD = Math.PI / 180;
 
 // Order of the groups in the XML document.
-var SCENE_INDEX = 0;
-var VIEWS_INDEX = 1;
-var AMBIENT_INDEX = 2;
-var LIGHTS_INDEX = 3;
-var TEXTURES_INDEX = 4;
-var MATERIALS_INDEX = 5;
-var TRANSFORMATIONS_INDEX = 6;
-var PRIMITIVES_INDEX = 7;
-var COMPONENTS_INDEX = 8;
+const XML_SEQUENCE_POSITION = {
+    'scene': 0,
+    'views': 1,
+    'ambient': 2,
+    'lights': 3,
+    'textures': 4,
+    'materials': 5,
+    'transformations': 6,
+    'primitives': 7,
+    'components': 8
+}
+
+const PARSE_FUNCTION = {
+    'scene': parseScene,
+    'views': parseView,
+    'ambient': parseAmbient,
+    'lights': parseLights,
+    'textures': parseTextures,
+    'materials': parseMaterials,
+    'transformations': parseTransformations,
+    'primitives': parsePrimitives,
+    'components': parseComponents
+}
 
 /**
  * MySceneGraph class, representing the scene graph.
@@ -47,7 +62,7 @@ export class MySceneGraph {
 
         // File reading 
         this.reader = new CGFXMLreader();
-
+        this.factory = new PrimitiveFactory(this.reader);
         /*
          * Read the contents of the xml file, and refer to this class for loading and error handlers.
          * After the file is read, the reader calls onXMLReady on this object.
@@ -61,114 +76,63 @@ export class MySceneGraph {
      */
     onXMLReady() {
         this.log("XML Loading finished.");
-        var rootElement = this.reader.xmlDoc.documentElement;
 
         // Here should go the calls for different functions to parse the various blocks
-        var error = this.parseXMLFile(rootElement);
-
-        if (error != null) {
-            this.onXMLError(error);
-            return;
-        }
-
-        this.loadedOk = true;
-
-        // As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
-        this.scene.onGraphLoaded();
+        this.parseXMLFile();
     }
 
     /**
      * Parses the XML file, processing each block.
      * @param {XML root element} rootElement
      */
-    parseXMLFile(rootElement) {
+    parseXMLFile() {
+        let rootElement = this.reader.xmlDoc.documentElement;
         if (rootElement.nodeName != "sxs")
             return "root tag <sxs> missing";
 
-        var nodes = rootElement.children;
-        let error;
+        let nodes = rootElement.children;
 
         // Processes each node, verifying errors.
+        let parsable_blocks = Object.keys(PARSE_FUNCTION);
+        let blocks_missing = Object.keys(XML_SEQUENCE_POSITION);
+        for (let i = 0; i < nodes.length; i++) {
+            let nodeName = nodes[i].nodeName;
 
-        // <scene>
-        error = this.genericParse(nodes, 'scene', SCENE_INDEX, parseScene);
-        if(error != null){
-            return error;
-        }
-
-        // <views>
-        error = this.genericParse(nodes, 'views', VIEWS_INDEX, parseView);
-        if(error != null){
-            return error;
-        }
-
-        // <ambient>
-        error = this.genericParse(nodes, 'ambient', AMBIENT_INDEX, parseAmbient);
-        if(error != null){
-            return error;
-        }
-
-        // <lights>
-        error = this.genericParse(nodes, 'lights', LIGHTS_INDEX, parseLights);
-        if(error != null){
-            return error;
-        }
-
-        // <textures>
-        error = this.genericParse(nodes, 'textures', TEXTURES_INDEX, parseTextures);
-        if(error != null){
-            return error;
-        }
-
-        // <materials>
-        error = this.genericParse(nodes, 'materials', MATERIALS_INDEX, parseMaterials);
-        if(error != null){
-            return error;
-        }
-
-        // <transformations>
-        error = this.genericParse(nodes, 'transformations', TRANSFORMATIONS_INDEX, parseTransformations);
-        if(error != null){
-            return error;
-        }
-
-        // <primitives>
-        error = this.genericParse(nodes, 'primitives', PRIMITIVES_INDEX, parsePrimitives);
-        if(error != null){
-            return error;
-        }
-
-        // <components>
-        error = this.genericParse(nodes, 'components', COMPONENTS_INDEX, parseComponents);
-        if(error != null){
-            return error;
-        }
-
-        this.log("all parsed");
-    }    
-
-    genericParse(nodes, tagname, tagIndex, parserFunction){
-        let index = -1;
-
-        //Search nodes for desired tag
-        for(let i=0; i<nodes.length; i++){
-            if(nodes[i].nodeName === tagname){
-                index = i;
-                break;
+            if (!(parsable_blocks.includes(nodeName))) {
+                if ((nodeName in PARSE_FUNCTION)) {
+                    this.onXMLMinorError(`More than one <${nodeName}> block was detected, only the first one declared is considered`);
+                }
+                continue;
             }
-        }
-        
-        if (index == -1)
-            return `tag <${tagname}> missing`;
-        else {
-            if (index != tagIndex)
-                this.onXMLMinorError(`tag <${tagname}> out of order`);
 
-            //Parse components block
+            if (nodeName in XML_SEQUENCE_POSITION && (XML_SEQUENCE_POSITION[nodeName] != i)) {
+                this.onXMLMinorError(`Block <${nodeName}> out of order`);
+            }
+
             let error;
-            if (error = parserFunction(nodes[index], this) != null)
-                return error;
+            if (nodeName in PARSE_FUNCTION && (error = PARSE_FUNCTION[nodeName](nodes[i], this) != null)) {
+                this.onXMLError(error);
+                return;
+            }
+
+            blocks_missing = blocks_missing.filter(b => b !== nodeName);
+            parsable_blocks = parsable_blocks.filter(b => b !== nodeName);
         }
+
+        if (blocks_missing.length > 0) {
+            this.onXMLError(`Blocks missing: ${blocks_missing.toString()}`);
+            return;
+        }
+
+        if (nodes.length > Object.keys(PARSE_FUNCTION).length) {
+            this.onXMLMinorError("Extra blocks on the document were't parsed");
+        }
+
+        this.loadedOk = true;
+        this.log("Scene graph parsing complete");
+
+        // As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
+        this.scene.onGraphLoaded();
     }
 
     /*
