@@ -1,26 +1,26 @@
-
 export function vector2points(p1, p2) {
-    return { x: p2.x - p1.x, y: p2.y - p1.y, z: p2.z - p1.z };
+    return [p2[0] - p1[0], p2[1] - p1[1], p2[2] - p1[2] ];
 }
 
 export function vectorInvert(vec) {
-    return { x: -vec.x, y: -vec.y, z: -vec.z };
+    return [-vec[0], -vec[1], -vec[2] ];
 }
 
 export function vectorSize(vec) {
-    return (vec.x ** 2 + vec.y ** 2 + vec.z ** 2) ** (0.5);
+    return (vec[0] ** 2 + vec[1] ** 2 + vec[2] ** 2) ** (0.5);
 }
 
 export function vectorNormalize(vec) {
     const dist = vectorSize(vec);
-    return { x: vec.x / dist, y: vec.y / dist, z: vec.z / dist };
+    return [vec[0] / dist,vec[1] / dist, vec[2] / dist ];
 }
 
 export function vectorCrossProduct(vec1, vec2) {
-    return {
-        x: vec1.y * vec2.z - vec1.z * vec2.y, y: vec1.z * vec2.x - vec1.x * vec2.z,
-        z: vec1.x * vec2.y - vec1.y * vec2.x
-    };
+    return [
+        vec1[1] * vec2[2] - vec1[2] * vec2[1],
+        vec1[2] * vec2[0] - vec1[0] * vec2[2],
+        vec1[0] * vec2[1] - vec1[1] * vec2[0]
+    ];
 }
 
 export function trianngleCos(a, b, c) {
@@ -29,4 +29,20 @@ export function trianngleCos(a, b, c) {
 
 export function triangleSin(cos) {
     return (1 - cos ** 2) ** (0.5);
+}
+
+export function distance(x1, y1, z1, x2, y2, z2){
+    return Math.sqrt((x1 - x2)**2 + (y1 - y2)**2 +(z1 - z2)**2);
+}
+
+export function vectorSum(vec1, vec2){
+    return [vec1[0] + vec2[0], vec1[1] + vec2[1], vec1[2] + vec2[2]];
+}
+
+export function vectorDiff(vec1, vec2){
+    return [vec1[0] - vec2[0], vec1[1] - vec2[1], vec1[2] - vec2[2]];
+}
+
+export function vectorMult(vec1, a){
+    return [vec1[0] * a, vec1[1] * a, vec1[2] * a];
 }

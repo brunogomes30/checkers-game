@@ -36,18 +36,16 @@ export class MyTriangle extends CGFobject {
 		];
 
 
-		let vec01 = vector2points({ x: this.x1, y: this.y1, z: this.z1 }, { x: this.x2, y: this.y2, z: this.z2 });
-		const vec02 = vector2points({ x: this.x1, y: this.y1, z: this.z1 }, { x: this.x3, y: this.y3, z: this.z3 });
-		const vec12 = vector2points({ x: this.x2, y: this.y2, z: this.z2 }, { x: this.x3, y: this.y3, z: this.z3 });
+		let vec01 = vector2points([this.x1, this.y1, this.z1 ], [this.x2, this.y2, this.z2 ]);
+		const vec02 = vector2points([this.x1, this.y1, this.z1 ], [this.x3, this.y3, this.z3 ]);
+		const vec12 = vector2points([this.x2, this.y2, this.z2 ], [this.x3, this.y3, this.z3 ]);
 
 		const size01 = vectorSize(vec01);
 		const size02 = vectorSize(vec02);
 		const size12 = vectorSize(vec12);
 
 		vec01 = vectorNormalize(vec01);
-
-		const normal = [...Object.values(vectorNormalize(vectorCrossProduct(vec01, vec02)))];
-
+		const normal = vectorNormalize(vectorCrossProduct(vec01, vec02));
 		this.normals = [
 			...normal,
 			...normal,
