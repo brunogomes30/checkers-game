@@ -1,4 +1,5 @@
 import { CGFobject } from '../../../lib/CGF.js';
+import { distance, vectorSum, vectorDiff, vectorMult, vectorNormalize } from './geometryUtils.js';
 /**
  * MyRectangle
  * @constructor
@@ -25,7 +26,7 @@ export class MyCylinder extends CGFobject {
         this.indices = [];
         this.normals = [];
         this.texCoords = [];
-        const radiusIncrease = (this.top - this.base) /this.height / this.stacks;
+        const radiusIncrease = (this.top - this.base)  / (this.stacks - 1);
         let radius = this.base - radiusIncrease;
 
         const stackHeight = this.height / this.stacks;
@@ -40,9 +41,7 @@ export class MyCylinder extends CGFobject {
                 angle += sliceAngle;
                 const x = Math.cos(angle) * radius;
                 const y = Math.sin(angle) * radius;
-                this.vertices.push(x);
-                this.vertices.push(y);
-                this.vertices.push(z);
+                this.vertices.push(x, y, z);
 
                 const textS = slice > this.slices 
                     ? (this.slices - slice*2) / this.slices
@@ -67,12 +66,26 @@ export class MyCylinder extends CGFobject {
                 p2 = i + 1;
                 p4 = i + this.slices + 1;
             }
-            this.indices.push(...[p1, p2, p4]);
-            this.indices.push(...[p4, p3, p1]);
+            this.indices.push(p1, p2, p4);
+            this.indices.push(p4, p3, p1);
         }
 
-        for(let i = 0; i < this.vertices.length; i+=3){
-            this.normals.push(this.vertices[i], this.vertices[i + 1], -radiusIncrease);
+        
+        
+        const xxx = this.slices * (this.stacks - 1) * 3;
+        let possibleNormals = [];
+        for(let i=0; i < this.slices; i++){
+            let offset = i*3;
+            const vertI = [this.vertices[offset], this.vertices[offset + 1], this.vertices[offset + 2]];
+        
+            const vertP = [this.vertices[xxx + offset], this.vertices[xxx + offset + 1], this.vertices[xxx + offset + 2]];
+            let orient = vectorNormalize(vectorDiff([0, 0, 0], vertP));
+            const normalVector = calculateConeNormalVector(vertP, vertI, this.base, orient);
+            possibleNormals.push(...normalVector);
+        }
+
+        for(let i = 0; i < this.stacks; i+=1){
+            this.normals.push(...possibleNormals);
         }
 		
 		/*
@@ -100,3 +113,18 @@ export class MyCylinder extends CGFobject {
 	}
 }
 
+/**
+ * https://stackoverflow.com/questions/66343772/cone-normal-vector
+ * @param {*} vertP 
+ * @param {*} vertI 
+ * @param {*} vertA 
+ */
+function calculateConeNormalVector(vertP, vertI, radius, orient){
+    let dis = distance(...vertI, ...vertP);
+    let k = radius / dis;
+    let D = dis * Math.sqrt(1 + k**2);
+    orient = vectorMult(orient, D);
+    let A = vectorSum(vertP, orient);
+    return vectorNormalize(vectorDiff(vertI, A));
+
+}

@@ -19,6 +19,6 @@ export function buildValues(attributes, reader, node){
         }
         values[key] = value;
     }
-    console.log(values);
+
     return values;
 }
