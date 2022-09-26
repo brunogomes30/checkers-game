@@ -57,7 +57,7 @@
             <triangle x1="0" y1="0" z1="0" x2="3" y2="0" z2="0" x3="0" y3="3" z3="0" />
         </primitive>
         <primitive id="sphere">
-            <sphere radius="2" stacks="100" slices="100" />
+            <sphere radius="2" stacks="12" slices="12" />
         </primitive>
     </primitives>
 
@@ -74,7 +74,7 @@
             <children>
                 <primitiveref id="triangle" />
                 <primitiveref id="cylinder" />
-                <primitiveref id="torus" />
+                <primitiveref id="sphere" />
             </children>
         </component>
     </components>
