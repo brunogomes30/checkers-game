@@ -6,11 +6,11 @@ import { MyRectangle } from '../primitives/MyRectangle.js';
      * @param {primitives block element} primitivesNode
      */
 export function parsePrimitives(primitivesNode, graph) {
-    var children = primitivesNode.children;
+    const children = primitivesNode.children;
     graph.primitives = [];
 
     // Any number of primitives.
-    for (var i = 0; i < children.length; i++) {
+    for (let i = 0; i < children.length; i++) {
 
         if (children[i].nodeName != "primitive") {
             graph.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
@@ -18,7 +18,7 @@ export function parsePrimitives(primitivesNode, graph) {
         }
 
         // Get id of the current primitive.
-        let primitiveId = graph.reader.getString(children[i], 'id');
+        const primitiveId = graph.reader.getString(children[i], 'id');
         if (primitiveId == null)
             return "no ID defined for texture";
 

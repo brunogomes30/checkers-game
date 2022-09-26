@@ -9,6 +9,8 @@ import { parseTransformations } from './parser/transformations.js';
 import { parsePrimitives } from './parser/primitives.js';
 import { parseComponents } from './parser/components.js';
 import { PrimitiveFactory } from './factory/PrimitiveFactory.js';
+import {renderElement} from './components/renderElement.js';
+const DEGREE_TO_RAD = Math.PI / 180;
 
 // Order of the groups in the XML document.
 const XML_SEQUENCE_POSITION = {
@@ -128,7 +130,7 @@ export class MySceneGraph {
 
         this.loadedOk = true;
         this.log("Scene graph parsing complete");
-
+        this.rootElement = this.components[this.idRoot];
         // As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
         this.scene.onGraphLoaded();
     }
@@ -163,24 +165,9 @@ export class MySceneGraph {
      */
     displayScene() {
         //To do: Create display loop for transversing the scene graph
-
+        renderElement(this.rootElement);
         //To test the parsing/creation of the primitives, call the display function directly
-
-        //this.primitives['demoRectangle'].display();
-        //this.primitives['demoRectangle'].enableNormalViz();
-
-        //this.primitives['triangle'].display();
-        //this.primitives['triangle'].enableNormalViz();
-               
-        //this.primitives['cylinder'].display();
-        //this.primitives['cylinder'].enableNormalViz();
-
-        this.primitives['torus'].display();
-        //this.primitives['torus'].enableNormalViz();
-
-        
-        this.primitives['sphere'].display();
         //this.primitives['sphere'].enableNormalViz();
-
+        //this.primitives['sphere'].display();
     }
 }
