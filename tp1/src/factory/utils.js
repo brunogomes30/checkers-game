@@ -19,6 +19,10 @@ export function buildValues(attributes, reader, node){
         }
         values[key] = value;
     }
-
+    
     return values;
+}
+
+export function truncateDecimalPlaces(number, decimalPlaces){
+    return Number.parseFloat(Number.parseFloat(number).toFixed(decimalPlaces));
 }

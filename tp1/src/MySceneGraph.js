@@ -10,8 +10,6 @@ import { parsePrimitives } from './parser/primitives.js';
 import { parseComponents } from './parser/components.js';
 import { PrimitiveFactory } from './factory/PrimitiveFactory.js';
 
-const DEGREE_TO_RAD = Math.PI / 180;
-
 // Order of the groups in the XML document.
 const XML_SEQUENCE_POSITION = {
     'scene': 0,
@@ -167,7 +165,22 @@ export class MySceneGraph {
         //To do: Create display loop for transversing the scene graph
 
         //To test the parsing/creation of the primitives, call the display function directly
-        //this.primitives['sphere'].enableNormalViz();
+
+        //this.primitives['demoRectangle'].display();
+        //this.primitives['demoRectangle'].enableNormalViz();
+
+        //this.primitives['triangle'].display();
+        //this.primitives['triangle'].enableNormalViz();
+               
+        //this.primitives['cylinder'].display();
+        //this.primitives['cylinder'].enableNormalViz();
+
+        this.primitives['torus'].display();
+        //this.primitives['torus'].enableNormalViz();
+
+        
         this.primitives['sphere'].display();
+        //this.primitives['sphere'].enableNormalViz();
+
     }
 }
