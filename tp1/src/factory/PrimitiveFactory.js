@@ -1,6 +1,7 @@
 import {RectangleFactory} from "./RectangleFactory.js"
 import {TriangleFactory} from "./TriangleFactory.js"
 import {CylinderFactory} from "./CylinderFactory.js"
+import {SphereFactory} from "./SphereFactory.js"
 
 export class PrimitiveFactory{
     
@@ -9,7 +10,8 @@ export class PrimitiveFactory{
         this.PRIMITIVE_CONSTRUCTORS = {
             rectangle: new RectangleFactory(),
             triangle: new TriangleFactory(),
-            cylinder: new CylinderFactory()
+            cylinder: new CylinderFactory(),
+            sphere: new SphereFactory()
         };
     }
 
