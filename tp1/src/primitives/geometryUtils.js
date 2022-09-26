@@ -31,6 +31,10 @@ export function triangleSin(cos) {
     return (1 - cos ** 2) ** (0.5);
 }
 
+export function degToRad(deg) { return (Math.PI * deg) / 180; }
+
+export const RADIANS_CIRCLE = 2 * Math.PI;
+
 export function distance(x1, y1, z1, x2, y2, z2){
     return Math.sqrt((x1 - x2)**2 + (y1 - y2)**2 +(z1 - z2)**2);
 }

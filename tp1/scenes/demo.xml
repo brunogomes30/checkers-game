@@ -47,10 +47,13 @@
         <primitive id="demoRectangle">
             <rectangle x1="-0.5" y1="-1" x2="0.5" y2="1" />
         </primitive>
+        <primitive id="torus">
+            <torus outter="5" inner="4" slices="11" loops="12" />
+        </primitive>
         <primitive id="cylinder">
             <cylinder base="3" top="0" height="5" slices="16" stacks="16" />
         </primitive>
-        <primitive id="demoTriangle">
+        <primitive id="triangle">
             <triangle x1="0" y1="0" z1="0" x2="3" y2="0" z2="0" x3="0" y3="3" z3="0" />
         </primitive>
         <primitive id="sphere">
@@ -69,7 +72,9 @@
             </materials>
             <texture id="demoTexture"/>
             <children>
+                <primitiveref id="triangle" />
                 <primitiveref id="cylinder" />
+                <primitiveref id="torus" />
             </children>
         </component>
     </components>
