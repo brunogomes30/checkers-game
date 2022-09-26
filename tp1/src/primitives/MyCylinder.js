@@ -75,12 +75,12 @@ export class MyCylinder extends CGFobject {
         const xxx = this.slices * (this.stacks - 1) * 3;
         let possibleNormals = [];
         for(let i=0; i < this.slices; i++){
-            let offset = i*3;
+            const offset = i*3;
             const vertI = [this.vertices[offset], this.vertices[offset + 1], this.vertices[offset + 2]];
         
             const vertP = [this.vertices[xxx + offset], this.vertices[xxx + offset + 1], this.vertices[xxx + offset + 2]];
-            let orient = vectorNormalize(vectorDiff([0, 0, 0], vertP));
-            const normalVector = calculateConeNormalVector(vertP, vertI, this.base, orient);
+            const orient = vectorNormalize(vectorDiff([0, 0, 0], vertP));
+            const normalVector = calculateNormalVector(vertP, vertI, this.base, orient);
             possibleNormals.push(...normalVector);
         }
 
@@ -102,15 +102,6 @@ export class MyCylinder extends CGFobject {
 		this.initGLBuffers();
 	}
 
-	/**
-	 * @method updateTexCoords
-	 * Updates the list of texture coordinates of the rectangle
-	 * @param {Array} coords - Array of texture coordinates
-	 */
-	updateTexCoords(coords) {
-		this.texCoords = [...coords];
-		this.updateTexCoordsGLBuffers();
-	}
 }
 
 /**
@@ -119,7 +110,7 @@ export class MyCylinder extends CGFobject {
  * @param {*} vertI 
  * @param {*} vertA 
  */
-function calculateConeNormalVector(vertP, vertI, radius, orient){
+function calculateNormalVector(vertP, vertI, radius, orient){
     let dis = distance(...vertI, ...vertP);
     let k = radius / dis;
     let D = dis * Math.sqrt(1 + k**2);
