@@ -1,11 +1,12 @@
-import {Component} from '../components/Component.js'
+import { Component } from '../components/Component.js'
+import { parseTransformation } from './transformations.js';
 /**
    * Parses the <components> block.
    * @param {components block element} componentsNode
    */
- export function parseComponents(componentsNode, graph) {
+export function parseComponents(componentsNode, graph) {
     const componentNodes = componentsNode.children;
-    
+
     graph.components = [];
 
     let grandChildren = [];
@@ -39,9 +40,11 @@ import {Component} from '../components/Component.js'
         const textureIndex = nodeNames.indexOf("texture");
         const childrenIndex = nodeNames.indexOf("children");
 
-        
         // Transformations
-
+        let transfMatrix = parseTransformation(grandChildren[transformationIndex], graph, "component ID " + componentID, false)
+        if (typeof (transfMatrix) == 'string') {
+            return transfMatrix;
+        }
         // Materials
 
         // Texture
@@ -59,9 +62,10 @@ import {Component} from '../components/Component.js'
             } else {
                 graph.onXMLMinorError("unknown tag <" + componentNodes[i].nodeName + ">");
             }
-            
+
         }
-        const component = new Component(null, null, null, componentChildren);
+        
+        const component = new Component(graph.scene, transfMatrix, null, null, componentChildren);
         graph.components[componentID] = component;
     }
 
@@ -71,12 +75,12 @@ import {Component} from '../components/Component.js'
         const component = graph.components[key];
         for(const childKey in component.children){
             const child = component.children[childKey];
-            if(child instanceof String){
-                component.children[child] = graph.components[child];
+            if(typeof child === 'string'){
+                component.children[childKey] = graph.components[child];
             }
 
         }
-        
     }
+
     return null;
 }

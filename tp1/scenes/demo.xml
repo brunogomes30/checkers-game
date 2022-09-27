@@ -50,7 +50,7 @@
         <primitive id="torus">
             <torus outter="5" inner="4" slices="11" loops="12" />
         </primitive>
-        <primitive id="cylinder">
+        <primitive id="cone">
             <cylinder base="3" top="0" height="5" slices="16" stacks="16" />
         </primitive>
         <primitive id="triangle">
@@ -64,8 +64,8 @@
     <components>
         <component id="demoRoot">
             <transformation>
-                <translate x="0" y="0" z="1" />
-                <scale x="2" y="1" z="1" />
+                <translate x="0" y="2" z="1" />
+                <scale x="1" y="1" z="1" />
             </transformation>
             <materials>
                 <material id="demoMaterial" />
@@ -73,8 +73,17 @@
             <texture id="demoTexture"/>
             <children>
                 <primitiveref id="triangle" />
-                <primitiveref id="cylinder" />
+                <componentref id="hat" />
                 <primitiveref id="sphere" />
+                
+            </children>
+        </component>
+        <component id="hat">
+            <transformation>
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+            <children>
+                <primitiveref id="cone"/>
             </children>
         </component>
     </components>
