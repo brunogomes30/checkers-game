@@ -1,5 +1,6 @@
 export class Component{
-    constructor(transformation, material, texture, children){
+    constructor(scene, transformation, material, texture, children){
+        this.scene = scene;
         this.transformation = transformation;
         this.material = material;
         this.texture = texture;
