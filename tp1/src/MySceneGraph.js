@@ -165,22 +165,5 @@ export class MySceneGraph {
     displayScene() {
         //To do: Create display loop for transversing the scene graph
         renderElement(this.rootElement);
-        //To test the parsing/creation of the primitives, call the display function directly
-
-        //this.primitives['demoRectangle'].display();
-        //this.primitives['demoRectangle'].enableNormalViz();
-
-        //this.primitives['triangle'].display();
-        //this.primitives['triangle'].enableNormalViz();
-
-        //this.primitives['cylinder'].display();
-        //this.primitives['cylinder'].enableNormalViz();
-
-        //this.primitives['torus'].display();
-        //this.primitives['torus'].enableNormalViz();
-
-
-        //this.primitives['sphere'].display();
-        //this.primitives['sphere'].enableNormalViz();
     }
 }

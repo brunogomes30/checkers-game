@@ -41,12 +41,25 @@ export function parseComponents(componentsNode, graph) {
         const childrenIndex = nodeNames.indexOf("children");
 
         // Transformations
-        let transfMatrix = parseTransformation(grandChildren[transformationIndex], graph, "component ID " + componentID, false)
+        const transfMatrix = parseTransformation(grandChildren[transformationIndex], graph, "component ID " + componentID, false)
         if (typeof (transfMatrix) == 'string') {
             return transfMatrix;
         }
         // Materials
-
+        const materialsNode = grandChildren[materialsIndex];
+        const materials = []
+        if(materialsNode !== undefined){
+            for(let i=0; i < materialsNode.children.length; i++){
+                const matId = graph.reader.getString(materialsNode.children[i], 'id');
+                if(matId !== null){
+                    if(matId === 'inherit'){
+                        materials.push('inherit');
+                    } else {
+                        materials.push(graph.materials[matId]);
+                    }
+                }
+            }
+        }
         // Texture
 
         // Children
@@ -65,7 +78,7 @@ export function parseComponents(componentsNode, graph) {
 
         }
         
-        const component = new Component(graph.scene, transfMatrix, null, null, componentChildren);
+        const component = new Component(graph.scene, transfMatrix, materials, null, componentChildren);
         graph.components[componentID] = component;
     }
 
