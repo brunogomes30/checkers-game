@@ -33,11 +33,23 @@
             <diffuse r="1.0" g="0.0784313725490196" b="0.5764705882352941" a="1.0"  />
             <specular r="1.0" g="0.0784313725490196" b="0.5764705882352941" a="1.0"  />
         </material>
+        <material id="presentMaterial" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.8235294117647058" g="0.01568627450980392" b="0.17647058823529413" a="1.0"  />
+            <diffuse r="0.8235294117647058" g="0.01568627450980392" b="0.17647058823529413" a="1.0"  />
+            <specular r="0.8235294117647058" g="0.01568627450980392" b="0.17647058823529413" a="1.0"  />
+        </material>
         <material id="skinMaterial" shininess="1">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="1.0" g="0.7529411764705882" b="0.796078431372549" a="1.0" />
             <diffuse r="1.0" g="0.7529411764705882" b="0.796078431372549" a="1.0"   />
             <specular r="1.0" g="0.7529411764705882" b="0.796078431372549" a="1.0"   />
+        </material>
+        <material id="laceMaterial" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.23137254901960785" g="0.47843137254901963" b="0.3411764705882353" a="1.0" />
+            <diffuse r="0.23137254901960785" g="0.47843137254901963" b="0.3411764705882353" a="1.0"   />
+            <specular r="0.0" g="0.0" b="0.0" a="0.0"    />
         </material>
     </materials>
 
@@ -54,7 +66,7 @@
             <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
         </primitive>
         <primitive id="torus">
-            <torus outter="5" inner="4" slices="11" loops="12" />
+            <torus outter="0.5" inner="0.5" slices="11" loops="12" />
         </primitive>
         <primitive id="cylinder">
             <cylinder base="1" top="0.8" height="1" slices="16" stacks="16" />
@@ -91,10 +103,104 @@
                 <material id="inherit"/>
             </materials>
             <children>
+                <componentref id="presentBox" />
                 <componentref id="presentData" />
             </children>
         </component>
 
+        <component id="presentBox">
+            <transformation>
+                <scale x="2" y="2" z="2"/>
+            </transformation>
+            <materials>
+                <material id="presentMaterial" />
+            </materials>
+            <children>
+                <componentref id="presentLace" />
+                 <componentref id="cubeBothfaces" />
+            </children>
+        </component>
+
+        <component id="presentLace">
+            <transformation>
+                <translate x="0" y="0.51" z="0" />
+            </transformation>
+            <materials>
+                <material id="laceMaterial" />
+            </materials>
+            <children>
+                <componentref id="lace1" />
+                 <componentref id="lace2"/>
+                 <componentref id="lace3" />
+                <componentref id="lace4"/> 
+            </children>
+        </component>
+
+        <component id="lace1">
+            <transformation>
+                
+                <rotate axis="y" angle="135"/>
+                <rotate axis="x" angle="90"/>
+                <rotate axis="y" angle="180"/><translate x="0" y="-0.25" z="0" />
+                <scale x="0.30" y="0.8" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <children>
+                <primitiveref id="square"/>
+            </children>
+        </component>
+        <component id="lace2">
+            <transformation>
+                
+                <rotate axis="y" angle="45" />
+                <rotate axis="x" angle="90"/>
+                <rotate axis="y" angle="180"/>
+                <translate x="0" y="0.25" z="0" />
+                <scale x="0.30" y="0.8" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <children>
+                <primitiveref id="square"/>
+            </children>
+        </component>
+        <component id="lace3">
+            <transformation>
+                
+                
+                
+                <translate x="-0.20" y="0.05" z="0" />
+                <rotate axis="z" angle="75" />
+                <rotate axis="y" angle="90" />
+                <scale x="0.25" y="0.5" z="1" />
+                
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <children>
+                <primitiveref id="square"/>
+            </children>
+        </component>
+        <component id="lace4">
+            <transformation>
+                
+                <translate x="0.20" y="0.05" z="0" />
+                <rotate axis="z" angle="-75" />
+                <rotate axis="y" angle="90" />
+                <rotate axis="y" angle="180" />
+                <scale x="0.25" y="0.5" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <children>
+                <primitiveref id="square"/>
+            </children>
+        </component>
         <component id="presentData">
             <transformation>
                 <translate x="0" y="0" z="0" />
@@ -107,6 +213,8 @@
                 <componentref id="ball1" />
                 <componentref id="ball2" />
                 <componentref id="stick"/>
+                <componentref id="head"/>
+                <componentref id="head_support"/>
             </children>
         </component>
 
@@ -137,7 +245,7 @@
         <component id="stick">
             <transformation>
                 
-                <scale x="1" y="10" z="1" />
+                <scale x="1" y="5" z="1" />
                 <rotate axis="x" angle="-90"/>
             </transformation>
             <materials>
@@ -147,9 +255,36 @@
                 <primitiveref id="cylinder"/>
             </children>
         </component>
+
+        <component id="head">
+            <transformation>
+                <scale x="0.92" y="0.92" z="0.92"/>
+                <translate x="0" y="5" z="0"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+        <component id="head_support">
+            <transformation>
+                <scale x="1" y="1" z="1"/>
+                <translate x="0" y="4" z="0"/>
+                <rotate axis="x" angle="90"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <children>
+                <primitiveref id="torus" />
+            </children>
+        </component>
         <component id="room">
             <transformation>
-                <scale x="50" y="50" z="50" />
+                <translate x="0" y="10" z="0"/>
+                <scale x="50" y="25" z="50" />
             </transformation>
             <materials>
                 <material id="roomMaterial" />
