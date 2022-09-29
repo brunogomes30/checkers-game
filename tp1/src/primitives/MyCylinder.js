@@ -26,14 +26,14 @@ export class MyCylinder extends CGFobject {
         this.indices = [];
         this.normals = [];
         this.texCoords = [];
-        const radiusIncrease = (this.top - this.base)  / (this.stacks - 1);
+        const radiusIncrease = (this.top - this.base)  / (this.stacks);
         let radius = this.base - radiusIncrease;
 
         const stackHeight = this.height / this.stacks;
         let sliceAngle = Math.PI * 2 / this.slices;
         let z = -stackHeight;
         
-        for(let stack = 0; stack < this.stacks; stack++){
+        for(let stack = 0; stack <= this.stacks; stack++){
             z += stackHeight;
             radius += radiusIncrease;
             let angle = -sliceAngle;
@@ -84,7 +84,7 @@ export class MyCylinder extends CGFobject {
             possibleNormals.push(...normalVector);
         }
 
-        for(let i = 0; i < this.stacks; i+=1){
+        for(let i = 0; i <= this.stacks; i+=1){
             this.normals.push(...possibleNormals);
         }
 		
