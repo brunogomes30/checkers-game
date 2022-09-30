@@ -39,7 +39,7 @@ export class MyTorus extends CGFobject {
         const slicesStep = RADIANS_CIRCLE / this.slices;
         const texLoopsStep = 1 / this.loops;
         const texSlicesStep = 1 / this.slices;
-        const vertexNr = this.loops + 1 * this.slices;
+        const vertexNr = this.loops * this.slices;
         for (let loop = 0; loop < this.loops; loop++) {
             const loopAngle = truncateDecimalPlaces(loop * loopsStep, 10);
             const loopCos = Math.cos(loopAngle);
@@ -67,8 +67,6 @@ export class MyTorus extends CGFobject {
                 this.texCoords.push(loop * texLoopsStep, slice * texSlicesStep);
             }
         }
-
-        this.texCoords.push(0, 0)
 
         /*
         Texture coords (s,t)
