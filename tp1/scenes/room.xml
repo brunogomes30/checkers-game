@@ -86,9 +86,9 @@
                 <scale x="1" y="1" z="1" />
             </transformation>
             <materials>
-                
+                <material id="roomMaterial"/>
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="none"/>
             <children>
                 <componentref id="room" />
                 <componentref id="present"/>
@@ -97,11 +97,11 @@
 
         <component id="present">
             <transformation>
-
             </transformation>
             <materials>
                 <material id="inherit"/>
             </materials>
+            <texture id="none"/>
             <children>
                 <componentref id="presentBox" />
                 <componentref id="presentData" />
@@ -115,6 +115,7 @@
             <materials>
                 <material id="presentMaterial" />
             </materials>
+            <texture id="none"/>
             <children>
                 <componentref id="presentLace" />
                  <componentref id="cubeBothfaces" />
@@ -128,6 +129,7 @@
             <materials>
                 <material id="laceMaterial" />
             </materials>
+            <texture id="none"/>
             <children>
                 <componentref id="lace1" />
                  <componentref id="lace2"/>
@@ -138,7 +140,6 @@
 
         <component id="lace1">
             <transformation>
-                
                 <rotate axis="y" angle="135"/>
                 <rotate axis="x" angle="90"/>
                 <rotate axis="y" angle="180"/><translate x="0" y="-0.25" z="0" />
@@ -147,13 +148,14 @@
             <materials>
                 <material id="inherit" />
             </materials>
+            <texture id="none"/>
             <children>
                 <primitiveref id="square"/>
             </children>
         </component>
+
         <component id="lace2">
             <transformation>
-                
                 <rotate axis="y" angle="45" />
                 <rotate axis="x" angle="90"/>
                 <rotate axis="y" angle="180"/>
@@ -163,31 +165,29 @@
             <materials>
                 <material id="inherit" />
             </materials>
+            <texture id="none"/>
             <children>
                 <primitiveref id="square"/>
             </children>
         </component>
         <component id="lace3">
             <transformation>
-                
-                
-                
                 <translate x="-0.20" y="0.05" z="0" />
                 <rotate axis="z" angle="75" />
                 <rotate axis="y" angle="90" />
                 <scale x="0.25" y="0.5" z="1" />
-                
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
+            <texture id="none"/>
             <children>
                 <primitiveref id="square"/>
             </children>
         </component>
+
         <component id="lace4">
             <transformation>
-                
                 <translate x="0.20" y="0.05" z="0" />
                 <rotate axis="z" angle="-75" />
                 <rotate axis="y" angle="90" />
@@ -197,10 +197,12 @@
             <materials>
                 <material id="inherit" />
             </materials>
+            <texture id="none"/>
             <children>
                 <primitiveref id="square"/>
             </children>
         </component>
+
         <component id="presentData">
             <transformation>
                 <translate x="0" y="0" z="0" />
@@ -209,6 +211,7 @@
             <materials>
                 <material id="skinMaterial" />
             </materials>
+            <texture id="none"/>
             <children>
                 <componentref id="ball1" />
                 <componentref id="ball2" />
@@ -225,11 +228,12 @@
             <materials>
                 <material id="inherit"/>
             </materials>
+            <texture id="none"/>
             <children>
                 <primitiveref id="sphere" />
             </children>
-
         </component>
+
         <component id="ball2">
             <transformation>
                 <translate x="-1" y="0" z="0"/>
@@ -237,6 +241,7 @@
             <materials>
                 <material id="inherit"/>
             </materials>
+            <texture id="none"/>
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -244,13 +249,13 @@
 
         <component id="stick">
             <transformation>
-                
                 <scale x="1" y="5" z="1" />
                 <rotate axis="x" angle="-90"/>
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
+            <texture id="none"/>
             <children>
                 <primitiveref id="cylinder"/>
             </children>
@@ -264,10 +269,12 @@
             <materials>
                 <material id="inherit" />
             </materials>
+            <texture id="none"/>
             <children>
                 <primitiveref id="sphere" />
             </children>
         </component>
+
         <component id="head_support">
             <transformation>
                 <scale x="1" y="1" z="1"/>
@@ -277,10 +284,12 @@
             <materials>
                 <material id="inherit" />
             </materials>
+            <texture id="none"/>
             <children>
                 <primitiveref id="torus" />
             </children>
         </component>
+
         <component id="room">
             <transformation>
                 <translate x="0" y="10" z="0"/>
@@ -289,7 +298,7 @@
             <materials>
                 <material id="roomMaterial" />
             </materials>
-
+            <texture id="none"/>
             <children>
                 <componentref id="cubeBothfaces" />
             </children>
@@ -301,6 +310,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
+            <texture id="none"/>
             <children>
                 <componentref id="cube_bottom" />
                 <componentref id="cube_top" />
@@ -310,19 +320,21 @@
                 <componentref id="cube_xneg" />
             </children>
         </component>
+
         <component id="cube_bottom">
             <transformation>
                 <translate x="0" y="-0.5" z="0" />
                 <rotate axis="x" angle="90"/>
-                
              </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
+            <texture id="none"/>
             <children>
                 <componentref id="square_both"/>
             </children>
         </component>
+
         <component id="cube_top">
             <transformation>
                 <translate x="0" y="0.5" z="0" />
@@ -331,10 +343,12 @@
             <materials>
                 <material id="inherit" />
             </materials>
+            <texture id="none"/>
             <children>
                 <componentref id="square_both"/>
             </children>
         </component>
+
         <component id="cube_zneg">
             <transformation>
                 <translate x="0" y="0" z = "-0.5"/>
@@ -342,10 +356,12 @@
             <materials>
                 <material id="inherit" />
             </materials>
+            <texture id="none"/>
             <children>
                 <componentref id="square_both"/>
             </children>
         </component>
+
         <component id="cube_zpos">
             <transformation>
                 <translate x="0" y="0" z = "0.5"/>
@@ -353,6 +369,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
+            <texture id="none"/>
             <children>
                 <componentref id="square_both"/>
             </children>
@@ -366,10 +383,12 @@
             <materials>
                 <material id="inherit" />
             </materials>
+            <texture id="none"/>
             <children>
                 <componentref id="square_both"/>
             </children>
         </component>
+
         <component id="cube_xneg">
             <transformation>
                 <translate x="-0.5" y="0" z = "0"/>
@@ -378,6 +397,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
+            <texture id="none"/>
             <children>
                 <componentref id="square_both"/>
             </children>
@@ -385,20 +405,22 @@
 
         <component id="square_both">
             <transformation>
-
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
+            <texture id="none"/>
             <children>
                 <primitiveref id="square" />
                 <componentref id="square_reverse" />
             </children>
         </component>
+
         <component id="square_reverse">
             <materials>
                 <material id="inherit" />
             </materials>
+            <texture id="none"/>
             <transformation>
                 <rotate axis="x" angle="180" />
             </transformation>

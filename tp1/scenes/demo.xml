@@ -67,19 +67,21 @@
                 <translate x="0" y="2" z="1" />
                 <scale x="1" y="1" z="1" />
             </transformation>
-            
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
             <texture id="demoTexture"/>
             <children>
                 <primitiveref id="triangle" />
                 <componentref id="hat" />
                 <primitiveref id="sphere" />
-                
             </children>
         </component>
         <component id="hat">
             <materials>
                 <material id="demoMaterial" />
             </materials>
+            <texture id="none"/>
             <transformation>
                 <rotate axis="x" angle="-135"/>
             </transformation>
