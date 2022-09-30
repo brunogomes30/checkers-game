@@ -61,16 +61,41 @@ export function parseComponents(componentsNode, graph) {
             }
         }
         // Texture
+        // <texture id="ss" length_s="ff" length_t="ff"/>        
+        let textureNode = grandChildren[textureIndex]
+        let texture;
+        if (textureNode != null) {
+            let textureId = graph.reader.getString(textureNode, 'id');
+            if (textureId !== null) {
+                if (textureId != '') {
+                    // How to use none?? Just dont apply the texture?
+                    if (textureId == 'inherit' || textureId == 'none') {
+                        texture = textureId
+                    } else {
+                        let textureInArr = graph.textures.filter(texture => texture.id == textureId);
+                        if (textureInArr != undefined) {
+                            texture = textureInArr[0];
+                        } else {
+                            graph.onXMLMinorError('Texture "' + textureId + '" not declared, used in component "' + componentID + '"');
+                        }
+                    }
+                } else {
+                    graph.onXMLMinorError("Invalid texture id for component " + componentID);
+                }
+            }
+        } else {
+            graph.onXMLMinorError("Texture tag not present for component " + componentID);
+        }
 
         // Children
         const childrenNodes = grandChildren[childrenIndex].children;
         const componentChildren = [];
-        for(let i=0; i < childrenNodes.length; i++){
+        for (let i = 0; i < childrenNodes.length; i++) {
             const child = childrenNodes[i];
             const id = graph.reader.getString(child, "id");
-            if(child.nodeName === 'primitiveref'){
+            if (child.nodeName === 'primitiveref') {
                 componentChildren.push(graph.primitives[id]);
-            } else if(child.nodeName === 'componentref'){
+            } else if (child.nodeName === 'componentref') {
                 componentChildren.push(id);
             } else {
                 graph.onXMLMinorError("unknown tag <" + componentNodes[i].nodeName + ">");
@@ -78,17 +103,17 @@ export function parseComponents(componentsNode, graph) {
 
         }
         
-        const component = new Component(graph.scene, transfMatrix, materials, null, componentChildren);
+        const component = new Component(graph.scene, transfMatrix, materials, texture, componentChildren);
         graph.components[componentID] = component;
     }
 
 
     // Change all component reference strings to the component reference
-    for(const key in graph.components){
+    for (const key in graph.components) {
         const component = graph.components[key];
-        for(const childKey in component.children){
+        for (const childKey in component.children) {
             const child = component.children[childKey];
-            if(typeof child === 'string'){
+            if (typeof child === 'string') {
                 component.children[childKey] = graph.components[child];
             }
 

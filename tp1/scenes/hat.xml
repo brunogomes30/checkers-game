@@ -81,11 +81,11 @@
             </materials>
 
             <transformation>
-                
                 <scale x="1" y="1" z="1" />
             </transformation>
 
-            <texture id="demoTexture"/>
+            <texture id="none"/>
+
             <children>
                 <componentref id="hat" />
                 <primitiveref id="sphere" />
@@ -100,8 +100,10 @@
                 <translate x="0" y="-0.5" z="0" />
                 <rotate axis="x" angle="-135"/>
                 <rotate axis="y" angle="-45"/>
-                
             </transformation>
+
+            <texture id="demoTexture"/>
+        
             <children>
                 <primitiveref id="cone"/>
                 <componentref id="hatTop"/>
@@ -116,6 +118,8 @@
                 <scale x="3" y="3" z="1"/>
             </transformation>
 
+            <texture id="inherit"/>
+
             <children>
                 <primitiveref id="rectangle" />
                 <componentref id="reverseRectangle" />
@@ -129,6 +133,8 @@
                 <rotate axis="x" angle="180" />
             </transformation>
 
+            <texture id="inherit"/>
+
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -141,6 +147,8 @@
                 <translate x="2" z="2" y="0"/>
                 <scale x="0.2" y="0.2" z="0.2" />
             </transformation>
+
+            <texture id="none"/>
 
             <children>
                 <primitiveref id="sphere" />
