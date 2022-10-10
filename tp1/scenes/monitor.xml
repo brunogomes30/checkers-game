@@ -1,0 +1,310 @@
+<sxs>
+    <scene root="demoRoot" axis_length="5"/>
+
+    <views default="defaultCamera">
+        <perspective id="defaultCamera" near="0.1" far="500" angle="45">
+            <from x="30" y="15" z="30" />
+            <to x="0" y="-2" z="0" />
+        </perspective>
+    </views>
+
+    <ambient>
+        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
+        <background r="0.0" g="0.0" b="0.0" a="1.0" />
+    </ambient>
+
+    <lights>
+        <omni id="demoLight" enabled="1">
+            <location x="9.8" y="11.9" z="10" w="1.0" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+        </omni>
+    </lights>
+
+    <textures>
+        <texture id="ricktexture" file="scenes/images/rickboy.jpg" />
+    </textures>
+
+    <materials>
+        <material id="caseMaterial" shininess="10">
+            <emission r="0.1" g="0.1" b="0.1" a="1.0" />
+            <ambient r="0.29411764705882354" g="0.29411764705882354" b="0.29411764705882354" a="1.0" />
+            <diffuse r="0.29411764705882354" g="0.29411764705882354" b="0.29411764705882354" a="1.0" />
+            <specular r="0.029411764705882354" g="0.029411764705882354" b="0.029411764705882354" a="1.0" />
+        </material>
+        <material id="whiteBrightMaterial" shininess="1">
+            <emission r="0.5" g="0.5" b="0.5" a="1.0" />
+            <ambient r="0.054901960784313725" g="0.050980392156862744" b="0.050980392156862744" a="1.0" />
+            <diffuse r="0.054901960784313725" g="0.050980392156862744" b="0.050980392156862744" a="1.0" />
+            <specular r="0.054901960784313725" g="0.050980392156862744" b="0.050980392156862744" a="1.0" />
+        </material>
+        
+    </materials>
+
+    <transformations>
+        <transformation id="demoTransform">
+            <scale x="5" y="1" z="5" />
+            <rotate axis="x" angle="-45" />
+            <rotate axis="z" angle="-45" />
+        </transformation>
+    </transformations>
+
+    <primitives>
+        <primitive id="square">
+            <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
+        </primitive>
+        <primitive id="torus">
+            <torus outter="5" inner="4" slices="11" loops="12" />
+        </primitive>
+        <primitive id="cone">
+            <cylinder base="3" top="0" height="5" slices="16" stacks="16" />
+        </primitive>
+        <primitive id="triangle">
+            <triangle x1="0" y1="0" z1="0" x2="3" y2="0" z2="0" x3="0" y3="3" z3="0" />
+        </primitive>
+        <primitive id="sphere">
+            <sphere radius="2" stacks="12" slices="12" />
+        </primitive>
+    </primitives>
+
+    <components>
+        <component id="demoRoot">
+
+            <materials>
+                <material id="caseMaterial" />
+            </materials>
+
+            <transformation>
+                <scale x="1" y="1" z="1" />
+            </transformation>
+
+            <texture id="none"/>
+
+            <children>
+                <componentref id="monitor" />
+            </children>
+        </component>
+        <component id="monitor">
+            <materials>
+                <material id="caseMaterial" />
+            </materials>
+            <transformation>
+                
+            </transformation>
+            <texture id="none"/>
+                
+            <children>
+                <componentref id="monitor_base" />
+                <componentref id="monitor_base_stick" />
+                <componentref id="monitor_display" />
+            </children>
+        </component>
+
+        <component id="monitor_display">
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <transformation>
+                <translate x="0" y="2" z="0.45" />
+                
+            </transformation>
+            <texture id="none"/>
+                
+            <children>
+                <componentref id="monitor_display_case" />
+                <componentref id="monitor_screen" />
+
+            </children>
+        </component>
+
+        
+
+        <component id="monitor_display_case">
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <transformation>
+                <scale x="4" y="2.5" z="0.15"/>
+            </transformation>
+            <texture id="none"/>
+                
+            <children>
+                <componentref id="cubeBothfaces" />
+            </children>
+        </component>
+        <component id="monitor_screen">
+            <materials>
+                <material id="whiteBrightMaterial" />
+            </materials>
+            <transformation>
+                <translate x="0" y="0" z="0.05"/>
+                <scale x="3.8" y="2.3" z="0.10"/>
+            </transformation>
+            <texture id="ricktexture"/>
+                
+            <children>
+                <componentref id="cubeBothfaces" />
+            </children>
+        </component>
+        <component id="monitor_base">
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <transformation>
+                <scale x="0.5" y="0.1" z="0.5"/>
+            </transformation>
+            <texture id="none"/>
+                
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+        <component id="monitor_base_stick">
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <transformation>
+                <rotate axis="x" angle="10" />
+                <translate x="0" y="1" z="0"/>
+                <scale x="0.25" y="2" z="0.25"/>
+            </transformation>
+            <texture id="none"/>
+                
+            <children>
+                <componentref id="cubeBothfaces" />
+            </children>
+        </component>
+
+        
+        
+        <component id="square_both">
+            <!-- centered on origin -->
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="square" />
+                <componentref id="square_reverse" />
+            </children>
+        </component>
+
+        <component id="square_reverse">
+            <!-- centered on origin -->
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none"/>
+            <transformation>
+                <rotate axis="x" angle="180" />
+            </transformation>
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+
+        <!-- cube start -->
+        <component id="cubeBothfaces">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="cube_bottom" />
+                <componentref id="cube_top" />
+                <componentref id="cube_zneg" />
+                <componentref id="cube_zpos" />
+                <componentref id="cube_xpos" />
+                <componentref id="cube_xneg" />
+            </children>
+        </component>
+
+        <component id="cube_bottom">
+            <transformation>
+                <translate x="0" y="-0.5" z="0" />
+                <rotate axis="x" angle="90"/>
+             </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="square_both"/>
+            </children>
+        </component>
+
+        <component id="cube_top">
+            <transformation>
+                <translate x="0" y="0.5" z="0" />
+                <rotate axis="x" angle="-90"/>
+             </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="square_both"/>
+            </children>
+        </component>
+
+        <component id="cube_zneg">
+            <transformation>
+                <translate x="0" y="0" z = "-0.5"/>
+             </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="square_both"/>
+            </children>
+        </component>
+
+        <component id="cube_zpos">
+            <transformation>
+                <translate x="0" y="0" z = "0.5"/>
+             </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="square_both"/>
+            </children>
+        </component>
+
+        <component id="cube_xpos">
+            <transformation>
+                <translate x="0.5" y="0" z = "0"/>
+                <rotate axis="y" angle="90" />
+             </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="square_both"/>
+            </children>
+        </component>
+
+        <component id="cube_xneg">
+            <transformation>
+                <translate x="-0.5" y="0" z = "0"/>
+                <rotate axis="y" angle="90" />
+             </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="square_both"/>
+            </children>
+        </component>
+        <!-- cube end -->
+    </components>
+</sxs>
