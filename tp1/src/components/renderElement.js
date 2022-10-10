@@ -8,15 +8,15 @@ import { Component } from './Component.js'
  * If it's a component or primitive, displays the object
  * @param {} element 
  */
-export function renderElement(element, parents = [], modifiedAppearances = []) {
+export function renderElement(element, parents = []) {
     if (element instanceof Component) {
-        renderComponent(element, parents, modifiedAppearances);
+        renderComponent(element, parents);
     } else {
         displayPrimitive(element);
     }
 }
 
-function renderComponent(element, parents, modifiedAppearances) {
+function renderComponent(element, parents) {
     parents.push(element);
     element.scene.pushMatrix();
     //Apply transformations
@@ -24,8 +24,8 @@ function renderComponent(element, parents, modifiedAppearances) {
 
     //Apply textures
     element.children.forEach(function (child) {
-        applyAppearance(element, parents, modifiedAppearances);
-        renderElement(child, parents, modifiedAppearances);
+        applyAppearance(element, parents);
+        renderElement(child, parents);
         element.scene.setDefaultAppearance();
     });
     element.scene.popMatrix();
@@ -36,9 +36,9 @@ function displayPrimitive(element) {
     element.display();
 }
 
-function applyAppearance(element, parents, modifiedAppearances) {
+function applyAppearance(element, parents) {
     let material = applyMaterial(element, parents);
-    applyTexture(element, parents, material, modifiedAppearances)
+    applyTexture(element, parents, material)
 }
 
 function applyMaterial(element, parents) {
@@ -59,19 +59,25 @@ function applyMaterial(element, parents) {
     return material;
 }
 
-function applyTexture(element, parents, material, modifiedAppearances) {
+function applyTexture(element, parents, material) {
     let texture = element.texture;
     if (texture === 'inherit') {
         //TODO:: parents could be a stack
         for (let i = parents.length - 1; i >= 0; i--) {
             texture = parents[i].texture;
             if (texture instanceof Texture) {
-                break;
+                material.setTexture(texture.texture);
+                return;
             }
         }
     }
-    if (texture !== undefined && texture !== 'inherit') {
-        material.setTexture(texture.texture);
-        modifiedAppearances.push(material)
+
+    if(texture === 'none' || texture == undefined){
+        material.setTexture(null);
+        return;
     }
+
+    
+    material.setTexture(texture.texture);
+    
 }
