@@ -1,5 +1,7 @@
 import { CGFscene } from '../../lib/CGF.js';
-import { CGFaxis,CGFcamera } from '../../lib/CGF.js';
+import { CGFaxis, CGFcamera } from '../../lib/CGF.js';
+import { buildInterface } from './interface/build.js';
+import { MyInterface } from './MyInterface.js';
 
 /**
  * XMLscene class, representing the scene that is to be rendered.
@@ -52,33 +54,33 @@ export class XMLscene extends CGFscene {
 
         // Reads the lights from the scene graph.
         for (var key in this.graph.lights) {
-            if (i >= 8)
+            if (i >= 8){
+                
                 break;              // Only eight lights allowed by WebGL.
-
-            if (this.graph.lights.hasOwnProperty(key)) {
-                var light = this.graph.lights[key];
-
-                this.lights[i].setPosition(light[2][0], light[2][1], light[2][2], light[2][3]);
-                this.lights[i].setAmbient(light[3][0], light[3][1], light[3][2], light[3][3]);
-                this.lights[i].setDiffuse(light[4][0], light[4][1], light[4][2], light[4][3]);
-                this.lights[i].setSpecular(light[5][0], light[5][1], light[5][2], light[5][3]);
-
-                if (light[1] == "spot") {
-                    this.lights[i].setSpotCutOff(light[6]);
-                    this.lights[i].setSpotExponent(light[7]);
-                    this.lights[i].setSpotDirection(light[8][0], light[8][1], light[8][2]);
-                }
-
-                this.lights[i].setVisible(true);
-                if (light[0])
-                    this.lights[i].enable();
-                else
-                    this.lights[i].disable();
-
-                this.lights[i].update();
-
-                i++;
             }
+            const sceneLight = this.lights[i];
+            const light = this.graph.lights[key];
+
+            sceneLight.setPosition(light[2][0], light[2][1], light[2][2], light[2][3]);
+            sceneLight.setAmbient(light[3][0], light[3][1], light[3][2], light[3][3]);
+            sceneLight.setDiffuse(light[4][0], light[4][1], light[4][2], light[4][3]);
+            sceneLight.setSpecular(light[5][0], light[5][1], light[5][2], light[5][3]);
+
+            if (light[1] == "spot") {
+                sceneLight.setSpotCutOff(light[6]);
+                sceneLight.setSpotExponent(light[7]);
+                sceneLight.setSpotDirection(light[8][0], light[8][1], light[8][2]);
+            }
+
+            sceneLight.setVisible(true);
+            if (light[0])
+                sceneLight.enable();
+            else
+                sceneLight.disable();
+
+            sceneLight.update();
+
+            i++;
         }
     }
 
@@ -101,6 +103,7 @@ export class XMLscene extends CGFscene {
         this.initLights();
 
         this.sceneInited = true;
+        buildInterface(this.interface, this);
     }
 
     /**
@@ -122,11 +125,6 @@ export class XMLscene extends CGFscene {
 
         this.pushMatrix();
         this.axis.display();
-
-        for (var i = 0; i < this.lights.length; i++) {
-            this.lights[i].setVisible(true);
-            this.lights[i].enable();
-        }
 
         if (this.sceneInited) {
             // Draw axis

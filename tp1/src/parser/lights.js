@@ -8,6 +8,7 @@ export function parseLights(lightsNode, graph) {
     var children = lightsNode.children;
 
     graph.lights = [];
+    graph.scene.enabledLights = [];
     var numLights = 0;
 
     var grandChildren = [];
@@ -105,6 +106,7 @@ export function parseLights(lightsNode, graph) {
         }
 
         graph.lights[lightId] = global;
+        graph.scene.enabledLights[lightId] = enableLight;
         numLights++;
     }
 
