@@ -76,7 +76,7 @@ export function parseComponents(componentsNode, graph) {
                         if (textureInArr != undefined) {
                             texture = textureInArr[0];
                         } else {
-                            graph.onXMLMinorError('Texture "' + textureId + '" not declared, used in component "' + componentID + '"');
+                            graph.onXMLMinorError(`Texture "${textureId}" not declared, used in component "$componentID}"`);
                         }
                     }
                 } else {
@@ -94,11 +94,15 @@ export function parseComponents(componentsNode, graph) {
             const child = childrenNodes[i];
             const id = graph.reader.getString(child, "id");
             if (child.nodeName === 'primitiveref') {
+                if(graph.primitives[id] === undefined){
+                    graph.onXMLMinorError(`Primitive "${id}" not found in component "${componentID}"`);
+                    continue;
+                }
                 componentChildren.push(graph.primitives[id]);
             } else if (child.nodeName === 'componentref') {
                 componentChildren.push(id);
             } else {
-                graph.onXMLMinorError("unknown tag <" + componentNodes[i].nodeName + ">");
+                graph.onXMLMinorError(`unknown tag <${componentNodes[i].nodeName}>`);
             }
 
         }

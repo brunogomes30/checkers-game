@@ -72,7 +72,7 @@
             </materials>
             <texture id="demoTexture"/>
             <children>
-                <primitiveref id="triangle" />
+                <primitiveref id="triangle2" />
                 <componentref id="hat" />
                 <primitiveref id="sphere" />
             </children>
