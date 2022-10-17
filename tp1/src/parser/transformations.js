@@ -42,9 +42,9 @@ export function parseTransformations(transformationsNode, graph) {
 export function parseTransformation(transformationNode, graph, errorMsg, isInsideTransformationsBlock) {
     let transfMatrix = mat4.create();
 
-    for (let operationIdx = 0; operationIdx < transformationNode.children.length; operationIdx++) {
+    for (let operationId = 0; operationId < transformationNode.children.length; operationId++) {
         let coordinates;
-        const operation = transformationNode.children[operationIdx];
+        const operation = transformationNode.children[operationId];
         switch (operation.nodeName) {
             case 'translate':
                 coordinates = parseCoordinates3D(operation, "translate transformation for " + errorMsg, graph);

@@ -27,7 +27,7 @@ export function trianngleCos(a, b, c) {
     return (a ** 2 - b ** 2 + c ** 2) / (2 * a * c);
 }
 
-export function triangleSin(cos) {
+export function sinFromCos(cos) {
     return (1 - cos ** 2) ** (0.5);
 }
 

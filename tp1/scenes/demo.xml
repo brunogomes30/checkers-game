@@ -30,7 +30,7 @@
     </lights>
 
     <textures>
-        <texture id="demoTexture" file="scenes/images/vidral.jpg" />
+        <texture id="demoTexture" file="scenes/images/rickboy.jpg" />
     </textures>
 
     <materials>
@@ -51,7 +51,7 @@
     </transformations>
 
     <primitives>
-        <primitive id="demoRectangle">
+        <primitive id="rectangle">
             <rectangle x1="-0.5" y1="-1" x2="0.5" y2="1" />
         </primitive>
         <primitive id="torus">
@@ -61,7 +61,7 @@
             <cylinder base="3" top="0" height="5" slices="16" stacks="16" />
         </primitive>
         <primitive id="triangle">
-            <triangle x1="0" y1="0" z1="0" x2="3" y2="0" z2="0" x3="0" y3="3" z3="0" />
+            <triangle x1="0" y1="0" z1="0" x2="5" y2="0" z2="0" x3="0" y3="5" z3="0" />
         </primitive>
         <primitive id="sphere">
             <sphere radius="2" stacks="12" slices="12" />
@@ -90,7 +90,7 @@
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="demoTexture" lenght_s="1" lenght_t="1" />
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -132,5 +132,6 @@
                 <primitiveref id="sphere" />
             </children>
         </component>
+
     </components>
 </sxs>
