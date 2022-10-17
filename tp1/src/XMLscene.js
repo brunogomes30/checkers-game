@@ -66,7 +66,7 @@ export class XMLscene extends CGFscene {
             sceneLight.setSpecular(light[5][0], light[5][1], light[5][2], light[5][3]);
 
             if (light[1] == "spot") {
-                sceneLight.setSpotCutOff(light[6]);
+                sceneLight.setSpotCutOff(light[6] * Math.PI / 180);
                 sceneLight.setSpotExponent(light[7]);
                 sceneLight.setSpotDirection(light[8][0] - light[2][0], light[8][1] - light[2][1], light[8][2] - light[2][2]);
             }
@@ -119,12 +119,14 @@ export class XMLscene extends CGFscene {
 
         this.pushMatrix();
         this.axis.display();
-
         if (this.sceneInited) {
             // Draw axis
             this.setDefaultAppearance();
 
             // Displays the scene (MySceneGraph function).
+            for(let i=0; i<8; i++){
+                this.lights[i].update();
+            }
             this.graph.displayScene();
         }
 

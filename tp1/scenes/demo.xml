@@ -71,27 +71,16 @@
     <components>
         <component id="demoRoot">
             <transformation>
-                <scale x="0.3" y="0.3" z="0.3" />
+                <translate x="0" y="2" z="1" />
+                <scale x="0.5" y="0.5" z="0.5" />
             </transformation>
             <materials>
                 <material id="demoMaterial" />
             </materials>
             <texture id="demoTexture"/>
             <children>
-                <componentref id="sphere" />
-                <componentref id="sphere2" />
-                <componentref id="sphere4" />
-            </children>
-        </component>
-        <component id="sphere">
-            <transformation>
-                <translate x="-5" y="0" z="0" />
-            </transformation>
-            <materials>
-                <material id="demoMaterial" />
-            </materials>
-            <texture id="demoTexture" lenght_s="1" lenght_t="1" />
-            <children>
+                <primitiveref id="triangle" />
+                <componentref id="hat" />
                 <primitiveref id="sphere" />
             </children>
         </component>
