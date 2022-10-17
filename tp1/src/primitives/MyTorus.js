@@ -21,13 +21,13 @@ export class MyTorus extends CGFobject {
         this.initBuffers();
     }
 
-    nextVertexInSlice(vertexIdx, pointPerSlice) {
-        const testIdx = vertexIdx + 1;
-        return testIdx % pointPerSlice == 0 ? testIdx - pointPerSlice : testIdx;
+    nextVertexInSlice(vertexId, pointPerSlice) {
+        const testId = vertexId + 1;
+        return testId % pointPerSlice == 0 ? testId - pointPerSlice : testId;
     }
 
-    analogousVertexInNextLoop(vertexIdx, pointPerSlice, vertexNr) {
-        return (vertexIdx + pointPerSlice) % (vertexNr);
+    analogousVertexInNextLoop(vertexId, pointPerSlice, vertexNr) {
+        return (vertexId + pointPerSlice) % (vertexNr);
     }
 
     initBuffers() {
@@ -82,14 +82,8 @@ export class MyTorus extends CGFobject {
         this.initGLBuffers();
     }
 
-    /**
-     * @method updateTexCoords
-     * Updates the list of texture coordinates of the rectangle
-     * @param {Array} coords - Array of texture coordinates
-     */
-    updateTexCoords(coords) {
-        this.texCoords = [...coords];
-        this.updateTexCoordsGLBuffers();
+    updateTexCoords(lenght_s, lenght_t){
+        return;
     }
 }
 

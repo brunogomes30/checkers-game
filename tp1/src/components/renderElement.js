@@ -12,7 +12,7 @@ export function renderElement(element, parents = []) {
     if (element instanceof Component) {
         renderComponent(element, parents);
     } else {
-        displayPrimitive(element);
+        displayPrimitive(element, parents);
     }
 }
 
@@ -31,7 +31,8 @@ function renderComponent(element, parents) {
     parents.pop();
 }
 
-function displayPrimitive(element) {
+function displayPrimitive(element, parents) {
+    applyTextureScaling(element, parents)
     element.display();
 }
 
@@ -58,6 +59,7 @@ function getMaterial(element, parents) {
 function setTexture(element, parents, material) {
     let texture = element.texture;
     if (texture === 'inherit') {
+
         for (let i = parents.length - 1; i >= 0; i--) {
             texture = parents[i].texture;
             if (texture instanceof Texture) {
@@ -66,11 +68,24 @@ function setTexture(element, parents, material) {
         }
     }
 
-    if(texture === 'none' || texture == undefined){
+    if (texture === 'none' || texture == undefined) {
         material.setTexture(null);
         return;
     }
 
-    
+
     material.setTexture(texture.texture);
+}
+
+function applyTextureScaling(element, parents) {
+    let textureScaleFactor;
+    let id = parents.length;
+    while (id--) {
+        if (parents[id].textureScaleFactor !== undefined) {
+            textureScaleFactor = parents[id].textureScaleFactor
+            break;
+        }
+    }
+
+    element.updateTexCoords(textureScaleFactor.lenght_s, textureScaleFactor.lenght_t);
 }

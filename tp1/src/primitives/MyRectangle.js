@@ -15,6 +15,10 @@ export class MyRectangle extends CGFobject {
 		this.y1 = values.y1;
 		this.y2 = values.y2;
 
+	
+		this.xDist = Math.abs(this.x2 - this.x1);
+		this.yDist = Math.abs(this.y2 - this.y1);
+
 		this.initBuffers();
 	}
 	
@@ -60,14 +64,20 @@ export class MyRectangle extends CGFobject {
 		this.initGLBuffers();
 	}
 
-	/**
-	 * @method updateTexCoords
-	 * Updates the list of texture coordinates of the rectangle
-	 * @param {Array} coords - Array of texture coordinates
-	 */
-	updateTexCoords(coords) {
-		this.texCoords = [...coords];
+	updateTexCoords(lenght_s, lenght_t){
+		if (lenght_s == undefined || lenght_t == undefined){
+			return;
+		}
+		
+		this.texCoords = [
+			0, this.yDist/ lenght_t ,
+			this.xDist / lenght_s,  this.yDist / lenght_t,
+			0, 0,
+			this.xDist/ lenght_s , 0
+		]
+        
 		this.updateTexCoordsGLBuffers();
-	}
+	
+    }
 }
 

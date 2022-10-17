@@ -1,5 +1,6 @@
 import { Component } from '../components/Component.js'
 import { parseTransformation } from './transformations.js';
+import { TextureScaleFactors } from '../textures/TextureScaleFactors.js'
 /**
    * Parses the <components> block.
    * @param {components block element} componentsNode
@@ -48,11 +49,11 @@ export function parseComponents(componentsNode, graph) {
         // Materials
         const materialsNode = grandChildren[materialsIndex];
         const materials = []
-        if(materialsNode !== undefined){
-            for(let i=0; i < materialsNode.children.length; i++){
+        if (materialsNode !== undefined) {
+            for (let i = 0; i < materialsNode.children.length; i++) {
                 const matId = graph.reader.getString(materialsNode.children[i], 'id');
-                if(matId !== null){
-                    if(matId === 'inherit'){
+                if (matId !== null) {
+                    if (matId === 'inherit') {
                         materials.push('inherit');
                     } else {
                         materials.push(graph.materials[matId]);
@@ -64,28 +65,47 @@ export function parseComponents(componentsNode, graph) {
         // <texture id="ss" length_s="ff" length_t="ff"/>        
         let textureNode = grandChildren[textureIndex]
         let texture;
-        if (textureNode != null) {
-            let textureId = graph.reader.getString(textureNode, 'id');
-            if (textureId !== null) {
-                if (textureId != '') {
-                    // How to use none?? Just dont apply the texture?
+        let textureScaleFactor;
+        if (textureNode == null) {
+            graph.onXMLMinorError("Texture tag not present for component " + componentID);
+        } else {
+            let textureId = graph.reader.getString(textureNode, 'id', false);
+            if (textureId == null) {
+                graph.onXMLMinorError("Invalid texture id for component " + componentID);
+            } else {
+                if (textureId == '') {
+                    graph.onXMLMinorError('Texture "' + textureId + '" not declared, used in component "' + componentID + '"');
+                } else {
+                    let lenght_s = graph.reader.getFloat(textureNode, 'lenght_s', false);
+                    let lenght_t = graph.reader.getFloat(textureNode, 'lenght_t', false);
+
                     if (textureId == 'inherit' || textureId == 'none') {
                         texture = textureId
+                        if (lenght_s != null || lenght_t != null) {
+                            graph.onXMLMinorError((lenght_s != null ? 'lenght_s ' : 'lenght_t ') + (lenght_s != null && lenght_t != null ? 'and lenght_t ' : '') + 'shouldn\'t be used with ' + textureId + ' texture. In component ' + componentID);
+                        }
                     } else {
+                        if (lenght_s == null || lenght_t == null) {
+                            graph.onXMLMinorError((lenght_s == null ? 'lenght_s ' : 'lenght_t ') + (lenght_s == null && lenght_t == null ? 'and lenght_t ' : '') + 'option(s) mising for texture ' + textureId + '. In component ' + componentID);
+                        }
                         let textureInArr = graph.textures.filter(texture => texture.id == textureId);
                         if (textureInArr != undefined) {
+                            if (lenght_s == 0 || lenght_t == 0){
+                                graph.onXMLMinorError((lenght_s == 0 ? 'lenght_s ' : 'lenght_t ') + (lenght_s == 0 && lenght_t == 0 ? 'and lenght_t ' : '') + 'option(s) has / have invalid values (Zero). In component ' + componentID);
+                                lenght_s = undefined;
+                                lenght_t = undefined;
+                            }
+                            
                             texture = textureInArr[0];
+                            textureScaleFactor = new TextureScaleFactors(lenght_s, lenght_t);
                         } else {
                             graph.onXMLMinorError(`Texture "${textureId}" not declared, used in component "$componentID}"`);
                         }
                     }
-                } else {
-                    graph.onXMLMinorError("Invalid texture id for component " + componentID);
                 }
             }
-        } else {
-            graph.onXMLMinorError("Texture tag not present for component " + componentID);
         }
+
 
         // Children
         const childrenNodes = grandChildren[childrenIndex].children;
@@ -106,8 +126,8 @@ export function parseComponents(componentsNode, graph) {
             }
 
         }
-        
-        const component = new Component(graph.scene, transfMatrix, materials, texture, componentChildren);
+
+        const component = new Component(graph.scene, transfMatrix, materials, texture, textureScaleFactor, componentChildren);
         graph.components[componentID] = component;
     }
 

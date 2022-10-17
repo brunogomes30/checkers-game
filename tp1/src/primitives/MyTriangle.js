@@ -1,5 +1,5 @@
 import { CGFobject } from '../../../lib/CGF.js';
-import { triangleSin, trianngleCos, vector2points, vectorCrossProduct, vectorNormalize, vectorSize } from './geometryUtils.js';
+import { sinFromCos, trianngleCos, vector2points, vectorCrossProduct, vectorNormalize, vectorSize } from './geometryUtils.js';
 /**
  * MyTriangle
  * @constructor
@@ -36,16 +36,15 @@ export class MyTriangle extends CGFobject {
 		];
 
 
-		let vec01 = vector2points([this.x1, this.y1, this.z1 ], [this.x2, this.y2, this.z2 ]);
-		const vec02 = vector2points([this.x1, this.y1, this.z1 ], [this.x3, this.y3, this.z3 ]);
-		const vec12 = vector2points([this.x2, this.y2, this.z2 ], [this.x3, this.y3, this.z3 ]);
+		let a = vector2points([this.x1, this.y1, this.z1], [this.x2, this.y2, this.z2]);
+		const b = vector2points([this.x2, this.y2, this.z2], [this.x3, this.y3, this.z3]);
+		const c = vector2points([this.x1, this.y1, this.z1], [this.x3, this.y3, this.z3]);
 
-		const size01 = vectorSize(vec01);
-		const size02 = vectorSize(vec02);
-		const size12 = vectorSize(vec12);
-
-		vec01 = vectorNormalize(vec01);
-		const normal = vectorNormalize(vectorCrossProduct(vec01, vec02));
+		this.sizeA = vectorSize(a);
+		const sizeB = vectorSize(b);
+		this.sizeC = vectorSize(c);
+		
+		const normal = vectorNormalize(vectorCrossProduct(a, c));
 		this.normals = [
 			...normal,
 			...normal,
@@ -61,14 +60,13 @@ export class MyTriangle extends CGFobject {
 		v
 		t
 		*/
+		this.cosAlpha = trianngleCos(this.sizeA, sizeB, this.sizeC);
+		this.sinAlpha = sinFromCos(this.cosAlpha);
 
-		const cosAlpha = trianngleCos(size01, size12, size02);
-		const sinAlpha = triangleSin(cosAlpha);
-		// Clarify how to map texture coordinate
 		this.texCoords = [
-			0, 0,
-			size12 / 1, 0,
-			(size02 * cosAlpha) / 1, (size02 * sinAlpha) / 1
+			0, 1,
+			1, 1,
+			1, 0
 		];
 		this.primitiveType = this.scene.gl.TRIANGLES;
 		this.initGLBuffers();
@@ -79,8 +77,16 @@ export class MyTriangle extends CGFobject {
 	 * Updates the list of texture coordinates of the rectangle
 	 * @param {Array} coords - Array of texture coordinates
 	 */
-	updateTexCoords(coords) {
-		this.texCoords = [...coords];
+	updateTexCoords(lenght_s, lenght_t) {
+		if (lenght_s == undefined || lenght_t == undefined) {
+			return;
+		}
+
+		this.texCoords = [
+			0, 1,
+			(this.sizeA / lenght_s), 1,
+			(this.sizeC * this.cosAlpha) / lenght_t, 1 - (this.sizeC * this.sinAlpha) / lenght_t
+		];
 		this.updateTexCoordsGLBuffers();
 	}
 }
