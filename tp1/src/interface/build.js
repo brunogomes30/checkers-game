@@ -1,3 +1,5 @@
+import { switchLight } from '../controllers/lights.js'
+
 export function buildInterface(ui, scene) {
     buildLightsFolder(ui, scene);
 
@@ -14,16 +16,4 @@ function buildLightsFolder(ui, scene) {
             }
         );
     });
-}
-
-function switchLight(scene, key, index) {
-    const light = scene.lights[index];
-    if (scene.enabledLights[key]) {
-        light.setVisible(true);
-        light.enable();
-    } else {
-        light.setVisible(false);
-        light.disable();
-    }
-    light.update();
 }

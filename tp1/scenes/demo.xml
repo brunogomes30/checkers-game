@@ -20,6 +20,13 @@
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
         </omni>
+        <spot id="spotlight" enabled="1" angle="20" exponent="0" >
+            <location x="5.0" y="5.0" z="5.0" w="1" />
+            <target x="0" y="1" z="0" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+        </spot>
     </lights>
 
     <textures>
@@ -29,7 +36,7 @@
     <materials>
         <material id="demoMaterial" shininess="10">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="1.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="1.0" g="0.3" b="0.3" a="1.0" />
             <diffuse r="0.6" g="0.0" b="0.0" a="1.0" />
             <specular r="0.6" g="0.0" b="0.0" a="1.0" />
         </material>
@@ -64,29 +71,65 @@
     <components>
         <component id="demoRoot">
             <transformation>
-                <translate x="0" y="2" z="1" />
-                <scale x="1" y="1" z="1" />
+                <scale x="0.3" y="0.3" z="0.3" />
             </transformation>
             <materials>
                 <material id="demoMaterial" />
             </materials>
             <texture id="demoTexture"/>
             <children>
-                <primitiveref id="triangle2" />
-                <componentref id="hat" />
+                <componentref id="sphere" />
+                <componentref id="sphere2" />
+                <componentref id="sphere4" />
+            </children>
+        </component>
+        <component id="sphere">
+            <transformation>
+                <translate x="-5" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="demoTexture"/>
+            <children>
                 <primitiveref id="sphere" />
             </children>
         </component>
-        <component id="hat">
+        <component id="sphere2">
+            <transformation>
+                <translate x="0" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="sphere" />
+                <componentref id="sphere3" />
+            </children>
+        </component>
+        <component id="sphere3">
+           <transformation>
+               <translate x="5" y="0" z="0" />
+           </transformation>
+           <materials>
+               <material id="demoMaterial" />
+           </materials>
+           <texture id="none"/>
+           <children>
+               <primitiveref id="sphere" />
+           </children>
+        </component>
+        <component id="sphere4">
+            <transformation>
+                <translate x="10" y="0" z="0" />
+            </transformation>
             <materials>
                 <material id="demoMaterial" />
             </materials>
             <texture id="none"/>
-            <transformation>
-                <rotate axis="x" angle="-135"/>
-            </transformation>
             <children>
-                <primitiveref id="cone"/>
+                <primitiveref id="sphere" />
             </children>
         </component>
     </components>
