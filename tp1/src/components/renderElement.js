@@ -26,7 +26,6 @@ function renderComponent(element, parents) {
     element.children.forEach(function (child) {
         applyAppearance(element, parents);
         renderElement(child, parents);
-        element.scene.setDefaultAppearance();
     });
     element.scene.popMatrix();
     parents.pop();
@@ -37,14 +36,14 @@ function displayPrimitive(element) {
 }
 
 function applyAppearance(element, parents) {
-    let material = applyMaterial(element, parents);
-    applyTexture(element, parents, material)
+    let material = getMaterial(element, parents);
+    setTexture(element, parents, material)
+    material.apply()
 }
 
-function applyMaterial(element, parents) {
+function getMaterial(element, parents) {
     let material = element.getMaterial();
     if (material === 'inherit') {
-        //TODO:: parents could be a stack
         for (let i = parents.length - 1; i >= 0; i--) {
             material = parents[i].getMaterial();
             if (material instanceof CGFappearance) {
@@ -52,22 +51,17 @@ function applyMaterial(element, parents) {
             }
         }
     }
-    if (material !== undefined && material !== 'inherit') {
-        material.apply();
-    }
 
     return material;
 }
 
-function applyTexture(element, parents, material) {
+function setTexture(element, parents, material) {
     let texture = element.texture;
     if (texture === 'inherit') {
-        //TODO:: parents could be a stack
         for (let i = parents.length - 1; i >= 0; i--) {
             texture = parents[i].texture;
             if (texture instanceof Texture) {
-                material.setTexture(texture.texture);
-                return;
+                break;
             }
         }
     }
@@ -79,5 +73,4 @@ function applyTexture(element, parents, material) {
 
     
     material.setTexture(texture.texture);
-    
 }

@@ -1,4 +1,4 @@
-import {parseCoordinates3D, parseCoordinates4D, parseColor} from "./utils.js"
+import { parseCoordinates3D, parseCoordinates4D, parseColor } from "./utils.js"
 
 /**
      * Parses the <light> node.
@@ -18,9 +18,9 @@ export function parseLights(lightsNode, graph) {
     for (var i = 0; i < children.length; i++) {
 
         // Storing light information
-        var global = [];
-        var attributeNames = [];
-        var attributeTypes = [];
+        let global = [];
+        let tagNames = [];
+        let tagTypes = [];
 
         //Check type of light
         if (children[i].nodeName != "omni" && children[i].nodeName != "spot") {
@@ -28,12 +28,12 @@ export function parseLights(lightsNode, graph) {
             continue;
         }
         else {
-            attributeNames.push(...["location", "ambient", "diffuse", "specular"]);
-            attributeTypes.push(...["position", "color", "color", "color"]);
+            tagNames.push(...["location", "ambient", "diffuse", "specular"]);
+            tagTypes.push(...["position", "color", "color", "color"]);
         }
 
         // Get id of the current light.
-        var lightId = graph.reader.getString(children[i], 'id');
+        const lightId = graph.reader.getString(children[i], 'id', false);
         if (lightId == null)
             return "no ID defined for light";
 
@@ -42,10 +42,10 @@ export function parseLights(lightsNode, graph) {
             return "ID must be unique for each light (conflict: ID = " + lightId + ")";
 
         // Light enable/disable
-        var enableLight = true;
-        var aux = graph.reader.getBoolean(children[i], 'enabled');
-        if (!(aux != null && !isNaN(aux) && (aux == true || aux == false)))
-            graph.onXMLMinorError("unable to parse value component of the 'enable light' field for ID = " + lightId + "; assuming 'value = 1'");
+        let enableLight = true;
+        let aux = graph.reader.getBoolean(children[i], 'enabled', false);
+        if (aux == null || isNaN(aux))
+            graph.onXMLMinorError("unable to parse attribute 'enabled' for light ID = " + lightId + "; assuming 'enabled=1'");
 
         enableLight = aux || 1;
 
@@ -57,43 +57,45 @@ export function parseLights(lightsNode, graph) {
         // Specifications for the current light.
 
         nodeNames = [];
-        for (var j = 0; j < grandChildren.length; j++) {
+        for (let j = 0; j < grandChildren.length; j++) {
             nodeNames.push(grandChildren[j].nodeName);
         }
-
-        for (var j = 0; j < attributeNames.length; j++) {
-            var attributeIndex = nodeNames.indexOf(attributeNames[j]);
-            if (attributeIndex != -1) {
-                if (attributeTypes[j] == "position")
-                    var aux = parseCoordinates4D(grandChildren[attributeIndex], "light position for ID" + lightId, graph);
-                else
-                    var aux = parseColor(grandChildren[attributeIndex], attributeNames[j] + " illumination for ID" + lightId, graph);
-
-                if (!Array.isArray(aux))
-                    return aux;
-
-                global.push(aux);
+        for (let j = 0; j < tagNames.length; j++) {
+            const attributeIndex = nodeNames.indexOf(tagNames[j]);
+            if (attributeIndex == -1) {
+                return "light " + tagNames[j] + " undefined for ID = " + lightId;
             }
+            let aux;
+            if (tagTypes[j] == "position")
+                aux = parseCoordinates4D(grandChildren[attributeIndex], "light position for ID =" + lightId, graph);
             else
-                return "light " + attributeNames[i] + " undefined for ID = " + lightId;
+                aux = parseColor(grandChildren[attributeIndex], tagNames[j] + " illumination for ID =" + lightId, graph);
+
+            if (!Array.isArray(aux))
+                return aux;
+
+            global.push(aux);
+
         }
 
         // Gets the additional attributes of the spot light
         if (children[i].nodeName == "spot") {
-            var angle = graph.reader.getFloat(children[i], 'angle');
-            if (!(angle != null && !isNaN(angle)))
+            const angle = graph.reader.getFloat(children[i], 'angle', false);
+            if (angle == null || isNaN(angle))
                 return "unable to parse angle of the light for ID = " + lightId;
-
-            var exponent = graph.reader.getFloat(children[i], 'exponent');
-            if (!(exponent != null && !isNaN(exponent)))
+            if ((angle < 0 || angle > 90) && angle != 180) {
+                return "angle must be between [0, 90] or =180 for light with ID = " + lightId;
+            }
+            const exponent = graph.reader.getFloat(children[i], 'exponent');
+            if (exponent == null || isNaN(exponent))
                 return "unable to parse exponent of the light for ID = " + lightId;
 
-            var targetIndex = nodeNames.indexOf("target");
+            const targetIndex = nodeNames.indexOf("target");
 
             // Retrieves the light target.
             var targetLight = [];
             if (targetIndex != -1) {
-                var aux = parseCoordinates3D(grandChildren[targetIndex], "target light for ID " + lightId, graph);
+                let aux = parseCoordinates3D(grandChildren[targetIndex], "target light for ID " + lightId, graph);
                 if (!Array.isArray(aux))
                     return aux;
 

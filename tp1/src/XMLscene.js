@@ -2,6 +2,7 @@ import { CGFscene } from '../../lib/CGF.js';
 import { CGFaxis, CGFcamera } from '../../lib/CGF.js';
 import { buildInterface } from './interface/build.js';
 import { MyInterface } from './MyInterface.js';
+import { switchLight } from './controllers/lights.js'
 
 /**
  * XMLscene class, representing the scene that is to be rendered.
@@ -49,16 +50,14 @@ export class XMLscene extends CGFscene {
      * Initializes the scene lights with the values read from the XML file.
      */
     initLights() {
-        var i = 0;
-        // Lights index.
+        let lightsIndex = 0;
 
-        // Reads the lights from the scene graph.
-        for (var key in this.graph.lights) {
-            if (i >= 8){
-                
+        // Update webCGF lights with graph lights
+        for (let key in this.graph.lights) {
+            if (lightsIndex >= 8){
                 break;              // Only eight lights allowed by WebGL.
             }
-            const sceneLight = this.lights[i];
+            const sceneLight = this.lights[lightsIndex];
             const light = this.graph.lights[key];
 
             sceneLight.setPosition(light[2][0], light[2][1], light[2][2], light[2][3]);
@@ -69,18 +68,13 @@ export class XMLscene extends CGFscene {
             if (light[1] == "spot") {
                 sceneLight.setSpotCutOff(light[6]);
                 sceneLight.setSpotExponent(light[7]);
-                sceneLight.setSpotDirection(light[8][0], light[8][1], light[8][2]);
+                sceneLight.setSpotDirection(light[8][0] - light[2][0], light[8][1] - light[2][1], light[8][2] - light[2][2]);
             }
-
-            sceneLight.setVisible(true);
-            if (light[0])
-                sceneLight.enable();
-            else
-                sceneLight.disable();
-
-            sceneLight.update();
-
-            i++;
+            
+            // Set light states
+            switchLight(this, key, lightsIndex)
+            
+            lightsIndex++;
         }
     }
 

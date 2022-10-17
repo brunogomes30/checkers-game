@@ -163,7 +163,6 @@ export class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        //To do: Create display loop for transversing the scene graph
         renderElement(this.rootElement);
     }
 }
