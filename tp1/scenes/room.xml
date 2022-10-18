@@ -1,10 +1,14 @@
 <sxs>
     <scene root="demoRoot" axis_length="5" />
 
-    <views default="defaultCamera">
-        <perspective id="defaultCamera" near="0.1" far="500" angle="45">
-            <from x="30" y="15" z="30" />
-            <to x="0" y="-2" z="0" />
+    <views default="rickrolled">
+        <perspective id="rickrolled" near="0.1" far="500" angle="60">
+            <from x="-15" y="5" z="-15" />
+            <to x="-20" y="5" z="-15" />
+        </perspective>
+        <perspective id="webcam" near="0.1" far="500" angle="60">
+            <from x="-19" y="6" z="-15" />
+            <to x="-15" y="5" z="-15" />
         </perspective>
         <ortho id="orthoCam" near="-100" far="100" left="-50" right="50" bottom="-50" top="50">
             <from x="0" y="30" z="0" />
@@ -25,13 +29,13 @@
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
             <attenuation constant="0.0" linear="1.0" quadratic="0.0" />
         </omni>
-        <spot id="spotlight" enabled="1" angle="42" exponent="60">
-            <location x="0.0" y="10.0" z="0.0" w="1.0" />
-            <target x="-22" y="5.16" z="-22" />
+        <spot id="spotlight" enabled="1" angle="90" exponent="2">
+            <location x="-20" y="10.55" z="-15" w="1.0" />
+            <target x="-20" y="0" z="-15" />
             <ambient r="0" g="0" b="0" a="1.0" />
             <diffuse r="0.8" g="0.8" b="1.0" a="1.0" />
             <specular r="0.2" g="0.2" b="1.0" a="1.0" />
-            <attenuation constant="1.0" linear="0.0" quadratic="0.0" />
+            <attenuation constant="0" linear="0.1" quadratic="0.0" />
         </spot>
 
         <spot id="candle" enabled="1" angle="90" exponent="128">
@@ -499,7 +503,6 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="testTexture" />
                 <componentref id="room" />
                 <componentref id="present" />
                 <componentref id="table" />
@@ -806,7 +809,7 @@
             <materials>
                 <material id="imageMaterial" />
             </materials>
-            <texture id="floorTexture" length_s="1" length_t="1"/>
+            <texture id="floorTexture" length_s="0.1" length_t="0.1"/>
             <children>
                 <componentref id="detailedSquare" />
             </children>
