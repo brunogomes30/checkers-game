@@ -32,7 +32,7 @@ export class XMLscene extends CGFscene {
         this.initCameras();
 
         this.enableTextures(true);
-        
+
 
         this.gl.clearDepth(100.0);
         this.gl.enable(this.gl.DEPTH_TEST);
@@ -57,7 +57,7 @@ export class XMLscene extends CGFscene {
 
         // Update webCGF lights with graph lights
         for (let key in this.graph.lights) {
-            if (lightsIndex >= 8){
+            if (lightsIndex >= 8) {
                 break;              // Only eight lights allowed by WebGL.
             }
             const sceneLight = this.lights[lightsIndex];
@@ -68,15 +68,17 @@ export class XMLscene extends CGFscene {
             sceneLight.setDiffuse(light[4][0], light[4][1], light[4][2], light[4][3]);
             sceneLight.setSpecular(light[5][0], light[5][1], light[5][2], light[5][3]);
 
+            setAttenuation(sceneLight, light[6])
+
             if (light[1] == "spot") {
-                sceneLight.setSpotCutOff(light[6] * Math.PI / 180);
-                sceneLight.setSpotExponent(light[7]);
-                sceneLight.setSpotDirection(light[8][0] - light[2][0], light[8][1] - light[2][1], light[8][2] - light[2][2]);
+                sceneLight.setSpotCutOff(light[7] * Math.PI / 180);
+                sceneLight.setSpotExponent(light[8]);
+                sceneLight.setSpotDirection(light[9][0] - light[2][0], light[9][1] - light[2][1], light[9][2] - light[2][2]);
             }
-            
+
             // Set light states
             switchLight(this, key, lightsIndex)
-            
+
             lightsIndex++;
         }
     }
@@ -105,9 +107,9 @@ export class XMLscene extends CGFscene {
         switchCamera(this.interface, this, Object.keys(this.cameras)[0])
 
         buildInterface(this.interface, this);
-        
+
         this.materialIndex = 0;
-        
+
         this.defaultTexture = new Texture('', this, 'scenes/images/missing-texture.jpg');
     }
 
@@ -135,7 +137,7 @@ export class XMLscene extends CGFscene {
             this.setDefaultAppearance();
 
             // Displays the scene (MySceneGraph function).
-            for(let i=0; i<8; i++){
+            for (let i = 0; i < 8; i++) {
                 this.lights[i].update();
             }
             this.graph.displayScene();
@@ -144,4 +146,10 @@ export class XMLscene extends CGFscene {
         this.popMatrix();
         // ---- END Background, camera and axis setup
     }
+}
+
+function setAttenuation(light, attenuationVec) {
+    light.setConstantAttenuation(attenuationVec[0]);
+    light.setLinearAttenuation(attenuationVec[1]);
+    light.setQuadraticAttenuation(attenuationVec[2])
 }

@@ -28,8 +28,8 @@ export function parseLights(lightsNode, graph) {
             continue;
         }
         else {
-            tagNames.push(...["location", "ambient", "diffuse", "specular"]);
-            tagTypes.push(...["position", "color", "color", "color"]);
+            tagNames.push(...["location", "ambient", "diffuse", "specular", "attenuation"]);
+            tagTypes.push(...["position", "color", "color", "color", "exclusive option"]);
         }
 
         // Get id of the current light.
@@ -66,10 +66,33 @@ export function parseLights(lightsNode, graph) {
                 return "light " + tagNames[j] + " undefined for ID = " + lightId;
             }
             let aux;
-            if (tagTypes[j] == "position")
-                aux = parseCoordinates4D(grandChildren[attributeIndex], "light position for ID =" + lightId, graph);
-            else
+            if (tagTypes[j] == "position") {
+                aux = parseCoordinates4D(grandChildren[attributeIndex], "light position for ID =" + `'${lightId}'`, graph);
+            } else if (tagTypes[j] == "exclusive option") {
+                let constant = graph.reader.getFloat(grandChildren[attributeIndex], 'constant', false);
+                if (constant == null || isNaN(constant) || (constant != 0 && constant != 1))
+                    return `Unable to parse constant attenuation choice of the light '${lightId}'`;
+
+                let linear = graph.reader.getFloat(grandChildren[attributeIndex], 'linear', false);
+                if (linear == null || isNaN(linear) || (linear != 0 && linear != 1))
+                    return `Unable to parse linear attenuation choice of the light '${lightId}'`;
+
+                let quadratic = graph.reader.getFloat(grandChildren[attributeIndex], 'quadratic', false);
+                if (quadratic == null || isNaN(quadratic) || (quadratic != 0 && quadratic != 1))
+                    return `Unable to parse quadratic attenuation choice of the light '${lightId}'`;
+
+                if (constant && linear || constant && quadratic || linear && quadratic) {
+                    aux = `No two types of attenuation can be in use simultaneously. In light '${lightId}'`;
+                } else if (!(constant || linear || quadratic)) {
+                    graph.onXMLMinorError(`No attenuation value set for light '${lightId}'; using constant attenuation`);
+                    aux = [1, 0, 0];
+                }
+                else
+                    aux = [constant, linear, quadratic];
+            }
+            else {
                 aux = parseColor(grandChildren[attributeIndex], tagNames[j] + " illumination for ID =" + lightId, graph);
+            }
 
             if (!Array.isArray(aux))
                 return aux;
