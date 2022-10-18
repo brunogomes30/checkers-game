@@ -67,7 +67,7 @@ export class MyCylinder extends CGFobject {
         
         const xxx = this.slices * (this.stacks - 1) * 3;
         let possibleNormals = [];
-        for(let i=0; i < this.slices; i++){
+        for(let i=0; i <= this.slices; i++){
             const offset = i*3;
             const vertI = [this.vertices[offset], this.vertices[offset + 1], this.vertices[offset + 2]];
         
