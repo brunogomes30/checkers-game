@@ -70,15 +70,15 @@ export function parseLights(lightsNode, graph) {
                 aux = parseCoordinates4D(grandChildren[attributeIndex], "light position for ID =" + `'${lightId}'`, graph);
             } else if (tagTypes[j] == "exclusive option") {
                 let constant = graph.reader.getFloat(grandChildren[attributeIndex], 'constant', false);
-                if (constant == null || isNaN(constant) || (constant != 0 && constant != 1))
+                if (constant == null || isNaN(constant) || (constant < 0 && constant > 1))
                     return `Unable to parse constant attenuation choice of the light '${lightId}'`;
 
                 let linear = graph.reader.getFloat(grandChildren[attributeIndex], 'linear', false);
-                if (linear == null || isNaN(linear) || (linear != 0 && linear != 1))
+                if (linear == null || isNaN(linear) || (linear < 0 && linear > 1))
                     return `Unable to parse linear attenuation choice of the light '${lightId}'`;
 
                 let quadratic = graph.reader.getFloat(grandChildren[attributeIndex], 'quadratic', false);
-                if (quadratic == null || isNaN(quadratic) || (quadratic != 0 && quadratic != 1))
+                if (quadratic == null || isNaN(quadratic) || (quadratic < 0 && quadratic > 1))
                     return `Unable to parse quadratic attenuation choice of the light '${lightId}'`;
 
                 if (constant && linear || constant && quadratic || linear && quadratic) {

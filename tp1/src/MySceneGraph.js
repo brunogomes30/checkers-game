@@ -45,7 +45,7 @@ export class MySceneGraph {
      */
     constructor(filename, scene) {
         this.loadedOk = null;
-        
+
         // Establish bidirectional references between scene and graph.
         this.scene = scene;
         scene.graph = this;
@@ -130,6 +130,15 @@ export class MySceneGraph {
         this.loadedOk = true;
         this.log("Scene graph parsing complete");
         this.rootElement = this.components[this.idRoot];
+        if (this.rootElement === undefined) {
+            this.onXMLError("Can't find root component");
+            return;
+        }
+        if (this.rootElement.materials.includes('inherit')) {
+            this.onXMLError("Root component can't have material inherit.");
+            return;
+        }
+
         // As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
         this.scene.onGraphLoaded();
     }
@@ -139,7 +148,29 @@ export class MySceneGraph {
      * @param {string} message
      */
     onXMLError(message) {
-        console.error("XML Loading Error: " + message);
+        console.error("XML Loading Error: " + message + `
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣤⣤⠤⣄⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+        ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡤⠾⠁⠀⠀⠀⠀⠀⠀⢹⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+        ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⠒⣰⡏⣠⠟⠀⠀⠀⢠⠤⠤⠤⠤⢴⣿⠓⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+        ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⢂⢤⣼⣾⣾⣿⠀⠀⠀⠀⢸⠀⠀⠀⠀⠈⣿⡔⢳⡦⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+        ⠀⠀⠀⠀⠀⠀⣀⣾⣿⣥⣴⣿⣿⣿⣿⣿⣿⣀⣶⡒⢦⡿⠀⠒⡿⠯⢹⣿⣿⣿⣿⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+        ⠀⠀⠀⠀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇⠽⠆⠀⠀⠀⠀⠰⠤⣽⣿⣿⣿⣿⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+        ⠀⠀⠀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠒⠂⠀⠀⠀⠀⠐⠲⣿⣿⣿⣿⣿⣿⣿⣷⣿⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀
+        ⠀⠀⣼⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⣿⡁⠀⠀⠀⠈⢹⣿⣷⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀
+        ⠀⠀⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⡟⠁⠀⢸⡑⡄⠀⠀⠀⢠⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀
+        ⠀⢠⣿⣿⣿⣿⣿⣿⠟⠛⠉⠀⠀⠀⢧⠀⠀⠀⡇⠈⢢⡀⣠⠇⠀⣿⣿⣿⡟⢿⠻⢿⣿⣿⣿⣿⣿⣿⣿⡀⠀⠀⠀⠀⠀⠀
+        ⢀⣼⣿⣿⣿⣿⣿⡏⠀⠀⠀⠀⠀⡤⠜⠀⠀⠀⠹⡾⣟⣯⣝⣦⡼⢻⣿⡏⡇⠸⠀⢠⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀
+        ⢨⣿⣿⣿⣿⣿⡿⡆⠀⠀⠀⣄⠀⢣⠀⠀⠀⠀⠀⠹⣖⠲⠽⠿⣧⢀⡏⢹⠁⠀⠀⢀⣿⣿⣿⣿⣿⡿⣿⠀⠀⠀⠀⠀⠀⠀
+        ⢈⣿⣿⣿⣿⣿⠁⢇⠀⠀⠀⠸⡀⠈⢧⠀⠀⠀⠀⠀⢻⢍⣉⡓⣾⠸⡇⢸⠀⠸⡀⡎⢹⣿⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀
+        ⠈⣿⣿⣿⣿⣿⠀⠘⡄⠀⠀⠀⡧⠀⠈⠣⣀⠀⠀⠀⠘⡦⠬⢭⣿⠀⢹⠉⠀⡴⠁⡆⠈⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀
+        ⠐⣿⣿⣿⣿⡏⠀⠐⠚⠀⠀⢀⠇⠀⠀⠀⠈⠓⢤⣀⠀⢹⣿⣿⣯⡀⢸⢀⡞⠀⠀⡇⠀⢿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀
+        ⠀⢨⣿⣿⣿⡇⠀⢀⣀⣀⣠⣸⠤⣀⠤⠒⠲⠖⠋⠉⡏⠁⠀⢛⣒⡟⢿⡟⠀⠀⠀⡇⠀⢸⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀
+        ⠀⠀⠹⣿⣿⡠⠚⠉⠠⠔⠋⠀⠀⠀⠀⠀⠀⠀⠀⢀⠇⠀⠀⠤⡾⢀⣾⠀⠀⠀⠀⡇⠀⣸⣿⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+        ⠀⠀⠀⠈⢿⡁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣠⣘⣷⡒⢲⣻⣧⠎⣹⠀⠀⠀⢸⠀⠘⢻⠉⠓⠦⢄⣀⢞⣇⣀⣀⡀⠀⠀
+        ⠀⠀⠀⠀⠀⢣⡀⠀⠀⠀⢀⠀⣀⣀⠤⠤⠼⠿⠞⠛⠁⠑⣤⡖⢶⠀⣼⠀⢠⣀⣸⠀⠀⠀⠀⠀⠀⡎⠁⢾⠁⠀⢠⣽⣿⣶
+        ⠀⠀⠀⠀⠀⠀⠉⠉⠻⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⡧⠼⡄⣿⠀⠘⠛⣿⣶⠤⢄⣀⠀⠀⢳⣤⣀⣀⣀⣼⣿⣿⠿
+        ⠀⠀⠀⠀⠀⠀⠀⠀⠢⠈⡛⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢯⠈⣷⡿⠀⠀⠀⢻⠀⠀⠀⠀⠈⠑⠚⠷⠤⠋⠙⠿⠈⠛⠀
+        ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠧⠤⠤⠤⠐⠒⠒⠒⠉⠉⠉⠉⠉⠛⢶⠾⠗⠒⠒⠒⠚⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀`);
         this.loadedOk = false;
     }
 

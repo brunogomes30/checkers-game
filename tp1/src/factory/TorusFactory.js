@@ -7,7 +7,7 @@ export class TorusFactory {
         // Podemos arranjar forma de colocar default values caso não sejas dados, mas não parece que possamos permitir isso
         this.attributes = {
             'inner': 'float',
-            'outter': 'float',
+            'outer': 'float',
             'slices': 'integer',
             'loops': 'integer',
         }

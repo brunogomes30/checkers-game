@@ -31,7 +31,7 @@ export function parseMaterials(materialsNode, graph) {
             return "ID must be unique for each light (conflict: ID = " + materialID + ")";
 
         //Continue here
-        const material = parseMaterial(materialNode, graph);  
+        const material = parseMaterial(materialNode, materialID, graph);  
         if(material !== null){
             graph.materials[materialID] = material;
         } else {
@@ -45,9 +45,11 @@ export function parseMaterials(materialsNode, graph) {
     return null;
 }
 
-function parseMaterial(node, graph){
+function parseMaterial(node, materialID, graph){
     const shininess = graph.reader.getFloat(node, 'shininess');
-
+    if (shininess == null || isNaN(shininess) || shininess <= 0){
+        return `Invalid value for material shininess in material '${materialID}'`
+    }
     
     const properties = {
         'emission': [0, 0, 0, 0],
@@ -65,7 +67,7 @@ function parseMaterial(node, graph){
     }
 
     const material = new CGFappearance(graph.scene);
-    material.setShininess(1);
+    material.setShininess(shininess);
     material.setDiffuse(...properties['diffuse']);
     material.setEmission(...properties['emission'])
     material.setSpecular(...properties['specular']);

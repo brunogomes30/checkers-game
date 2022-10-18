@@ -145,7 +145,7 @@
             <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
         </primitive>
         <primitive id="torus">
-            <torus outter="0.5" inner="0.5" slices="11" loops="12" />
+            <torus outer="0.5" inner="0.5" slices="11" loops="12" />
         </primitive>
         <primitive id="cone">
             <cylinder base="1" top="0.8" height="1" slices="16" stacks="16" />

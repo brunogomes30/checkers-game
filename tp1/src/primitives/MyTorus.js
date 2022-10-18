@@ -12,7 +12,7 @@ export class MyTorus extends CGFobject {
     constructor(scene, id, values) {
         super(scene);
         this.id = id;
-        this.outter = values.outter;
+        this.outer = values.outer;
         this.inner = values.inner;
         this.slices = values.slices;
         this.loops = values.loops;
@@ -23,7 +23,7 @@ export class MyTorus extends CGFobject {
 
     nextVertexInSlice(vertexId, pointPerSlice) {
         const testId = vertexId + 1;
-        return testId % pointPerSlice == 0 ? testId - pointPerSlice : testId;
+        return testId % (pointPerSlice + 1) == 0 ? testId - pointPerSlice : testId;
     }
 
     analogousVertexInNextLoop(vertexId, pointPerSlice, vertexNr) {
@@ -39,14 +39,14 @@ export class MyTorus extends CGFobject {
         const slicesStep = RADIANS_CIRCLE / this.slices;
         const texLoopsStep = 1 / this.loops;
         const texSlicesStep = 1 / this.slices;
-        const vertexNr = this.loops * this.slices;
-        for (let loop = 0; loop < this.loops; loop++) {
+        const vertexNr = (this.loops + 1) * this.slices;
+        for (let loop = 0; loop <= this.loops; loop++) {
             const loopAngle = truncateDecimalPlaces(loop * loopsStep, 10);
             const loopCos = Math.cos(loopAngle);
             const loopSin = Math.sin(loopAngle);
-            const translationVec = { x: loopCos * this.outter, y: loopSin * this.outter };
+            const translationVec = { x: loopCos * this.outer, y: loopSin * this.outer };
 
-            for (let slice = 0; slice < this.slices; slice++) {
+            for (let slice = 0; slice <= this.slices; slice++) {
                 const sliceAngle = truncateDecimalPlaces(slice * slicesStep, 10);
                 const x0 = (Math.sin(sliceAngle) * this.inner)
                 const x = x0 * loopCos;
@@ -55,34 +55,24 @@ export class MyTorus extends CGFobject {
                 this.vertices.push(x + translationVec.x, y + translationVec.y, z);
                 this.normals.push(x, y, z);
 
+                this.texCoords.push(-loop * texLoopsStep, -slice * texSlicesStep);
+
                 //0  3
                 //1  2    
                 const vertex0 = slice + loop * this.slices;
-                const vertex1 = this.nextVertexInSlice(vertex0, this.slices);
-                const vertex2 = this.analogousVertexInNextLoop(vertex1, this.slices, vertexNr);
-                const vertex3 = this.analogousVertexInNextLoop(vertex0, this.slices, vertexNr);
+                const vertex1 = vertex0 + 1;
+                const vertex2 = vertex1 + this.slices;
+                const vertex3 = vertex0 + this.slices;
                 this.indices.push(vertex0, vertex1, vertex2);
                 this.indices.push(vertex2, vertex3, vertex0);
-
-                this.texCoords.push(loop * texLoopsStep, slice * texSlicesStep);
             }
         }
-
-        /*
-        Texture coords (s,t)
-        +----------> s
-        |
-        |
-        |
-        v
-        t
-        */
 
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }
 
-    updateTexCoords(length_s, length_t){
+    updateTexCoords(length_s, length_t) {
         return;
     }
 }
