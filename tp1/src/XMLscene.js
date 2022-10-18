@@ -4,6 +4,7 @@ import { CGFaxis, CGFcamera } from '../../lib/CGF.js';
 import { buildInterface } from './interface/build.js';
 import { MyInterface } from './MyInterface.js';
 import { switchLight } from './controllers/lights.js'
+import { switchCamera } from './controllers/cameras.js'
 
 /**
  * XMLscene class, representing the scene that is to be rendered.
@@ -46,7 +47,7 @@ export class XMLscene extends CGFscene {
      * Initializes the scene cameras.
      */
     initCameras() {
-        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
+        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0))
     }
     /**
      * Initializes the scene lights with the values read from the XML file.
@@ -99,7 +100,12 @@ export class XMLscene extends CGFscene {
         this.initLights();
 
         this.sceneInited = true;
+
+        this.interface.activeCameraId = Object.keys(this.cameras)[0]
+        switchCamera(this.interface, this, Object.keys(this.cameras)[0])
+
         buildInterface(this.interface, this);
+        
         this.materialIndex = 0;
         
         this.defaultTexture = new Texture('', this, 'scenes/images/missing-texture.jpg');

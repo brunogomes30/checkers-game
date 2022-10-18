@@ -6,6 +6,10 @@
             <from x="30" y="15" z="30" />
             <to x="0" y="-2" z="0" />
         </perspective>
+        <ortho id="orthoCam" near="-100" far="100" left="-50" right="50" bottom="-50" top="50">
+            <from x="0" y="30" z="0" />
+            <to x="-0.1" y="-20" z="0" />
+        </ortho>
     </views>
 
     <ambient>

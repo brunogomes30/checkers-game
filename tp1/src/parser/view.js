@@ -1,8 +1,127 @@
-    /**
-     * Parses the <views> block.
-     * @param {view block element} viewsNode
-     */
+import { CGFcamera, CGFcameraOrtho } from "../../../lib/CGF.js";
+import { parseCoordinates3D } from "./utils.js";
+
+
+/**
+ * Parses the <views> block.
+ * @param {view block element} viewsNode
+ */
 export function parseView(viewsNode, graph) {
-        graph.onXMLMinorError("To do: Parse views and create cameras.");
-        return null;
+    graph.scene.cameras = {};
+    let cameras = graph.scene.cameras;
+
+    for (let viewNode of viewsNode.children) {
+        let viewType = viewNode.nodeName
+        if (viewType != 'perspective' && viewType != 'ortho') {
+            graph.onXMLMinorError(`Unknown camera tag < ${viewType} >`);
+            continue;
+        }
+
+        let viewId = graph.reader.getString(viewNode, 'id', false);
+        if (viewId == null || viewId == '') {
+            return 'No ID defined for a view block';
+        }
+        if (viewId in cameras) {
+            return `ID must be unique for each camera (conflict: ID = ${viewId})`;
+        }
+
+        let res
+
+        let near = graph.reader.getFloat(viewNode, 'near', false);
+        res = testFloat(near, 'near', 'view', viewId)
+        if (res != null) {
+            return res;
+        }
+
+        let far = graph.reader.getFloat(viewNode, 'far', false);
+        res = testFloat(near, 'far', 'view', viewId)
+        if (res != null) {
+            return res;
+        }
+
+        let childrenNames = []
+        for (let child of viewNode.children) {
+            childrenNames.push(child.nodeName);
+        }
+
+        let fromNode = viewNode.children[childrenNames.indexOf('from')]
+        if (fromNode == undefined) {
+            return `'from' block not defined in view ${viewId}`
+        }
+        let from = parseCoordinates3D(fromNode, `'from' tag of view ${viewId}`, graph)
+        if (!Array.isArray(from)) {
+            return from;
+        }
+
+
+        let toNode = viewNode.children[childrenNames.indexOf('to')]
+        if (toNode == undefined) {
+            return `'to' block not defined in view ${viewId}`
+        }
+        let to = parseCoordinates3D(toNode, `'to' tag of view ${viewId}`, graph)
+        if (!Array.isArray(to)) {
+            return to;
+        }
+
+
+
+        if (viewType == 'perspective') {
+            let fov = graph.reader.getFloat(viewNode, 'angle', false);
+            res = testFloat(fov, 'angle', 'view', viewId)
+            if (res != null) {
+                return res;
+            }
+
+            cameras[viewId] = new CGFcamera(fov * Math.PI / 180, near, far, vec3.fromValues(...from), vec3.fromValues(...to));
+        }
+        else {
+            let left = graph.reader.getFloat(viewNode, 'left', false);
+            res = testFloat(near, 'left', 'view', viewId)
+            if (res != null) {
+                return res;
+            }
+
+            let right = graph.reader.getFloat(viewNode, 'right', false);
+            res = testFloat(near, 'right', 'view', viewId)
+            if (res != null) {
+                return res;
+            }
+
+            let top = graph.reader.getFloat(viewNode, 'top', false);
+            res = testFloat(near, 'top', 'view', viewId)
+            if (res != null) {
+                return res;
+            }
+
+            let bottom = graph.reader.getFloat(viewNode, 'bottom', false);
+            res = testFloat(near, 'bottom', 'view', viewId)
+            if (res != null) {
+                return res;
+            }
+
+            let upNode = viewNode.children[childrenNames.indexOf('up')]
+            let up;
+            if (upNode == undefined) {
+                up = [0, 1, 0]
+            }
+            else {
+                up = parseCoordinates3D(upNode, `'up' tag of view ${viewId}`, graph)
+                if (!Array.isArray(up)) {
+                    return up;
+                }
+            }
+
+            cameras[viewId] = new CGFcameraOrtho(left, right, bottom, top, near, far, vec3.fromValues(...from), vec3.fromValues(...to), vec3.fromValues(...up))
+        }
     }
+    console.log(cameras)
+    graph.onXMLMinorError("Parsed views and created cameras.");
+    return;
+}
+
+function testFloat(value, attribute, block, id) {
+    if (value == null || isNaN(value)) {
+        return `Invalid value of ${attribute} attribute. In ${block} ${id}`;
+    }
+    return null;
+}

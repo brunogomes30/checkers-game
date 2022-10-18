@@ -1,6 +1,8 @@
 import { switchLight } from '../controllers/lights.js'
+import { switchCamera } from '../controllers/cameras.js'
 
 export function buildInterface(ui, scene) {
+    buildCameraSelector(ui, scene);
     buildLightsFolder(ui, scene);
 }
 
@@ -15,3 +17,11 @@ function buildLightsFolder(ui, scene) {
         );
     });
 }
+
+
+
+function buildCameraSelector(ui, scene) {
+    ui.gui.add(ui, 'activeCameraId', Object.keys(scene.cameras)).name('Cameras').onChange(()=>switchCamera(ui, scene, ui.activeCameraId))
+}
+
+
