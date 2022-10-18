@@ -1,5 +1,5 @@
 <sxs>
-    <scene root="demoRoot" axis_length="5"/>
+    <scene root="demoRoot" axis_length="5" />
 
     <views default="defaultCamera">
         <perspective id="defaultCamera" near="0.1" far="500" angle="45">
@@ -20,12 +20,20 @@
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
         </omni>
-        <spot id="spotlight" enabled="1" angle="90" exponent="0" >
-            <location x="0.0" y="0.0" z="0.0" w="1.0" />
-            <target x="-1" y="-1" z="-1" />
+        <spot id="spotlight" enabled="1" angle="42" exponent="60">
+            <location x="0.0" y="10.0" z="0.0" w="1.0" />
+            <target x="-22" y="5.16" z="-22" />
             <ambient r="0" g="0" b="0" a="1.0" />
-            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
-            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="0.8" g="0.8" b="1.0" a="1.0" />
+            <specular r="0.2" g="0.2" b="1.0" a="1.0" />
+        </spot>
+
+        <spot id="candle" enabled="1" angle="90" exponent="128">
+            <location x="10" y="15" z="10" w="1.0" />
+            <target x="22" y="5.16" z="22" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="1.0" g="0.0" b="0.0" a="1.0" />
+            <specular r="0.5" g="0.0" b="0.0" a="1.0" />
         </spot>
     </lights>
 
@@ -38,57 +46,57 @@
     <materials>
         <material id="roomMaterial" shininess="1">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="1.0" g="0.0784313725490196" b="0.5764705882352941" a="1.0"  />
-            <diffuse r="1.0" g="0.0784313725490196" b="0.5764705882352941" a="1.0"  />
-            <specular r="1.0" g="0.0784313725490196" b="0.5764705882352941" a="1.0"  />
+            <ambient r="1.0" g="0.0784313725490196" b="0.5764705882352941" a="1.0" />
+            <diffuse r="1.0" g="0.0784313725490196" b="0.5764705882352941" a="1.0" />
+            <specular r="1.0" g="0.0784313725490196" b="0.5764705882352941" a="1.0" />
         </material>
         <material id="presentMaterial" shininess="1">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="0.8235294117647058" g="0.01568627450980392" b="0.17647058823529413" a="1.0"  />
-            <diffuse r="0.8235294117647058" g="0.01568627450980392" b="0.17647058823529413" a="1.0"  />
-            <specular r="0.8235294117647058" g="0.01568627450980392" b="0.17647058823529413" a="1.0"  />
+            <ambient r="0.8235294117647058" g="0.01568627450980392" b="0.17647058823529413" a="1.0" />
+            <diffuse r="0.8235294117647058" g="0.01568627450980392" b="0.17647058823529413" a="1.0" />
+            <specular r="0.8235294117647058" g="0.01568627450980392" b="0.17647058823529413" a="1.0" />
         </material>
         <material id="skinMaterial" shininess="1">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="1.0" g="0.7529411764705882" b="0.796078431372549" a="1.0" />
-            <diffuse r="1.0" g="0.7529411764705882" b="0.796078431372549" a="1.0"   />
-            <specular r="1.0" g="0.7529411764705882" b="0.796078431372549" a="1.0"   />
+            <diffuse r="1.0" g="0.7529411764705882" b="0.796078431372549" a="1.0" />
+            <specular r="1.0" g="0.7529411764705882" b="0.796078431372549" a="1.0" />
         </material>
         <material id="laceMaterial" shininess="1">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="0.23137254901960785" g="0.47843137254901963" b="0.3411764705882353" a="1.0" />
-            <diffuse r="0.23137254901960785" g="0.47843137254901963" b="0.3411764705882353" a="1.0"   />
-            <specular r="0.0" g="0.0" b="0.0" a="0.0"    />
+            <diffuse r="0.23137254901960785" g="0.47843137254901963" b="0.3411764705882353" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="0.0" />
         </material>
         <material id="imageMaterial" shininess="1">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="0.5" g="0.5" b="0.5" a="1.0"   />
-            <diffuse r="0.5" g="0.5" b="0.5" a="1.0"   />
-            <specular r="0.5" g="0.5" b="0.5" a="1.0"   />
+            <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
         </material>
         <material id="roomMaterial_wall_zneg" shininess="1">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="0.14901960784313725" g="0.27450980392156865" b="0.3254901960784314" a="1.0"   />
-            <diffuse r="0.14901960784313725" g="0.27450980392156865" b="0.3254901960784314" a="1.0"   />
-            <specular r="0.14901960784313725" g="0.27450980392156865" b="0.3254901960784314" a="1.0"   />
+            <ambient r="0.14901960784313725" g="0.27450980392156865" b="0.3254901960784314" a="1.0" />
+            <diffuse r="0.14901960784313725" g="0.27450980392156865" b="0.3254901960784314" a="1.0" />
+            <specular r="0.14901960784313725" g="0.27450980392156865" b="0.3254901960784314" a="1.0" />
         </material>
         <material id="roomMaterial_wall_zpos" shininess="1">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="0.16470588235294117" g="0.615686274509804" b="0.5607843137254902" a="1.0"    />
-            <diffuse r="0.16470588235294117" g="0.615686274509804" b="0.5607843137254902" a="1.0"    />
-            <specular r="0.16470588235294117" g="0.615686274509804" b="0.5607843137254902" a="1.0"    />
+            <ambient r="0.16470588235294117" g="0.615686274509804" b="0.5607843137254902" a="1.0" />
+            <diffuse r="0.16470588235294117" g="0.615686274509804" b="0.5607843137254902" a="1.0" />
+            <specular r="0.16470588235294117" g="0.615686274509804" b="0.5607843137254902" a="1.0" />
         </material>
         <material id="roomMaterial_wall_xneg" shininess="1">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="0.9568627450980393" g="0.6352941176470588" b="0.3803921568627451" a="1.0"   />
-            <diffuse r="0.9568627450980393" g="0.6352941176470588" b="0.3803921568627451" a="1.0"   />
-            <specular r="0.9568627450980393" g="0.6352941176470588" b="0.3803921568627451" a="1.0"   />
+            <ambient r="0.9568627450980393" g="0.6352941176470588" b="0.3803921568627451" a="1.0" />
+            <diffuse r="0.9568627450980393" g="0.6352941176470588" b="0.3803921568627451" a="1.0" />
+            <specular r="0.9568627450980393" g="0.6352941176470588" b="0.3803921568627451" a="1.0" />
         </material>
         <material id="roomMaterial_wall_xpos" shininess="1">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="0.9058823529411765" g="0.43529411764705883" b="0.3176470588235294" a="1.0"    />
-            <diffuse r="0.9058823529411765" g="0.43529411764705883" b="0.3176470588235294" a="1.0"    />
-            <specular r="0.9058823529411765" g="0.43529411764705883" b="0.3176470588235294" a="1.0"    />
+            <ambient r="0.9058823529411765" g="0.43529411764705883" b="0.3176470588235294" a="1.0" />
+            <diffuse r="0.9058823529411765" g="0.43529411764705883" b="0.3176470588235294" a="1.0" />
+            <specular r="0.9058823529411765" g="0.43529411764705883" b="0.3176470588235294" a="1.0" />
         </material>
         <material id="woodMaterial" shininess="10">
             <emission r="0.1" g="0.1" b="0.1" a="0.6" />
@@ -143,6 +151,333 @@
         <primitive id="sphere">
             <sphere radius="1" stacks="12" slices="12" />
         </primitive>
+
+
+        <primitive id="squarez0x0">
+            <rectangle x1="-0.5" y1="-0.5" x2="-0.4" y2="-0.4" />
+        </primitive>
+
+        <primitive id="squarez0x1">
+            <rectangle x1="-0.4" y1="-0.5" x2="-0.30000000000000004" y2="-0.4" />
+        </primitive>
+
+        <primitive id="squarez0x2">
+            <rectangle x1="-0.30000000000000004" y1="-0.5" x2="-0.20000000000000004" y2="-0.4" />
+        </primitive>
+
+        <primitive id="squarez0x3">
+            <rectangle x1="-0.20000000000000004" y1="-0.5" x2="-0.10000000000000003" y2="-0.4" />
+        </primitive>
+
+        <primitive id="squarez0x4">
+            <rectangle x1="-0.10000000000000003" y1="-0.5" x2="-2.7755575615628914e-17" y2="-0.4" />
+        </primitive>
+
+        <primitive id="squarez0x5">
+            <rectangle x1="-2.7755575615628914e-17" y1="-0.5" x2="0.09999999999999998" y2="-0.4" />
+        </primitive>
+
+        <primitive id="squarez0x6">
+            <rectangle x1="0.09999999999999998" y1="-0.5" x2="0.19999999999999998" y2="-0.4" />
+        </primitive>
+
+        <primitive id="squarez0x7">
+            <rectangle x1="0.19999999999999998" y1="-0.5" x2="0.3" y2="-0.4" />
+        </primitive>
+
+        <primitive id="squarez0x8">
+            <rectangle x1="0.3" y1="-0.5" x2="0.5" y2="-0.4" />
+        </primitive>
+
+        <primitive id="squarez1x0">
+            <rectangle x1="-0.5" y1="-0.4" x2="-0.4" y2="-0.30000000000000004" />
+        </primitive>
+
+        <primitive id="squarez1x1">
+            <rectangle x1="-0.4" y1="-0.4" x2="-0.30000000000000004" y2="-0.30000000000000004" />
+        </primitive>
+
+        <primitive id="squarez1x2">
+            <rectangle x1="-0.30000000000000004" y1="-0.4" x2="-0.20000000000000004" y2="-0.30000000000000004" />
+        </primitive>
+
+        <primitive id="squarez1x3">
+            <rectangle x1="-0.20000000000000004" y1="-0.4" x2="-0.10000000000000003" y2="-0.30000000000000004" />
+        </primitive>
+
+        <primitive id="squarez1x4">
+            <rectangle x1="-0.10000000000000003" y1="-0.4" x2="-2.7755575615628914e-17" y2="-0.30000000000000004" />
+        </primitive>
+
+        <primitive id="squarez1x5">
+            <rectangle x1="-2.7755575615628914e-17" y1="-0.4" x2="0.09999999999999998" y2="-0.30000000000000004" />
+        </primitive>
+
+        <primitive id="squarez1x6">
+            <rectangle x1="0.09999999999999998" y1="-0.4" x2="0.19999999999999998" y2="-0.30000000000000004" />
+        </primitive>
+
+        <primitive id="squarez1x7">
+            <rectangle x1="0.19999999999999998" y1="-0.4" x2="0.3" y2="-0.30000000000000004" />
+        </primitive>
+
+        <primitive id="squarez1x8">
+            <rectangle x1="0.3" y1="-0.4" x2="0.5" y2="-0.30000000000000004" />
+        </primitive>
+
+        <primitive id="squarez2x0">
+            <rectangle x1="-0.5" y1="-0.30000000000000004" x2="-0.4" y2="-0.20000000000000004" />
+        </primitive>
+
+        <primitive id="squarez2x1">
+            <rectangle x1="-0.4" y1="-0.30000000000000004" x2="-0.30000000000000004" y2="-0.20000000000000004" />
+        </primitive>
+
+        <primitive id="squarez2x2">
+            <rectangle x1="-0.30000000000000004" y1="-0.30000000000000004" x2="-0.20000000000000004" y2="-0.20000000000000004" />
+        </primitive>
+
+        <primitive id="squarez2x3">
+            <rectangle x1="-0.20000000000000004" y1="-0.30000000000000004" x2="-0.10000000000000003" y2="-0.20000000000000004" />
+        </primitive>
+
+        <primitive id="squarez2x4">
+            <rectangle x1="-0.10000000000000003" y1="-0.30000000000000004" x2="-2.7755575615628914e-17" y2="-0.20000000000000004" />
+        </primitive>
+
+        <primitive id="squarez2x5">
+            <rectangle x1="-2.7755575615628914e-17" y1="-0.30000000000000004" x2="0.09999999999999998" y2="-0.20000000000000004" />
+        </primitive>
+
+        <primitive id="squarez2x6">
+            <rectangle x1="0.09999999999999998" y1="-0.30000000000000004" x2="0.19999999999999998" y2="-0.20000000000000004" />
+        </primitive>
+
+        <primitive id="squarez2x7">
+            <rectangle x1="0.19999999999999998" y1="-0.30000000000000004" x2="0.3" y2="-0.20000000000000004" />
+        </primitive>
+
+        <primitive id="squarez2x8">
+            <rectangle x1="0.3" y1="-0.30000000000000004" x2="0.5" y2="-0.20000000000000004" />
+        </primitive>
+
+        <primitive id="squarez3x0">
+            <rectangle x1="-0.5" y1="-0.20000000000000004" x2="-0.4" y2="-0.10000000000000003" />
+        </primitive>
+
+        <primitive id="squarez3x1">
+            <rectangle x1="-0.4" y1="-0.20000000000000004" x2="-0.30000000000000004" y2="-0.10000000000000003" />
+        </primitive>
+
+        <primitive id="squarez3x2">
+            <rectangle x1="-0.30000000000000004" y1="-0.20000000000000004" x2="-0.20000000000000004" y2="-0.10000000000000003" />
+        </primitive>
+
+        <primitive id="squarez3x3">
+            <rectangle x1="-0.20000000000000004" y1="-0.20000000000000004" x2="-0.10000000000000003" y2="-0.10000000000000003" />
+        </primitive>
+
+        <primitive id="squarez3x4">
+            <rectangle x1="-0.10000000000000003" y1="-0.20000000000000004" x2="-2.7755575615628914e-17" y2="-0.10000000000000003" />
+        </primitive>
+
+        <primitive id="squarez3x5">
+            <rectangle x1="-2.7755575615628914e-17" y1="-0.20000000000000004" x2="0.09999999999999998" y2="-0.10000000000000003" />
+        </primitive>
+
+        <primitive id="squarez3x6">
+            <rectangle x1="0.09999999999999998" y1="-0.20000000000000004" x2="0.19999999999999998" y2="-0.10000000000000003" />
+        </primitive>
+
+        <primitive id="squarez3x7">
+            <rectangle x1="0.19999999999999998" y1="-0.20000000000000004" x2="0.3" y2="-0.10000000000000003" />
+        </primitive>
+
+        <primitive id="squarez3x8">
+            <rectangle x1="0.3" y1="-0.20000000000000004" x2="0.5" y2="-0.10000000000000003" />
+        </primitive>
+
+        <primitive id="squarez4x0">
+            <rectangle x1="-0.5" y1="-0.10000000000000003" x2="-0.4" y2="-2.7755575615628914e-17" />
+        </primitive>
+
+        <primitive id="squarez4x1">
+            <rectangle x1="-0.4" y1="-0.10000000000000003" x2="-0.30000000000000004" y2="-2.7755575615628914e-17" />
+        </primitive>
+
+        <primitive id="squarez4x2">
+            <rectangle x1="-0.30000000000000004" y1="-0.10000000000000003" x2="-0.20000000000000004" y2="-2.7755575615628914e-17" />
+        </primitive>
+
+        <primitive id="squarez4x3">
+            <rectangle x1="-0.20000000000000004" y1="-0.10000000000000003" x2="-0.10000000000000003" y2="-2.7755575615628914e-17" />
+        </primitive>
+
+        <primitive id="squarez4x4">
+            <rectangle x1="-0.10000000000000003" y1="-0.10000000000000003" x2="-2.7755575615628914e-17" y2="-2.7755575615628914e-17" />
+        </primitive>
+
+        <primitive id="squarez4x5">
+            <rectangle x1="-2.7755575615628914e-17" y1="-0.10000000000000003" x2="0.09999999999999998" y2="-2.7755575615628914e-17" />
+        </primitive>
+
+        <primitive id="squarez4x6">
+            <rectangle x1="0.09999999999999998" y1="-0.10000000000000003" x2="0.19999999999999998" y2="-2.7755575615628914e-17" />
+        </primitive>
+
+        <primitive id="squarez4x7">
+            <rectangle x1="0.19999999999999998" y1="-0.10000000000000003" x2="0.3" y2="-2.7755575615628914e-17" />
+        </primitive>
+
+        <primitive id="squarez4x8">
+            <rectangle x1="0.3" y1="-0.10000000000000003" x2="0.5" y2="-2.7755575615628914e-17" />
+        </primitive>
+
+        <primitive id="squarez5x0">
+            <rectangle x1="-0.5" y1="-2.7755575615628914e-17" x2="-0.4" y2="0.09999999999999998" />
+        </primitive>
+
+        <primitive id="squarez5x1">
+            <rectangle x1="-0.4" y1="-2.7755575615628914e-17" x2="-0.30000000000000004" y2="0.09999999999999998" />
+        </primitive>
+
+        <primitive id="squarez5x2">
+            <rectangle x1="-0.30000000000000004" y1="-2.7755575615628914e-17" x2="-0.20000000000000004" y2="0.09999999999999998" />
+        </primitive>
+
+        <primitive id="squarez5x3">
+            <rectangle x1="-0.20000000000000004" y1="-2.7755575615628914e-17" x2="-0.10000000000000003" y2="0.09999999999999998" />
+        </primitive>
+
+        <primitive id="squarez5x4">
+            <rectangle x1="-0.10000000000000003" y1="-2.7755575615628914e-17" x2="-2.7755575615628914e-17" y2="0.09999999999999998" />
+        </primitive>
+
+        <primitive id="squarez5x5">
+            <rectangle x1="-2.7755575615628914e-17" y1="-2.7755575615628914e-17" x2="0.09999999999999998" y2="0.09999999999999998" />
+        </primitive>
+
+        <primitive id="squarez5x6">
+            <rectangle x1="0.09999999999999998" y1="-2.7755575615628914e-17" x2="0.19999999999999998" y2="0.09999999999999998" />
+        </primitive>
+
+        <primitive id="squarez5x7">
+            <rectangle x1="0.19999999999999998" y1="-2.7755575615628914e-17" x2="0.3" y2="0.09999999999999998" />
+        </primitive>
+
+        <primitive id="squarez5x8">
+            <rectangle x1="0.3" y1="-2.7755575615628914e-17" x2="0.5" y2="0.09999999999999998" />
+        </primitive>
+
+        <primitive id="squarez6x0">
+            <rectangle x1="-0.5" y1="0.09999999999999998" x2="-0.4" y2="0.19999999999999998" />
+        </primitive>
+
+        <primitive id="squarez6x1">
+            <rectangle x1="-0.4" y1="0.09999999999999998" x2="-0.30000000000000004" y2="0.19999999999999998" />
+        </primitive>
+
+        <primitive id="squarez6x2">
+            <rectangle x1="-0.30000000000000004" y1="0.09999999999999998" x2="-0.20000000000000004" y2="0.19999999999999998" />
+        </primitive>
+
+        <primitive id="squarez6x3">
+            <rectangle x1="-0.20000000000000004" y1="0.09999999999999998" x2="-0.10000000000000003" y2="0.19999999999999998" />
+        </primitive>
+
+        <primitive id="squarez6x4">
+            <rectangle x1="-0.10000000000000003" y1="0.09999999999999998" x2="-2.7755575615628914e-17" y2="0.19999999999999998" />
+        </primitive>
+
+        <primitive id="squarez6x5">
+            <rectangle x1="-2.7755575615628914e-17" y1="0.09999999999999998" x2="0.09999999999999998" y2="0.19999999999999998" />
+        </primitive>
+
+        <primitive id="squarez6x6">
+            <rectangle x1="0.09999999999999998" y1="0.09999999999999998" x2="0.19999999999999998" y2="0.19999999999999998" />
+        </primitive>
+
+        <primitive id="squarez6x7">
+            <rectangle x1="0.19999999999999998" y1="0.09999999999999998" x2="0.3" y2="0.19999999999999998" />
+        </primitive>
+
+        <primitive id="squarez6x8">
+            <rectangle x1="0.3" y1="0.09999999999999998" x2="0.5" y2="0.19999999999999998" />
+        </primitive>
+
+        <primitive id="squarez7x0">
+            <rectangle x1="-0.5" y1="0.19999999999999998" x2="-0.4" y2="0.3" />
+        </primitive>
+
+        <primitive id="squarez7x1">
+            <rectangle x1="-0.4" y1="0.19999999999999998" x2="-0.30000000000000004" y2="0.3" />
+        </primitive>
+
+        <primitive id="squarez7x2">
+            <rectangle x1="-0.30000000000000004" y1="0.19999999999999998" x2="-0.20000000000000004" y2="0.3" />
+        </primitive>
+
+        <primitive id="squarez7x3">
+            <rectangle x1="-0.20000000000000004" y1="0.19999999999999998" x2="-0.10000000000000003" y2="0.3" />
+        </primitive>
+
+        <primitive id="squarez7x4">
+            <rectangle x1="-0.10000000000000003" y1="0.19999999999999998" x2="-2.7755575615628914e-17" y2="0.3" />
+        </primitive>
+
+        <primitive id="squarez7x5">
+            <rectangle x1="-2.7755575615628914e-17" y1="0.19999999999999998" x2="0.09999999999999998" y2="0.3" />
+        </primitive>
+
+        <primitive id="squarez7x6">
+            <rectangle x1="0.09999999999999998" y1="0.19999999999999998" x2="0.19999999999999998" y2="0.3" />
+        </primitive>
+
+        <primitive id="squarez7x7">
+            <rectangle x1="0.19999999999999998" y1="0.19999999999999998" x2="0.3" y2="0.3" />
+        </primitive>
+
+        <primitive id="squarez7x8">
+            <rectangle x1="0.3" y1="0.19999999999999998" x2="0.5" y2="0.3" />
+        </primitive>
+
+        <primitive id="squarez8x0">
+            <rectangle x1="-0.5" y1="0.3" x2="-0.4" y2="0.5" />
+        </primitive>
+
+        <primitive id="squarez8x1">
+            <rectangle x1="-0.4" y1="0.3" x2="-0.30000000000000004" y2="0.5" />
+        </primitive>
+
+        <primitive id="squarez8x2">
+            <rectangle x1="-0.30000000000000004" y1="0.3" x2="-0.20000000000000004" y2="0.5" />
+        </primitive>
+
+        <primitive id="squarez8x3">
+            <rectangle x1="-0.20000000000000004" y1="0.3" x2="-0.10000000000000003" y2="0.5" />
+        </primitive>
+
+        <primitive id="squarez8x4">
+            <rectangle x1="-0.10000000000000003" y1="0.3" x2="-2.7755575615628914e-17" y2="0.5" />
+        </primitive>
+
+        <primitive id="squarez8x5">
+            <rectangle x1="-2.7755575615628914e-17" y1="0.3" x2="0.09999999999999998" y2="0.5" />
+        </primitive>
+
+        <primitive id="squarez8x6">
+            <rectangle x1="0.09999999999999998" y1="0.3" x2="0.19999999999999998" y2="0.5" />
+        </primitive>
+
+        <primitive id="squarez8x7">
+            <rectangle x1="0.19999999999999998" y1="0.3" x2="0.3" y2="0.5" />
+        </primitive>
+
+        <primitive id="squarez8x8">
+            <rectangle x1="0.3" y1="0.3" x2="0.5" y2="0.5" />
+        </primitive>
+
+
     </primitives>
 
     <components>
@@ -152,16 +487,16 @@
                 <scale x="1" y="1" z="1" />
             </transformation>
             <materials>
-                <material id="roomMaterial"/>
+                <material id="roomMaterial" />
             </materials>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
                 <componentref id="room" />
-                <componentref id="present"/>
-                <componentref id="table"/>
-                <componentref id="chair"/>
-                <componentref id="computer_case"/>
-                <componentref id="monitor_position"/>
+                <componentref id="present" />
+                <componentref id="table" />
+                <componentref id="chair" />
+                <componentref id="computer_case" />
+                <componentref id="monitor_position" />
             </children>
         </component>
 
@@ -171,9 +506,9 @@
                 <rotate axis="y" angle="90" />
             </transformation>
             <materials>
-                <material id="inherit"/>
+                <material id="inherit" />
             </materials>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
                 <componentref id="presentBox" />
                 <componentref id="presentData" />
@@ -182,15 +517,15 @@
 
         <component id="presentBox">
             <transformation>
-                <scale x="2" y="2" z="2"/>
+                <scale x="2" y="2" z="2" />
             </transformation>
             <materials>
                 <material id="presentMaterial" />
             </materials>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
                 <componentref id="presentLace" />
-                 <componentref id="cubeBothfaces" />
+                <componentref id="cubeBothfaces" />
             </children>
         </component>
 
@@ -201,45 +536,46 @@
             <materials>
                 <material id="laceMaterial" />
             </materials>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
                 <componentref id="lace1" />
-                 <componentref id="lace2"/>
-                 <componentref id="lace3" />
-                <componentref id="lace4"/> 
+                <componentref id="lace2" />
+                <componentref id="lace3" />
+                <componentref id="lace4" />
             </children>
         </component>
 
         <component id="lace1">
             <transformation>
-                <rotate axis="y" angle="135"/>
-                <rotate axis="x" angle="90"/>
-                <rotate axis="y" angle="180"/><translate x="0" y="-0.25" z="0" />
+                <rotate axis="y" angle="135" />
+                <rotate axis="x" angle="90" />
+                <rotate axis="y" angle="180" />
+                <translate x="0" y="-0.25" z="0" />
                 <scale x="0.30" y="0.8" z="1" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
-                <primitiveref id="square"/>
+                <primitiveref id="square" />
             </children>
         </component>
 
         <component id="lace2">
             <transformation>
                 <rotate axis="y" angle="45" />
-                <rotate axis="x" angle="90"/>
-                <rotate axis="y" angle="180"/>
+                <rotate axis="x" angle="90" />
+                <rotate axis="y" angle="180" />
                 <translate x="0" y="0.25" z="0" />
                 <scale x="0.30" y="0.8" z="1" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
-                <primitiveref id="square"/>
+                <primitiveref id="square" />
             </children>
         </component>
         <component id="lace3">
@@ -252,9 +588,9 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
-                <primitiveref id="square"/>
+                <primitiveref id="square" />
             </children>
         </component>
 
@@ -269,38 +605,38 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
-                <primitiveref id="square"/>
+                <primitiveref id="square" />
             </children>
         </component>
 
         <component id="presentData">
             <transformation>
                 <translate x="0" y="0" z="0" />
-                <scale x="0.1" y="0.1" z="0.1"/>
+                <scale x="0.1" y="0.1" z="0.1" />
             </transformation>
             <materials>
                 <material id="skinMaterial" />
             </materials>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
                 <componentref id="ball1" />
                 <componentref id="ball2" />
-                <componentref id="stick"/>
-                <componentref id="head"/>
-                <componentref id="head_support"/>
+                <componentref id="stick" />
+                <componentref id="head" />
+                <componentref id="head_support" />
             </children>
         </component>
 
         <component id="ball1">
             <transformation>
-                <translate x="1" y="0" z="0"/>
+                <translate x="1" y="0" z="0" />
             </transformation>
             <materials>
-                <material id="inherit"/>
+                <material id="inherit" />
             </materials>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -308,12 +644,12 @@
 
         <component id="ball2">
             <transformation>
-                <translate x="-1" y="0" z="0"/>
+                <translate x="-1" y="0" z="0" />
             </transformation>
             <materials>
-                <material id="inherit"/>
+                <material id="inherit" />
             </materials>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -322,26 +658,26 @@
         <component id="stick">
             <transformation>
                 <scale x="1" y="5" z="1" />
-                <rotate axis="x" angle="-90"/>
+                <rotate axis="x" angle="-90" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
-                <primitiveref id="cone"/>
+                <primitiveref id="cone" />
             </children>
         </component>
 
         <component id="head">
             <transformation>
-                <scale x="0.92" y="0.92" z="0.92"/>
-                <translate x="0" y="5" z="0"/>
+                <scale x="0.92" y="0.92" z="0.92" />
+                <translate x="0" y="5" z="0" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -349,31 +685,30 @@
 
         <component id="head_support">
             <transformation>
-                <scale x="1" y="1" z="1"/>
-                <translate x="0" y="4" z="0"/>
-                <rotate axis="x" angle="90"/>
+                <scale x="1" y="1" z="1" />
+                <translate x="0" y="4" z="0" />
+                <rotate axis="x" angle="90" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
                 <primitiveref id="torus" />
             </children>
         </component>
 
 
-        
         <!--Room-->
         <component id="room">
             <transformation>
-                <translate x="0" y="10" z="0"/>
+                <translate x="0" y="10" z="0" />
                 <scale x="50" y="25" z="50" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
                 <componentref id="wall_zneg" />
                 <componentref id="wall_zpos" />
@@ -386,89 +721,88 @@
 
         <component id="wall_zneg">
             <transformation>
-                <translate x="0" y="0" z="-0.5"/>
+                <translate x="0" y="0" z="-0.5" />
             </transformation>
             <materials>
                 <material id="roomMaterial_wall_zneg" />
             </materials>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
-                <primitiveref id="square" />
+                <componentref id="detailedSquare" />
             </children>
         </component>
 
         <component id="wall_zpos">
             <transformation>
-                <translate x="0" y="0" z="0.5"/>
+                <translate x="0" y="0" z="0.5" />
                 <rotate axis="y" angle="180" />
             </transformation>
             <materials>
                 <material id="roomMaterial_wall_zpos" />
             </materials>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
-                <primitiveref id="square" />
+                <componentref id="detailedSquare" />
             </children>
         </component>
 
         <component id="wall_xneg">
             <transformation>
-                <translate x="-0.5" y="0" z="0"/>
+                <translate x="-0.5" y="0" z="0" />
                 <rotate axis="y" angle="90" />
             </transformation>
             <materials>
                 <material id="roomMaterial_wall_xneg" />
             </materials>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
-                <primitiveref id="square" />
+                <componentref id="detailedSquare" />
             </children>
         </component>
 
         <component id="wall_xpos">
             <transformation>
-                <translate x="0.5" y="0" z="0"/>
+                <translate x="0.5" y="0" z="0" />
                 <rotate axis="y" angle="270" />
             </transformation>
             <materials>
                 <material id="roomMaterial_wall_xpos" />
             </materials>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
-                <primitiveref id="square" />
+                <componentref id="detailedSquare" />
             </children>
         </component>
 
+
         <component id="floor">
             <transformation>
-                <translate x="0" y="-0.5" z="0"/>
+                <translate x="0" y="-0.5" z="0" />
                 <rotate axis="x" angle="270" />
             </transformation>
             <materials>
                 <material id="imageMaterial" />
             </materials>
-            <texture id="floorTexture"/>
+            <texture id="floorTexture" />
             <children>
-                <primitiveref id="square" />
+                <componentref id="detailedSquare" />
             </children>
         </component>
 
-        
 
         <component id="ceiling">
             <transformation>
-                <translate x="0" y="0.5" z="0"/>
+                <translate x="0" y="0.5" z="0" />
                 <rotate axis="x" angle="90" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
-                <primitiveref id="square" />
+                <componentref id="detailedSquare" />
             </children>
         </component>
-
 
 
         <!--Table-->
@@ -480,19 +814,18 @@
             <materials>
                 <material id="woodMaterial" />
             </materials>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
                 <componentref id="legs" />
                 <componentref id="table_top" />
             </children>
         </component>
         <component id="legs">
-            <transformation>
-            </transformation>
+            <transformation></transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
                 <componentref id="leg1" />
                 <componentref id="leg2" />
@@ -507,7 +840,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <componentref id="leg" />
             </children>
@@ -519,9 +852,9 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
-                <componentref id="leg"/>
+                <componentref id="leg" />
             </children>
         </component>
         <component id="leg3">
@@ -531,9 +864,9 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
-                <componentref id="leg"/>
+                <componentref id="leg" />
             </children>
         </component>
         <component id="leg4">
@@ -543,20 +876,20 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <componentref id="leg" />
             </children>
         </component>
         <component id="leg">
             <transformation>
-                <translate x="0" y="-1.5" z="0"/>
-               <rotate axis="x" angle="-90"/>
+                <translate x="0" y="-1.5" z="0" />
+                <rotate axis="x" angle="-90" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="cylinder" />
             </children>
@@ -570,12 +903,11 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
-                <componentref id="cubeBothfaces"/>
+                <componentref id="cubeBothfaces" />
             </children>
         </component>
-
 
 
         <!--Computer Case-->
@@ -584,18 +916,18 @@
                 <material id="caseMaterial" />
             </materials>
             <transformation>
-                <translate x="-22" y="5.16" z="-22"/>
-                <rotate axis="y" angle="90"/>
-                <scale x="1.6" y="1.6" z="1.6"/>
+                <translate x="-22" y="5.16" z="-22" />
+                <rotate axis="y" angle="90" />
+                <scale x="1.6" y="1.6" z="1.6" />
             </transformation>
-            <texture id="none"/>
-        
+            <texture id="none" />
+
             <children>
-                <componentref id="computer_case_box_yneg"/>
-                <componentref id="computer_case_box_ypos"/>
-                <componentref id="computer_case_box_xpos"/>
-                <componentref id="computer_case_box_zpos"/>
-                <componentref id="computer_case_box_zneg"/>
+                <componentref id="computer_case_box_yneg" />
+                <componentref id="computer_case_box_ypos" />
+                <componentref id="computer_case_box_xpos" />
+                <componentref id="computer_case_box_zpos" />
+                <componentref id="computer_case_box_zneg" />
             </children>
         </component>
 
@@ -607,12 +939,12 @@
             <transformation>
                 <translate x="0.5" y="0" z="0" />
                 <rotate axis="y" angle="90" />
-                <scale x="2" y="2" z="1"/>
+                <scale x="2" y="2" z="1" />
             </transformation>
-            <texture id="none"/>
-        
+            <texture id="none" />
+
             <children>
-                <componentref id="square_both"/>
+                <componentref id="square_both" />
             </children>
         </component>
         <component id="computer_case_box_zneg">
@@ -621,13 +953,13 @@
             </materials>
             <transformation>
                 <translate x="0" y="0" z="-1" />
-                <scale x="1" y="2" z="1"/>
-                
+                <scale x="1" y="2" z="1" />
+
             </transformation>
-            <texture id="none"/>
-        
+            <texture id="none" />
+
             <children>
-                <componentref id="square_both"/>
+                <componentref id="square_both" />
             </children>
         </component>
         <component id="computer_case_box_zpos">
@@ -636,12 +968,12 @@
             </materials>
             <transformation>
                 <translate x="0" y="0" z="1" />
-                <scale x="1" y="2" z="1"/>
+                <scale x="1" y="2" z="1" />
             </transformation>
-            <texture id="none"/>
-        
+            <texture id="none" />
+
             <children>
-                <componentref id="square_both"/>
+                <componentref id="square_both" />
             </children>
         </component>
         <component id="computer_case_box_yneg">
@@ -650,13 +982,13 @@
             </materials>
             <transformation>
                 <translate x="0" y="-1" z="0" />
-                
-                <rotate axis="x" angle="90"/>
-                <scale x="1" y="2" z="1"/>
+
+                <rotate axis="x" angle="90" />
+                <scale x="1" y="2" z="1" />
             </transformation>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
-                <componentref id="square_both"/>
+                <componentref id="square_both" />
             </children>
         </component>
         <component id="computer_case_box_ypos">
@@ -665,19 +997,17 @@
             </materials>
             <transformation>
                 <translate x="0" y="1" z="0" />
-                <rotate axis="x" angle="90"/>
+                <rotate axis="x" angle="90" />
             </transformation>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
-                <componentref id="computer_case_panel_top"/>
+                <componentref id="computer_case_panel_top" />
             </children>
         </component>
 
         <component id="computer_case_panel_top">
             <!-- centered on origin -->
-            <transformation>
-                
-            </transformation>
+            <transformation></transformation>
             <materials>
                 <material id="inherit" />
             </materials>
@@ -690,9 +1020,7 @@
 
         <component id="case_powerbutton">
             <!-- not centered on origin(positioned to fit in computer_case_panel_top) -->
-            <transformation>
-                
-            </transformation>
+            <transformation></transformation>
             <materials>
                 <material id="inherit" />
             </materials>
@@ -728,21 +1056,20 @@
                 <componentref id="cubeBothfaces" />
             </children>
         </component>
-        
+
         <component id="computer_case_panel">
             <!-- centered on origin -->
             <transformation>
-                <scale x="1" y="2" z="1"/>
+                <scale x="1" y="2" z="1" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
                 <componentref id="square_both" />
             </children>
         </component>
-
 
 
         <!--Chair-->
@@ -753,17 +1080,17 @@
             <transformation>
                 <translate x="-15" y="-2.7" z="-15" />
                 <rotate axis="y" angle="-90" />
-                <scale x="1.7" y="1.7" z="1.7"/>
+                <scale x="1.7" y="1.7" z="1.7" />
             </transformation>
-            <texture id="none"/>
-        
+            <texture id="none" />
+
             <children>
                 <componentref id="chair_base" />
-                <componentref id="chair_back"/>
-                <componentref id="chair_leg_zposxpos"/>
-                <componentref id="chair_leg_znegxpos"/>
-                <componentref id="chair_leg_znegxneg"/>
-                <componentref id="chair_leg_zposxneg"/>
+                <componentref id="chair_back" />
+                <componentref id="chair_leg_zposxpos" />
+                <componentref id="chair_leg_znegxpos" />
+                <componentref id="chair_leg_znegxneg" />
+                <componentref id="chair_leg_zposxneg" />
             </children>
         </component>
 
@@ -773,12 +1100,12 @@
             </materials>
             <transformation>
                 <translate x="0" y="3.4" z="-0.80" />
-                <scale x="2" y="3" z="0.1"/>
+                <scale x="2" y="3" z="0.1" />
             </transformation>
-            <texture id="none"/>
-        
+            <texture id="none" />
+
             <children>
-                <componentref id="cubeBothfaces"/>
+                <componentref id="cubeBothfaces" />
             </children>
         </component>
         <component id="chair_base">
@@ -787,12 +1114,12 @@
             </materials>
             <transformation>
                 <translate x="0" y="2" z="0" />
-                <scale x="2" y="0.2" z="2"/>
+                <scale x="2" y="0.2" z="2" />
             </transformation>
-            <texture id="none"/>
-        
+            <texture id="none" />
+
             <children>
-                <componentref id="cubeBothfaces"/>
+                <componentref id="cubeBothfaces" />
             </children>
         </component>
         <component id="chair_leg_zposxpos">
@@ -802,10 +1129,10 @@
             <transformation>
                 <translate x="0.75" y="0" z="0.75" />
             </transformation>
-            <texture id="none"/>
-        
+            <texture id="none" />
+
             <children>
-                <componentref id="chair_leg"/>
+                <componentref id="chair_leg" />
             </children>
         </component>
         <component id="chair_leg_znegxpos">
@@ -815,10 +1142,10 @@
             <transformation>
                 <translate x="0.75" y="0" z="-0.75" />
             </transformation>
-            <texture id="none"/>
-        
+            <texture id="none" />
+
             <children>
-                <componentref id="chair_leg"/>
+                <componentref id="chair_leg" />
             </children>
         </component>
         <component id="chair_leg_znegxneg">
@@ -828,10 +1155,10 @@
             <transformation>
                 <translate x="-0.75" y="0" z="-0.75" />
             </transformation>
-            <texture id="none"/>
-        
+            <texture id="none" />
+
             <children>
-                <componentref id="chair_leg"/>
+                <componentref id="chair_leg" />
             </children>
         </component>
         <component id="chair_leg_zposxneg">
@@ -841,10 +1168,10 @@
             <transformation>
                 <translate x="-0.75" y="0" z="0.75" />
             </transformation>
-            <texture id="none"/>
-        
+            <texture id="none" />
+
             <children>
-                <componentref id="chair_leg"/>
+                <componentref id="chair_leg" />
             </children>
         </component>
         <component id="chair_leg">
@@ -853,12 +1180,12 @@
             </materials>
             <transformation>
                 <translate x="0" y="1" z="0" />
-                <scale x="0.25" y="2" z="0.25"/>
+                <scale x="0.25" y="2" z="0.25" />
             </transformation>
-            <texture id="none"/>
-        
+            <texture id="none" />
+
             <children>
-                <componentref id="cubeBothfaces"/>
+                <componentref id="cubeBothfaces" />
             </children>
         </component>
 
@@ -867,11 +1194,11 @@
                 <material id="caseMaterial" />
             </materials>
             <transformation>
-                <translate x="-20" y="3.55" z="-15"/>
+                <translate x="-20" y="3.55" z="-15" />
                 <rotate axis="y" angle="90" />
             </transformation>
-            <texture id="none"/>
-                
+            <texture id="none" />
+
             <children>
                 <componentref id="monitor" />
             </children>
@@ -881,11 +1208,9 @@
             <materials>
                 <material id="caseMaterial" />
             </materials>
-            <transformation>
-                
-            </transformation>
-            <texture id="none"/>
-                
+            <transformation></transformation>
+            <texture id="none" />
+
             <children>
                 <componentref id="monitor_base" />
                 <componentref id="monitor_base_stick" />
@@ -899,10 +1224,10 @@
             </materials>
             <transformation>
                 <translate x="0" y="2" z="0.45" />
-                
+
             </transformation>
-            <texture id="none"/>
-                
+            <texture id="none" />
+
             <children>
                 <componentref id="monitor_display_case" />
                 <componentref id="monitor_screen" />
@@ -910,17 +1235,16 @@
             </children>
         </component>
 
-        
 
         <component id="monitor_display_case">
             <materials>
                 <material id="inherit" />
             </materials>
             <transformation>
-                <scale x="4" y="2.5" z="0.15"/>
+                <scale x="4" y="2.5" z="0.15" />
             </transformation>
-            <texture id="none"/>
-                
+            <texture id="none" />
+
             <children>
                 <componentref id="cubeBothfaces" />
             </children>
@@ -930,11 +1254,11 @@
                 <material id="whiteBrightMaterial" />
             </materials>
             <transformation>
-                <translate x="0" y="0" z="0.05"/>
-                <scale x="3.8" y="2.3" z="0.10"/>
+                <translate x="0" y="0" z="0.05" />
+                <scale x="3.8" y="2.3" z="0.10" />
             </transformation>
-            <texture id="ricktexture"/>
-                
+            <texture id="ricktexture" />
+
             <children>
                 <componentref id="cubeBothfaces" />
             </children>
@@ -944,10 +1268,10 @@
                 <material id="inherit" />
             </materials>
             <transformation>
-                <scale x="0.5" y="0.1" z="0.5"/>
+                <scale x="0.5" y="0.1" z="0.5" />
             </transformation>
-            <texture id="none"/>
-                
+            <texture id="none" />
+
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -958,11 +1282,11 @@
             </materials>
             <transformation>
                 <rotate axis="x" angle="10" />
-                <translate x="0" y="1" z="0"/>
-                <scale x="0.25" y="2" z="0.25"/>
+                <translate x="0" y="1" z="0" />
+                <scale x="0.25" y="2" z="0.25" />
             </transformation>
-            <texture id="none"/>
-                
+            <texture id="none" />
+
             <children>
                 <componentref id="cubeBothfaces" />
             </children>
@@ -970,12 +1294,11 @@
 
 
         <component id="cubeBothfaces">
-            <transformation>
-            </transformation>
+            <transformation></transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <componentref id="cube_bottom" />
                 <componentref id="cube_top" />
@@ -989,92 +1312,91 @@
         <component id="cube_bottom">
             <transformation>
                 <translate x="0" y="-0.5" z="0" />
-                <rotate axis="x" angle="90"/>
-             </transformation>
+                <rotate axis="x" angle="90" />
+            </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
-                <componentref id="square_both"/>
+                <componentref id="square_both" />
             </children>
         </component>
 
         <component id="cube_top">
             <transformation>
                 <translate x="0" y="0.5" z="0" />
-                <rotate axis="x" angle="-90"/>
-             </transformation>
+                <rotate axis="x" angle="-90" />
+            </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
-                <componentref id="square_both"/>
+                <componentref id="square_both" />
             </children>
         </component>
 
         <component id="cube_zneg">
             <transformation>
-                <translate x="0" y="0" z = "-0.5"/>
-             </transformation>
+                <translate x="0" y="0" z="-0.5" />
+            </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
-                <componentref id="square_both"/>
+                <componentref id="square_both" />
             </children>
         </component>
 
         <component id="cube_zpos">
             <transformation>
-                <translate x="0" y="0" z = "0.5"/>
-             </transformation>
+                <translate x="0" y="0" z="0.5" />
+            </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
-                <componentref id="square_both"/>
+                <componentref id="square_both" />
             </children>
         </component>
 
         <component id="cube_xpos">
             <transformation>
-                <translate x="0.5" y="0" z = "0"/>
+                <translate x="0.5" y="0" z="0" />
                 <rotate axis="y" angle="90" />
-             </transformation>
+            </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
-                <componentref id="square_both"/>
+                <componentref id="square_both" />
             </children>
         </component>
 
         <component id="cube_xneg">
             <transformation>
-                <translate x="-0.5" y="0" z = "0"/>
+                <translate x="-0.5" y="0" z="0" />
                 <rotate axis="y" angle="90" />
-             </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit"/>
-            <children>
-                <componentref id="square_both"/>
-            </children>
-        </component>
-
-        <component id="square_both">
-            <transformation>
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
+            <children>
+                <componentref id="square_both" />
+            </children>
+        </component>
+
+        <component id="square_both">
+            <transformation></transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="square" />
                 <componentref id="square_reverse" />
@@ -1085,12 +1407,105 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <transformation>
                 <rotate axis="x" angle="180" />
             </transformation>
             <children>
                 <primitiveref id="square" />
+            </children>
+        </component>
+
+        <component id="detailedSquare">
+            <transformation>
+                
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="squarez0x0" />
+                <primitiveref id="squarez0x1" />
+                <primitiveref id="squarez0x2" />
+                <primitiveref id="squarez0x3" />
+                <primitiveref id="squarez0x4" />
+                <primitiveref id="squarez0x5" />
+                <primitiveref id="squarez0x6" />
+                <primitiveref id="squarez0x7" />
+                <primitiveref id="squarez0x8" />
+                <primitiveref id="squarez1x0" />
+                <primitiveref id="squarez1x1" />
+                <primitiveref id="squarez1x2" />
+                <primitiveref id="squarez1x3" />
+                <primitiveref id="squarez1x4" />
+                <primitiveref id="squarez1x5" />
+                <primitiveref id="squarez1x6" />
+                <primitiveref id="squarez1x7" />
+                <primitiveref id="squarez1x8" />
+                <primitiveref id="squarez2x0" />
+                <primitiveref id="squarez2x1" />
+                <primitiveref id="squarez2x2" />
+                <primitiveref id="squarez2x3" />
+                <primitiveref id="squarez2x4" />
+                <primitiveref id="squarez2x5" />
+                <primitiveref id="squarez2x6" />
+                <primitiveref id="squarez2x7" />
+                <primitiveref id="squarez2x8" />
+                <primitiveref id="squarez3x0" />
+                <primitiveref id="squarez3x1" />
+                <primitiveref id="squarez3x2" />
+                <primitiveref id="squarez3x3" />
+                <primitiveref id="squarez3x4" />
+                <primitiveref id="squarez3x5" />
+                <primitiveref id="squarez3x6" />
+                <primitiveref id="squarez3x7" />
+                <primitiveref id="squarez3x8" />
+                <primitiveref id="squarez4x0" />
+                <primitiveref id="squarez4x1" />
+                <primitiveref id="squarez4x2" />
+                <primitiveref id="squarez4x3" />
+                <primitiveref id="squarez4x4" />
+                <primitiveref id="squarez4x5" />
+                <primitiveref id="squarez4x6" />
+                <primitiveref id="squarez4x7" />
+                <primitiveref id="squarez4x8" />
+                <primitiveref id="squarez5x0" />
+                <primitiveref id="squarez5x1" />
+                <primitiveref id="squarez5x2" />
+                <primitiveref id="squarez5x3" />
+                <primitiveref id="squarez5x4" />
+                <primitiveref id="squarez5x5" />
+                <primitiveref id="squarez5x6" />
+                <primitiveref id="squarez5x7" />
+                <primitiveref id="squarez5x8" />
+                <primitiveref id="squarez6x0" />
+                <primitiveref id="squarez6x1" />
+                <primitiveref id="squarez6x2" />
+                <primitiveref id="squarez6x3" />
+                <primitiveref id="squarez6x4" />
+                <primitiveref id="squarez6x5" />
+                <primitiveref id="squarez6x6" />
+                <primitiveref id="squarez6x7" />
+                <primitiveref id="squarez6x8" />
+                <primitiveref id="squarez7x0" />
+                <primitiveref id="squarez7x1" />
+                <primitiveref id="squarez7x2" />
+                <primitiveref id="squarez7x3" />
+                <primitiveref id="squarez7x4" />
+                <primitiveref id="squarez7x5" />
+                <primitiveref id="squarez7x6" />
+                <primitiveref id="squarez7x7" />
+                <primitiveref id="squarez7x8" />
+                <primitiveref id="squarez8x0" />
+                <primitiveref id="squarez8x1" />
+                <primitiveref id="squarez8x2" />
+                <primitiveref id="squarez8x3" />
+                <primitiveref id="squarez8x4" />
+                <primitiveref id="squarez8x5" />
+                <primitiveref id="squarez8x6" />
+                <primitiveref id="squarez8x7" />
+                <primitiveref id="squarez8x8" />
             </children>
         </component>
     </components>
