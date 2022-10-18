@@ -101,7 +101,7 @@ export class MyCylinder extends CGFobject {
 		this.initGLBuffers();
 	}
 
-    updateTexCoords(lenght_s, lenght_t){
+    updateTexCoords(length_s, length_t){
         return;
     }
 

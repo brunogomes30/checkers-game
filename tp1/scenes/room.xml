@@ -739,6 +739,7 @@
             </transformation>
             <materials>
                 <material id="roomMaterial_wall_zneg" />
+                <material id="roomMaterial_wall_zpos" />
             </materials>
             <texture id="none" />
             <children>
@@ -753,6 +754,7 @@
             </transformation>
             <materials>
                 <material id="roomMaterial_wall_zpos" />
+                <material id="roomMaterial_wall_zneg" />
             </materials>
             <texture id="none" />
             <children>
@@ -835,8 +837,7 @@
             </children>
         </component>
         <component id="legs">
-            <transformation>
-            </transformation>
+            <transformation></transformation>
             <materials>
                 <material id="inherit" />
             </materials>

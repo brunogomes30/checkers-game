@@ -64,16 +64,16 @@ export class MyRectangle extends CGFobject {
 		this.initGLBuffers();
 	}
 
-	updateTexCoords(lenght_s, lenght_t){
-		if (lenght_s == undefined || lenght_t == undefined){
+	updateTexCoords(length_s, length_t){
+		if (length_s == undefined || length_t == undefined){
 			return;
 		}
 		
 		this.texCoords = [
-			0, this.yDist/ lenght_t ,
-			this.xDist / lenght_s,  this.yDist / lenght_t,
+			0, this.yDist/ length_t ,
+			this.xDist / length_s,  this.yDist / length_t,
 			0, 0,
-			this.xDist/ lenght_s , 0
+			this.xDist/ length_s , 0
 		]
         
 		this.updateTexCoordsGLBuffers();
