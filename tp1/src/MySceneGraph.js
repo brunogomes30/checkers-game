@@ -45,7 +45,7 @@ export class MySceneGraph {
      */
     constructor(filename, scene) {
         this.loadedOk = null;
-
+        
         // Establish bidirectional references between scene and graph.
         this.scene = scene;
         scene.graph = this;

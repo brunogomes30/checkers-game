@@ -1,5 +1,6 @@
 import { CGFappearance } from '../../../lib/CGF.js';
 import { Texture } from '../textures/Texture.js'
+import { TextureScaleFactors } from '../textures/TextureScaleFactors.js';
 import { Component } from './Component.js'
 
 /**
@@ -58,27 +59,29 @@ function getMaterial(element, parents) {
 
 function setTexture(element, parents, material) {
     let texture = element.texture;
-    if (texture === 'inherit') {
-
+    const wasInherit = texture === 'inherit';
+    if (wasInherit) {
         for (let i = parents.length - 1; i >= 0; i--) {
             texture = parents[i].texture;
-            if (texture instanceof Texture) {
+            if (texture instanceof Texture || texture !== 'inherit') {
                 break;
             }
         }
     }
-
-    if (texture === 'none' || texture == undefined) {
-        material.setTexture(null);
+    if (!(texture instanceof Texture) || texture === undefined) {
+        if (wasInherit && texture === 'inherit') {
+            material.setTexture(element.scene.defaultTexture.texture);
+        } else {
+            material.setTexture(null);
+        }
         return;
     }
-
 
     material.setTexture(texture.texture);
 }
 
 function applyTextureScaling(element, parents) {
-    let textureScaleFactor;
+    let textureScaleFactor = new TextureScaleFactors(1, 1);
     let id = parents.length;
     while (id--) {
         if (parents[id].textureScaleFactor !== undefined) {

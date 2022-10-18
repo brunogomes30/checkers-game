@@ -6,5 +6,4 @@ export function switchLight(scene, key, index) {
     } else {
         light.disable();
     }
-    light.update();
 }

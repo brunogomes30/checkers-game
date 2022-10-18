@@ -1,3 +1,4 @@
+import { Texture } from './textures/Texture.js'
 import { CGFscene } from '../../lib/CGF.js';
 import { CGFaxis, CGFcamera } from '../../lib/CGF.js';
 import { buildInterface } from './interface/build.js';
@@ -30,6 +31,7 @@ export class XMLscene extends CGFscene {
         this.initCameras();
 
         this.enableTextures(true);
+        
 
         this.gl.clearDepth(100.0);
         this.gl.enable(this.gl.DEPTH_TEST);
@@ -98,6 +100,8 @@ export class XMLscene extends CGFscene {
 
         this.sceneInited = true;
         buildInterface(this.interface, this);
+        
+        this.defaultTexture = new Texture('', this, 'scenes/images/missing-texture.jpg');
     }
 
     /**
