@@ -10,7 +10,7 @@ export class Component{
 
     getMaterial(){
         return this.materials != undefined && this.materials.length > 0
-            ? this.materials[0]
+            ? this.materials[this.scene.materialIndex % this.materials.length]
             : undefined;
     }
 }

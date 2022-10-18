@@ -90,5 +90,5 @@ function applyTextureScaling(element, parents) {
         }
     }
 
-    element.updateTexCoords(textureScaleFactor.lenght_s, textureScaleFactor.lenght_t);
+    element.updateTexCoords(textureScaleFactor.length_s, textureScaleFactor.length_t);
 }

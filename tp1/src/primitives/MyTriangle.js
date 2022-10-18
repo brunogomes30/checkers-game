@@ -77,15 +77,15 @@ export class MyTriangle extends CGFobject {
 	 * Updates the list of texture coordinates of the rectangle
 	 * @param {Array} coords - Array of texture coordinates
 	 */
-	updateTexCoords(lenght_s, lenght_t) {
-		if (lenght_s == undefined || lenght_t == undefined) {
+	updateTexCoords(length_s, length_t) {
+		if (length_s == undefined || length_t == undefined) {
 			return;
 		}
 
 		this.texCoords = [
 			0, 1,
-			(this.sizeA / lenght_s), 1,
-			(this.sizeC * this.cosAlpha) / lenght_t, 1 - (this.sizeC * this.sinAlpha) / lenght_t
+			(this.sizeA / length_s), 1,
+			(this.sizeC * this.cosAlpha) / length_t, 1 - (this.sizeC * this.sinAlpha) / length_t
 		];
 		this.updateTexCoordsGLBuffers();
 	}

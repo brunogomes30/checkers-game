@@ -76,28 +76,28 @@ export function parseComponents(componentsNode, graph) {
                 if (textureId == '') {
                     graph.onXMLMinorError('Texture "' + textureId + '" not declared, used in component "' + componentID + '"');
                 } else {
-                    let lenght_s = graph.reader.getFloat(textureNode, 'lenght_s', false);
-                    let lenght_t = graph.reader.getFloat(textureNode, 'lenght_t', false);
+                    let length_s = graph.reader.getFloat(textureNode, 'length_s', false);
+                    let length_t = graph.reader.getFloat(textureNode, 'length_t', false);
 
                     if (textureId == 'inherit' || textureId == 'none') {
                         texture = textureId
-                        if (lenght_s != null || lenght_t != null) {
-                            graph.onXMLMinorError((lenght_s != null ? 'lenght_s ' : 'lenght_t ') + (lenght_s != null && lenght_t != null ? 'and lenght_t ' : '') + 'shouldn\'t be used with ' + textureId + ' texture. In component ' + componentID);
+                        if (length_s != null || length_t != null) {
+                            graph.onXMLMinorError((length_s != null ? 'length_s ' : 'length_t ') + (length_s != null && length_t != null ? 'and length_t ' : '') + 'shouldn\'t be used with ' + textureId + ' texture. In component ' + componentID);
                         }
                     } else {
-                        if (lenght_s == null || lenght_t == null) {
-                            graph.onXMLMinorError((lenght_s == null ? 'lenght_s ' : 'lenght_t ') + (lenght_s == null && lenght_t == null ? 'and lenght_t ' : '') + 'option(s) mising for texture ' + textureId + '. In component ' + componentID);
+                        if (length_s == null || length_t == null) {
+                            graph.onXMLMinorError((length_s == null ? 'length_s ' : 'length_t ') + (length_s == null && length_t == null ? 'and length_t ' : '') + 'option(s) mising for texture ' + textureId + '. In component ' + componentID);
                         }
                         let textureInArr = graph.textures.filter(texture => texture.id == textureId);
                         if (textureInArr != undefined) {
-                            if (lenght_s == 0 || lenght_t == 0){
-                                graph.onXMLMinorError((lenght_s == 0 ? 'lenght_s ' : 'lenght_t ') + (lenght_s == 0 && lenght_t == 0 ? 'and lenght_t ' : '') + 'option(s) has / have invalid values (Zero). In component ' + componentID);
-                                lenght_s = undefined;
-                                lenght_t = undefined;
+                            if (length_s == 0 || length_t == 0){
+                                graph.onXMLMinorError((length_s == 0 ? 'length_s ' : 'length_t ') + (length_s == 0 && length_t == 0 ? 'and length_t ' : '') + 'option(s) has / have invalid values (Zero). In component ' + componentID);
+                                length_s = undefined;
+                                length_t = undefined;
                             }
                             
                             texture = textureInArr[0];
-                            textureScaleFactor = new TextureScaleFactors(lenght_s, lenght_t);
+                            textureScaleFactor = new TextureScaleFactors(length_s, length_t);
                         } else {
                             graph.onXMLMinorError(`Texture "${textureId}" not declared, used in component "$componentID}"`);
                         }

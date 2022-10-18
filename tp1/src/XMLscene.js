@@ -100,6 +100,7 @@ export class XMLscene extends CGFscene {
 
         this.sceneInited = true;
         buildInterface(this.interface, this);
+        this.materialIndex = 0;
         
         this.defaultTexture = new Texture('', this, 'scenes/images/missing-texture.jpg');
     }

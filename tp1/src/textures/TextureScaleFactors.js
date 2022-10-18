@@ -1,6 +1,6 @@
 export class TextureScaleFactors{
-    constructor(lenght_s, lenght_t){
-        this.lenght_s = lenght_s;
-        this.lenght_t = lenght_t;
+    constructor(length_s, length_t){
+        this.length_s = length_s;
+        this.length_t = length_t;
     }
 }
