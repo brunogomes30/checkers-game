@@ -103,8 +103,9 @@ export class XMLscene extends CGFscene {
 
         this.sceneInited = true;
 
-        this.interface.activeCameraId = Object.keys(this.cameras)[0]
-        switchCamera(this.interface, this, Object.keys(this.cameras)[0])
+        
+        this.interface.activeCameraId = this.defaultCameraId
+        switchCamera(this.interface, this, this.defaultCameraId)
 
         buildInterface(this.interface, this);
 

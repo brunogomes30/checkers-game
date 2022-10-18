@@ -37,7 +37,8 @@ export class MyCylinder extends CGFobject {
             z += stackHeight;
             radius += radiusIncrease;
             let angle = -sliceAngle;
-            for(let slice = 0; slice < this.slices; slice++){    
+            const textT = stack / this.stacks;
+            for(let slice = 0; slice <= this.slices; slice++){    
                 angle += sliceAngle;
                 const x = Math.cos(angle) * radius;
                 const y = Math.sin(angle) * radius;
@@ -45,26 +46,21 @@ export class MyCylinder extends CGFobject {
                 this.vertices.push(x, y, z);
 
                 const textS = slice / this.slices;
-                const textT = stack / this.stacks;
-                this.texCoords.push(textS, textT);
+                
+                this.texCoords.push(1 - textS, textT);
 
             }
         }
 
-        const vertCount = this.vertices.length / 3 - this.slices;
+        const vertCount = this.vertices.length / 3 - this.slices - 1 ;
         for(let i=0; i < vertCount; i++){
             // p3  p4
             // p1  p2
             const p1 = i;
             const p3 = i + this.slices;
             let p2, p4;
-            if((i + 1) % this.slices == 0){
-                p2 = i - this.slices + 1;
-                p4 = i + 1;
-            } else {
-                p2 = i + 1;
-                p4 = i + this.slices + 1;
-            }
+            p2 = i + 1;
+            p4 = i + this.slices + 1;            
             this.indices.push(p1, p2, p4);
             this.indices.push(p4, p3, p1);
         }

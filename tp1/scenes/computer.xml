@@ -66,7 +66,7 @@
             <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
         </primitive>
         <primitive id="torus">
-            <torus outter="5" inner="4" slices="11" loops="12" />
+            <torus outer="5" inner="4" slices="11" loops="12" />
         </primitive>
         <primitive id="cone">
             <cylinder base="3" top="0" height="5" slices="16" stacks="16" />

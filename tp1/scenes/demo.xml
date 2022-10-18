@@ -13,7 +13,7 @@
     </views>
 
     <ambient>
-        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
+        <ambient r="0.9" g="0.9" b="0.9" a="1.0" />
         <background r="0.0" g="0.0" b="0.0" a="1.0" />
     </ambient>
 
@@ -40,11 +40,11 @@
     </textures>
 
     <materials>
-        <material id="demoMaterial" shininess="10">
-            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="1.0" g="0.3" b="0.3" a="1.0" />
-            <diffuse r="0.6" g="0.0" b="0.0" a="1.0" />
-            <specular r="0.6" g="0.0" b="0.0" a="1.0" />
+        <material id="demoMaterial" shininess="200">
+            <emission r="1.0" g="1.0" b="1.0" a="1.0" />
+            <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.9" g="0.9" b="0.9" a="1.0" />
         </material>
     </materials>
 
@@ -61,10 +61,7 @@
             <rectangle x1="-0.5" y1="-1" x2="0.5" y2="1" />
         </primitive>
         <primitive id="torus">
-            <torus outter="5" inner="4" slices="11" loops="12" />
-        </primitive>
-        <primitive id="cone">
-            <cylinder base="3" top="0" height="5" slices="16" stacks="16" />
+            <torus outer="5" inner="4" slices="11" loops="12" />
         </primitive>
         <primitive id="triangle">
             <triangle x1="0" y1="0" z1="0" x2="5" y2="0" z2="0" x3="0" y3="5" z3="0" />
@@ -72,24 +69,40 @@
         <primitive id="sphere">
             <sphere radius="2" stacks="12" slices="12" />
         </primitive>
+        <primitive id="cylinder">
+            <cylinder base="3" top="3" height="5" slices="10" stacks="16" />
+        </primitive>
     </primitives>
 
     <components>
         <component id="demoRoot">
             <transformation>
-                <translate x="0" y="2" z="1" />
-                <scale x="0.5" y="0.5" z="0.5" />
             </transformation>
             <materials>
                 <material id="demoMaterial" />
             </materials>
             <texture id="demoTexture" length_s="1" length_t="1"/>
             <children>
-                <primitiveref id="triangle" />
-                <primitiveref id="sphere" />
+                <componentref id="triangle" />
+                <componentref id="sphere" />
+                <componentref id="cylinder" />
+                <componentref id="rectangle" />
+                <componentref id="torus" />
             </children>
         </component>
-        <component id="sphere2">
+        <component id="triangle">
+            <transformation>
+                <translate x="-10" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="triangle" />
+            </children>
+        </component>
+        <component id="sphere">
             <transformation>
                 <translate x="0" y="0" z="0" />
             </transformation>
@@ -99,31 +112,45 @@
             <texture id="inherit"/>
             <children>
                 <primitiveref id="sphere" />
-                <componentref id="sphere3" />
             </children>
         </component>
-        <component id="sphere3">
-           <transformation>
-               <translate x="5" y="0" z="0" />
-           </transformation>
-           <materials>
-               <material id="demoMaterial" />
-           </materials>
-           <texture id="none"/>
-           <children>
-               <primitiveref id="sphere" />
-           </children>
-        </component>
-        <component id="sphere4">
+
+        <component id="torus">
             <transformation>
-                <translate x="10" y="0" z="0" />
+                <translate x="20" y="0" z="0" />
             </transformation>
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="none"/>
+            <texture id="inherit"/>
             <children>
-                <primitiveref id="sphere" />
+                <primitiveref id="torus" />
+            </children>
+        </component>
+
+        <component id="cylinder">
+            <transformation>
+                <translate x="0" y="0" z="-10" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="cylinder" />
+            </children>
+        </component>
+
+        <component id="rectangle">
+            <transformation>
+                <translate x="0" y="0" z="5" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="rectangle" />
             </children>
         </component>
 

@@ -10,6 +10,11 @@ export function parseView(viewsNode, graph) {
     graph.scene.cameras = {};
     let cameras = graph.scene.cameras;
 
+    graph.scene.defaultCameraId = graph.reader.getString(viewsNode, 'default', false);
+    if(graph.scene.defaultCameraId == null ){
+        return `Default camera not set`;
+    }
+
     for (let viewNode of viewsNode.children) {
         let viewType = viewNode.nodeName
         if (viewType != 'perspective' && viewType != 'ortho') {
@@ -22,7 +27,8 @@ export function parseView(viewsNode, graph) {
             return 'No ID defined for a view block';
         }
         if (viewId in cameras) {
-            return `ID must be unique for each camera (conflict: ID = ${viewId})`;
+            graph.onXMLMinorError(`ID must be unique for each camera (conflict: ID = '${viewId}')`);
+            continue;
         }
 
         let res
@@ -111,8 +117,12 @@ export function parseView(viewsNode, graph) {
                 }
             }
 
+
             cameras[viewId] = new CGFcameraOrtho(left, right, bottom, top, near, far, vec3.fromValues(...from), vec3.fromValues(...to), vec3.fromValues(...up))
         }
+    }
+    if(cameras[graph.scene.defaultCameraId] == undefined){
+        return "Couldn't find default camera with id " + graph.scene.defaultCameraId;
     }
     return;
 }

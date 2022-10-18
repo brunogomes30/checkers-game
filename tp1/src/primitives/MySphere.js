@@ -36,6 +36,7 @@ export class MySphere extends CGFobject {
             const yz = Math.cos(stackAngle) * this.radius;
             stackAngle += stackAngleIncrease;
             let sliceAngle = - sliceAngleIncrease;
+            const textT = stack / this.stacks;
             for (let slice = 0; slice <= this.slices; slice++) {
                 sliceAngle += sliceAngleIncrease;
                 const y = yz * Math.sin(sliceAngle);
@@ -43,11 +44,9 @@ export class MySphere extends CGFobject {
                 this.vertices.push(x, y, z);
                 this.normals.push(...vectorNormalize([x, y, z]));
 
-                const textS = slice > this.slices
-                    ? (this.slices - slice * 2) / this.slices
-                    : slice * 2 / this.slices;
+                const textS = slice / this.slices;
                 const textT = stack / this.stacks;
-                this.texCoords.push(textS, textT);
+                this.texCoords.push(1 - textS, textT);
             }
 
 

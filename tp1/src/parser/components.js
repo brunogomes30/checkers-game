@@ -11,8 +11,9 @@ export function parseComponents(componentsNode, graph) {
     graph.components = [];
 
     let grandChildren = [];
-    const grandgrandChildren = [];
-
+    if(componentNodes.length === 0){
+        return 'There is no components in the xml file.';
+    }
     // Any number of components.
     for (let i = 0; i < componentNodes.length; i++) {
         if (componentNodes[i].nodeName !== "component") {
