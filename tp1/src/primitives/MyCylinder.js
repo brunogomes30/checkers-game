@@ -41,11 +41,10 @@ export class MyCylinder extends CGFobject {
                 angle += sliceAngle;
                 const x = Math.cos(angle) * radius;
                 const y = Math.sin(angle) * radius;
+                
                 this.vertices.push(x, y, z);
 
-                const textS = slice > this.slices 
-                    ? (this.slices - slice*2) / this.slices
-                    : slice * 2 / this.slices;
+                const textS = slice / this.slices;
                 const textT = stack / this.stacks;
                 this.texCoords.push(textS, textT);
 
@@ -70,7 +69,7 @@ export class MyCylinder extends CGFobject {
             this.indices.push(p4, p3, p1);
         }
 
-        
+        console.log(this);
         
         const xxx = this.slices * (this.stacks - 1) * 3;
         let possibleNormals = [];

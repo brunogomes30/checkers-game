@@ -2,8 +2,6 @@ import { switchLight } from '../controllers/lights.js'
 
 export function buildInterface(ui, scene) {
     buildLightsFolder(ui, scene);
-
-
 }
 
 function buildLightsFolder(ui, scene) {
