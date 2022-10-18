@@ -114,8 +114,6 @@ export function parseView(viewsNode, graph) {
             cameras[viewId] = new CGFcameraOrtho(left, right, bottom, top, near, far, vec3.fromValues(...from), vec3.fromValues(...to), vec3.fromValues(...up))
         }
     }
-    console.log(cameras)
-    graph.onXMLMinorError("Parsed views and created cameras.");
     return;
 }
 

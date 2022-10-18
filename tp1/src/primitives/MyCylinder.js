@@ -68,8 +68,6 @@ export class MyCylinder extends CGFobject {
             this.indices.push(p1, p2, p4);
             this.indices.push(p4, p3, p1);
         }
-
-        console.log(this);
         
         const xxx = this.slices * (this.stacks - 1) * 3;
         let possibleNormals = [];

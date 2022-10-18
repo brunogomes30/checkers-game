@@ -90,12 +90,12 @@ export function parseComponents(componentsNode, graph) {
                         }
                         let textureInArr = graph.textures.filter(texture => texture.id == textureId);
                         if (textureInArr != undefined) {
-                            if (length_s == 0 || length_t == 0){
+                            if (length_s == 0 || length_t == 0) {
                                 graph.onXMLMinorError((length_s == 0 ? 'length_s ' : 'length_t ') + (length_s == 0 && length_t == 0 ? 'and length_t ' : '') + 'option(s) has / have invalid values (Zero). In component ' + componentID);
                                 length_s = undefined;
                                 length_t = undefined;
                             }
-                            
+
                             texture = textureInArr[0];
                             textureScaleFactor = new TextureScaleFactors(length_s, length_t);
                         } else {
@@ -114,7 +114,7 @@ export function parseComponents(componentsNode, graph) {
             const child = childrenNodes[i];
             const id = graph.reader.getString(child, "id");
             if (child.nodeName === 'primitiveref') {
-                if(graph.primitives[id] === undefined){
+                if (graph.primitives[id] === undefined) {
                     graph.onXMLMinorError(`Primitive "${id}" not found in component "${componentID}"`);
                     continue;
                 }
@@ -138,9 +138,13 @@ export function parseComponents(componentsNode, graph) {
         for (const childKey in component.children) {
             const child = component.children[childKey];
             if (typeof child === 'string') {
-                component.children[childKey] = graph.components[child];
+                if (graph.components[child] != undefined) {
+                    component.children[childKey] = graph.components[child];
+                }
+                else{
+                    return `Unable to find referenced component '${child}' in component '${key}'`
+                }
             }
-
         }
     }
 
