@@ -23,7 +23,7 @@ export function parseMaterials(materialsNode, graph) {
 
         // Get id of the current material.
         let materialID = graph.reader.getString(materialNode, 'id');
-        if (materialID == null)
+        if (materialID == null || materialID == '')
             return "no ID defined for material";
 
         // Checks for repeated IDs.
