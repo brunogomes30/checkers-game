@@ -55,8 +55,8 @@
             <attenuation constant="0.0" linear="0.0" quadratic="0.02" />
         </omni>
 
-        <omni id="Room light" enabled="0" exponent="128.0">
-            <location x="0" y="20" z="0" w="1.0" />
+        <omni id="Room light" enabled="1" exponent="128.0">
+            <location x="5" y="20" z="5" w="1.0" />
             <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="0.2" g="0.2" b="0.2" a="1.0" />
@@ -71,6 +71,8 @@
         <texture id="rickface" file="scenes/images/rickface2.jpg" />
         <texture id="keyboardTexture" file="scenes/images/keyboard.jpg" />
         <texture id="paintingTexture" file="scenes/images/painting.jpg" />
+        <texture id="marbleTexture" file="scenes/images/marble.jpg" />
+        <texture id="coffeeTexture" file="scenes/images/coffee.jpg" />
         
         <texture id="missingTexture" file="scenes/images/missing-texture.jpg" />
     </textures>
@@ -196,6 +198,13 @@
             <diffuse r="0.7" g="0.7" b="0.7" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
         </material>
+
+        <material id="ceramicMaterial" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="0.4" g="0.4" b="0.4" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+        </material>
         
         
         
@@ -212,6 +221,12 @@
     <primitives>
         <primitive id="square">
             <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
+        </primitive>
+        <primitive id="torus_thinner">
+            <torus outer="1.0" inner="0.05" slices="32" loops="32" />
+        </primitive>
+        <primitive id="torus_thin">
+            <torus outer="1.0" inner="0.2" slices="32" loops="32" />
         </primitive>
         <primitive id="torus">
             <torus outer="1.0" inner="1.0" slices="16" loops="16" />
@@ -230,6 +245,9 @@
         </primitive>
         <primitive id="unitCylinder">
             <cylinder base="1" top="1" height="1" slices="16" stacks="16" />
+        </primitive>
+        <primitive id="unitCylinder2">
+            <cylinder base="-1" top="-1" height="1" slices="16" stacks="16" />
         </primitive>
         <primitive id="triangle">
             <triangle x1="0" y1="0" z1="0" x2="3" y2="0" z2="0" x3="0" y3="3" z3="0" />
@@ -597,6 +615,7 @@
                 <componentref id="mouse_position" />
                 <componentref id="painting_position" />
                 <componentref id="round_table_position" />
+                <componentref id="mug_positions" />
             </children>
         </component>
 
@@ -1206,7 +1225,7 @@
 
         <component id="round_table">
             <transformation>
-                <scale x="5" y="3" z="5" />
+                <scale x="3.5" y="3" z="3.5" />
             </transformation>
             <materials>
                 <material id="woodMaterial" />
@@ -2069,8 +2088,242 @@
                 <primitiveref id="unitCylinder" />
             </children>
             <texture id="inherit" />
-            
-            
+        </component>
+
+        <component id="mug_positions">
+            <transformation>
+                <translate x="0" y="3.4" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="mug_position_1" />
+                <componentref id="mug_position_2" />
+                <componentref id="mug_position_3" />
+                <componentref id="mug_position_4" />
+                <componentref id="mug_position_5" />
+                <componentref id="mug_position_6" />
+                <componentref id="mug_position_7" />
+            </children>
+        </component>
+
+        <component id="mug_position_1">
+            <transformation>
+                <translate x="-1.25" y="0" z="0.5" />
+                <rotate axis="y" angle="20" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="mug" />
+            </children>
+        </component>
+        <component id="mug_position_2">
+            <transformation>
+                <translate x="1.25" y="0" z="0.1" />
+                <rotate axis="y" angle="-20" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="mug" />
+            </children>
+        </component>
+        <component id="mug_position_3">
+            <transformation>
+                <translate x="-2" y="0" z="0.25" />
+                <rotate axis="y" angle="33" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="mug" />
+            </children>
+        </component>
+        <component id="mug_position_4">
+            <transformation>
+                <translate x="-0.4" y="0" z="0.4" />
+                <rotate axis="y" angle="-33" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="mug" />
+            </children>
+        </component>
+        <component id="mug_position_5">
+            <transformation>
+                <translate x="0.4" y="0" z="-0.4" />
+                <rotate axis="y" angle="55" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="mug" />
+            </children>
+        </component>
+        <component id="mug_position_6">
+            <transformation>
+                <translate x="0.05" y="0" z="-1.8" />
+                <rotate axis="y" angle="-55" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="mug" />
+            </children>
+        </component>
+        <component id="mug_position_7">
+            <transformation>
+                <translate x="1" y="0" z="-1" />
+                <rotate axis="y" angle="-55" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="mug" />
+            </children>
+        </component>
+
+        <component id="mug">
+            <transformation>
+                
+            </transformation>
+            <materials>
+                <material id="ceramicMaterial" />
+            </materials>
+            <texture id="marbleTexture" />
+            <children>
+                <componentref id="mug_cup" />
+                <componentref id="mug_handle" />
+                <componentref id="mug_rim"/>
+            </children>
+        </component>
+
+        <component id="mug_cup">
+            <transformation>
+                <scale x="0.2" y="0.4" z="0.2" />
+            </transformation>
+            <materials>
+                <material id="ceramicMaterial" />
+            </materials>
+            <texture id="marbleTexture" />
+            <children>
+                <componentref id="mug_cylinder" />
+                <componentref id="mug_top" />
+                <componentref id="mug_base" />
+            </children>
+        </component>
+
+        
+
+        <component id="mug_cylinder">
+            <transformation>
+                <scale x="1" y="1" z="1" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="unitCylinder"/>
+                <componentref id="reverse_cylinder"/>
+            </children>
+        </component>
+
+        <component id="mug_top">
+            <transformation>
+                <scale x="1" y="1" z="1" />
+                <translate x="0" y="-0.2" z="0"/>
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="coffeeTexture" />
+
+            <children>
+                <primitiveref id="circle" />
+            </children>
+        </component>
+
+        <component id="reverse_cylinder">
+            <transformation>
+                <translate x="0" y="0" z="1" />
+                <scale x="-1" y="-1" z="-1" />
+                
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+
+            <children>
+                <primitiveref id="unitCylinder" />
+            </children>
+        </component>
+        <component id="mug_base">
+            <transformation>
+                <scale x="1" y="1" z="1" />
+                <translate x="0" y="-1" z="0"/>
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+
+            <children>
+                <primitiveref id="circle" />
+            </children>
+        </component>
+
+        <component id="mug_rim">
+            <transformation>
+                
+                <scale x="0.2" y="0.2" z="0.2" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+
+            <children>
+                <primitiveref id="torus_thinner" />
+            </children>
+        </component>
+
+        <component id="mug_handle">
+            <transformation>
+                <translate x="0.2" y="-0.23" z="0" />
+                <scale x="0.120" y="0.120" z="0.120" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+
+            <children>
+                <primitiveref id="torus_thin" />
+            </children>
         </component>
 
         <component id="cylinder_bases_bottom">
