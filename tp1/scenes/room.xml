@@ -30,7 +30,7 @@
     </ambient>
 
     <lights>
-        <spot id="desk_spotlight" enabled="1" angle="60" exponent="2">
+        <spot id="Desk spotlight" enabled="1" angle="60" exponent="2">
             <location x="-15" y="20.55" z="-10" w="1.0" />
             <target x="-20" y="0" z="-15" />
             <ambient r="0" g="0" b="0" a="1.0" />
@@ -38,7 +38,7 @@
             <specular r="0.8" g="0.8" b="0.8" a="1.0" />
             <attenuation constant="0" linear="0.05" quadratic="0.0" />
         </spot>
-        <spot id="monitor" enabled="1" angle="90" exponent="2">
+        <spot id="Monitor" enabled="1" angle="90" exponent="2">
             <location x="-19" y="6" z="-15" w="1.0" />
             <target x="-15" y="5" z="-15" />
             <ambient r="0" g="0" b="0" a="1.0" />
@@ -47,12 +47,20 @@
             <attenuation constant="0" linear="0.0" quadratic="0.005" />
         </spot>
 
-        <omni id="corner_light" enabled="1" angle="90" exponent="128.0">
+        <omni id="Corner light" enabled="1" angle="90" exponent="128.0">
             <location x="20" y="1" z="20" w="1.0" />
             <ambient r="1.0" g="0.2" b="0.2" a="1.0" />
             <diffuse r="1.0" g="0.2" b="0.2" a="1.0" />
             <specular r="1.0" g="0.2" b="0.2" a="1.0" />
             <attenuation constant="0.0" linear="0.0" quadratic="0.02" />
+        </omni>
+
+        <omni id="Room light" enabled="0" exponent="128.0">
+            <location x="0" y="20" z="0" w="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="0.2" g="0.2" b="0.2" a="1.0" />
+            <attenuation constant="0.0" linear="0.05" quadratic="0.0" />
         </omni>
     </lights>
 
@@ -206,7 +214,13 @@
             <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
         </primitive>
         <primitive id="torus">
-            <torus outer="0.5" inner="0.5" slices="11" loops="12" />
+            <torus outer="1.0" inner="1.0" slices="16" loops="16" />
+        </primitive>
+        <primitive id="torus_medium">
+            <torus outer="0.5" inner="1.0" slices="16" loops="16" />
+        </primitive>
+        <primitive id="torus_wide">
+            <torus outer="0.5" inner="1.5" slices="16" loops="16" />
         </primitive>
         <primitive id="circle">
             <cylinder base="1" top="0" height="0.01" slices="16" stacks="16" />
@@ -1229,6 +1243,52 @@
             <texture id="none" />
             <children>
                 <componentref id="round_table_leg_middle" />
+                <componentref id="round_table_torus_1" />
+                <componentref id="round_table_torus_2" />
+                <componentref id="round_table_torus_3" />
+            </children>
+        </component>
+
+        <component id="round_table_torus_1">
+            <transformation>
+                <translate x="0.0" y="-0.8" z="0.0" />
+                <scale x="0.2" y="0.2" z="0.2" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="torus" />
+            </children>
+        </component>
+        <component id="round_table_torus_2">
+            <transformation>
+                <translate x="0.0" y="-0.65" z="0.0" />
+                <scale x="0.15" y="0.15" z="0.15" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="torus" />
+            </children>
+        </component>
+        <component id="round_table_torus_3">
+            <transformation>
+                <translate x="0.0" y="-0.55" z="0.0" />
+                <scale x="0.10" y="0.10" z="0.10" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="torus" />
             </children>
         </component>
 
