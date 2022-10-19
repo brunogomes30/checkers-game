@@ -47,7 +47,7 @@ export function parseLights(lightsNode, graph) {
         if (aux == null || isNaN(aux))
             graph.onXMLMinorError("unable to parse attribute 'enabled' for light ID = " + lightId + "; assuming 'enabled=1'");
 
-        enableLight = aux || 1;
+        enableLight = aux;
 
         //Add enabled boolean and type name to light info
         global.push(enableLight);
