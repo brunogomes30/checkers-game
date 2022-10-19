@@ -56,7 +56,11 @@ export class MyTorus extends CGFobject {
                 this.normals.push(x, y, z);
 
                 this.texCoords.push(-loop * texLoopsStep, -slice * texSlicesStep);
+            }
+        }
 
+        for (let loop=0; loop <= this.loops; loop++){
+            for(let slice=0;slice < this.slices; slice++){
                 //0  3
                 //1  2    
                 const vertex0 = slice + loop * this.slices;
@@ -71,6 +75,8 @@ export class MyTorus extends CGFobject {
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }
+
+    
 
     updateTexCoords(length_s, length_t) {
         return;
