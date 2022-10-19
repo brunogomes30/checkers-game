@@ -3,7 +3,7 @@
 
     <views default="rickrolled">
         <perspective id="rickrolled" near="0.1" far="500" angle="60">
-            <from x="-15" y="5" z="-15" />
+            <from x="-13" y="5" z="-15" />
             <to x="-20" y="5" z="-15" />
         </perspective>
         <perspective id="webcam" near="0.1" far="500" angle="60">
@@ -34,7 +34,7 @@
             <target x="-20" y="0" z="-15" />
             <ambient r="0" g="0" b="0" a="1.0" />
             <diffuse r="0.8" g="0.8" b="1.0" a="1.0" />
-            <specular r="0.2" g="0.2" b="1.0" a="1.0" />
+            <specular r="0.8" g="0.8" b="0.8" a="1.0" />
             <attenuation constant="0" linear="0.05" quadratic="0.0" />
         </spot>
         <spot id="monitor" enabled="1" angle="90" exponent="2">
@@ -42,7 +42,7 @@
             <target x="-15" y="5" z="-15" />
             <ambient r="0" g="0" b="0" a="1.0" />
             <diffuse r="0.8" g="0.8" b="1.0" a="1.0" />
-            <specular r="0.2" g="0.2" b="1.0" a="1.0" />
+            <specular  r="0.8" g="0.8" b="0.8" a="1.0" />
             <attenuation constant="0" linear="0.0" quadratic="0.005" />
         </spot>
 
@@ -61,6 +61,8 @@
         <texture id="floorTexture" file="scenes/images/floorTexture.png" />
         <texture id="ricktexture" file="scenes/images/rickboy.jpg" />
         <texture id="rickface" file="scenes/images/rickface2.jpg" />
+        <texture id="keyboardTexture" file="scenes/images/keyboard.jpg" />
+        
         <texture id="missingTexture" file="scenes/images/missing-texture.jpg" />
     </textures>
 
@@ -143,6 +145,22 @@
             <diffuse r="0.054901960784313725" g="0.050980392156862744" b="0.050980392156862744" a="1.0" />
             <specular r="0.054901960784313725" g="0.050980392156862744" b="0.050980392156862744" a="1.0" />
         </material>
+
+        <material id="keyboardPanel" shininess="1">
+            <emission r="0.2" g="0.2" b="0.2" a="1.0" />
+            <ambient r="0.054901960784313725" g="0.050980392156862744" b="0.050980392156862744" a="1.0" />
+            <diffuse r="0.054901960784313725" g="0.050980392156862744" b="0.050980392156862744" a="1.0" />
+            <specular r="0.054901960784313725" g="0.050980392156862744" b="0.050980392156862744" a="1.0" />
+        </material>
+
+        <material id="keyboardMaterial" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.1" g="0.1" b="0.1" a="1.0" />
+            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
+            <specular r="0.1" g="0.1" b="0.1" a="1.0" />
+        </material>
+        
+        
     </materials>
 
     <transformations>
@@ -527,6 +545,7 @@
                 <componentref id="computer_case" />
                 <componentref id="monitor_position" />
                 <componentref id="person_position"/>
+                <componentref id="keyboard_pos" />
             </children>
         </component>
 
@@ -1172,6 +1191,71 @@
             </children>
         </component>
 
+        <component id="keyboard_pos">
+            <transformation>
+                <translate x="-16" y="3.55" z="-15" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="none" />
+
+            <children>
+                <componentref id="keyboard" />
+            </children>
+        </component>
+
+        <component id="keyboard">
+            <transformation>
+                <scale x="1.0" y="0.2" z="2.5" />
+            </transformation>
+            <materials>
+                <material id="keyboardMaterial" />
+            </materials>
+
+            <texture id="none" />
+
+            <children>
+                <componentref id="keyboardCase" />
+                <componentref id="keyboardPanel" />
+            </children>
+        </component>
+
+        <component id="keyboardCase">
+            <transformation>
+                <scale x="1.0" y="1.0" z="1.0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="none" />
+
+            <children>
+                <componentref id="cubeBothfaces" />
+            </children>
+        </component>
+
+        <component id="keyboardPanel">
+            <transformation>
+                <translate x="0.0" y="0.51" z="0.0"/>
+                <scale x="0.95" y="1.0" z="0.95" />
+                <rotate axis="y" angle="-90" />
+                <rotate axis="z" angle="180" />
+                <rotate axis="x" angle="90" />
+                
+            </transformation>
+            <materials>
+                <material id="keyboardPanel" length_s="1" length_t="1" />
+            </materials>
+
+            <texture id="keyboardTexture"/>
+
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
 
         <!--Computer Case-->
         <component id="computer_case">
@@ -1189,6 +1273,7 @@
                 <componentref id="computer_case_box_yneg" />
                 <componentref id="computer_case_box_ypos" />
                 <componentref id="computer_case_box_xpos" />
+                <componentref id="computer_case_box_xneg" />
                 <componentref id="computer_case_box_zpos" />
                 <componentref id="computer_case_box_zneg" />
             </children>
@@ -1201,6 +1286,21 @@
             </materials>
             <transformation>
                 <translate x="0.5" y="0" z="0" />
+                <rotate axis="y" angle="90" />
+                <scale x="2" y="2" z="1" />
+            </transformation>
+            <texture id="none" />
+
+            <children>
+                <componentref id="square_both" />
+            </children>
+        </component>
+        <component id="computer_case_box_xneg">
+            <materials>
+                <material id="caseMaterial" />
+            </materials>
+            <transformation>
+                <translate x="-0.5" y="0" z="0" />
                 <rotate axis="y" angle="90" />
                 <scale x="2" y="2" z="1" />
             </transformation>
@@ -1457,7 +1557,7 @@
                 <material id="caseMaterial" />
             </materials>
             <transformation>
-                <translate x="-20" y="3.55" z="-15" />
+                <translate x="-18" y="3.55" z="-15" />
                 <rotate axis="y" angle="90" />
             </transformation>
             <texture id="none" />
