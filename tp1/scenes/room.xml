@@ -159,6 +159,13 @@
             <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
             <specular r="0.1" g="0.1" b="0.1" a="1.0" />
         </material>
+        <material id="mouseMaterial" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.1" g="0.1" b="0.1" a="1.0" />
+            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
+            <specular r="0.1" g="0.1" b="0.1" a="1.0" />
+        </material>
+        
         
         
     </materials>
@@ -545,7 +552,8 @@
                 <componentref id="computer_case" />
                 <componentref id="monitor_position" />
                 <componentref id="person_position"/>
-                <componentref id="keyboard_pos" />
+                <componentref id="keyboard_position" />
+                <componentref id="mouse_position" />
             </children>
         </component>
 
@@ -1191,7 +1199,34 @@
             </children>
         </component>
 
-        <component id="keyboard_pos">
+        <component id="mouse_position">
+            <transformation>
+                <translate x="-16" y="3.55" z="-17"/>
+            </transformation>
+            <materials>
+                <material id="mouseMaterial" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="mouse" />
+            </children>
+        </component>
+
+        <component id="mouse">
+            <transformation>
+                <translate x="0.0" y="0.05" z="0.0" />
+                <scale x="0.6" y="0.1" z="0.2"/>
+            </transformation>
+            <materials>
+                <material id="mouseMaterial" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+
+        <component id="keyboard_position">
             <transformation>
                 <translate x="-16" y="3.55" z="-15" />
             </transformation>
