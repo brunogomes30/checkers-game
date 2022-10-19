@@ -1,10 +1,11 @@
 import { Texture } from './textures/Texture.js'
-import { CGFscene } from '../../lib/CGF.js';
+import { CGFappearance, CGFscene, CGFtexture } from '../../lib/CGF.js';
 import { CGFaxis, CGFcamera } from '../../lib/CGF.js';
 import { buildInterface } from './interface/build.js';
 import { MyInterface } from './MyInterface.js';
 import { switchLight } from './controllers/lights.js'
 import { switchCamera } from './controllers/cameras.js'
+import { TextureScaleFactors } from './textures/TextureScaleFactors.js';
 
 /**
  * XMLscene class, representing the scene that is to be rendered.
@@ -38,6 +39,16 @@ export class XMLscene extends CGFscene {
         this.gl.enable(this.gl.DEPTH_TEST);
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
+
+        this.defaultAppearance = new CGFappearance(this);
+        this.defaultAppearance.setShininess(10.0);
+        this.defaultAppearance.setDiffuse(0.2, 0.4, 0.8, 1.0);
+        this.defaultAppearance.setEmission(0.2, 0.3, 0.7, 1.0);
+        this.defaultAppearance.setSpecular(0.2, 0.4, 0.8, 1.0);
+        this.defaultAppearance.setAmbient(0.4, 0.4, 0.8, 1.0);
+
+        this.defautlTexture = new Texture('', this, '/tp1/scenes/default_images/missing-texture.jpg')
+        this.defaultTextureCoordinates = new TextureScaleFactors(1, 1)
 
         this.axis = new CGFaxis(this);
         this.setUpdatePeriod(100);
@@ -84,10 +95,7 @@ export class XMLscene extends CGFscene {
     }
 
     setDefaultAppearance() {
-        this.setAmbient(0.2, 0.4, 0.8, 1.0);
-        this.setDiffuse(0.2, 0.4, 0.8, 1.0);
-        this.setSpecular(0.2, 0.4, 0.8, 1.0);
-        this.setShininess(10.0);
+        this.defaultAppearance.apply()
     }
     /** Handler called when the graph is finally loaded. 
      * As loading is asynchronous, this may be called already after the application has started the run loop
@@ -110,8 +118,6 @@ export class XMLscene extends CGFscene {
         buildInterface(this.interface, this);
 
         this.materialIndex = 0;
-
-        this.defaultTexture = new Texture('', this, 'scenes/images/missing-texture.jpg');
     }
 
     /**
@@ -147,6 +153,7 @@ export class XMLscene extends CGFscene {
         this.popMatrix();
         // ---- END Background, camera and axis setup
     }
+
 }
 
 function setAttenuation(light, attenuationVec) {
