@@ -82,7 +82,7 @@
         <texture id="paintingTexture" file="scenes/images/painting.jpg" />
         <texture id="marbleTexture" file="scenes/images/marble.jpg" />
         <texture id="coffeeTexture" file="scenes/images/coffee.jpg" />
-        
+        <texture id="tableTexture" file="scenes/images/tableTexture.jpg" />
         <texture id="missingTexture" file="scenes/images/missing-texture.jpg" />
     </textures>
 
@@ -1226,7 +1226,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none" />
+            <texture id="tableTexture" />
             <children>
                 <componentref id="round_table" />
             </children>
@@ -1239,7 +1239,7 @@
             <materials>
                 <material id="woodMaterial" />
             </materials>
-            <texture id="none" />
+            <texture id="inherit" />
             <children>
                 <componentref id="round_table_top" />
                 <componentref id="round_table_legs" />
@@ -1255,7 +1255,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none" />
+            <texture id="inherit" />
             <children>
                 <componentref id="cylinder_bases" />
             </children>
@@ -1346,7 +1346,7 @@
             <materials>
                 <material id="woodMaterial" />
             </materials>
-            <texture id="none" />
+            <texture id="tableTexture" />
             <children>
                 <componentref id="table_legs" />
                 <componentref id="table_top" />
@@ -1436,7 +1436,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none" />
+            <texture id="inherit" />
             <children>
                 <componentref id="cubeBothfaces" />
             </children>
