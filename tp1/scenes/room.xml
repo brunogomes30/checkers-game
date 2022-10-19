@@ -45,9 +45,9 @@
 
         <omni id="corner_light" enabled="1" angle="90" exponent="128.0">
             <location x="20" y="1" z="20" w="1.0" />
-            <ambient r="0" g="0" b="0" a="1.0" />
+            <ambient r="1.0" g="0.2" b="0.2" a="1.0" />
             <diffuse r="1.0" g="0.2" b="0.2" a="1.0" />
-            <specular r="0.5" g="0.2" b="0.2" a="1.0" />
+            <specular r="1.0" g="0.2" b="0.2" a="1.0" />
             <attenuation constant="0.0" linear="0.0" quadratic="0.02" />
         </omni>
     </lights>
@@ -58,6 +58,7 @@
         <texture id="ricktexture" file="scenes/images/rickboy.jpg" />
         <texture id="rickface" file="scenes/images/rickface2.jpg" />
         <texture id="keyboardTexture" file="scenes/images/keyboard.jpg" />
+        <texture id="paintingTexture" file="scenes/images/painting.jpg" />
         
         <texture id="missingTexture" file="scenes/images/missing-texture.jpg" />
     </textures>
@@ -163,11 +164,18 @@
             <specular r="0.1" g="0.1" b="0.1" a="1.0" />
         </material>
 
-        <material id="paitingMaterial" shininess="1">
+        <material id="paintingMaterial" shininess="1">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="0.1" g="0.1" b="0.1" a="1.0" />
             <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
             <specular r="0.1" g="0.1" b="0.1" a="1.0" />
+        </material>
+
+        <material id="paintingPanelMaterial" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.7" g="0.7" b="0.7" a="1.0" />
+            <diffuse r="0.7" g="0.7" b="0.7" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
         </material>
         
         
@@ -558,13 +566,14 @@
                 <componentref id="person_position"/>
                 <componentref id="keyboard_position" />
                 <componentref id="mouse_position" />
+                <componentref id="painting_position" />
             </children>
         </component>
 
 
         <component id="painting_position">
             <transformation>
-
+                <translate x="25" y="3.55" z="20" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -577,7 +586,7 @@
 
         <component id="painting">
             <transformation>
-
+                <scale x="1.0" y="1.0" z="3.0" />
             </transformation>
             <materials>
                 <material id="paintingMaterial" />
@@ -591,7 +600,7 @@
 
         <component id="paintingFrame">
             <transformation>
-                <scale x="1.0" y="2.0" z="1.0" />
+                <scale x="0.1" y="3.0" z="2.0" />
             </transformation>
             <materials>
                 <material id="paintingMaterial" />
@@ -603,14 +612,16 @@
         </component>
         <component id="paintingPanel">
             <transformation>
-
+                <translate x="-0.055" y="0" z="0" />
+                <scale x="0.1" y="2.8" z="1.9" />
+                <rotate axis="y" angle="-90" />
             </transformation>
             <materials>
-                <material id="paintingMaterial" />
+                <material id="paintingPanelMaterial" />
             </materials>
-            <texture id="none" />
+            <texture id="paintingTexture" />
             <children>
-                <componentref id="painting" />
+                <primitiveref id="square" />
             </children>
         </component>
 
