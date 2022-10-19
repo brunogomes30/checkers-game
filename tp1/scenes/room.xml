@@ -1,7 +1,7 @@
 <sxs>
     <scene root="demoRoot" axis_length="5" />
 
-    <views default="default">
+    <views default="center_camera">
         <perspective id="default" near="0.1" far="500" angle="60">
             <from x="4" y="10" z="10" />
             <to x="20" y="1" z="20" />
@@ -13,6 +13,10 @@
         <perspective id="webcam" near="0.1" far="500" angle="60">
             <from x="-17" y="6" z="-15" />
             <to x="-15" y="6" z="-15" />
+        </perspective>
+        <perspective id="center_camera" near="0.1" far="500" angle="60">
+            <from x="10" y="8" z="10" />
+            <to x="0" y="4" z="0" />
         </perspective>
         <ortho id="orthoCam" near="-100" far="100" left="-50" right="50" bottom="-50" top="50">
             <from x="0" y="30" z="0" />
@@ -26,8 +30,8 @@
     </ambient>
 
     <lights>
-        <spot id="desk_spotlight" enabled="1" angle="90" exponent="2">
-            <location x="-20" y="20.55" z="-15" w="1.0" />
+        <spot id="desk_spotlight" enabled="1" angle="60" exponent="2">
+            <location x="-15" y="20.55" z="-10" w="1.0" />
             <target x="-20" y="0" z="-15" />
             <ambient r="0" g="0" b="0" a="1.0" />
             <diffuse r="0.8" g="0.8" b="1.0" a="1.0" />
@@ -177,6 +181,13 @@
             <diffuse r="0.7" g="0.7" b="0.7" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
         </material>
+
+        <material id="paintingPanelMaterial2" shininess="1">
+            <emission r="0.3" g="0.3" b="0.3" a="1.0" />
+            <ambient r="0.7" g="0.7" b="0.7" a="1.0" />
+            <diffuse r="0.7" g="0.7" b="0.7" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
+        </material>
         
         
         
@@ -197,11 +208,14 @@
         <primitive id="torus">
             <torus outer="0.5" inner="0.5" slices="11" loops="12" />
         </primitive>
-        <primitive id="cone">
-            <cylinder base="1" top="0.8" height="1" slices="16" stacks="16" />
+        <primitive id="circle">
+            <cylinder base="1" top="0" height="0.01" slices="16" stacks="16" />
         </primitive>
         <primitive id="cylinder">
             <cylinder base="2" top="2" height="3" slices="16" stacks="16" />
+        </primitive>
+        <primitive id="unitCylinder">
+            <cylinder base="1" top="1" height="1" slices="16" stacks="16" />
         </primitive>
         <primitive id="triangle">
             <triangle x1="0" y1="0" z1="0" x2="3" y2="0" z2="0" x3="0" y3="3" z3="0" />
@@ -217,6 +231,7 @@
         <primitive id="spherePerson">
             <sphere radius="1" stacks="12" slices="12" />
         </primitive>
+        
 
 
         <primitive id="squarez0x0">
@@ -567,6 +582,7 @@
                 <componentref id="keyboard_position" />
                 <componentref id="mouse_position" />
                 <componentref id="painting_position" />
+                <componentref id="round_table_position" />
             </children>
         </component>
 
@@ -618,6 +634,7 @@
             </transformation>
             <materials>
                 <material id="paintingPanelMaterial" />
+                <material id="paintingPanelMaterial2" />
             </materials>
             <texture id="paintingTexture" />
             <children>
@@ -1080,7 +1097,6 @@
             </transformation>
             <materials>
                 <material id="roomMaterial_wall_zneg" />
-                <material id="roomMaterial_wall_zpos" />
             </materials>
             <texture id="none" />
             <children>
@@ -1095,7 +1111,6 @@
             </transformation>
             <materials>
                 <material id="roomMaterial_wall_zpos" />
-                <material id="roomMaterial_wall_zneg" />
             </materials>
             <texture id="none" />
             <children>
@@ -1158,6 +1173,78 @@
             <texture id="none" />
             <children>
                 <componentref id="detailedSquare" />
+            </children>
+        </component>
+
+
+        <component id="round_table_position">
+            <transformation>
+                <translate x="0" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="round_table" />
+            </children>
+        </component>
+
+        <component id="round_table">
+            <transformation>
+                <scale x="5" y="3" z="5" />
+            </transformation>
+            <materials>
+                <material id="woodMaterial" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="round_table_top" />
+                <componentref id="round_table_legs" />
+            </children>
+        </component>
+
+        <component id="round_table_top">
+            <transformation>
+                <translate x="0" y="1" z="0" />
+                <rotate axis="x" angle="-90" />
+                <scale x="1.0" y="1.0" z="0.1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="cylinder_bases" />
+            </children>
+        </component>
+
+        <component id="round_table_legs">
+            <transformation>
+
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="round_table_leg_middle" />
+            </children>
+        </component>
+
+        <component id="round_table_leg_middle">
+            <transformation>
+                
+                <scale x="0.1" y="2.0" z="0.1" />
+                <translate x="0.0" y="0.5" z="0.0" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="unitCylinder" />
             </children>
         </component>
 
@@ -1877,6 +1964,67 @@
             </transformation>
             <children>
                 <primitiveref id="square" />
+            </children>
+        </component>
+
+        <component id="cylinder_bases">
+            <transformation>
+                <translate x="0" y="0" z="-0.5" />
+            </transformation> 
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            
+            <children>
+                <componentref id="cylinder_bases_top" />
+                <componentref id="cylinder_bases_cylinder" />
+                <componentref id="cylinder_bases_bottom" />
+                
+            </children>
+        </component>
+
+        <component id="cylinder_bases_top">
+            <transformation>
+                <translate x="0" y="0" z="0.5" />
+            </transformation> 
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            
+            <children>
+                <primitiveref id="circle" />
+            </children>
+        </component>
+
+        <component id="cylinder_bases_cylinder">
+            <transformation>
+                <translate x="0" y="0" z="-0.5" />
+            </transformation> 
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <children>
+                <primitiveref id="unitCylinder" />
+            </children>
+            <texture id="inherit" />
+            
+            
+        </component>
+
+        <component id="cylinder_bases_bottom">
+            <transformation>
+                <translate x="0" y="0" z="-0.5" />^
+                <rotate axis="y" angle="180"  />
+            </transformation> 
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            
+            <children>
+                <primitiveref id="circle" />
             </children>
         </component>
 
