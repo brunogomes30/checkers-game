@@ -23,11 +23,11 @@ export class MyTorus extends CGFobject {
 
     nextVertexInSlice(vertexId, pointPerSlice) {
         const testId = vertexId + 1;
-        return testId % (pointPerSlice + 1) == 0 ? testId - pointPerSlice : testId;
+        return testId % (pointPerSlice ) < testId ? testId - (pointPerSlice ) : testId;
     }
 
     analogousVertexInNextLoop(vertexId, pointPerSlice, vertexNr) {
-        return (vertexId + pointPerSlice) % (vertexNr);
+        return (vertexId + pointPerSlice + 1) % (vertexNr) < vertexId ? null : vertexId + pointPerSlice + 1;
     }
 
     initBuffers() {
@@ -35,11 +35,11 @@ export class MyTorus extends CGFobject {
         this.normals = [];
         this.indices = [];
         this.texCoords = [];
+        const vertexNr = (this.loops + 1) * (this.slices + 1)
         const loopsStep = RADIANS_CIRCLE / this.loops;
         const slicesStep = RADIANS_CIRCLE / this.slices;
         const texLoopsStep = 1 / this.loops;
         const texSlicesStep = 1 / this.slices;
-        const vertexNr = (this.loops + 1) * this.slices;
         for (let loop = 0; loop <= this.loops; loop++) {
             const loopAngle = truncateDecimalPlaces(loop * loopsStep, 10);
             const loopCos = Math.cos(loopAngle);
@@ -59,18 +59,23 @@ export class MyTorus extends CGFobject {
             }
         }
 
-        for (let loop=0; loop <= this.loops; loop++){
+        console.log(vertexNr)
+        console.log(this.vertices)
+        
+        for (let loop=0; loop < this.loops; loop++){
             for(let slice=0;slice < this.slices; slice++){
                 //0  3
                 //1  2    
-                const vertex0 = slice + loop * this.slices;
-                const vertex1 = vertex0 + 1;
-                const vertex2 = vertex1 + this.slices;
-                const vertex3 = vertex0 + this.slices;
+                const vertex0 = slice + loop * (this.slices + 1);
+                const vertex1 = vertex0 + 1
+                const vertex2 = vertex1 + this.slices + 1
+                const vertex3 = vertex0 + this.slices + 1
                 this.indices.push(vertex0, vertex1, vertex2);
                 this.indices.push(vertex2, vertex3, vertex0);
             }
         }
+
+        console.log(this.indices)
 
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
