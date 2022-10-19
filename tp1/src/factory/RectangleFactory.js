@@ -14,7 +14,10 @@ export class RectangleFactory{
     }
 
     build(reader, node, scene, id){
-        const values = buildValues(this.attributes, reader, node);
+        const values = buildValues(this.attributes, reader, node, id);
+        if (values == null || typeof values !== 'object'){
+            return values;
+        }
         return new MyRectangle(scene, id, values);
     }
 }

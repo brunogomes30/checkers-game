@@ -34,7 +34,9 @@ export function parsePrimitives(primitivesNode, graph) {
         // Specifications for the current primitive.
         
         const primitive = graph.factory.build(children[i], graph.reader, graph.scene);
-        
+        if(typeof primitive === 'string'){
+            return primitive;
+        }
         graph.primitives[primitiveId] = primitive;        
     }
 
