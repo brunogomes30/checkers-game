@@ -8,7 +8,7 @@ export function parseMaterials(materialsNode, graph) {
     const children = materialsNode.children;
 
     graph.materials = [];
-    const defaultMaterial = getDefaultMaterial(graph.scene);
+    const defaultMaterial = graph.scene.defaultAppearance;
     
     let grandChildren = [];
     let nodeNames = [];
@@ -73,15 +73,6 @@ function parseMaterial(node, materialID, graph){
     material.setSpecular(...properties['specular']);
     material.setAmbient(...properties['ambient']);
     return material;
-}
-
-function getDefaultMaterial(scene){
-    const material = new CGFappearance(scene);
-    material.setShininess(1);
-    material.setDiffuse(1, 1, 1, 1);
-    material.setEmission(0, 0, 0, 0);
-    material.setSpecular(0.5, 0.5, 0.5, 1);
-    material.setAmbient(1, 1, 1, 1);
 }
 
 function getLightValues(node, reader){

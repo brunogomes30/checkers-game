@@ -70,7 +70,7 @@ function setTexture(element, parents, material) {
     }
     if (!(texture instanceof Texture) || texture === undefined) {
         if (wasInherit && texture === 'inherit') {
-            material.setTexture(element.scene.defaultTexture.texture);
+            material.setTexture(element.scene.defaultTexture);
         } else {
             material.setTexture(null);
         }
