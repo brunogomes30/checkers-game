@@ -1,7 +1,7 @@
 <sxs>
     <scene root="demoRoot" axis_length="5" />
 
-    <views default="center_camera">
+    <views default="default">
         <perspective id="default" near="0.1" far="500" angle="60">
             <from x="4" y="10" z="10" />
             <to x="20" y="1" z="20" />
@@ -48,11 +48,11 @@
         </spot>
 
         <omni id="Corner light" enabled="1" angle="90" exponent="128.0">
-            <location x="20" y="1" z="20" w="1.0" />
-            <ambient r="1.0" g="0.2" b="0.2" a="1.0" />
-            <diffuse r="1.0" g="0.2" b="0.2" a="1.0" />
-            <specular r="1.0" g="0.2" b="0.2" a="1.0" />
-            <attenuation constant="0.0" linear="0.0" quadratic="0.02" />
+            <location x="23" y="2.5" z="23.5" w="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="0.2" g="0.2" b="0.2" a="1.0" />
+            <attenuation constant="0.0" linear="0.25" quadratic="0.0" />
         </omni>
 
         <omni id="Room light" enabled="0" exponent="128.0">
@@ -214,6 +214,25 @@
             <diffuse r="0.4" g="0.4" b="0.4" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
         </material>
+
+        <material id="abajour1" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.8470588235294118" g="0.8784313725490196" b="0.2784313725490196" a="0.1"  />
+            <diffuse r="0.8470588235294118" g="0.8784313725490196" b="0.2784313725490196" a="0.5"  />
+            <specular r="0.5470588235294118" g="0.5784313725490196" b="0.0784313725490196" a="0.1"  />
+        </material>
+        <material id="abajour2" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.1843137254901961" g="0.32941176470588235" b="0.32941176470588235" a="0.1"  />
+            <diffuse r="0.0" g="0.2" b="0.2" a="0.5"  />
+            <specular r="0.1" g="0.3" b="0.3" a="0.1"  />
+        </material>
+        <material id="abajour3" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.4117647058823529" g="0.17647058823529413" b="0.43137254901960786" a="1.0" />
+            <diffuse r="0.4117647058823529" g="0.17647058823529413" b="0.43137254901960786" a="1.0" />
+            <specular r="0.2" g="0.1" b="0.2" a="1.0" />
+        </material>
         
         
         
@@ -271,6 +290,10 @@
 
         <primitive id="spherePerson">
             <sphere radius="1" stacks="12" slices="12" />
+        </primitive>
+
+        <primitive id="abajour">
+            <cylinder base="1" top="0.5" height="1" slices="16" stacks="16" />
         </primitive>
         
 
@@ -625,6 +648,7 @@
                 <componentref id="painting_position" />
                 <componentref id="round_table_position" />
                 <componentref id="mug_positions" />
+                <componentref id="lamp_position" />
             </children>
         </component>
 
@@ -2332,6 +2356,84 @@
 
             <children>
                 <primitiveref id="torus_thin" />
+            </children>
+        </component>
+
+
+        <component id="lamp_position">
+            <transformation>
+                <translate x="23" y="-2.5" z="23.5" />
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            
+            <texture id="none"/>
+            <children>
+                <componentref id="lamp" />
+            </children>
+        </component>
+
+        <component id="lamp">
+            <materials>
+                <material id="woodMaterial"/>
+            </materials>
+            <transformation>
+            </transformation>
+            <texture id="none"/>
+            <children>
+                <componentref id="lampAbajour" />
+                <componentref id="lampPole"/>
+                <componentref id="lampBase"/>
+            </children>
+        </component>
+
+        <component id="lampAbajour">
+            <materials>
+                <material id="abajour1"/>
+                <material id="abajour2"/>
+                <material id="abajour3"/>
+            </materials>
+            <transformation>
+                <translate x="0" y="4.6" z="0" />
+                <scale x="1" y="1.2" z="1" />
+                <rotate axis="x" angle="-90"/>
+                <translate x="0" y="0" z="-0.5" />
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="abajour"/>
+            </children>
+        </component>
+
+        <component id="lampPole">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+                <translate x="0" y="2.5" z="0" />
+                <scale x="0.12" y="5" z="0.12" />
+                <rotate axis="x" angle="-90"/>
+                <translate x="0" y="0" z="-0.5" />
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="unitCylinder"/>
+            </children>
+        </component>
+
+        <component id="lampBase">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+                <translate x="0" y="0.12" z="0" />
+                <scale x="0.4" y="0.1" z="0.4" />
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="torus"/>
             </children>
         </component>
 

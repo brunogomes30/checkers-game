@@ -84,11 +84,8 @@
             </materials>
             <texture id="none"/>
             <children>
-                <componentref id="triangle" />
-                <componentref id="sphere" />
+                
                 <componentref id="cylinder" />
-                <componentref id="rectangle" />
-                <componentref id="torus" />
             </children>
         </component>
         <component id="triangle">
@@ -131,7 +128,7 @@
 
         <component id="cylinder">
             <transformation>
-                <translate x="0" y="0" z="-10" />
+                <translate x="0" y="0" z="0" />
             </transformation>
             <materials>
                 <material id="demoMaterial" />

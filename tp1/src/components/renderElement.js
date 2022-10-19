@@ -35,6 +35,7 @@ function renderComponent(element, parents) {
 function displayPrimitive(element, parents) {
     applyTextureScaling(element, parents)
     element.display();
+    
 }
 
 function applyAppearance(element, parents) {

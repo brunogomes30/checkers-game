@@ -32,7 +32,7 @@ export class MyCylinder extends CGFobject {
         const stackHeight = this.height / this.stacks;
         let sliceAngle = Math.PI * 2 / this.slices;
         let z = -stackHeight;
-        
+        const normalZ = (this.base - this.top) / this.height;
         for(let stack = 0; stack <= this.stacks; stack++){
             z += stackHeight;
             radius += radiusIncrease;
@@ -44,6 +44,7 @@ export class MyCylinder extends CGFobject {
                 const y = Math.sin(angle) * radius;
                 
                 this.vertices.push(x, y, z);
+                this.normals.push(...vectorNormalize([Math.cos(angle), Math.sin(angle), normalZ]));
 
                 const textS = slice / this.slices;
                 
@@ -65,21 +66,7 @@ export class MyCylinder extends CGFobject {
             this.indices.push(p4, p3, p1);
         }
         
-        const xxx = this.slices * (this.stacks - 1) * 3;
-        let possibleNormals = [];
-        for(let i=0; i <= this.slices; i++){
-            const offset = i*3;
-            const vertI = [this.vertices[offset], this.vertices[offset + 1], this.vertices[offset + 2]];
         
-            const vertP = [this.vertices[xxx + offset], this.vertices[xxx + offset + 1], this.vertices[xxx + offset + 2]];
-            const orient = vectorNormalize(vectorDiff([0, 0, 0], vertP));
-            const normalVector = calculateNormalVector(vertP, vertI, this.base, orient);
-            possibleNormals.push(...normalVector);
-        }
-
-        for(let i = 0; i <= this.stacks; i+=1){
-            this.normals.push(...possibleNormals);
-        }
 		
 		/*
 		Texture coords (s,t)
@@ -98,21 +85,5 @@ export class MyCylinder extends CGFobject {
     updateTexCoords(length_s, length_t){
         return;
     }
-
-}
-
-/**
- * https://stackoverflow.com/questions/66343772/cone-normal-vector
- * @param {*} vertP 
- * @param {*} vertI 
- * @param {*} vertA 
- */
-function calculateNormalVector(vertP, vertI, radius, orient){
-    let dis = distance(...vertI, ...vertP);
-    let k = radius / dis;
-    let D = dis * Math.sqrt(1 + k**2);
-    orient = vectorMult(orient, D);
-    let A = vectorSum(vertP, orient);
-    return vectorNormalize(vectorDiff(vertI, A));
 
 }
