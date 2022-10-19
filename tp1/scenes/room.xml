@@ -649,6 +649,7 @@
                 <componentref id="round_table_position" />
                 <componentref id="mug_positions" />
                 <componentref id="lamp_position" />
+                <componentref id="mug_position_desk"/>
             </children>
         </component>
 
@@ -2123,28 +2124,10 @@
             <texture id="inherit" />
         </component>
 
-        <component id="mug_positions">
-            <transformation>
-                <translate x="0" y="3.4" z="0" />
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="none" />
-            <children>
-                <componentref id="mug_position_1" />
-                <componentref id="mug_position_2" />
-                <componentref id="mug_position_3" />
-                <componentref id="mug_position_4" />
-                <componentref id="mug_position_5" />
-                <componentref id="mug_position_6" />
-                <componentref id="mug_position_7" />
-            </children>
-        </component>
 
-        <component id="mug_position_1">
+        <component id="mug_position_desk">
             <transformation>
-                <translate x="-1.25" y="0" z="0.5" />
+                <translate x="-16" y="4" z="-13.2" />
                 <rotate axis="y" angle="20" />
             </transformation>
             <materials>
@@ -2155,7 +2138,40 @@
                 <componentref id="mug" />
             </children>
         </component>
-        <component id="mug_position_2">
+
+        <component id="mug_positions">
+            <transformation>
+                <translate x="0" y="3.4" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="mug_empty_position_1" />
+                <componentref id="mug_empty_position_2" />
+                <componentref id="mug_empty_position_3" />
+                <componentref id="mug_empty_position_4" />
+                <componentref id="mug_empty_position_5" />
+                <componentref id="mug_empty_position_6" />
+                <componentref id="mug_empty_position_7" />
+            </children>
+        </component>
+
+        <component id="mug_empty_position_1">
+            <transformation>
+                <translate x="-1.25" y="0" z="0.5" />
+                <rotate axis="y" angle="20" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="mug_empty" />
+            </children>
+        </component>
+        <component id="mug_empty_position_2">
             <transformation>
                 <translate x="1.25" y="0" z="0.1" />
                 <rotate axis="y" angle="-20" />
@@ -2165,10 +2181,10 @@
             </materials>
             <texture id="none" />
             <children>
-                <componentref id="mug" />
+                <componentref id="mug_empty" />
             </children>
         </component>
-        <component id="mug_position_3">
+        <component id="mug_empty_position_3">
             <transformation>
                 <translate x="-2" y="0" z="0.25" />
                 <rotate axis="y" angle="33" />
@@ -2178,10 +2194,10 @@
             </materials>
             <texture id="none" />
             <children>
-                <componentref id="mug" />
+                <componentref id="mug_empty" />
             </children>
         </component>
-        <component id="mug_position_4">
+        <component id="mug_empty_position_4">
             <transformation>
                 <translate x="-0.4" y="0" z="0.4" />
                 <rotate axis="y" angle="-33" />
@@ -2191,10 +2207,10 @@
             </materials>
             <texture id="none" />
             <children>
-                <componentref id="mug" />
+                <componentref id="mug_empty" />
             </children>
         </component>
-        <component id="mug_position_5">
+        <component id="mug_empty_position_5">
             <transformation>
                 <translate x="0.4" y="0" z="-0.4" />
                 <rotate axis="y" angle="55" />
@@ -2204,10 +2220,10 @@
             </materials>
             <texture id="none" />
             <children>
-                <componentref id="mug" />
+                <componentref id="mug_empty" />
             </children>
         </component>
-        <component id="mug_position_6">
+        <component id="mug_empty_position_6">
             <transformation>
                 <translate x="0.05" y="0" z="-1.8" />
                 <rotate axis="y" angle="-55" />
@@ -2217,10 +2233,10 @@
             </materials>
             <texture id="none" />
             <children>
-                <componentref id="mug" />
+                <componentref id="mug_empty" />
             </children>
         </component>
-        <component id="mug_position_7">
+        <component id="mug_empty_position_7">
             <transformation>
                 <translate x="1" y="0" z="-1" />
                 <rotate axis="y" angle="-55" />
@@ -2230,7 +2246,7 @@
             </materials>
             <texture id="none" />
             <children>
-                <componentref id="mug" />
+                <componentref id="mug_empty" />
             </children>
         </component>
 
@@ -2249,6 +2265,21 @@
             </children>
         </component>
 
+        <component id="mug_empty">
+            <transformation>
+                
+            </transformation>
+            <materials>
+                <material id="ceramicMaterial" />
+            </materials>
+            <texture id="marbleTexture" />
+            <children>
+                <componentref id="mug_empty_cup" />
+                <componentref id="mug_handle" />
+                <componentref id="mug_rim"/>
+            </children>
+        </component>
+
         <component id="mug_cup">
             <transformation>
                 <scale x="0.2" y="0.4" z="0.2" />
@@ -2260,6 +2291,21 @@
             <children>
                 <componentref id="mug_cylinder" />
                 <componentref id="mug_top" />
+                <componentref id="mug_base" />
+            </children>
+        </component>
+
+        <component id="mug_empty_cup">
+            <transformation>
+                <scale x="0.2" y="0.4" z="0.2" />
+            </transformation>
+            <materials>
+                <material id="ceramicMaterial" />
+            </materials>
+            <texture id="marbleTexture" />
+            <children>
+                <componentref id="mug_cylinder" />
+                <componentref id="mug_empty_top" />
                 <componentref id="mug_base" />
             </children>
         </component>
@@ -2283,7 +2329,6 @@
 
         <component id="mug_top">
             <transformation>
-                <scale x="1" y="1" z="1" />
                 <translate x="0" y="-0.2" z="0"/>
                 <rotate axis="x" angle="-90" />
             </transformation>
@@ -2291,6 +2336,21 @@
                 <material id="inherit" />
             </materials>
             <texture id="coffeeTexture" />
+
+            <children>
+                <primitiveref id="circle" />
+            </children>
+        </component>
+
+        <component id="mug_empty_top">
+            <transformation>
+                <translate x="0" y="-0.2" z="0"/>
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="marbleTexture" />
 
             <children>
                 <primitiveref id="circle" />
