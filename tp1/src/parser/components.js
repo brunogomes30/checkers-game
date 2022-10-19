@@ -11,7 +11,7 @@ export function parseComponents(componentsNode, graph) {
     graph.components = [];
 
     let grandChildren = [];
-    if(componentNodes.length === 0){
+    if (componentNodes.length === 0) {
         return 'There is no components in the xml file.';
     }
     // Any number of components.
@@ -42,11 +42,14 @@ export function parseComponents(componentsNode, graph) {
         const textureIndex = nodeNames.indexOf("texture");
         const childrenIndex = nodeNames.indexOf("children");
 
-        // Transformations
+        // Transformations    
+        if (transformationIndex == -1) {
+            return `No transformations tag in component with ID = ${componentID}`
+        } 
         const transfMatrix = parseTransformation(grandChildren[transformationIndex], graph, "component ID " + componentID, false)
-        if (typeof (transfMatrix) == 'string') {
-            return transfMatrix;
-        }
+            if (typeof (transfMatrix) == 'string') {
+                return transfMatrix;
+            }
         // Materials
         const materialsNode = grandChildren[materialsIndex];
         const materials = []
@@ -57,7 +60,13 @@ export function parseComponents(componentsNode, graph) {
                     if (matId === 'inherit') {
                         materials.push('inherit');
                     } else {
-                        materials.push(graph.materials[matId]);
+                        if (matId in graph.materials) {
+                            materials.push(graph.materials[matId]);
+                        }
+                        else {
+                            materials.push(graph.scene.defaultAppearance)
+                            graph.onXMLMinorError(`Matrial with ID '${matId}' not found; Using default material.`)
+                        }
                     }
                 }
             }
@@ -90,7 +99,7 @@ export function parseComponents(componentsNode, graph) {
                             graph.onXMLMinorError((length_s == null ? 'length_s ' : 'length_t ') + (length_s == null && length_t == null ? 'and length_t ' : '') + 'option(s) mising for texture ' + textureId + '. In component ' + componentID);
                         }
                         let textureInArr = graph.textures.filter(texture => texture.id == textureId);
-                        if (textureInArr != undefined) {
+                        if (textureInArr.length > 0) {
                             if (length_s == 0 || length_t == 0) {
                                 graph.onXMLMinorError((length_s == 0 ? 'length_s ' : 'length_t ') + (length_s == 0 && length_t == 0 ? 'and length_t ' : '') + 'option(s) has / have invalid values (Zero). In component ' + componentID);
                                 length_s = undefined;
@@ -100,7 +109,9 @@ export function parseComponents(componentsNode, graph) {
                             texture = textureInArr[0];
                             textureScaleFactor = new TextureScaleFactors(length_s, length_t);
                         } else {
-                            graph.onXMLMinorError(`Texture "${textureId}" not declared, used in component "$componentID}"`);
+                            texture = graph.scene.defautlTexture
+                            textureScaleFactor = graph.scene.defaultTextureCoordinates;
+                            graph.onXMLMinorError(`Texture "${textureId}" not declared, used in component "${componentID}"`);
                         }
                     }
                 }
@@ -109,6 +120,9 @@ export function parseComponents(componentsNode, graph) {
 
 
         // Children
+        if(childrenIndex == -1){
+            return `Children tag missing for component ID = '${componentID}'`;
+        }
         const childrenNodes = grandChildren[childrenIndex].children;
         const componentChildren = [];
         for (let i = 0; i < childrenNodes.length; i++) {
@@ -142,7 +156,7 @@ export function parseComponents(componentsNode, graph) {
                 if (graph.components[child] != undefined) {
                     component.children[childKey] = graph.components[child];
                 }
-                else{
+                else {
                     return `Unable to find referenced component '${child}' in component '${key}'`
                 }
             }
