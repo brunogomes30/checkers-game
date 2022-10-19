@@ -63,7 +63,6 @@ export class MyTorus extends CGFobject {
             }
         }
 
-        console.log(this.indices)
 
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
