@@ -26,6 +26,7 @@ export class MyTorus extends CGFobject {
         this.normals = [];
         this.indices = [];
         this.texCoords = [];
+        const vertexNr = (this.loops + 1) * (this.slices + 1)
         const loopsStep = RADIANS_CIRCLE / this.loops;
         const slicesStep = RADIANS_CIRCLE / this.slices;
         const texLoopsStep = 1 / this.loops;
@@ -61,6 +62,8 @@ export class MyTorus extends CGFobject {
                 this.indices.push(vertex2, vertex3, vertex0);
             }
         }
+
+        console.log(this.indices)
 
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
