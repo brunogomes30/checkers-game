@@ -102,6 +102,9 @@ export function parseTransformation(transformationNode, graph, errorMsg, isInsid
                 if (transformationID == '')
                     return "no ID defined for transformation for" + errorMsg;
 
+                if (!(transformationID in graph.transformations))
+                    return `Unable to find transformation with ID '${transformationID}' in component '${errorMsg}'`
+                
                 return graph.transformations[transformationID];
         }
 
