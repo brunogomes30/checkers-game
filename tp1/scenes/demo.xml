@@ -13,7 +13,7 @@
     </views>
 
     <ambient>
-        <ambient r="0.9" g="0.9" b="0.9" a="1.0" />
+        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
         <background r="0.0" g="0.0" b="0.0" a="1.0" />
     </ambient>
 
@@ -40,11 +40,11 @@
     </textures>
 
     <materials>
-        <material id="demoMaterial" shininess="200">
-            <emission r="1.0" g="1.0" b="1.0" a="1.0" />
-            <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="0.9" g="0.9" b="0.9" a="1.0" />
+        <material id="demoMaterial" shininess="5">
+            <emission r="0.2" g="0.2" b="0.2" a="1.0" />
+            <ambient r="0.5" g="0.5" b="0.9" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.9" a="1.0" />
+            <specular r="0.1" g="0.1" b="0.9" a="1.0" />
         </material>
     </materials>
 
@@ -61,7 +61,8 @@
             <rectangle x1="-0.5" y1="-1" x2="0.5" y2="1" />
         </primitive>
         <primitive id="torus">
-            <torus outer="5" inner="4" slices="11" loops="12" />
+           
+           <torus inner="0.2" outer="1" slices="41" loops="11" />
         </primitive>
         <primitive id="triangle">
             <triangle x1="0" y1="0" z1="0" x2="5" y2="0" z2="0" x3="0" y3="5" z3="0" />
@@ -81,7 +82,7 @@
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="demoTexture" length_s="1" length_t="1"/>
+            <texture id="none"/>
             <children>
                 <componentref id="triangle" />
                 <componentref id="sphere" />
