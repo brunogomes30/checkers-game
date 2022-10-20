@@ -3,8 +3,8 @@
 
     <views default="default">
         <perspective id="default" near="0.1" far="500" angle="60">
-            <from x="4" y="10" z="10" />
-            <to x="20" y="1" z="20" />
+            <from x="-40" y="30" z="40" />
+            <to x="0" y="1" z="0" />
         </perspective>
         <perspective id="rickrolled" near="0.1" far="500" angle="60">
             <from x="-13" y="5" z="-15" />
@@ -22,9 +22,20 @@
             <from x="0" y="6" z="-10" />
             <to x="0" y="0" z="-25" />
         </perspective>
-        <ortho id="orthoCam" near="-100" far="100" left="-50" right="50" bottom="-50" top="50">
+        
+        <ortho id="Top view Ortho" near="-100" far="100" left="-50" right="50" bottom="-50" top="50">
             <from x="0" y="30" z="0" />
             <to x="-0.1" y="-20" z="0" />
+        </ortho>
+        
+        <ortho id="Side view Ortho" near="-30" far="90" left="-30" right="30" bottom="-10" top="20">
+            <from x="-50" y="5" z="0" />
+            <to x="40" y="5" z="0" />
+        </ortho>
+
+        <ortho id="Angled view Ortho" near="-500" far="500" left="-40" right="40" bottom="-24" top="40">
+            <from x="50" y="50" z="50" />
+            <to x="0" y="0" z="0" />
         </ortho>
     </views>
 
@@ -34,14 +45,14 @@
     </ambient>
 
     <lights>
-        <spot id="Desk spotlight" enabled="1" angle="60" exponent="2">
-            <location x="-15" y="20.55" z="-10" w="1.0" />
-            <target x="-20" y="0" z="-15" />
-            <ambient r="0" g="0" b="0" a="1.0" />
-            <diffuse r="0.8" g="0.8" b="1.0" a="1.0" />
-            <specular r="0.8" g="0.8" b="0.8" a="1.0" />
-            <attenuation constant="0" linear="0.05" quadratic="0.0" />
-        </spot>
+        <omni id="Room light" enabled="0" exponent="128.0">
+            <location x="5" y="20" z="5" w="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="0.2" g="0.2" b="0.2" a="1.0" />
+            <attenuation constant="0.0" linear="0.05" quadratic="0.0" />
+        </omni>
+
         <spot id="Monitor" enabled="1" angle="90" exponent="2">
             <location x="-19" y="6" z="-15" w="1.0" />
             <target x="-15" y="5" z="-15" />
@@ -51,21 +62,14 @@
             <attenuation constant="0" linear="0.0" quadratic="0.005" />
         </spot>
 
-        <omni id="Corner light" enabled="1" angle="90" exponent="128.0">
-            <location x="23" y="2.5" z="23.5" w="1.0" />
-            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
-            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
-            <specular r="0.2" g="0.2" b="0.2" a="1.0" />
-            <attenuation constant="0.0" linear="0.25" quadratic="0.0" />
-        </omni>
-
-        <omni id="Room light" enabled="0" exponent="128.0">
-            <location x="5" y="20" z="5" w="1.0" />
-            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
-            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
-            <specular r="0.2" g="0.2" b="0.2" a="1.0" />
-            <attenuation constant="0.0" linear="0.05" quadratic="0.0" />
-        </omni>
+        <spot id="Desk spotlight" enabled="1" angle="60" exponent="2">
+            <location x="-15" y="20.55" z="-10" w="1.0" />
+            <target x="-20" y="0" z="-15" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="0.8" g="0.8" b="1.0" a="1.0" />
+            <specular r="0.8" g="0.8" b="0.8" a="1.0" />
+            <attenuation constant="0" linear="0.05" quadratic="0.0" />
+        </spot>
 
         <omni id="Center spotlight" enabled="1"  angle="45" exponent="128.0">
             <location x="2" y="20" z="2" w="1.0" />
@@ -74,6 +78,14 @@
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="0.2" g="0.2" b="0.2" a="1.0" />
             <attenuation constant="0.0" linear="0.0" quadratic="0.01" />
+        </omni>
+
+        <omni id="Corner light" enabled="1" angle="90" exponent="128.0">
+            <location x="23" y="2.5" z="23.5" w="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="0.2" g="0.2" b="0.2" a="1.0" />
+            <attenuation constant="0.0" linear="0.25" quadratic="0.0" />
         </omni>
     </lights>
 
@@ -3534,7 +3546,7 @@
                 <material id="paperMaterial"/>
             </materials>
             <transformation>
-                <translate x="-5" y="8" z="-15" />
+                <translate x="-5" y="12" z="-15" />
                 <rotate axis="z" angle="-20" />
                 <rotate axis="y" angle="-45" />
                 <scale x="0.2" y="0.2" z="0.2" />
