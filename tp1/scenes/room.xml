@@ -1,7 +1,7 @@
 <sxs>
     <scene root="demoRoot" axis_length="5" />
 
-    <views default="default">
+    <views default="Sofa">
         <perspective id="default" near="0.1" far="500" angle="60">
             <from x="4" y="10" z="10" />
             <to x="20" y="1" z="20" />
@@ -14,9 +14,13 @@
             <from x="-17" y="6" z="-15" />
             <to x="-15" y="6" z="-15" />
         </perspective>
-        <perspective id="center_camera" near="0.1" far="500" angle="60">
+        <perspective id="Center Camera" near="0.1" far="500" angle="60">
             <from x="10" y="8" z="10" />
             <to x="0" y="4" z="0" />
+        </perspective>
+        <perspective id="Sofa" near="0.1" far="500" angle="90">
+            <from x="0" y="6" z="-10" />
+            <to x="0" y="0" z="-25" />
         </perspective>
         <ortho id="orthoCam" near="-100" far="100" left="-50" right="50" bottom="-50" top="50">
             <from x="0" y="30" z="0" />
@@ -680,7 +684,9 @@
                 <componentref id="chair" />
                 <componentref id="computer_case" />
                 <componentref id="monitor_position" />
-                <componentref id="person_position"/>
+                <componentref id="rick_position"/>
+                <componentref id="npc_1_position"/>
+                <componentref id="npc_2_position"/>
                 <componentref id="keyboard_position" />
                 <componentref id="mouse_position" />
                 <componentref id="painting_position" />
@@ -688,7 +694,10 @@
                 <componentref id="mug_positions" />
                 <componentref id="lamp_position" />
                 <componentref id="mug_position_desk"/>
-                <componentref id="plant_position"/>
+                <componentref id="plant_position_1"/>
+                <componentref id="plant_position_2"/>
+                <componentref id="plant_position_3"/>
+                <componentref id="plant_position_4"/>
                 <componentref id="sofa_position"/>
                 
             </children>
@@ -750,10 +759,39 @@
             </children>
         </component>
 
-        <component id="person_position">
+        <component id="rick_position">
             <transformation>
                 <translate x="-12" y="3" z="-15" />
                 <rotate axis="y" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="person" />
+                
+            </children>
+        </component>
+
+        <component id="npc_1_position">
+            <transformation>
+                <translate x="3" y="2.5" z="-21.5" />
+                
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="person" />
+                
+            </children>
+        </component>
+
+        <component id="npc_2_position">
+            <transformation>
+                <translate x="-3" y="2.5" z="-21.5" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -2540,6 +2578,60 @@
             </children>
         </component>
 
+        <component id="plant_position_1">
+            <transformation>
+                <translate x="20" y="-1.9" z="20" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="plant" />
+            </children>
+        </component>
+
+        <component id="plant_position_2">
+            <transformation>
+                <translate x="9" y="-1.0" z="-20" />
+                <scale x="1.0" y="2" z="1.0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="plant" />
+            </children>
+        </component>
+
+        <component id="plant_position_3">
+            <transformation>
+                <translate x="-9" y="-1.0" z="-20" />
+                <scale x="1.0" y="2" z="1.0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="plant" />
+            </children>
+        </component>
+
+        <component id="plant_position_4">
+            <transformation>
+                <translate x="-20" y="-1.9" z="20" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="plant" />
+            </children>
+        </component>
+
         <component id="plant_position">
             <transformation>
                 <translate x="20" y="-1.9" z="20" />
@@ -2551,7 +2643,6 @@
             <children>
                 <componentref id="plant" />
             </children>
-
         </component>
 
         <component id="plant">
