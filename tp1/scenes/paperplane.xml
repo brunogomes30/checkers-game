@@ -1,0 +1,193 @@
+<sxs>
+    <scene root="paperplane" axis_length="5"/>
+
+    <views default="defaultCamera">
+        <perspective id="defaultCamera" near="0.1" far="500" angle="45">
+            <from x="10" y="15" z="10" />
+            <to x="0" y="-2" z="0" />
+        </perspective>
+    </views>
+
+    <ambient>
+        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
+        <background r="0.0" g="0.0" b="0.0" a="1.0" />
+    </ambient>
+
+    <lights>
+        <omni id="demoLight" enabled="1" exponent="1">
+            <location x="2" y="10" z="2" w="1.0" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <attenuation constant="0.0" linear="0.05" quadratic="0.0" />
+        </omni>
+    </lights>
+
+    <textures>
+        <texture id="demoTexture" file="scenes/images/vidral.jpg" />
+    </textures>
+
+    <materials>
+        <material id="paperMaterial" shininess="10">
+            <emission r="0.1" g="0.1" b="0.1" a="1.0" />
+            <ambient r="0.8" g="0.8" b="0.8" a="1.0" />
+            <diffuse r="0.8" g="0.8" b="0.8" a="1.0" />
+            <specular r="0.1" g="0.1" b="0.1" a="1.0" />
+        </material>
+        
+    </materials>
+
+    <transformations>
+    </transformations>
+
+    <primitives>
+        <primitive id="square">
+            <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
+        </primitive>
+        <primitive id="torus">
+            <torus outer="5" inner="4" slices="11" loops="12" />
+        </primitive>
+        <primitive id="cone">
+            <cylinder base="3" top="0" height="5" slices="16" stacks="16" />
+        </primitive>
+        <primitive id="abajour">
+            <cylinder base="1" top="0.5" height="1" slices="16" stacks="16" />
+        </primitive>
+        <primitive id="triangle">
+            <triangle x1="0" y1="0" z1="0" x2="3" y2="0" z2="0" x3="0" y3="3" z3="0" />
+        </primitive>
+        <primitive id="sphere">
+            <sphere radius="2" stacks="12" slices="12" />
+        </primitive>
+        <primitive id="unitCylinder">
+            <cylinder base="1" top="1" height="1" slices="16" stacks="16" />
+        </primitive>
+    </primitives>
+
+    <components>
+        <!-- Start paperplane -->
+    
+        <component id="paperplane">
+            <materials>
+                <material id="paperMaterial"/>
+            </materials>
+            <transformation>
+                <translate x="0" y="0" z="-4.5" />
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="leftWing" />
+                <componentref id="rightWing" />
+                <componentref id="undersideLeft" />
+                <componentref id="undersideRight" />
+            </children>
+        </component>
+
+        <component id="leftWing">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+                <rotate axis="y" angle="-2.7" />
+                <translate x="0.51" y="0" z="0" />
+                <scale x="1" y="1" z="3" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="triangleBothFaces" />
+            </children>
+        </component>
+
+        <component id="rightWing">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+                <rotate axis="y" angle="4.9" />
+                <translate x="-0.6" y="0" z="0" />
+                <scale x="1" y="1" z="3" />
+                <rotate axis="z" angle="180" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="triangleBothFaces" />
+            </children>
+        </component>
+
+        <component id="undersideRight">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+                <rotate axis="z" angle="20" />
+                <translate x="-0.55" y="0" z="0" />
+                <rotate axis="y" angle="4.5" />
+                <translate x="0" y="-0.67" z="3.2" />
+                <rotate axis="x" angle="-7.9"/>
+                <translate x="0" y="-0.1667" z="-3" />
+                <rotate axis="z" angle="90" />
+                <scale x="0.5" y="1" z="2.9" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="triangleBothFaces" />
+            </children>
+        </component>
+
+        <component id="undersideLeft">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+                <rotate axis="z" angle="-25" />
+                <translate x="0.5" y="0" z="0" />
+                <rotate axis="y" angle="-2.7" />
+                <translate x="0" y="-0.65" z="3.2" />
+                <rotate axis="x" angle="-8.5"/>
+                <translate x="0" y="-0.1667" z="-3" />
+                <rotate axis="z" angle="90" />
+                <scale x="0.5" y="1" z="2.9" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="triangleBothFaces" />
+            </children>
+        </component>
+
+        <!-- End paperplane -->
+
+        <!-- Start trinagle -->
+        <component id="triangleBothFaces">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="triangle" />
+                <componentref id="reversedTriangle" />
+            </children>
+        </component>
+
+        <component id="reversedTriangle">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+                <rotate axis="x" angle="-180" />
+                <rotate axis="z" angle="-90" />
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="triangle" />
+            </children>
+        </component>
+
+        <!-- Start trinagle -->
+    </components>
+</sxs>
