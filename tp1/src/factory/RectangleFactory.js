@@ -1,10 +1,13 @@
 import { MyRectangle } from "../primitives/MyRectangle.js";
 import { buildValues } from "./utils.js";
 
+/**
+ * Rectangle factory that creates new rectangles
+ * @export
+ * @class RectangleFactory
+ */
 export class RectangleFactory{
     constructor(){
-        //sirizio, melhor forma para fazer isto?
-        // Podemos arranjar forma de colocar default values caso não sejas dados, mas não parece que possamos permitir isso
         this.attributes = {
             'x1': 'float',
             'x2': 'float',
@@ -13,6 +16,16 @@ export class RectangleFactory{
         }
     }
 
+    /**
+     * Builds a rectangle based on the given node, reading its attributes
+     * @param {XMLReader} reader
+     * @param {XMLNode} node
+     * @param {Scene} scene
+     * @param {string} id
+     * @returns {MyRectangle} or error string if any of the attributes is missing
+     * @memberof RectangleFactory
+     
+     */
     build(reader, node, scene, id){
         const values = buildValues(this.attributes, reader, node, id);
         if (values == null || typeof values !== 'object'){

@@ -1,10 +1,15 @@
 import { CGFobject } from '../../../lib/CGF.js';
+import { MySceneGraph } from '../MySceneGraph.js';
 /**
  * MyRectangle
  * @constructor
- * @param scene - Reference to MyScene object
- * @param x - Scale of rectangle in X
- * @param y - Scale of rectangle in Y
+ * @param {XMLscene} scene - Reference to MyScene object
+ * @param {Number} id - ID of the rectangle
+ * @param {Object} values - Values of the Rectangle
+ * @param {Number} values.x1 - X1 coordinate of the Rectangle
+ * @param {Number} values.x2 - X2 coordinate of the Rectangle
+ * @param {Number} values.y1 - Y1 coordinate of the Rectangle
+ * @param {Number} values.y2 - Y2 coordinate of the Rectangle
  */
 export class MyRectangle extends CGFobject {
 	constructor(scene, id, values) {
@@ -22,6 +27,11 @@ export class MyRectangle extends CGFobject {
 		this.initBuffers();
 	}
 	
+	/**
+	 * Initializes the buffers of the rectangle
+	 * @memberof MyRectangle
+	 * @private
+	 */
 	initBuffers() {
 		this.vertices = [
 			this.x1, this.y1, 0,	//0

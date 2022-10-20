@@ -4,14 +4,15 @@ import { parseCoordinates3D } from "./utils.js";
 
 /**
  * Parses the <views> block.
- * @param {view block element} viewsNode
+ * @param {XMLNode} viewsNode - The views block element.
+ * @param {MySceneGraph} graph - The scene graph.
  */
 export function parseView(viewsNode, graph) {
     graph.scene.cameras = {};
     let cameras = graph.scene.cameras;
 
     graph.scene.defaultCameraId = graph.reader.getString(viewsNode, 'default', false);
-    if(graph.scene.defaultCameraId == null ){
+    if (graph.scene.defaultCameraId == null) {
         return `Default camera not set`;
     }
 
@@ -121,7 +122,7 @@ export function parseView(viewsNode, graph) {
             cameras[viewId] = new CGFcameraOrtho(left, right, bottom, top, near, far, vec3.fromValues(...from), vec3.fromValues(...to), vec3.fromValues(...up))
         }
     }
-    if(cameras[graph.scene.defaultCameraId] == undefined){
+    if (cameras[graph.scene.defaultCameraId] == undefined) {
         return "Couldn't find default camera with id " + graph.scene.defaultCameraId;
     }
     return;

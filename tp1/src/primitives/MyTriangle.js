@@ -1,10 +1,21 @@
 import { CGFobject } from '../../../lib/CGF.js';
+import { XMLscene } from '../XMLscene.js';
 import { sinFromCos, trianngleCos, vector2points, vectorCrossProduct, vectorNormalize, vectorSize } from './geometryUtils.js';
 /**
  * MyTriangle
  * @constructor
- * @param scene - Reference to MyScene object
- * @param values - Coordinates of the triangle vertices 
+ * @param {XMLscene} scene - Reference to MyScene object
+ * @param {Number} id - ID of the triangle
+ * @param {Object} values - Values of the Triangle
+ * @param {Number} values.x1 - X1 coordinate of the Triangle
+ * @param {Number} values.x2 - X2 coordinate of the Triangle
+ * @param {Number} values.x3 - X3 coordinate of the Triangle
+ * @param {Number} values.y1 - Y1 coordinate of the Triangle
+ * @param {Number} values.y2 - Y2 coordinate of the Triangle
+ * @param {Number} values.y3 - Y3 coordinate of the Triangle
+ * @param {Number} values.z1 - Z1 coordinate of the Triangle
+ * @param {Number} values.z2 - Z2 coordinate of the Triangle
+ * @param {Number} values.z3 - Z3 coordinate of the Triangle
  */
 export class MyTriangle extends CGFobject {
 	constructor(scene, id, values) {
@@ -23,6 +34,11 @@ export class MyTriangle extends CGFobject {
 		this.initBuffers();
 	}
 
+	/**
+	 * Initializes the buffers of the triangle
+	 * @memberof MyTriangle
+	 * @private
+	 */
 	initBuffers() {
 		this.vertices = [
 			this.x1, this.y1, this.z1,	//0
@@ -73,9 +89,10 @@ export class MyTriangle extends CGFobject {
 	}
 
 	/**
-	 * @method updateTexCoords
-	 * Updates the list of texture coordinates of the rectangle
-	 * @param {Array} coords - Array of texture coordinates
+	 * Updates the texture coordinates of the triangle
+	 * @memberof MyTriangle
+	 * @param {Number} length_s - Amplification factor in the S axis
+	 * @param {Number} length_t - Amplification factor in the T axis
 	 */
 	updateTexCoords(length_s, length_t) {
 		if (length_s == undefined || length_t == undefined) {

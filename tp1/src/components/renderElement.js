@@ -7,7 +7,8 @@ import { Component } from './Component.js'
  * Renders a component or primitive.
  * If it's a component, applies transformations, materials and textures
  * If it's a component or primitive, displays the object
- * @param {} element 
+ * @param {Component|CGFobject} element 
+ * @param {Array} parents - The parents of the element
  */
 export function renderElement(element, parents = []) {
     if (element instanceof Component) {
@@ -17,6 +18,11 @@ export function renderElement(element, parents = []) {
     }
 }
 
+/**
+ * Renders a component
+ * @param {Component|CGFobject} element 
+ * @param {Array} parents - The parents of the element
+ */
 function renderComponent(element, parents) {
     parents.push(element);
     element.scene.pushMatrix();
@@ -32,6 +38,12 @@ function renderComponent(element, parents) {
     parents.pop();
 }
 
+
+/**
+ * Displays a primitive
+ * @param {CGFobject} element
+ * @param {Array} parents - The parents of the primitive
+ */
 function displayPrimitive(element, parents) {
     applyTextureScaling(element, parents)
     if(element.scene.displayNormals){
@@ -44,12 +56,23 @@ function displayPrimitive(element, parents) {
     
 }
 
+/**
+ * Applies the appearance of the element
+ * @param {Component} element
+ * @param {Array} parents - The parents of the element
+ */
 function applyAppearance(element, parents) {
     let material = getMaterial(element, parents);
     setTexture(element, parents, material)
     material.apply()
 }
 
+/**
+ * Gets the material of the element
+ * @param {Component} element
+ * @param {Array} parents - The parents of the element
+ * @returns {CGFappearance} The material to be applied on the element
+ */
 function getMaterial(element, parents) {
     let material = element.getMaterial();
     if (material === 'inherit') {
@@ -60,10 +83,15 @@ function getMaterial(element, parents) {
             }
         }
     }
-
     return material;
 }
 
+/**
+ * Sets the texture of the element
+ * @param {Component} element
+ * @param {Array} parents - The parents of the element
+ * @param {CGFappearance} material - The material to be applied on the element
+ */
 function setTexture(element, parents, material) {
     let texture = element.texture;
     const wasInherit = texture === 'inherit';
@@ -87,7 +115,12 @@ function setTexture(element, parents, material) {
     material.setTexture(texture.texture);
 }
 
-function applyTextureScaling(element, parents) {
+/**
+ * Applies the texture scaling of the element
+ * @param {CGFobject} primitive
+ * @param {Array} parents - The parents of the element
+ */
+function applyTextureScaling(primitive, parents) {
     let textureScaleFactor = new TextureScaleFactors(1, 1);
     let id = parents.length;
     while (id--) {
@@ -97,5 +130,5 @@ function applyTextureScaling(element, parents) {
         }
     }
 
-    element.updateTexCoords(textureScaleFactor.length_s, textureScaleFactor.length_t);
+    primitive.updateTexCoords(textureScaleFactor.length_s, textureScaleFactor.length_t);
 }

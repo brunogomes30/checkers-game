@@ -1,10 +1,13 @@
 import { MyTorus } from "../primitives/MyTorus.js";
 import { buildValues } from "./utils.js";
 
+/**
+ * Torus factory that creates new toruses
+ * @export
+ * @class TorusFactory
+ */
 export class TorusFactory {
     constructor() {
-        //sirizio, melhor forma para fazer isto?
-        // Podemos arranjar forma de colocar default values caso não sejas dados, mas não parece que possamos permitir isso
         this.attributes = {
             'inner': 'float',
             'outer': 'float',
@@ -13,6 +16,15 @@ export class TorusFactory {
         }
     }
 
+    /**
+     * Builds a torus based on the given node, reading its attributes
+     * @param {XMLReader} reader
+     * @param {XMLNode} node
+     * @param {Scene} scene
+     * @param {string} id
+     * @returns {MyTorus} or error string if any of the attributes is missing
+     * @memberof TorusFactory
+     */
     build(reader, node, scene, id) {
         const values = buildValues(this.attributes, reader, node, id);
         if (values == null || typeof values !== 'object'){

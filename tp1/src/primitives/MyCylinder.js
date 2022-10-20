@@ -1,11 +1,16 @@
 import { CGFobject } from '../../../lib/CGF.js';
-import { distance, vectorSum, vectorDiff, vectorMult, vectorNormalize } from './geometryUtils.js';
+import { vectorNormalize } from './geometryUtils.js';
 /**
- * MyRectangle
+ * MyCylinder
  * @constructor
- * @param scene - Reference to MyScene object
- * @param x - Scale of rectangle in X
- * @param y - Scale of rectangle in Y
+ * @param {XMLscene} scene - Reference to MyScene object
+ * @param {String} id - ID of the rectangle
+ * @param {Object} values - Values of the Cylinder
+ * @param {number} values.base - Base radius of the Cylinder
+ * @param {number} values.top - Top radius of the Cylinder
+ * @param {number} values.height - Height of the Cylinder
+ * @param {number} values.slices - Slices of the Cylinder
+ * @param {number} values.stacks - Stacks of the Cylinder
  */
 export class MyCylinder extends CGFobject {
 	constructor(scene, id, values) {
@@ -21,6 +26,11 @@ export class MyCylinder extends CGFobject {
 		this.initBuffers();
 	}
 	
+    /**
+     * Initializes the buffers of the cylinder
+     * @memberof MyCylinder
+     * @private
+     */
 	initBuffers() {
         this.vertices = [];
         this.indices = [];
@@ -82,6 +92,9 @@ export class MyCylinder extends CGFobject {
 		this.initGLBuffers();
 	}
 
+    /**
+     * Dummy function
+     */
     updateTexCoords(length_s, length_t){
         return;
     }

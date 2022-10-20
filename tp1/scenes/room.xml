@@ -1,7 +1,7 @@
 <sxs>
     <scene root="demoRoot" axis_length="5" />
 
-    <views default="rickrolled">
+    <views default="default">
         <perspective id="default" near="0.1" far="500" angle="60">
             <from x="-40" y="30" z="40" />
             <to x="0" y="1" z="0" />
@@ -78,12 +78,12 @@
         </spot>
 
         <omni id="Center spotlight" enabled="1"  angle="45" exponent="128.0">
-            <location x="2" y="20" z="2" w="1.0" />
+            <location x="2" y="10" z="2" w="1.0" />
             <target x="0" y="0" z="0"/>
             <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="0.2" g="0.2" b="0.2" a="1.0" />
-            <attenuation constant="0.0" linear="0.0" quadratic="0.01" />
+            <attenuation constant="0.0" linear="0.1" quadratic="0.0" />
         </omni>
 
         <omni id="Corner light" enabled="1" angle="90" exponent="128.0">
@@ -102,6 +102,7 @@
         <texture id="rickface" file="scenes/images/rickface2.jpg" />
         <texture id="keyboardTexture" file="scenes/images/keyboard.jpg" />
         <texture id="paintingTexture" file="scenes/images/painting.jpg" />
+        <texture id="paintingTexture2" file="scenes/images/painting2.png" />
         <texture id="marbleTexture" file="scenes/images/marble.jpg" />
         <texture id="coffeeTexture" file="scenes/images/coffee.jpg" />
         <texture id="tableTexture" file="scenes/images/tableTexture.jpg" />
@@ -240,9 +241,9 @@
 
         <material id="ceramicMaterial" shininess="10">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <ambient r="0.8" g="0.8" b="0.8" a="1.0" />
             <diffuse r="0.4" g="0.4" b="0.4" a="1.0" />
-            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="0.7" g="0.7" b="0.7" a="1.0" />
         </material>
         
         <material id="darkCeramicMaterial" shininess="6">
@@ -351,10 +352,10 @@
             <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
         </primitive>
         <primitive id="torus_thinner">
-            <torus outer="1.0" inner="0.05" slices="32" loops="32" />
+            <torus outer="1.0" inner="0.05" slices="16" loops="16" />
         </primitive>
         <primitive id="torus_thin">
-            <torus outer="1.0" inner="0.2" slices="32" loops="32" />
+            <torus outer="1.0" inner="0.2" slices="16" loops="16" />
         </primitive>
         <primitive id="torus">
             <torus outer="1.0" inner="1.0" slices="16" loops="16" />
@@ -745,6 +746,7 @@
                 <componentref id="keyboard_position" />
                 <componentref id="mouse_position" />
                 <componentref id="painting_position" />
+                <componentref id="painting_position_2" />
                 <componentref id="round_table_position" />
                 <componentref id="mug_positions" />
                 <componentref id="lamp_position" />
@@ -789,14 +791,41 @@
             </children>
         </component>
 
+        <component id="painting_position_2">
+            <transformation>
+                <translate x="25" y="10" z="-15" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="painting2" />
+            </children>
+        </component>
+
         <component id="painting">
             <transformation>
                 <scale x="1.0" y="1.0" z="3.0" />
             </transformation>
             <materials>
+                <material id="paintingMaterial" length_s="1" length_t="1" />
+            </materials>
+            <texture id="paintingTexture" length_s="1" length_t="1" />
+            <children>
+                <componentref id="paintingFrame" />
+                <componentref id="paintingPanel" />
+            </children>
+        </component>
+
+        <component id="painting2">
+            <transformation>
+                <scale x="5.0" y="3.0" z="5.0" />
+            </transformation>
+            <materials>
                 <material id="paintingMaterial" />
             </materials>
-            <texture id="none" />
+            <texture id="paintingTexture2" length_s="1" length_t="1" />
             <children>
                 <componentref id="paintingFrame" />
                 <componentref id="paintingPanel" />
@@ -825,7 +854,7 @@
                 <material id="paintingPanelMaterial" />
                 <material id="paintingPanelMaterial2" />
             </materials>
-            <texture id="paintingTexture" length_s="1" length_t="1"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="square" />
             </children>
