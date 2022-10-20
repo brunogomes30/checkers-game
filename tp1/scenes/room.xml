@@ -328,12 +328,6 @@
         <primitive id="torus">
             <torus outer="1.0" inner="1.0" slices="16" loops="16" />
         </primitive>
-        <primitive id="torus_medium">
-            <torus outer="0.5" inner="1.0" slices="16" loops="16" />
-        </primitive>
-        <primitive id="torus_wide">
-            <torus outer="0.5" inner="1.5" slices="16" loops="16" />
-        </primitive>
         <primitive id="circle">
             <cylinder base="1" top="0" height="0.01" slices="16" stacks="16" />
         </primitive>
@@ -342,9 +336,6 @@
         </primitive>
         <primitive id="unitCylinder">
             <cylinder base="1" top="1" height="1" slices="16" stacks="16" />
-        </primitive>
-        <primitive id="unitCylinder2">
-            <cylinder base="-1" top="-1" height="1" slices="16" stacks="16" />
         </primitive>
         <primitive id="triangle">
             <triangle x1="0" y1="0" z1="0" x2="3" y2="0" z2="0" x3="0" y3="3" z3="0" />
