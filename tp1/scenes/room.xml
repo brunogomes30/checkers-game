@@ -88,6 +88,7 @@
         <texture id="coffeeTexture" file="scenes/images/coffee.jpg" />
         <texture id="tableTexture" file="scenes/images/tableTexture.jpg" />
         <texture id="leatherTexture" file="scenes/images/leather1024.jpg" />
+        <texture id="doorTexture" file="scenes/images/door.png" />
     </textures>
 
     <materials>
@@ -107,7 +108,7 @@
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
             <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
-            <specular r="0.05" g="0.05" b="0.05" a="1.0" />
+            <specular r="0.00" g="0.00" b="0.00" a="1.0" />
         </material>
         <material id="faceMaterial" shininess="1">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
@@ -714,10 +715,25 @@
                 <componentref id="sofa_position"/>
                 <componentref id="paperplanePos1" />
                 <componentref id="paperplanePos2" />
+                <componentref id="door"/>
                 
             </children>
         </component>
 
+        <component id="door">
+            <transformation>
+                <translate x="-4" y="2.5" z="24.9" />
+                <rotate axis="y" angle="180"/>
+                <scale x="5" y="10" z="1" />
+            </transformation>
+            <materials>
+                <material id="woodMaterial" />
+            </materials>
+            <texture id="doorTexture" length_s="2.75" length_t="1.0" />
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
 
         <component id="painting_position">
             <transformation>
