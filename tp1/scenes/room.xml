@@ -1,11 +1,17 @@
 <sxs>
     <scene root="demoRoot" axis_length="5" />
 
-    <views default="default">
+    <views default="Paperplane">
         <perspective id="default" near="0.1" far="500" angle="60">
             <from x="-40" y="30" z="40" />
             <to x="0" y="1" z="0" />
         </perspective>
+
+        <perspective id="Paperplane" near="0.1" far="500" angle="60">
+            <from x="-20.1" y="0.8" z="21.0" />
+            <to x="-10" y="1.5" z="-10.5" />
+        </perspective>
+        
         <perspective id="rickrolled" near="0.1" far="500" angle="60">
             <from x="-13" y="5" z="-15" />
             <to x="-20" y="5" z="-15" />
@@ -101,6 +107,7 @@
         <texture id="tableTexture" file="scenes/images/tableTexture.jpg" />
         <texture id="leatherTexture" file="scenes/images/leather1024.jpg" />
         <texture id="doorTexture" file="scenes/images/door.png" />
+        <texture id="camoTexture" file="scenes/images/camo.jpg" />
     </textures>
 
     <materials>
@@ -165,13 +172,13 @@
             <specular r="0.9058823529411765" g="0.43529411764705883" b="0.3176470588235294" a="1.0" />
         </material>
         <material id="woodMaterial" shininess="10">
-            <emission r="0.1" g="0.1" b="0.1" a="0.6" />
+            <emission r="0.0" g="0.0" b="0.0" a="0.6" />
             <ambient r="0.43137254901960786" g="0.14901960784313725" b="0.054901960784313725" a="1.0" />
             <diffuse r="0.43137254901960786" g="0.14901960784313725" b="0.054901960784313725" a="1.0" />
-            <specular r="0.43137254901960786" g="0.14901960784313725" b="0.054901960784313725" a="0.6" />
+            <specular r="0.15" g="0.05901960784313725" b="0.020901960784313725" a="0.6" />
         </material>
         <material id="caseMaterial" shininess="10">
-            <emission r="0.1" g="0.1" b="0.1" a="1.0" />
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="0.29411764705882354" g="0.29411764705882354" b="0.29411764705882354" a="1.0" />
             <diffuse r="0.29411764705882354" g="0.29411764705882354" b="0.29411764705882354" a="1.0" />
             <specular r="0.029411764705882354" g="0.029411764705882354" b="0.029411764705882354" a="1.0" />
@@ -207,7 +214,7 @@
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="0.1" g="0.1" b="0.1" a="1.0" />
             <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
-            <specular r="0.1" g="0.1" b="0.1" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
         </material>
 
         <material id="paintingMaterial" shininess="1">
@@ -260,22 +267,22 @@
 
         <material id="leafMaterial" shininess="1">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="0.0" g="0.7" b="0.0" a="1.0" />
-            <diffuse r="0.0" g="0.7" b="0.0" a="1.0" />
-            <specular r="0.0" g="0.1" b="0.0" a="1.0" />
+            <ambient r="0.0" g="0.4" b="0.0" a="1.0" />
+            <diffuse r="0.0" g="0.4" b="0.0" a="1.0" />
+            <specular r="0.0" g="0.2" b="0.0" a="1.0" />
         </material>
 
         <material id="plantMaterial" shininess="1">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="0.0" g="0.7" b="0.0" a="1.0" />
-            <diffuse r="0.0" g="0.7" b="0.0" a="1.0" />
-            <specular r="0.0" g="0.1" b="0.0" a="1.0" />
+            <ambient r="0.0" g="0.05" b="0.0" a="1.0" />
+            <diffuse r="0.0" g="0.05" b="0.0" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
         </material>
         
         <material id="dirtMaterial" shininess="1">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="0.4627450980392157" g="0.3333333333333333" b="0.16862745098039217" a="1.0" />
-            <diffuse r="0.4627450980392157" g="0.3333333333333333" b="0.16862745098039217" a="1.0" />
+            <ambient r="0.3627450980392157" g="0.2333333333333333" b="0.10862745098039217" a="1.0" />
+            <diffuse r="0.3627450980392157" g="0.2333333333333333" b="0.10862745098039217" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
         </material>
 
@@ -287,7 +294,7 @@
         </material>
 
         <material id="sofaSoftMaterial" shininess="10">
-            <emission r="0.1" g="0.1" b="0.1" a="1.0" />
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="0.3803921568627451" g="0.25098039215686274" b="0.1843137254901961" a="1.0" />
             <diffuse r="0.3803921568627451" g="0.25098039215686274" b="0.1843137254901961" a="1.0" />
             <specular r="0.3803921568627451" g="0.25098039215686274" b="0.1843137254901961" a="1.0" />
@@ -295,7 +302,7 @@
         
         
         <material id="paperMaterial" shininess="10">
-            <emission r="0.1" g="0.1" b="0.1" a="1.0" />
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="0.8" g="0.8" b="0.8" a="1.0" />
             <diffuse r="0.8" g="0.8" b="0.8" a="1.0" />
             <specular r="0.1" g="0.1" b="0.1" a="1.0" />
@@ -3535,7 +3542,7 @@
                 <rotate axis="x" angle="30" />
                 <scale x="0.2" y="0.2" z="0.2" />
             </transformation>
-            <texture id="inherit"/>
+            <texture id="camoTexture" length_s="2.0" lenght_t="1.0"/>
             <children>
                 <componentref id="paperplane" />
             </children>
