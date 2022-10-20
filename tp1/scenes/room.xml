@@ -1,7 +1,7 @@
 <sxs>
     <scene root="demoRoot" axis_length="5" />
 
-    <views default="Sofa">
+    <views default="default">
         <perspective id="default" near="0.1" far="500" angle="60">
             <from x="4" y="10" z="10" />
             <to x="20" y="1" z="20" />
@@ -275,7 +275,12 @@
         </material>
         
         
-        
+        <material id="paperMaterial" shininess="10">
+            <emission r="0.1" g="0.1" b="0.1" a="1.0" />
+            <ambient r="0.8" g="0.8" b="0.8" a="1.0" />
+            <diffuse r="0.8" g="0.8" b="0.8" a="1.0" />
+            <specular r="0.1" g="0.1" b="0.1" a="1.0" />
+        </material>
         
         
     </materials>
@@ -681,7 +686,9 @@
                 <componentref id="room" />
                 <componentref id="present" />
                 <componentref id="table" />
-                <componentref id="chair" />
+                <componentref id="chairPos1" />
+                <componentref id="chairPos2" />
+                <componentref id="chairPos3" />
                 <componentref id="computer_case" />
                 <componentref id="monitor_position" />
                 <componentref id="rick_position"/>
@@ -699,6 +706,8 @@
                 <componentref id="plant_position_3"/>
                 <componentref id="plant_position_4"/>
                 <componentref id="sofa_position"/>
+                <componentref id="paperplanePos1" />
+                <componentref id="paperplanePos2" />
                 
             </children>
         </component>
@@ -1818,9 +1827,7 @@
             </children>
         </component>
 
-
-        <!--Chair-->
-        <component id="chair">
+        <component id="chairPos1">
             <materials>
                 <material id="woodMaterial" />
             </materials>
@@ -1831,6 +1838,51 @@
             </transformation>
             <texture id="none" />
 
+            <children>
+                <componentref id="chair" />
+            </children>
+        </component>
+
+        <component id="chairPos2">
+            <materials>
+                <material id="woodMaterial" />
+            </materials>
+            <transformation>
+                <translate x="4" y="-2.7" z="-4" />
+                <rotate axis="y" angle="-40" />
+                <scale x="1.7" y="1.7" z="1.7" />
+            </transformation>
+            <texture id="none" />
+
+            <children>
+                <componentref id="chair" />
+            </children>
+        </component>
+
+        <component id="chairPos3">
+            <materials>
+                <material id="woodMaterial" />
+            </materials>
+            <transformation>
+                <translate x="4" y="-2.7" z="4" />
+                <rotate axis="y" angle="-140" />
+                <scale x="1.7" y="1.7" z="1.7" />
+            </transformation>
+            <texture id="none" />
+
+            <children>
+                <componentref id="chair" />
+            </children>
+        </component>
+
+        <!--Chair-->
+        <component id="chair">
+            <materials>
+                <material id="woodMaterial" />
+            </materials>
+            <transformation>
+            </transformation>
+            <texture id="none" />
             <children>
                 <componentref id="chair_base" />
                 <componentref id="chair_back" />
@@ -3439,5 +3491,161 @@
                 <primitiveref id="squarez8x8" />
             </children>
         </component>
+
+        <component id="paperplanePos2">
+            <materials>
+                <material id="paperMaterial"/>
+            </materials>
+            <transformation>
+                <translate x="-20" y="1" z="20" />
+                <rotate axis="x" angle="30" />
+                <scale x="0.2" y="0.2" z="0.2" />
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="paperplane" />
+            </children>
+        </component>
+
+        <component id="paperplanePos1">
+            <materials>
+                <material id="paperMaterial"/>
+            </materials>
+            <transformation>
+                <translate x="-5" y="8" z="-15" />
+                <rotate axis="z" angle="-20" />
+                <rotate axis="y" angle="-45" />
+                <scale x="0.2" y="0.2" z="0.2" />
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="paperplane" />
+            </children>
+        </component>
+
+        <!-- Start paperplane -->
+    
+        <component id="paperplane">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+                <translate x="0" y="0" z="-4.5" />
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="leftWing" />
+                <componentref id="rightWing" />
+                <componentref id="undersideLeft" />
+                <componentref id="undersideRight" />
+            </children>
+        </component>
+
+        <component id="leftWing">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+                <rotate axis="y" angle="-2.7" />
+                <translate x="0.51" y="0" z="0" />
+                <scale x="1" y="1" z="3" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="triangleBothFaces" />
+            </children>
+        </component>
+
+        <component id="rightWing">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+                <rotate axis="y" angle="4.9" />
+                <translate x="-0.6" y="0" z="0" />
+                <scale x="1" y="1" z="3" />
+                <rotate axis="z" angle="180" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="triangleBothFaces" />
+            </children>
+        </component>
+
+        <component id="undersideRight">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+                <rotate axis="z" angle="20" />
+                <translate x="-0.55" y="0" z="0" />
+                <rotate axis="y" angle="4.5" />
+                <translate x="0" y="-0.67" z="3.2" />
+                <rotate axis="x" angle="-7.9"/>
+                <translate x="0" y="-0.1667" z="-3" />
+                <rotate axis="z" angle="90" />
+                <scale x="0.5" y="1" z="2.9" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="triangleBothFaces" />
+            </children>
+        </component>
+
+        <component id="undersideLeft">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+                <rotate axis="z" angle="-25" />
+                <translate x="0.5" y="0" z="0" />
+                <rotate axis="y" angle="-2.7" />
+                <translate x="0" y="-0.65" z="3.2" />
+                <rotate axis="x" angle="-8.5"/>
+                <translate x="0" y="-0.1667" z="-3" />
+                <rotate axis="z" angle="90" />
+                <scale x="0.5" y="1" z="2.9" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="triangleBothFaces" />
+            </children>
+        </component>
+
+        <!-- End paperplane -->
+
+        <!-- Start trinagle -->
+        <component id="triangleBothFaces">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="triangle" />
+                <componentref id="reversedTriangle" />
+            </children>
+        </component>
+
+        <component id="reversedTriangle">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+                <rotate axis="x" angle="-180" />
+                <rotate axis="z" angle="-90" />
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="triangle" />
+            </children>
+        </component>
+
+        <!-- End triangle -->
     </components>
 </sxs>
