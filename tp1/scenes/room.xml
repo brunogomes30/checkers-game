@@ -106,8 +106,14 @@
         <material id="skinMaterial" shininess="1">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="0.2" g="0.2" b="0.2" a="1.0" />
+            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
+            <specular r="0.05" g="0.05" b="0.05" a="1.0" />
+        </material>
+        <material id="faceMaterial" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="0.05" g="0.05" b="0.05" a="1.0" />
         </material>
         <material id="laceMaterial" shininess="1">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
@@ -1048,7 +1054,7 @@
                 <rotate axis="z" angle="-90"/>
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="faceMaterial" />
             </materials>
             <texture id="rickface" length_s="1" length_t="1"/>
             <children>
