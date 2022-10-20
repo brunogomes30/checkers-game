@@ -83,7 +83,7 @@
         <texture id="marbleTexture" file="scenes/images/marble.jpg" />
         <texture id="coffeeTexture" file="scenes/images/coffee.jpg" />
         <texture id="tableTexture" file="scenes/images/tableTexture.jpg" />
-        <texture id="missingTexture" file="scenes/images/missing-texture.jpg" />
+        <texture id="leatherTexture" file="scenes/images/leather1024.jpg" />
     </textures>
 
     <materials>
@@ -261,6 +261,13 @@
             <ambient r="1.0" g="0.4980392156862745" b="0.3137254901960784" a="1.0" />
             <diffuse r="1.0" g="0.4980392156862745" b="0.3137254901960784" a="1.0" />
             <specular r="0.2" g="0.2" b="0.2" a="1.0" />
+        </material>
+
+        <material id="sofaSoftMaterial" shininess="10">
+            <emission r="0.1" g="0.1" b="0.1" a="1.0" />
+            <ambient r="0.3803921568627451" g="0.25098039215686274" b="0.1843137254901961" a="1.0" />
+            <diffuse r="0.3803921568627451" g="0.25098039215686274" b="0.1843137254901961" a="1.0" />
+            <specular r="0.3803921568627451" g="0.25098039215686274" b="0.1843137254901961" a="1.0" />
         </material>
         
         
@@ -682,6 +689,8 @@
                 <componentref id="lamp_position" />
                 <componentref id="mug_position_desk"/>
                 <componentref id="plant_position"/>
+                <componentref id="sofa_position"/>
+                
             </children>
         </component>
 
@@ -735,7 +744,7 @@
                 <material id="paintingPanelMaterial" />
                 <material id="paintingPanelMaterial2" />
             </materials>
-            <texture id="paintingTexture" />
+            <texture id="paintingTexture" length_s="1" length_t="1"/>
             <children>
                 <primitiveref id="square" />
             </children>
@@ -961,6 +970,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
+            <texture id="none" />
 
             <children>
                 <primitiveref id="spherePerson" />
@@ -975,6 +985,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
+            <texture id="none" />
 
             <children>
                 <primitiveref id="spherePerson" />
@@ -1001,7 +1012,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="rickface"/>
+            <texture id="rickface" length_s="1" length_t="1"/>
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -1283,7 +1294,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="tableTexture" />
+            <texture id="tableTexture" length_s="1" length_t="1"/>
             <children>
                 <componentref id="round_table" />
             </children>
@@ -1403,7 +1414,7 @@
             <materials>
                 <material id="woodMaterial" />
             </materials>
-            <texture id="tableTexture" />
+            <texture id="tableTexture" length_s="1" length_t="1"/>
             <children>
                 <componentref id="table_legs" />
                 <componentref id="table_top" />
@@ -1585,7 +1596,7 @@
                 <material id="keyboardPanel" length_s="1" length_t="1" />
             </materials>
 
-            <texture id="keyboardTexture"/>
+            <texture id="keyboardTexture" length_s="1" length_t="1"/>
 
             <children>
                 <primitiveref id="square" />
@@ -2289,7 +2300,7 @@
             <materials>
                 <material id="ceramicMaterial" />
             </materials>
-            <texture id="marbleTexture" />
+            <texture id="marbleTexture" length_s="1" length_t="1"/>
             <children>
                 <componentref id="mug_cup" />
                 <componentref id="mug_handle" />
@@ -2304,7 +2315,7 @@
             <materials>
                 <material id="ceramicMaterial" />
             </materials>
-            <texture id="marbleTexture" />
+            <texture id="marbleTexture" length_s="1" length_t="1"/>
             <children>
                 <componentref id="mug_empty_cup" />
                 <componentref id="mug_handle" />
@@ -2319,7 +2330,7 @@
             <materials>
                 <material id="ceramicMaterial" />
             </materials>
-            <texture id="marbleTexture" />
+            <texture id="marbleTexture" length_s="1" length_t="1"/>
             <children>
                 <componentref id="mug_cylinder" />
                 <componentref id="mug_top" />
@@ -2334,7 +2345,7 @@
             <materials>
                 <material id="ceramicMaterial" />
             </materials>
-            <texture id="marbleTexture" />
+            <texture id="marbleTexture" length_s="1" length_t="1"/>
             <children>
                 <componentref id="mug_cylinder" />
                 <componentref id="mug_empty_top" />
@@ -2367,7 +2378,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="coffeeTexture" />
+            <texture id="coffeeTexture" length_s="1" length_t="1"/>
 
             <children>
                 <primitiveref id="circle" />
@@ -2382,7 +2393,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="marbleTexture" />
+            <texture id="marbleTexture" length_s="1" length_t="1"/>
 
             <children>
                 <primitiveref id="circle" />
@@ -2956,6 +2967,279 @@
             </children>
         </component>
         
+        <component id="sofa_position">
+            <transformation>
+                <translate x="0" y="0" z="-21.5"/>
+            </transformation>
+            <materials>
+                <material id="woodMaterial"/>
+            </materials>
+            
+            <texture id="none"/>
+            <children>
+                <componentref id="sofa" />
+            </children>
+        </component>
+
+        <component id="sofa">
+            <transformation>
+                <translate x="0" y="-1.7" z="0" />
+                <scale x="3.0" y="3" z="2.5" />
+            </transformation>
+            <materials>
+                <material id="woodMaterial"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="sofaHard" />
+                <componentref id="sofaSoft" />
+            </children>
+        </component>
+
+        <component id="sofaHard">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+            </transformation>
+            <texture id="leatherTexture" length_s="1" length_t="1"/>
+            <children>
+                <componentref id="sofaBase" />
+                <componentref id="sofaLeft" />
+                <componentref id="sofaRight" />
+                <componentref id="sofaBack" />
+            </children>
+        </component>
+
+        <component id="sofaSoft">
+            <materials>
+                <material id="sofaSoftMaterial"/>
+            </materials>
+            <transformation>
+            </transformation>
+            <texture id="leatherTexture" length_s="1" length_t="1"/>
+            <children>
+                <componentref id="sofaPillowRight" />
+                <componentref id="sofaPillowLeft" />
+                <componentref id="sofaPillowBottom" />
+                <componentref id="sofaPillowTop" />
+            </children>
+        </component>
+
+        <component id="sofaBase">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+                <scale x="4" y="0.5" z="1.5" />
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="cube" />
+            </children>
+        </component>
+
+        <component id="sofaBack">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+                <translate x="0" y="0.75" z="-1" />
+                <scale x="5" y="2" z="0.6" />
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="cube" />
+            </children>
+        </component>
+
+        <component id="sofaLeft">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+                <translate x="2.25" y="0.50" z="0" />
+                <scale x="0.5" y="1.5" z="1.5" />
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="cube" />
+            </children>
+        </component>
+
+        <component id="sofaRight">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+                <translate x="-2.25" y="0.50" z="0" />
+                <scale x="0.5" y="1.5" z="1.5" />
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="cube" />
+            </children>
+        </component>
+
+         <component id="sofaPillowRight">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+                <translate x="-1" y="0.5" z="0" />
+                <scale x="2" y="0.5" z="1.5" />
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="cube" />
+            </children>
+        </component>
+
+        <component id="sofaPillowLeft">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+                <translate x="1" y="0.5" z="0" />
+                <scale x="2" y="0.5" z="1.5" />
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="cube" />
+            </children>
+        </component>
+
+        <component id="sofaPillowBottom">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+                <translate x="-2" y="0.8" z="-0.7" />
+                <scale x="4" y="0.5" z="0.5" />
+                <rotate axis="y" angle="-90" />
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="cylinder_bases" />
+            </children>
+        </component>
+        
+        <component id="sofaPillowTop">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+                <translate x="-2" y="1.1" z="-0.8" />
+                <scale x="4" y="0.5" z="0.5" />
+                <rotate axis="y" angle="-90" />
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="cylinder_bases" />
+            </children>
+        </component>
+
+        <!-- Start cube single face-->
+        <component id="cube">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="cubeYPos"/>
+                <componentref id="cubeYNeg"/>
+                <componentref id="cubeZPos"/>
+                <componentref id="cubeZNeg"/>
+                <componentref id="cubeXPos"/>
+                <componentref id="cubeXNeg"/>
+            </children>
+        </component>
+
+        <component id="cubeYPos">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+                <translate x="0" y="0.5" z="0"/>
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+
+        <component id="cubeYNeg">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+                <translate x="0" y="-0.5" z="0"/>
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+
+        <component id="cubeZPos">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+                <translate x="0" y="0" z="0.5"/>
+                
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+
+        <component id="cubeZNeg">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+                <translate x="0" y="0" z="-0.5"/>
+                <rotate axis="y" angle="-180"/>
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+
+        <component id="cubeXPos">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+                <translate x="0.5" y="0" z="0"/>
+                <rotate axis="y" angle="90"/>
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+
+        <component id="cubeXNeg">
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <transformation>
+                <translate x="-0.5" y="0" z="0"/>
+                <rotate axis="y" angle="-90"/>
+            </transformation>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
 
         <component id="cylinder_bases_bottom">
             <transformation>

@@ -28,7 +28,7 @@ export function parseMaterials(materialsNode, graph) {
 
         // Checks for repeated IDs.
         if (graph.materials[materialID] != null)
-            return "ID must be unique for each light (conflict: ID = " + materialID + ")";
+            return "ID must be unique for each material (conflict: ID = " + materialID + ")";
 
         //Continue here
         const material = parseMaterial(materialNode, materialID, graph);  
