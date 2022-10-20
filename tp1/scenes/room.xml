@@ -1,7 +1,7 @@
 <sxs>
     <scene root="demoRoot" axis_length="5" />
 
-    <views default="Paperplane">
+    <views default="rickrolled">
         <perspective id="default" near="0.1" far="500" angle="60">
             <from x="-40" y="30" z="40" />
             <to x="0" y="1" z="0" />
@@ -306,6 +306,30 @@
             <ambient r="0.8" g="0.8" b="0.8" a="1.0" />
             <diffuse r="0.8" g="0.8" b="0.8" a="1.0" />
             <specular r="0.1" g="0.1" b="0.1" a="1.0" />
+        </material>
+        <material id="paperMaterial1" shininess="10">
+            <emission r="0.1" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.7" g="0.2" b="0.2" a="1.0" />
+            <diffuse r="0.7" g="0.2" b="0.2" a="1.0" />
+            <specular r="1.0" g="0.1" b="0.1" a="1.0" />
+        </material>
+        <material id="paperMaterial2" shininess="10">
+            <emission r="0.0" g="0.4" b="0.0" a="1.0" />
+            <ambient r="0.8" g="0.8" b="0.8" a="1.0" />
+            <diffuse r="0.8" g="0.8" b="0.8" a="1.0" />
+            <specular r="0.1" g="0.1" b="0.1" a="1.0" />
+        </material>
+        <material id="paperMaterial3" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.1" g="0.1" b="0.1" a="1.0" />
+            <diffuse r="0.1" g="0.1" b="0.1" a="1.0" />
+            <specular r="0.1" g="0.1" b="0.1" a="1.0" />
+        </material>
+        <material id="paperMaterial4" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.0" g="0.0" b="0.4" a="1.0" />
+            <diffuse r="0.0" g="0.0" b="0.4" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
         </material>
         
         
@@ -3533,7 +3557,7 @@
                 <rotate axis="x" angle="30" />
                 <scale x="0.2" y="0.2" z="0.2" />
             </transformation>
-            <texture id="camoTexture" length_s="2.0" lenght_t="1.0"/>
+            <texture id="camoTexture" length_s="2.0" length_t="1.0"/>
             <children>
                 <componentref id="paperplane" />
             </children>
@@ -3542,6 +3566,10 @@
         <component id="paperplanePos1">
             <materials>
                 <material id="paperMaterial"/>
+                <material id="paperMaterial1" />
+                <material id="paperMaterial2" />
+                <material id="paperMaterial3" />
+                <material id="paperMaterial4" />
             </materials>
             <transformation>
                 <translate x="-5" y="12" z="-15" />
