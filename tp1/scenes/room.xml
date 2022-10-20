@@ -29,7 +29,7 @@
             <to x="0" y="0" z="-25" />
         </perspective>
         
-        <ortho id="Top view Ortho" near="-100" far="100" left="-50" right="50" bottom="-50" top="50">
+        <ortho id="Top view Ortho" near="5" far="40" left="-30" right="30" bottom="-30" top="30">
             <from x="0" y="30" z="0" />
             <to x="-0.1" y="-20" z="0" />
         </ortho>
