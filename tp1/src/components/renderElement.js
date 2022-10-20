@@ -34,6 +34,12 @@ function renderComponent(element, parents) {
 
 function displayPrimitive(element, parents) {
     applyTextureScaling(element, parents)
+    if(element.scene.displayNormals){
+        element.enableNormalViz();
+    }
+    else{
+        element.disableNormalViz();
+    }
     element.display();
     
 }

@@ -29,6 +29,8 @@ export class XMLscene extends CGFscene {
         super.init(application);
 
         this.sceneInited = false;
+        this.setLightsVisible = false;
+        this.displayNormals = false;
 
         this.initCameras();
 
