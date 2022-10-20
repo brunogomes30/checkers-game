@@ -1,7 +1,7 @@
 <sxs>
     <scene root="demoRoot" axis_length="5" />
 
-    <views default="Paperplane">
+    <views default="default">
         <perspective id="default" near="0.1" far="500" angle="60">
             <from x="-40" y="30" z="40" />
             <to x="0" y="1" z="0" />
