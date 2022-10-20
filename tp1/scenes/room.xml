@@ -233,17 +233,44 @@
             <diffuse r="0.4117647058823529" g="0.17647058823529413" b="0.43137254901960786" a="1.0" />
             <specular r="0.2" g="0.1" b="0.2" a="1.0" />
         </material>
+
+
+        <material id="leafMaterial" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.0" g="0.7" b="0.0" a="1.0" />
+            <diffuse r="0.0" g="0.7" b="0.0" a="1.0" />
+            <specular r="0.0" g="0.1" b="0.0" a="1.0" />
+        </material>
+
+        <material id="plantMaterial" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.0" g="0.7" b="0.0" a="1.0" />
+            <diffuse r="0.0" g="0.7" b="0.0" a="1.0" />
+            <specular r="0.0" g="0.1" b="0.0" a="1.0" />
+        </material>
+        
+        <material id="dirtMaterial" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.4627450980392157" g="0.3333333333333333" b="0.16862745098039217" a="1.0" />
+            <diffuse r="0.4627450980392157" g="0.3333333333333333" b="0.16862745098039217" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
+        </material>
+
+        <material id="plantVaseMaterial" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="1.0" g="0.4980392156862745" b="0.3137254901960784" a="1.0" />
+            <diffuse r="1.0" g="0.4980392156862745" b="0.3137254901960784" a="1.0" />
+            <specular r="0.2" g="0.2" b="0.2" a="1.0" />
+        </material>
+        
+        
         
         
         
     </materials>
 
     <transformations>
-        <transformation id="demoTransform">
-            <scale x="5" y="1" z="5" />
-            <rotate axis="x" angle="-45" />
-            <rotate axis="z" angle="-45" />
-        </transformation>
+        
     </transformations>
 
     <primitives>
@@ -294,6 +321,10 @@
 
         <primitive id="abajour">
             <cylinder base="1" top="0.5" height="1" slices="16" stacks="16" />
+        </primitive>
+
+        <primitive id="leafPrimitive">
+            <cylinder base="1" top="0.0" height="0.05" slices="16" stacks="16" />
         </primitive>
         
 
@@ -650,6 +681,7 @@
                 <componentref id="mug_positions" />
                 <componentref id="lamp_position" />
                 <componentref id="mug_position_desk"/>
+                <componentref id="plant_position"/>
             </children>
         </component>
 
@@ -2323,7 +2355,7 @@
             <texture id="inherit" />
             <children>
                 <primitiveref id="unitCylinder"/>
-                <componentref id="reverse_cylinder"/>
+                <componentref id="reverseCylinder"/>
             </children>
         </component>
 
@@ -2357,7 +2389,7 @@
             </children>
         </component>
 
-        <component id="reverse_cylinder">
+        <component id="reverseCylinder">
             <transformation>
                 <translate x="0" y="0" z="1" />
                 <scale x="-1" y="-1" z="-1" />
@@ -2496,6 +2528,434 @@
                 <primitiveref id="torus"/>
             </children>
         </component>
+
+        <component id="plant_position">
+            <transformation>
+                <translate x="20" y="-1.9" z="20" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="plant" />
+            </children>
+
+        </component>
+
+        <component id="plant">
+            <transformation>
+
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="plant_plant" />
+                <componentref id="plant_vase" />
+            </children>
+
+        </component>
+
+        <component id="plant_vase">
+            <transformation>
+                <scale x="0.4" y="0.6" z="0.4" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="plantVaseMaterial" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="unitCylinder" />
+                <componentref id="reverseCylinder" />
+                <componentref id="plant_vase_rim" />
+                <componentref id="plant_vase_base" />
+                <componentref id="plant_vase_dirt" />
+                
+            </children>
+
+        </component>
+
+        <component id="plant_vase_rim">
+            <transformation>
+
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="torus_thin" />
+            </children>
+
+        </component>
+
+        <component id="plant_vase_base">
+            <transformation>
+                <translate x="0" y="0" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="circle" />
+            </children>
+
+        </component>
+
+        <component id="plant_vase_dirt">
+            <transformation>
+                <translate x="0" y="0" z="0.2" />
+                <rotate axis="y" angle="180" />
+            </transformation>
+            <materials>
+                <material id="dirtMaterial" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="circle" />
+            </children>
+
+        </component>
+
+        <component id="plant_plant">
+            <transformation>
+
+            </transformation>
+            <materials>
+                <material id="plantMaterial" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="plant_stick" />
+                
+            </children>
+
+        </component>
+
+        <component id="plant_stick">
+            <transformation>
+
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="plant_stick_1" />
+                <componentref id="plant_sphere_1" />
+                <componentref id="plant_stick_2" />
+                <componentref id="plant_sphere_2" />
+                <componentref id="plant_stick_3" />
+                <componentref id="plant_sphere_3" />
+                <componentref id="plant_leafs" />
+            </children>
+
+        </component>
+
+        <component id="plant_leafs" >
+            <transformation>
+
+            </transformation>
+            <materials>
+                <material id="leafMaterial" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="plant_leaf_1" />
+                <componentref id="plant_leaf_2" />
+                <componentref id="plant_leaf_3" />
+                <componentref id="plant_leaf_4" />
+                <componentref id="plant_leaf_5" />
+                <componentref id="plant_leaf_6" />
+                <componentref id="plant_leaf_7" />
+                <componentref id="plant_leaf_8" />
+            </children>
+        </component>
+
+        <component id="plant_leaf_1" >
+            <transformation>
+                <translate x="-0.05" y="2" z="0.35" />
+                <rotate axis="x" angle="45" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="leaf" />
+            </children>
+        </component>^
+        <component id="plant_leaf_2" >
+            <transformation>
+                <translate x="-0.3" y="1" z="0.28" />
+                <rotate axis="x" angle="60" />
+                <rotate axis="z" angle="45" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="leaf" />
+            </children>
+        </component>
+        <component id="plant_leaf_3" >
+            <transformation>
+                <translate x="-0.1" y="0.5" z="-0.3" />
+                <rotate axis="y" angle="30" />
+                <rotate axis="x" angle="-45" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="leaf" />
+            </children>
+        </component>
+        <component id="plant_leaf_4" >
+            <transformation>
+                <translate x="0.3" y="0.75" z="0." />
+                <rotate axis="y" angle="90" />
+                <rotate axis="x" angle="45" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="leaf" />
+            </children>
+        </component>
+        <component id="plant_leaf_5" >
+            <transformation>
+                <translate x="0.3" y="2.62" z="0.3" />
+                <rotate axis="y" angle="45" />
+                <rotate axis="x" angle="70" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="leaf" />
+            </children>
+        </component>
+        <component id="plant_leaf_6" >
+            <transformation>
+                <translate x="-0.3" y="2.62" z="0.3" />
+                <rotate axis="y" angle="-45" />
+                <rotate axis="x" angle="70" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="leaf" />
+            </children>
+        </component>
+        <component id="plant_leaf_7" >
+            <transformation>
+                <translate x="0.3" y="2.62" z="-0.3" />
+                <rotate axis="y" angle="-225" />
+                <rotate axis="x" angle="70" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="leaf" />
+            </children>
+        </component>
+        <component id="plant_leaf_8" >
+            <transformation>
+                <translate x="-0.3" y="2.62" z="-0.3" />
+                <rotate axis="y" angle="225" />
+                <rotate axis="x" angle="70" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="leaf" />
+            </children>
+        </component>
+
+        <component id="leaf">
+            <transformation>
+                <scale x="0.15" y="0.4" z="0.15" />
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="leaf_part_bottom" />
+                <componentref id="leaf_part_middle" />
+                <componentref id="leaf_part_top" />
+            </children>
+        </component>
+
+        <component id="leaf_part_top">
+            <transformation>
+                <translate x="0" y="0" z="0.2" />
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="leafPrimitive" />
+            </children>
+        </component>
+
+        <component id="leaf_part_middle">
+            <transformation>
+
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children> 
+                <primitiveref id="torus_thin" />
+            </children>
+        </component>
+
+        <component id="leaf_part_bottom">
+            <transformation>
+                <rotate axis="y" angle="180" />
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="leafPrimitive" />
+            </children>
+        </component>
+
+        <component id="plant_generic_stick">
+            <transformation>
+                <scale x="0.07" y="1" z="0.07" />
+                <rotate axis="x" angle="90" />
+                <translate x="0" y="0" z="-0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="unitCylinder" />
+            </children>
+        </component>
+
+        <component id="plant_generic_sphere">
+            <transformation>
+                <scale x="0.07" y="0.07" z="0.07" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+
+        <component id="plant_stick_1">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="plant_generic_stick" />
+            </children>
+        </component>
+
+        <component id="plant_sphere_1">
+            <transformation>
+                <translate x="0" y="0.5" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="plant_generic_sphere" />
+            </children>
+        </component>
+
+        <component id="plant_stick_2">
+            <transformation>
+                <translate x="0" y="0.5" z="0" />
+                <rotate angle="5" axis="z"/>
+                <translate x="0" y="0.5" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="plant_generic_stick" />
+            </children>
+        </component>
+
+        <component id="plant_sphere_2">
+            <transformation>
+                <translate x="-0.09" y="1.45" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="plant_generic_sphere" />
+            </children>
+        </component>
+
+        <component id="plant_stick_3">
+            <transformation>
+                <translate x="-0.09" y="1.45" z="0" />
+                <rotate angle="-5" axis="z"/>
+                <translate x="0" y="0.5" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="plant_generic_stick" />
+            </children>
+        </component>
+
+        <component id="plant_sphere_3">
+            <transformation>
+                <translate x="0" y="2.45" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="plant_generic_sphere" />
+            </children>
+        </component>
+        
 
         <component id="cylinder_bases_bottom">
             <transformation>
