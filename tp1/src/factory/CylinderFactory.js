@@ -1,10 +1,13 @@
 import { MyCylinder } from "../primitives/MyCylinder.js";
 import { buildValues } from "./utils.js";
 
+/**
+ * Cylinder factory that creates new cylinders
+ * @export
+ * @class CylinderFactory   
+ */
 export class CylinderFactory{
     constructor(){
-        //sirizio, melhor forma para fazer isto?
-        // Podemos arranjar forma de colocar default values caso não sejas dados, mas não parece que possamos permitir isso
         this.attributes = {
             'base': 'float',
             'top': 'float',
@@ -14,6 +17,12 @@ export class CylinderFactory{
         }
     }
 
+    /**
+     * Builds a cylinder based on the given node, reading its attributes
+     * @param {CylinderOptions} options
+     * @returns 
+     * @returns {MyCylinder} or error string if any of the attributes is missing
+     */
     build(reader, node, scene, id){
         const values = buildValues(this.attributes, reader, node, id);
         if (values == null || typeof values !== 'object' ){

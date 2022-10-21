@@ -1,3 +1,11 @@
+/**
+ * Parses the given attributes and returns an object with the values read in the node or an error string if any of the attributes is missing
+ * @param {Object} attributes 
+ * @param {XMLReader} reader 
+ * @param {XMLNode} node 
+ * @param {String} id 
+ * @returns 
+ */
 export function buildValues(attributes, reader, node, id){
     const values = {};
     const keys = Object.keys(attributes);
@@ -23,6 +31,13 @@ export function buildValues(attributes, reader, node, id){
     return values;
 }
 
+/**
+ * Truncates the given number to the given number of decimal places
+ * @export
+ * @param {Float} number
+ * @param {Number} decimalPlaces
+ * @return {Float} 
+ */
 export function truncateDecimalPlaces(number, decimalPlaces){
     return Number.parseFloat(Number.parseFloat(number).toFixed(decimalPlaces));
 }

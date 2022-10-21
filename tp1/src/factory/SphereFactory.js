@@ -1,10 +1,13 @@
 import { MySphere } from "../primitives/MySphere.js";
 import { buildValues } from "./utils.js";
 
+/**
+ * Sphere factory that creates new spheres
+ * @export
+ * @class SphereFactory
+ */
 export class SphereFactory{
     constructor(){
-        //sirizio, melhor forma para fazer isto?
-        // Podemos arranjar forma de colocar default values caso não sejas dados, mas não parece que possamos permitir isso
         this.attributes = {
             'radius': 'float',
             'stacks': 'integer',
@@ -12,6 +15,15 @@ export class SphereFactory{
         }
     }
 
+    /**
+     * Builds a sphere based on the given node, reading its attributes
+     * @param {XMLReader} reader
+     * @param {XMLNode} node
+     * @param {Scene} scene
+     * @param {string} id
+     * @returns {MySphere} or error string if any of the attributes is missing
+     * @memberof SphereFactory
+     */
     build(reader, node, scene, id){
         const values = buildValues(this.attributes, reader, node, id);
         if (values == null || typeof values !== 'object'){

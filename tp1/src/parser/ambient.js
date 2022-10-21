@@ -1,10 +1,11 @@
-import {parseColor} from "./utils.js"
+import { parseColor } from "./utils.js"
 
 /**
-     * Parses the <ambient> node.
-     * @param {ambient block element} ambientsNode
-     */
- export function parseAmbient(ambientsNode, graph) {
+ * Parses the <ambient> node.
+ * @param {ambient block element} ambientsNode - The ambient block element.
+ * @param {MySceneGraph} graph - The scene graph.
+ */
+export function parseAmbient(ambientsNode, graph) {
 
     const children = ambientsNode.children;
 

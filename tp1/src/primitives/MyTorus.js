@@ -1,12 +1,17 @@
 import { CGFobject } from '../../../lib/CGF.js';
 import { truncateDecimalPlaces } from '../factory/utils.js';
-import { degToRad, RADIANS_CIRCLE, vectorNormalize } from './geometryUtils.js';
+import { RADIANS_CIRCLE } from './geometryUtils.js';
+
 /**
- * MyRectangle
+ * MyTorus
  * @constructor
- * @param scene - Reference to MyScene object
- * @param x - Scale of rectangle in X
- * @param y - Scale of rectangle in Y
+ * @param {XMLscene} scene - Reference to MyScene object
+ * @param {String} id - ID of the rectangle
+ * @param {Object} values - Values of the Torus
+ * @param {Number} values.inner - Inner radius of the Torus
+ * @param {Number} values.outer - Outer radius of the Torus
+ * @param {Number} values.slices - Slices of the Torus
+ * @param {Number} values.loops - Loops of the Torus
  */
 export class MyTorus extends CGFobject {
     constructor(scene, id, values) {
@@ -21,12 +26,15 @@ export class MyTorus extends CGFobject {
         this.initBuffers();
     }
 
+    /**
+     * Initializes the torus buffers
+     * @memberof MyTorus
+     */
     initBuffers() {
         this.vertices = [];
         this.normals = [];
         this.indices = [];
         this.texCoords = [];
-        const vertexNr = (this.loops + 1) * (this.slices + 1)
         const loopsStep = RADIANS_CIRCLE / this.loops;
         const slicesStep = RADIANS_CIRCLE / this.slices;
         const texLoopsStep = 1 / this.loops;
@@ -49,9 +57,9 @@ export class MyTorus extends CGFobject {
                 this.texCoords.push(-loop * texLoopsStep, -slice * texSlicesStep);
             }
         }
-        
-        for (let loop=0; loop < this.loops; loop++){
-            for(let slice=0;slice < this.slices; slice++){
+
+        for (let loop = 0; loop < this.loops; loop++) {
+            for (let slice = 0; slice < this.slices; slice++) {
                 //0  3
                 //1  2    
                 const vertex0 = slice + loop * (this.slices + 1);
@@ -68,8 +76,9 @@ export class MyTorus extends CGFobject {
         this.initGLBuffers();
     }
 
-    
-
+    /**
+     * Dummy function
+     */
     updateTexCoords(length_s, length_t) {
         return;
     }

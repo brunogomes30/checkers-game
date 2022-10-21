@@ -1,8 +1,9 @@
 import { Texture } from "../textures/Texture.js"
 /**
-     * Parses the <textures> block. 
-     * @param {textures block element} texturesNode
-     */
+ * Parses the <textures> block. 
+ * @param {XMLNode} texturesNode - The textures block element.
+ * @param {MySceneGraph} graph - The scene graph.
+ */
 export function parseTextures(texturesNode, graph) {
     graph.textures = []
     //For each texture in textures block, check ID and file URL
@@ -27,6 +28,6 @@ export function parseTextures(texturesNode, graph) {
     }
 
     graph.log("Parsed textures");
-    
+
     return null;
 }

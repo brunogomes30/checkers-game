@@ -1,12 +1,16 @@
 import { CGFobject } from '../../../lib/CGF.js';
+import { MySceneGraph } from '../MySceneGraph.js';
 import { vectorNormalize } from './geometryUtils.js';
+
 /**
- * MyRectangle
- * Implementation inspired on http://www.songho.ca/opengl/gl_sphere.html
+ * MySphere inspired on http://www.songho.ca/opengl/gl_sphere.html
  * @constructor
- * @param scene - Reference to MyScene object
- * @param x - Scale of rectangle in X
- * @param y - Scale of rectangle in Y
+ * @param {XMLscene} scene - Reference to MyScene object
+ * @param {String} id - ID of the rectangle
+ * @param {Object} values - Values of the Sphere
+ * @param {Number} values.radius - Radius of the Sphere
+ * @param {Number} values.stacks - Stacks of the Sphere
+ * @param {Number} values.slices - Slices of the Sphere
  */
 export class MySphere extends CGFobject {
     constructor(scene, id, values) {
@@ -19,6 +23,11 @@ export class MySphere extends CGFobject {
         this.initBuffers();
     }
 
+    /**
+     * Initializes the buffers of the sphere
+     * @memberof MySphere
+     * @private
+     */
     initBuffers() {
         this.vertices = [];
         this.indices = [];
@@ -46,6 +55,7 @@ export class MySphere extends CGFobject {
 
                 const textS = slice / this.slices;
                 const textT = stack / this.stacks;
+
                 this.texCoords.push(1 - textS, textT);
             }
 
@@ -83,7 +93,10 @@ export class MySphere extends CGFobject {
         this.initGLBuffers();
     }
 
-    updateTexCoords(length_s, length_t){
+    /**
+     * Dummy function
+     */
+    updateTexCoords(length_s, length_t) {
         return;
     }
 }

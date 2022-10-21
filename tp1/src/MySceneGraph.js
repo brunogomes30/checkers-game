@@ -38,6 +38,9 @@ const PARSE_FUNCTION = {
 
 /**
  * MySceneGraph class, representing the scene graph.
+ * @constructor
+ * @param {String} filename - Path to the XML file.
+ * @param {XMLscene} scene - Reference to MyScene object.
  */
 export class MySceneGraph {
     /**

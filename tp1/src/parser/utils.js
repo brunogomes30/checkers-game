@@ -1,8 +1,8 @@
 /**
-     * Parse the coordinates from a node with ID = id
-     * @param {block element} node
-     * @param {message to be displayed in case of error} messageError
-     */
+ * Parse the coordinates from a node with ID = id
+ * @param {XMLNode} node - the node to parse
+ * @param {String} messageError - message to be displayed in case of error
+ */
 export function parseCoordinates3D(node, messageError, graph) {
     var position = [];
 

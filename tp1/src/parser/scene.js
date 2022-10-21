@@ -1,7 +1,8 @@
 /**
-     * Parses the <scene> block. 
-     * @param {scene block element} sceneNode
-     */
+ * Parses the <scene> block. 
+ * @param {XMLNode} sceneNode - The scene block element.
+ * @param {MySceneGraph} graph - The scene graph.
+ */
 export function parseScene(sceneNode, graph) {
     // Get root of the scene.
     var root = graph.reader.getString(sceneNode, 'root')
