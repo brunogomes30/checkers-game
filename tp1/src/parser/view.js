@@ -25,7 +25,7 @@ export function parseView(viewsNode, graph) {
 
         let viewId = graph.reader.getString(viewNode, 'id', false);
         if (viewId == null || viewId == '') {
-            return 'No ID defined for a view block';
+            return `No ID defined for a ${viewType} block`;
         }
         if (viewId in cameras) {
             graph.onXMLMinorError(`ID must be unique for each camera (conflict: ID = '${viewId}')`);
@@ -35,13 +35,13 @@ export function parseView(viewsNode, graph) {
         let res
 
         let near = graph.reader.getFloat(viewNode, 'near', false);
-        res = testFloat(near, 'near', 'view', viewId)
+        res = testFloat(near, 'near', viewType, viewId)
         if (res != null) {
             return res;
         }
 
         let far = graph.reader.getFloat(viewNode, 'far', false);
-        res = testFloat(near, 'far', 'view', viewId)
+        res = testFloat(far, 'far', viewType, viewId)
         if (res != null) {
             return res;
         }
@@ -53,9 +53,9 @@ export function parseView(viewsNode, graph) {
 
         let fromNode = viewNode.children[childrenNames.indexOf('from')]
         if (fromNode == undefined) {
-            return `'from' block not defined in view ${viewId}`
+            return `'from' block not defined in ${viewType} ${viewId}`
         }
-        let from = parseCoordinates3D(fromNode, `'from' tag of view ${viewId}`, graph)
+        let from = parseCoordinates3D(fromNode, `'from' tag of ${viewType} ${viewId}`, graph)
         if (!Array.isArray(from)) {
             return from;
         }
@@ -65,7 +65,7 @@ export function parseView(viewsNode, graph) {
         if (toNode == undefined) {
             return `'to' block not defined in view ${viewId}`
         }
-        let to = parseCoordinates3D(toNode, `'to' tag of view ${viewId}`, graph)
+        let to = parseCoordinates3D(toNode, `'to' tag of ${viewType} ${viewId}`, graph)
         if (!Array.isArray(to)) {
             return to;
         }
@@ -83,25 +83,25 @@ export function parseView(viewsNode, graph) {
         }
         else {
             let left = graph.reader.getFloat(viewNode, 'left', false);
-            res = testFloat(near, 'left', 'view', viewId)
+            res = testFloat(left, 'left', viewType, viewId)
             if (res != null) {
                 return res;
             }
 
             let right = graph.reader.getFloat(viewNode, 'right', false);
-            res = testFloat(near, 'right', 'view', viewId)
+            res = testFloat(right, 'right', viewType, viewId)
             if (res != null) {
                 return res;
             }
 
             let top = graph.reader.getFloat(viewNode, 'top', false);
-            res = testFloat(near, 'top', 'view', viewId)
+            res = testFloat(top, 'top', viewType, viewId)
             if (res != null) {
                 return res;
             }
 
             let bottom = graph.reader.getFloat(viewNode, 'bottom', false);
-            res = testFloat(near, 'bottom', 'view', viewId)
+            res = testFloat(bottom, 'bottom', viewType, viewId)
             if (res != null) {
                 return res;
             }
@@ -112,7 +112,7 @@ export function parseView(viewsNode, graph) {
                 up = [0, 1, 0]
             }
             else {
-                up = parseCoordinates3D(upNode, `'up' tag of view ${viewId}`, graph)
+                up = parseCoordinates3D(upNode, `'up' tag of ${viewType} ${viewId}`, graph)
                 if (!Array.isArray(up)) {
                     return up;
                 }

@@ -62,7 +62,7 @@
         </primitive>
         <primitive id="torus">
            
-           <torus inner="0.2" outer="1" slices="2" loops="6" />
+           <torus inner="0.2" outer="1" slices="50" loops="50" />
         </primitive>
         <primitive id="triangle">
             <triangle x1="0" y1="0" z1="0" x2="5" y2="0" z2="0" x3="0" y3="5" z3="0" />

@@ -5,14 +5,14 @@
  */
 export function parseScene(sceneNode, graph) {
     // Get root of the scene.
-    var root = graph.reader.getString(sceneNode, 'root')
+    var root = graph.reader.getString(sceneNode, 'root', false)
     if (root == null)
         return "no root defined for scene";
 
     graph.idRoot = root;
 
     // Get axis length        
-    var axis_length = graph.reader.getFloat(sceneNode, 'axis_length');
+    var axis_length = graph.reader.getFloat(sceneNode, 'axis_length', false);
     if (axis_length == null)
         graph.onXMLMinorError("no axis_length defined for scene; assuming 'length = 1'");
 
