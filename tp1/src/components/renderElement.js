@@ -105,13 +105,19 @@ function setTexture(element, parents, material) {
     }
     if (!(texture instanceof Texture) || texture === undefined) {
         if (wasInherit && texture === 'inherit') {
-            material.setTexture(element.scene.defaultTexture);
+            material.setTexture(element.scene.defaultTexture.texture);
         } else {
             material.setTexture(null);
         }
         return;
     }
 
+    
+    if(texture.texture.texID === -1){
+        material.setTexture(element.scene.defaultTexture.texture);
+        return;
+    }
+    
     material.setTexture(texture.texture);
 }
 

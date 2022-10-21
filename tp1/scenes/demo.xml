@@ -3650,7 +3650,7 @@
                 <rotate axis="y" angle="-45" />
                 <scale x="0.2" y="0.2" z="0.2" />
             </transformation>
-            <texture id="inherit"/>
+            <texture id="none"/>
             <children>
                 <componentref id="paperplane" />
             </children>

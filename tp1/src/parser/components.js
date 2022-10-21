@@ -110,7 +110,7 @@ export function parseComponents(componentsNode, graph) {
                             texture = textureInArr[0];
                             textureScaleFactor = new TextureScaleFactors(length_s, length_t);
                         } else {
-                            texture = graph.scene.defautlTexture
+                            texture = graph.scene.defaultTexture
                             textureScaleFactor = graph.scene.defaultTextureCoordinates;
                             graph.onXMLMinorError(`Texture "${textureId}" not declared, used in component "${componentID}"`);
                         }
