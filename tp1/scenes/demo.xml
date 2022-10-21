@@ -63,7 +63,7 @@
     </ambient>
 
     <lights>
-        <omni id="Room light" enabled="0" exponent="128.0">
+        <omni id="Room light" enabled="0">
             <location x="5" y="20" z="5" w="1.0" />
             <ambient r="0.7" g="0.7" b="0.7" a="1.0" />
             <diffuse r="0.8" g="0.8" b="0.8" a="1.0" />

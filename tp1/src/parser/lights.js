@@ -45,10 +45,12 @@ export function parseLights(lightsNode, graph) {
         // Light enable/disable
         let enableLight = true;
         let aux = graph.reader.getBoolean(children[i], 'enabled', false);
-        if (aux == null || isNaN(aux))
+        if (aux == null || isNaN(aux)){
             graph.onXMLMinorError("unable to parse attribute 'enabled' for light ID = " + lightId + "; assuming 'enabled=1'");
-
-        enableLight = aux;
+            enableLight = true;
+        } else {
+            enableLight = aux;
+        }
 
         //Add enabled boolean and type name to light info
         global.push(enableLight);
@@ -67,8 +69,8 @@ export function parseLights(lightsNode, graph) {
                 return "light " + tagNames[j] + " undefined for ID = " + lightId;
             }
             let aux;
-            if (tagTypes[j] == "position") {
-                aux = parseCoordinates4D(grandChildren[attributeIndex], "light position for ID =" + `'${lightId}'`, graph);
+            if (tagTypes[j] === "position") {
+                aux = parseCoordinates4D(grandChildren[attributeIndex], "light location for ID =" + `'${lightId}'`, graph);
             } else if (tagTypes[j] == "exclusive option") {
                 let constant = graph.reader.getFloat(grandChildren[attributeIndex], 'constant', false);
                 if (constant == null || isNaN(constant) || (constant < 0 && constant > 1))
@@ -110,10 +112,12 @@ export function parseLights(lightsNode, graph) {
             if ((angle < 0 || angle > 90) && angle != 180) {
                 return "angle must be between [0, 90] or =180 for light with ID = " + lightId;
             }
-            const exponent = graph.reader.getFloat(children[i], 'exponent');
+            const exponent = graph.reader.getFloat(children[i], 'exponent', false);
             if (exponent == null || isNaN(exponent))
                 return "unable to parse exponent of the light for ID = " + lightId;
-
+            if(exponent <= 0 || exponent > 128){
+                return "exponent must be between [0, 128[ for light with ID = " + lightId;
+            }
             const targetIndex = nodeNames.indexOf("target");
 
             // Retrieves the light target.
