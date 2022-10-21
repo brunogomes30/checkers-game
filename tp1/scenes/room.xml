@@ -92,7 +92,7 @@
         <omni id="Center spotlight" enabled="0"  angle="45" exponent="128.0">
             <location x="2" y="10" z="2" w="1.0" />
             <target x="0" y="0" z="0"/>
-            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="0.2" g="0.2" b="0.2" a="1.0" />
             <attenuation constant="0.0" linear="0.1" quadratic="0.0" />
@@ -121,14 +121,16 @@
         <texture id="leatherTexture" file="scenes/images/leather1024.jpg" />
         <texture id="doorTexture" file="scenes/images/door.png" />
         <texture id="camoTexture" file="scenes/images/camo.jpg" />
+        <texture id="walltexture" file="scenes/images/wall.jpg" />
+        <texture id="ceilingtexture" file="scenes/images/ceil.jpg" />
     </textures>
 
     <materials>
         <material id="roomMaterial" shininess="1">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="1.0" g="0.0784313725490196" b="0.5764705882352941" a="1.0" />
-            <diffuse r="1.0" g="0.0784313725490196" b="0.5764705882352941" a="1.0" />
-            <specular r="1.0" g="0.0784313725490196" b="0.5764705882352941" a="1.0" />
+            <ambient r="0.7" g="0.7" b="0.7" a="1.0" />
+            <diffuse r="0.3" g="0.3" b="0.3" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
         </material>
         <material id="presentMaterial" shininess="1">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
@@ -1359,7 +1361,7 @@
             <materials>
                 <material id="roomMaterial_wall_zneg" />
             </materials>
-            <texture id="none" />
+            <texture id="walltexture" length_s="0.4" length_t="0.4"/>
             <children>
                 <componentref id="detailedSquare" />
             </children>
@@ -1373,7 +1375,7 @@
             <materials>
                 <material id="roomMaterial_wall_zpos" />
             </materials>
-            <texture id="none" />
+            <texture id="walltexture" length_s="0.4" length_t="0.4" />
             <children>
                 <componentref id="detailedSquare" />
             </children>
@@ -1387,7 +1389,7 @@
             <materials>
                 <material id="roomMaterial_wall_xneg" />
             </materials>
-            <texture id="none" />
+            <texture id="walltexture" length_s="0.4" length_t="0.4"/>
             <children>
                 <componentref id="detailedSquare" />
             </children>
@@ -1401,7 +1403,7 @@
             <materials>
                 <material id="roomMaterial_wall_xpos" />
             </materials>
-            <texture id="none" />
+            <texture id="walltexture" length_s="0.4" length_t="0.4" />
             <children>
                 <componentref id="detailedSquare" />
             </children>
@@ -1431,7 +1433,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none" />
+            <texture id="ceilingtexture" length_s ="0.1" length_t="0.1" />
             <children>
                 <componentref id="detailedSquare" />
             </children>
