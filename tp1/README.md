@@ -1,20 +1,29 @@
 # SGI 2022/2023 - TP1
 
-## Group: T0xG0y
+## Group: T05G02
 
-| Name             | Number    | E-Mail             |
-| ---------------- | --------- | ------------------ |
-| John Doe         | 201801010 | ...                |
-| Jane Doe         | 201801011 | ...                |
+| Name             | Number    | E-Mail                   |
+| ---------------- | --------- | ------------------------ |
+| Bruno Gomes      | 201906401 | up201906401@edu.fe.up.pt |
+| José Costa       | 201907216 | up201907216@edu.fe.up.pt |
 
 ----
 ## Project information
+### TP1 - XML Parsing
+#### Strong points
+  - Parser
+    - Extensive error checking and forgiving defaults, displaying console warnings
+    - Debug folder in interface with lights position visibility, axis visibility and objects' normals
+    - Refactored codebase
+    - Default missing texture
 
-- (items describing main strong points)
 - Scene
-  - (Brief description of the created scene)
-  - (relative link to the scene)
-----
-## Issues/Problems
 
-- (items describing unimplemented features, bugs, problems, etc.)
+  Living room with a computer desk with a coffee mug on top and someone famous using the computer to enjoy the 80's top hit 'Never Gonna Give You Up'.There's a small gift stuffed under the table. Next to the table there's a sofa with two famous characters holding hands and throwing paper planes. There are paintings on the walls, and a small lamp. There are plants scattered around the room. In the center, we can find a table full of empty coffee mugs and two chairs.
+
+  - Scene files: 
+  - Website:
+
+#### Issues/Problems
+
+- No known problems with parser or rendering engine
