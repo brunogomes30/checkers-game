@@ -1225,7 +1225,6 @@
             <texture id="none" />
             <children>
                 <componentref id="presentBox" />
-                <componentref id="presentData" />
             </children>
         </component>
 
@@ -1325,17 +1324,6 @@
             </children>
         </component>
 
-        <component id="presentData">
-            <transformation>
-                <translate x="0" y="0" z="0" />
-                <scale x="0.1" y="0.1" z="0.1" />
-            </transformation>
-            <materials>
-                <material id="skinMaterial" />
-            </materials>
-            <texture id="none" />
-            <children></children>
-        </component>
 
         <!--Room-->
         <component id="room">
