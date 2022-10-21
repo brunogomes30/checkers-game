@@ -22,7 +22,7 @@
             <to x="-20" y="5" z="-15" />
         </perspective>
 
-        <perspective id="Webcam" near="0.1" far="500" angle="50">
+        <perspective id="Webcam" near="0.1" far="500" angle="55">
             <from x="-17.5" y="6" z="-15" />
             <to x="-15" y="6" z="-15" />
         </perspective>
