@@ -24,4 +24,4 @@
   
 You can find the scene files in [the project subfolder](./tp1/scenes/)
 
-Or run it from the online at: 
+Or run it online at: 
