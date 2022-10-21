@@ -62,7 +62,7 @@
         </primitive>
         <primitive id="torus">
            
-           <torus inner="0.2" outer="1" slices="41" loops="11" />
+           <torus inner="0.2" outer="1" slices="2" loops="6" />
         </primitive>
         <primitive id="triangle">
             <triangle x1="0" y1="0" z1="0" x2="5" y2="0" z2="0" x3="0" y3="5" z3="0" />
@@ -85,19 +85,19 @@
             <texture id="none"/>
             <children>
                 
-                <componentref id="cylinder" />
+                <componentref id="torus" />
             </children>
         </component>
         <component id="triangle">
             <transformation>
-                <translate x="-10" y="0" z="0" />
+                <translate x="0" y="0" z="0" />
             </transformation>
             <materials>
                 <material id="demoMaterial" />
             </materials>
             <texture id="inherit"/>
             <children>
-                <primitiveref id="triangle" />
+                <primitiveref id="triatngle" />
             </children>
         </component>
         <component id="sphere">
@@ -115,7 +115,7 @@
 
         <component id="torus">
             <transformation>
-                <translate x="20" y="0" z="0" />
+                <translate x="0" y="0" z="0" />
             </transformation>
             <materials>
                 <material id="demoMaterial" />
