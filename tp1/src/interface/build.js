@@ -47,11 +47,7 @@ function buildCameraSelector(ui, scene) {
  */
 function buildDebugFolder(ui, scene) {
     let folder = ui.gui.addFolder("Debug");
-    folder.add(scene, 'setLightsVisible').name('Set Cameras visible').onChange(() => {
-        for (let i = 0; i < 8; i++) {
-            scene.lights[i].setVisible(scene.setLightsVisible);
-        }
-    });
+    folder.add(scene, 'displayAxis').name("Display axis");
 
     folder.add(scene, 'displayNormals').name("Display normals").onChange(() => {
         scene.graph.primitives.forEach((primitive) => {
@@ -63,6 +59,10 @@ function buildDebugFolder(ui, scene) {
             }
         })
     })
+
+    folder.add(scene, 'setLightsVisible').name('Display lights').onChange(() => {
+        for (let i = 0; i < 8; i++) {
+            scene.lights[i].setVisible(scene.setLightsVisible);
+        }
+    });
 }
-
-

@@ -51,7 +51,7 @@ export class XMLscene extends CGFscene {
 
         this.defautlTexture = new Texture('', this, '/tp1/scenes/default_images/missing-texture.jpg')
         this.defaultTextureCoordinates = new TextureScaleFactors(1, 1)
-
+        this.displayAxis = false;
         this.axis = new CGFaxis(this);
         this.setUpdatePeriod(100);
     }
@@ -113,7 +113,7 @@ export class XMLscene extends CGFscene {
 
         this.sceneInited = true;
 
-        
+
         this.interface.activeCameraId = this.defaultCameraId
         switchCamera(this.interface, this, this.defaultCameraId)
 
@@ -140,7 +140,10 @@ export class XMLscene extends CGFscene {
         this.applyViewMatrix();
 
         this.pushMatrix();
-        this.axis.display();
+        if (this.displayAxis) {
+            this.axis.display();
+        }
+
         if (this.sceneInited) {
             // Draw axis
             this.setDefaultAppearance();

@@ -58,14 +58,14 @@ export function vectorCrossProduct(vec1, vec2) {
 }
 
 /**
- * TODO:: Add description
+ * Returns the cosine of the angle between a and c edges on a triangle.
  * @export
  * @param {Number} a 
  * @param {Number} b
  * @param {Number} c
  * @return {Number}
  */
-export function trianngleCos(a, b, c) {
+export function triangleCos(a, b, c) {
     return (a ** 2 - b ** 2 + c ** 2) / (2 * a * c);
 }
 

@@ -1,6 +1,6 @@
 import { CGFobject } from '../../../lib/CGF.js';
 import { XMLscene } from '../XMLscene.js';
-import { sinFromCos, trianngleCos, vector2points, vectorCrossProduct, vectorNormalize, vectorSize } from './geometryUtils.js';
+import { sinFromCos, triangleCos as triangleCos, vector2points, vectorCrossProduct, vectorNormalize, vectorSize } from './geometryUtils.js';
 /**
  * MyTriangle
  * @constructor
@@ -59,7 +59,7 @@ export class MyTriangle extends CGFobject {
 		this.sizeA = vectorSize(a);
 		const sizeB = vectorSize(b);
 		this.sizeC = vectorSize(c);
-		
+
 		const normal = vectorNormalize(vectorCrossProduct(a, c));
 		this.normals = [
 			...normal,
@@ -76,7 +76,7 @@ export class MyTriangle extends CGFobject {
 		v
 		t
 		*/
-		this.cosAlpha = trianngleCos(this.sizeA, sizeB, this.sizeC);
+		this.cosAlpha = triangleCos(this.sizeA, sizeB, this.sizeC);
 		this.sinAlpha = sinFromCos(this.cosAlpha);
 
 		this.texCoords = [
