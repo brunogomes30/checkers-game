@@ -3,7 +3,8 @@ import { parseTransformation } from './transformations.js';
 import { TextureScaleFactors } from '../textures/TextureScaleFactors.js'
 /**
    * Parses the <components> block.
-   * @param {components block element} componentsNode
+   * @param {XMLNode} componentsNode - The components block element.
+   * @param {SceneGraph} graph - The scene graph.
    */
 export function parseComponents(componentsNode, graph) {
     const componentNodes = componentsNode.children;
@@ -45,11 +46,11 @@ export function parseComponents(componentsNode, graph) {
         // Transformations    
         if (transformationIndex == -1) {
             return `No transformations tag in component with ID = ${componentID}`
-        } 
+        }
         const transfMatrix = parseTransformation(grandChildren[transformationIndex], graph, "component ID " + componentID, false)
-            if (typeof (transfMatrix) == 'string') {
-                return transfMatrix;
-            }
+        if (typeof (transfMatrix) == 'string') {
+            return transfMatrix;
+        }
         // Materials
         const materialsNode = grandChildren[materialsIndex];
         const materials = []
@@ -120,7 +121,7 @@ export function parseComponents(componentsNode, graph) {
 
 
         // Children
-        if(childrenIndex == -1){
+        if (childrenIndex == -1) {
             return `Children tag missing for component ID = '${componentID}'`;
         }
         const childrenNodes = grandChildren[childrenIndex].children;

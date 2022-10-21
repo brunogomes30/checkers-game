@@ -29,6 +29,8 @@ export class XMLscene extends CGFscene {
         super.init(application);
 
         this.sceneInited = false;
+        this.setLightsVisible = false;
+        this.displayNormals = false;
 
         this.initCameras();
 
@@ -49,7 +51,7 @@ export class XMLscene extends CGFscene {
 
         this.defautlTexture = new Texture('', this, '/tp1/scenes/default_images/missing-texture.jpg')
         this.defaultTextureCoordinates = new TextureScaleFactors(1, 1)
-
+        this.displayAxis = false;
         this.axis = new CGFaxis(this);
         this.setUpdatePeriod(100);
     }
@@ -82,7 +84,7 @@ export class XMLscene extends CGFscene {
             setAttenuation(sceneLight, light[6])
 
             if (light[1] == "spot") {
-                sceneLight.setSpotCutOff(light[7] * Math.PI / 180);
+                sceneLight.setSpotCutOff(light[7]);
                 sceneLight.setSpotExponent(light[8]);
                 sceneLight.setSpotDirection(light[9][0] - light[2][0], light[9][1] - light[2][1], light[9][2] - light[2][2]);
             }
@@ -111,7 +113,7 @@ export class XMLscene extends CGFscene {
 
         this.sceneInited = true;
 
-        
+
         this.interface.activeCameraId = this.defaultCameraId
         switchCamera(this.interface, this, this.defaultCameraId)
 
@@ -138,7 +140,10 @@ export class XMLscene extends CGFscene {
         this.applyViewMatrix();
 
         this.pushMatrix();
-        this.axis.display();
+        if (this.displayAxis) {
+            this.axis.display();
+        }
+
         if (this.sceneInited) {
             // Draw axis
             this.setDefaultAppearance();

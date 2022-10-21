@@ -1,9 +1,10 @@
 import { parseCoordinates3D, parseCoordinates4D, parseColor } from "./utils.js"
 
 /**
-     * Parses the <light> node.
-     * @param {lights block element} lightsNode
-     */
+ * Parses the <light> node.
+ * @param {XMLNode} lightsNode - The lights block element.
+ * @param {XMLScene} scene - The scene to parse
+ */
 export function parseLights(lightsNode, graph) {
     var children = lightsNode.children;
 
@@ -47,7 +48,7 @@ export function parseLights(lightsNode, graph) {
         if (aux == null || isNaN(aux))
             graph.onXMLMinorError("unable to parse attribute 'enabled' for light ID = " + lightId + "; assuming 'enabled=1'");
 
-        enableLight = aux || 1;
+        enableLight = aux;
 
         //Add enabled boolean and type name to light info
         global.push(enableLight);

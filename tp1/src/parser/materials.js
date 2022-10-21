@@ -1,17 +1,14 @@
 import { CGFappearance } from "../../../lib/CGF.js";
 
 /**
-     * Parses the <materials> node.
-     * @param {materials block element} materialsNode
-     */
+ * Parses the <materials> node.
+ * @param {XMLNode} materialsNode - The materials block element.
+ * @param {MySceneGraph} graph - The scene graph.
+ */
 export function parseMaterials(materialsNode, graph) {
     const children = materialsNode.children;
-
     graph.materials = [];
     const defaultMaterial = graph.scene.defaultAppearance;
-    
-    let grandChildren = [];
-    let nodeNames = [];
 
     // Any number of materials.
     for (let i = 0; i < children.length; i++) {
@@ -28,39 +25,39 @@ export function parseMaterials(materialsNode, graph) {
 
         // Checks for repeated IDs.
         if (graph.materials[materialID] != null)
-            return "ID must be unique for each light (conflict: ID = " + materialID + ")";
+            return "ID must be unique for each material (conflict: ID = " + materialID + ")";
 
         //Continue here
-        const material = parseMaterial(materialNode, materialID, graph);  
-        if(material !== null){
+        const material = parseMaterial(materialNode, materialID, graph);
+        if (material !== null) {
             graph.materials[materialID] = material;
         } else {
             graph.onXMLMinorError(`Couldn't parse material(ID = ${materialId})`);
             graph.materials[materialID] = defaultMaterial;
         }
 
-        
+
     }
 
     return null;
 }
 
-function parseMaterial(node, materialID, graph){
+function parseMaterial(node, materialID, graph) {
     const shininess = graph.reader.getFloat(node, 'shininess');
-    if (shininess == null || isNaN(shininess) || shininess <= 0){
+    if (shininess == null || isNaN(shininess) || shininess <= 0) {
         return `Invalid value for material shininess in material '${materialID}'`
     }
-    
+
     const properties = {
         'emission': [0, 0, 0, 0],
         'ambient': [0, 0, 0, 0],
         'diffuse': [0, 0, 0, 0],
         'specular': [0, 0, 0, 0]
     };
-    const nodeTypes = Object.keys(properties); 
-    for(let i=0; i<node.children.length; i++){
+    const nodeTypes = Object.keys(properties);
+    for (let i = 0; i < node.children.length; i++) {
         const child = node.children[i];
-        if(nodeTypes.includes(child.nodeName)){
+        if (nodeTypes.includes(child.nodeName)) {
             const values = getLightValues(child, graph.reader);
             properties[child.nodeName] = values;
         }
@@ -75,15 +72,15 @@ function parseMaterial(node, materialID, graph){
     return material;
 }
 
-function getLightValues(node, reader){
+function getLightValues(node, reader) {
     const lightValueTypes = ['r', 'g', 'b', 'a'];
     const values = [];
-    for(let i=0;i<lightValueTypes.length; i++){
+    for (let i = 0; i < lightValueTypes.length; i++) {
         const type = lightValueTypes[i];
         const value = reader.getFloat(node, type)
-        if(value === null){
+        if (value === null) {
             values.push(0);
-        }else {
+        } else {
             values.push(value);
         }
     }

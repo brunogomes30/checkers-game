@@ -2,9 +2,9 @@ import { degToRad } from "../primitives/geometryUtils.js";
 import { parseCoordinates3D } from "./utils.js"
 
 /**
-     * Parses the <transformations> block.
-     * @param {transformations block element} transformationsNode
-     */
+ * Parses the <transformations> block.
+ * @param {XMLNode} transformationsNode - The transformations block element.
+ */
 export function parseTransformations(transformationsNode, graph) {
     graph.transformations = [];
 
@@ -39,6 +39,14 @@ export function parseTransformations(transformationsNode, graph) {
     return null;
 }
 
+/**
+ * Parses the <transformation> block.
+ * @param {XMLNode} transformationNode
+ * @param {MySceneGraph} graph
+ * @param {String} errorMsg
+ * @param {Boolean} isInsideTransformationsBlock
+ * @returns {mat4} transformation matrix or {String} error message if error occurs 
+ */
 export function parseTransformation(transformationNode, graph, errorMsg, isInsideTransformationsBlock) {
     let transfMatrix = mat4.create();
 
@@ -101,6 +109,9 @@ export function parseTransformation(transformationNode, graph, errorMsg, isInsid
                 let transformationID = graph.reader.getString(operation, 'id');
                 if (transformationID == '')
                     return "no ID defined for transformation for" + errorMsg;
+
+                if (!(transformationID in graph.transformations))
+                    return `Unable to find transformation with ID '${transformationID}' in component '${errorMsg}'`
 
                 return graph.transformations[transformationID];
         }

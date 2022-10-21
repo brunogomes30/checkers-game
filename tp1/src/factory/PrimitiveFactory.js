@@ -5,6 +5,12 @@ import { TorusFactory } from "./TorusFactory.js";
 import {SphereFactory} from "./SphereFactory.js"
 
 
+/**
+ *
+ * Primitive factory that creates new primitives based on the type of node read
+ * @export
+ * @class PrimitiveFactory
+ */
 export class PrimitiveFactory {
 
     constructor(reader) {
@@ -19,6 +25,12 @@ export class PrimitiveFactory {
         };
     }
 
+    /**
+     * @param {XMLNode} node
+     * @param {Scene} scene
+     * @param {string} id
+     * @returns {MyPrimitive} or error string if any of the attributes is missing
+     */
     build(node, reader, scene) {
         const id = reader.getString(node, 'id');
         const grandChildren = node.children;
