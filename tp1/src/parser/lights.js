@@ -2,8 +2,8 @@ import { parseCoordinates3D, parseCoordinates4D, parseColor } from "./utils.js"
 
 /**
  * Parses the <light> node.
- * @param {XMLNode} lightsNode - the node to parse
- * @param {XMLScene} scene - the scene to parse
+ * @param {XMLNode} lightsNode - The lights block element.
+ * @param {XMLScene} scene - The scene to parse
  */
 export function parseLights(lightsNode, graph) {
     var children = lightsNode.children;

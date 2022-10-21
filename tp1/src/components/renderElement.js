@@ -129,6 +129,6 @@ function applyTextureScaling(primitive, parents) {
             break;
         }
     }
-
+    
     primitive.updateTexCoords(textureScaleFactor.length_s, textureScaleFactor.length_t);
 }
