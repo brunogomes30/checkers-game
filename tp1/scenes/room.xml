@@ -116,7 +116,6 @@
     </lights>
 
     <textures>
-        <texture id="demoTexture" file="scenes/images/vidral.jpg" />
         <texture id="floorTexture" file="scenes/images/floorTexture.png" />
         <texture id="ricktexture" file="scenes/images/rickboy.jpg" />
         <texture id="rickface" file="scenes/images/rickface3.jpg" />
