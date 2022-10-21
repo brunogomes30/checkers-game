@@ -74,6 +74,12 @@ export class MyRectangle extends CGFobject {
 		this.initGLBuffers();
 	}
 
+	/**
+	 * Updates the texture coordinates of the rectangle
+	 * @memberof MyRectangle
+	 * @param {Number} length_s - Amplification factor in the S axis
+	 * @param {Number} length_t - Amplification factor in the T axis
+	 */
 	updateTexCoords(length_s, length_t){
 		if (length_s == undefined || length_t == undefined){
 			return;
