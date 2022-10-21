@@ -53,8 +53,11 @@ export function parseComponents(componentsNode, graph) {
         }
         // Materials
         const materialsNode = grandChildren[materialsIndex];
-        const materials = []
-        if (materialsNode !== undefined) {
+        const materials = [];
+        if (materialsNode === undefined || materialsNode.children.length === 0) {
+            graph.onXMLMinorError(`No materials defined for component with ID = ${componentID}, using default material`);
+            materials.push(graph.scene.defaultAppearance);
+        } else {
             for (let i = 0; i < materialsNode.children.length; i++) {
                 const matId = graph.reader.getString(materialsNode.children[i], 'id');
                 if (matId !== null) {
@@ -65,8 +68,8 @@ export function parseComponents(componentsNode, graph) {
                             materials.push(graph.materials[matId]);
                         }
                         else {
-                            materials.push(graph.scene.defaultAppearance)
-                            graph.onXMLMinorError(`Matrial with ID '${matId}' not found; Using default material.`)
+                            materials.push(graph.scene.defaultAppearance);
+                            graph.onXMLMinorError(`Matrial with ID '${matId}' not found, Using default material.`);
                         }
                     }
                 }

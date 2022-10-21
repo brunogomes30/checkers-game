@@ -82,39 +82,45 @@ export function parseView(viewsNode, graph) {
             cameras[viewId] = new CGFcamera(fov * Math.PI / 180, near, far, vec3.fromValues(...from), vec3.fromValues(...to));
         }
         else {
-            let left = graph.reader.getFloat(viewNode, 'left', false);
+            const left = graph.reader.getFloat(viewNode, 'left', false);
             res = testFloat(left, 'left', viewType, viewId)
             if (res != null) {
                 return res;
             }
 
-            let right = graph.reader.getFloat(viewNode, 'right', false);
+            const right = graph.reader.getFloat(viewNode, 'right', false);
             res = testFloat(right, 'right', viewType, viewId)
             if (res != null) {
                 return res;
             }
 
-            let top = graph.reader.getFloat(viewNode, 'top', false);
+            const top = graph.reader.getFloat(viewNode, 'top', false);
             res = testFloat(top, 'top', viewType, viewId)
             if (res != null) {
                 return res;
             }
 
-            let bottom = graph.reader.getFloat(viewNode, 'bottom', false);
+            const bottom = graph.reader.getFloat(viewNode, 'bottom', false);
             res = testFloat(bottom, 'bottom', viewType, viewId)
             if (res != null) {
                 return res;
             }
 
-            let upNode = viewNode.children[childrenNames.indexOf('up')]
+            const upNode = viewNode.children[childrenNames.indexOf('up')]
             let up;
             if (upNode == undefined) {
-                up = [0, 1, 0]
+                up = [0, 1, 0];
             }
             else {
                 up = parseCoordinates3D(upNode, `'up' tag of ${viewType} ${viewId}`, graph)
                 if (!Array.isArray(up)) {
                     return up;
+                }
+                
+                // Only one element is allowed, and must be 1
+                if(up[0] + up[1] + up[2] !== 1 || ((up[0] != 0 && up[0] != 1) || (up[1] != 0 && up[1] != 1) || (up[2] != 0 && up[2] != 1))){
+                    graph.onXMLMinorError(`Invalid 'up' tag of ${viewType} ${viewId}. Only one coordinate can be 1, assuming x=0 y=1 z=0`);
+                    up = [0, 1, 0];
                 }
             }
 

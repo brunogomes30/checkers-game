@@ -17,12 +17,12 @@ export function buildValues(attributes, reader, node, id){
             case 'float':
                 value = reader.getFloat(node, key, false);
                 if (!(value != null && !isNaN(value)))
-                    return `unable to parse ${key} of the primitive coordinates for ID = ${id}`;
+                    return `unable to parse '${key}' of the primitive properties for ID = ${id}`;
                 break;
             case 'integer':
                 value = reader.getInteger(node, key, false);
                 if (!(value != null && !isNaN(value)))
-                    return `unable to parse ${key} of the primitive coordinates for ID = ${id}`;
+                    return `unable to parse '${key}' of the primitive properties for ID = ${id}`;
                 break;
         }
         values[key] = value;
