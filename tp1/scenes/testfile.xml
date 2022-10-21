@@ -1,0 +1,156 @@
+<sxs>
+    <scene root="demoRoot" axis_length="5"/>
+
+    <views default="defaultCamera">
+        <perspective id="defaultCamera" near="0.1" far="500" angle="45">
+            <from x="10" y="10" z="10" />
+            <to x="0" y="0" z="0" />
+        </perspective>
+        <ortho id="orthoCam" near="-20" far="20" left="-20" right="20" bottom="-20" top="20">
+            <from x="0" y="15" z="0" />
+            <to x="-0.1" y="-20" z="0" />
+        </ortho>
+    </views>
+
+    <ambient>
+        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
+        <background r="0.0" g="0.0" b="0.0" a="1.0" />
+    </ambient>
+
+    <lights>
+        <omni id="demoLight" enabled="1">
+            <location x="9.8" y="11.9" z="10" w="1.0" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <attenuation constant="1.0" linear="0.0" quadratic="0.0" /> 
+        </omni>
+        <spot id="spotlight" enabled="1" angle="20" exponent="0" >
+            <location x="5.0" y="5.0" z="5.0" w="1" />
+            <target x="0" y="1" z="0" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <attenuation constant="0.0" linear="1.0" quadratic="0.0" /> 
+        </spot>
+    </lights>
+
+    <textures>
+        <texture id="demoTexture" file="scenes/images/rickboy.jpg" />
+    </textures>
+
+    <materials>
+        <material id="demoMaterial" shininess="5">
+            <emission r="0.2" g="0.2" b="0.2" a="1.0" />
+            <ambient r="0.5" g="0.5" b="0.9" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.9" a="1.0" />
+            <specular r="0.1" g="0.1" b="0.9" a="1.0" />
+        </material>
+    </materials>
+
+    <transformations>
+        <transformation id="demoTransform">
+            <scale x="5" y="1" z="5" />
+            <rotate axis="x" angle="-45" />
+            <rotate axis="z" angle="-45" />
+        </transformation>
+    </transformations>
+
+    <primitives>
+        <primitive id="rectangle">
+            <rectangle x1="-0.5" y1="-1" x2="0.5" y2="1" />
+        </primitive>
+        <primitive id="torus">
+           
+           <torus inner="0.2" outer="1" slices="2" loops="6" />
+        </primitive>
+        <primitive id="triangle">
+            <triangle x1="0" y1="0" z1="0" x2="5" y2="0" z2="0" x3="0" y3="5" z3="0" />
+        </primitive>
+        <primitive id="sphere">
+            <sphere radius="2" stacks="12" slices="12" />
+        </primitive>
+        <primitive id="cylinder">
+            <cylinder base="3" top="3" height="5" slices="10" stacks="16" />
+        </primitive>
+    </primitives>
+
+    <components>
+        <component id="demoRoot">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                
+                <componentref id="torus" />
+            </children>
+        </component>
+        <component id="triangle">
+            <transformation>
+                <translate x="0" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="triatngle" />
+            </children>
+        </component>
+        <component id="sphere">
+            <transformation>
+                <translate x="0" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+
+        <component id="torus">
+            <transformation>
+                <translate x="0" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="torus" />
+            </children>
+        </component>
+
+        <component id="cylinder">
+            <transformation>
+                <translate x="0" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="cylinder" />
+            </children>
+        </component>
+
+        <component id="rectangle">
+            <transformation>
+                <translate x="0" y="0" z="5" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+    </components>
+</sxs>

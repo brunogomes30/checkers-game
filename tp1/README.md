@@ -9,7 +9,7 @@
 
 ----
 ## Project information
-### TP1 - XML Parsing
+### TP1 - Scene Graph
 #### Strong points
   - Parser
     - Extensive error checking and forgiving defaults, displaying console warnings
@@ -17,12 +17,14 @@
     - Refactored codebase
     - Default missing texture
 
-- Scene
+  - Scene
 
-  Living room with a computer desk with a coffee mug on top and someone famous using the computer to enjoy the 80's top hit 'Never Gonna Give You Up'.There's a small gift stuffed under the table. Next to the table there's a sofa with two famous characters holding hands and throwing paper planes. There are paintings on the walls, and a small lamp. There are plants scattered around the room. In the center, we can find a table full of empty coffee mugs and two chairs.
+    Living room with a computer desk with a coffee mug on top and someone famous using the computer to enjoy the 80's top hit 'Never Gonna Give You Up'.There's a small gift stuffed under the table. Next to the table there's a sofa with two famous characters holding hands and throwing paper planes. There are paintings on the walls, and a small lamp. There are plants scattered around the room. In the center, we can find a table full of empty coffee mugs and two chairs.
 
-  - Scene files: 
-  - Website:
+You can find the scene files at: []()
+
+Or run it from the \~\~waves\~\~ at: 
+
 
 #### Issues/Problems
 
