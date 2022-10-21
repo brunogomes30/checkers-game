@@ -1,4 +1,5 @@
 import { CGFappearance } from "../../../lib/CGF.js";
+import { parseColor } from "./utils.js";
 
 /**
  * Parses the <materials> node.
@@ -19,7 +20,7 @@ export function parseMaterials(materialsNode, graph) {
         }
 
         // Get id of the current material.
-        let materialID = graph.reader.getString(materialNode, 'id');
+        let materialID = graph.reader.getString(materialNode, 'id', false);
         if (materialID == null || materialID == '')
             return "no ID defined for material";
 
@@ -29,6 +30,9 @@ export function parseMaterials(materialsNode, graph) {
 
         //Continue here
         const material = parseMaterial(materialNode, materialID, graph);
+        if(typeof(material) == 'string') {
+            return material;
+        }
         if (material !== null) {
             graph.materials[materialID] = material;
         } else {
@@ -42,24 +46,43 @@ export function parseMaterials(materialsNode, graph) {
     return null;
 }
 
+/**
+ * Parses a material node.
+ * @param {XMLNode} materialNode - The material node element.
+ * @param {String} materialID - The material ID.
+ * @param {MySceneGraph} graph - The scene graph.
+ * @returns {CGFappearance} - The parsed material.
+ * @returns {String} - An error message if an error occurred.
+ */
 function parseMaterial(node, materialID, graph) {
-    const shininess = graph.reader.getFloat(node, 'shininess');
+    const shininess = graph.reader.getFloat(node, 'shininess', false);
     if (shininess == null || isNaN(shininess) || shininess <= 0) {
         return `Invalid value for material shininess in material '${materialID}'`
     }
 
     const properties = {
-        'emission': [0, 0, 0, 0],
-        'ambient': [0, 0, 0, 0],
-        'diffuse': [0, 0, 0, 0],
-        'specular': [0, 0, 0, 0]
+        'emission': undefined,
+        'ambient': undefined,
+        'diffuse': undefined,
+        'specular': undefined
     };
+    const colorValues = ['r', 'g', 'b', 'a'];
+
     const nodeTypes = Object.keys(properties);
     for (let i = 0; i < node.children.length; i++) {
         const child = node.children[i];
         if (nodeTypes.includes(child.nodeName)) {
-            const values = getLightValues(child, graph.reader);
+            const values = parseColor(child, `tag ${child.nodeName} in material '${materialID}'`, graph);;
+            if(typeof(values) == 'string') {
+                return values;
+            }
             properties[child.nodeName] = values;
+        }
+    }
+    
+    for(const property in properties) {
+        if (properties[property] == undefined) {
+            return `Missing ${property} tag in material '${materialID}'`;
         }
     }
 
@@ -72,14 +95,14 @@ function parseMaterial(node, materialID, graph) {
     return material;
 }
 
-function getLightValues(node, reader) {
+function getLightValues(node, reader, materialID) {
     const lightValueTypes = ['r', 'g', 'b', 'a'];
     const values = [];
     for (let i = 0; i < lightValueTypes.length; i++) {
         const type = lightValueTypes[i];
-        const value = reader.getFloat(node, type)
+        const value = reader.getFloat(node, type, false)
         if (value === null) {
-            values.push(0);
+            return `Missing ${type} value in ${node.nodeName} tag for material '${materialID}'`;
         } else {
             values.push(value);
         }
