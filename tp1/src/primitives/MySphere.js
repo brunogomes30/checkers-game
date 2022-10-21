@@ -55,6 +55,7 @@ export class MySphere extends CGFobject {
 
                 const textS = slice / this.slices;
                 const textT = stack / this.stacks;
+                console.log('textS: ' + textS + ' textT: ' + textT);
                 this.texCoords.push(1 - textS, textT);
             }
 

@@ -1,7 +1,7 @@
 <sxs>
     <scene root="demoRoot" axis_length="5" />
 
-    <views default="default">
+    <views default="rickrolled">
         <perspective id="default" near="0.1" far="500" angle="60">
             <from x="-40" y="30" z="40" />
             <to x="0" y="1" z="0" />
@@ -99,7 +99,7 @@
         <texture id="demoTexture" file="scenes/images/vidral.jpg" />
         <texture id="floorTexture" file="scenes/images/floorTexture.png" />
         <texture id="ricktexture" file="scenes/images/rickboy.jpg" />
-        <texture id="rickface" file="scenes/images/rickface2.jpg" />
+        <texture id="rickface" file="scenes/images/rickface3.jpg" />
         <texture id="keyboardTexture" file="scenes/images/keyboard.jpg" />
         <texture id="paintingTexture" file="scenes/images/painting.jpg" />
         <texture id="paintingTexture2" file="scenes/images/painting2.png" />
