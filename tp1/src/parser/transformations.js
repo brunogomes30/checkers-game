@@ -103,15 +103,17 @@ export function parseTransformation(transformationNode, graph, errorMsg, isInsid
                 }
 
                 if (transformationNode.children.length > 1) {
-                    return "Use of multiple tranformation references, combination of tranformation references and directives, or both inside <tranformation> block of <component> block for " + errorMsg;
+                    return "Can't use of multiple tranformation references, combination of tranformation references and directives, or both inside <tranformation> block of <component> block for " + errorMsg;
                 }
 
                 let transformationID = graph.reader.getString(operation, 'id');
                 if (transformationID == '')
                     return "no ID defined for transformation for" + errorMsg;
 
-                if (!(transformationID in graph.transformations))
-                    return `Unable to find transformation with ID '${transformationID}' in component '${errorMsg}'`
+                if (!(transformationID in graph.transformations)){
+                    graph.onXMLMinorError(`Unable to find transformation with ID '${transformationID}' in component '${errorMsg}'`);
+                    return mat4.create();
+                }
 
                 return graph.transformations[transformationID];
         }

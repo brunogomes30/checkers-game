@@ -35,8 +35,11 @@ export class PrimitiveFactory {
         const id = reader.getString(node, 'id');
         const grandChildren = node.children;
 
-        if (grandChildren.length !== 1) {
-            console.warn(`Warning: primitive can only have one child`);
+        if(grandChildren.length == 0) {
+            return 'No primitive defined for primitive with id ' + id;
+        }
+        if (grandChildren.length > 1) {
+            console.warn(`Warning: primitive can only have one child, assuming first one`);
         }
 
         //Melhorar nomes das variaveis ig

@@ -66,7 +66,6 @@ function parseMaterial(node, materialID, graph) {
         'diffuse': undefined,
         'specular': undefined
     };
-    const colorValues = ['r', 'g', 'b', 'a'];
 
     const nodeTypes = Object.keys(properties);
     for (let i = 0; i < node.children.length; i++) {
@@ -93,19 +92,4 @@ function parseMaterial(node, materialID, graph) {
     material.setSpecular(...properties['specular']);
     material.setAmbient(...properties['ambient']);
     return material;
-}
-
-function getLightValues(node, reader, materialID) {
-    const lightValueTypes = ['r', 'g', 'b', 'a'];
-    const values = [];
-    for (let i = 0; i < lightValueTypes.length; i++) {
-        const type = lightValueTypes[i];
-        const value = reader.getFloat(node, type, false)
-        if (value === null) {
-            return `Missing ${type} value in ${node.nodeName} tag for material '${materialID}'`;
-        } else {
-            values.push(value);
-        }
-    }
-    return values;
 }
