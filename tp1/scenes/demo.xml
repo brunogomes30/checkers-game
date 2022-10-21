@@ -46,6 +46,12 @@
             <to x="-0.1" y="-20" z="0" />
         </ortho>
 
+        <ortho id="Reversed Top view Ortho" near="5" far="40" left="-30" right="30" bottom="-30" top="30">
+            <from x="0" y="30" z="0" />
+            <to x="-0.1" y="-20" z="0" />
+            <up x="1" y="0" z="0" />
+        </ortho>
+
         <ortho id="Side view Ortho" near="-30" far="90" left="-30" right="30" bottom="-10" top="20">
             <from x="-50" y="5" z="0" />
             <to x="40" y="5" z="0" />
