@@ -46,14 +46,14 @@ function renderComponent(element, parents) {
  */
 function displayPrimitive(element, parents) {
     applyTextureScaling(element, parents)
-    if(element.scene.displayNormals){
+    if (element.scene.displayNormals) {
         element.enableNormalViz();
     }
-    else{
+    else {
         element.disableNormalViz();
     }
     element.display();
-    
+
 }
 
 /**
@@ -106,19 +106,23 @@ function setTexture(element, parents, material) {
     if (!(texture instanceof Texture) || texture === undefined) {
         if (wasInherit && texture === 'inherit') {
             material.setTexture(element.scene.defaultTexture.texture);
+            element.unknownTexture = true;
         } else {
             material.setTexture(null);
+            element.unknownTexture = false;
         }
         return;
     }
 
-    
-    if(texture.texture.texID === -1){
+
+    if (texture.texture.texID === -1) {
         material.setTexture(element.scene.defaultTexture.texture);
+        element.unknownTexture = true;
         return;
     }
-    
+
     material.setTexture(texture.texture);
+    element.unknownTexture = false;
 }
 
 /**
@@ -127,14 +131,26 @@ function setTexture(element, parents, material) {
  * @param {Array} parents - The parents of the element
  */
 function applyTextureScaling(primitive, parents) {
-    let textureScaleFactor = new TextureScaleFactors(1, 1);
-    let id = parents.length;
-    while (id--) {
-        if (parents[id].textureScaleFactor !== undefined) {
-            textureScaleFactor = parents[id].textureScaleFactor
-            break;
-        }
+    let parentsIndex = parents.length;
+    let textureScaleFactor;
+    // Setting default texture scaling from scene
+    if (parentsIndex > 0) {
+        textureScaleFactor = parents[parentsIndex - 1].scene.defaultTextureScaling;
+    } else {
+        // A primitive is never drawn without a parent; Never happens
+        return;
     }
     
+
+    // If the primitive parent doesn't have a problematic texture, search for a texture scaling
+    if (!parents[parentsIndex - 1].unknownTexture) {
+        while (parentsIndex--) {
+            if (parents[parentsIndex].textureScaleFactor !== undefined) {
+                textureScaleFactor = parents[parentsIndex].textureScaleFactor
+                break;
+            }
+        }
+    }
+
     primitive.updateTexCoords(textureScaleFactor.length_s, textureScaleFactor.length_t);
 }

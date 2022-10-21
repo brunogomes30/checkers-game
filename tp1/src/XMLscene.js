@@ -50,7 +50,7 @@ export class XMLscene extends CGFscene {
         this.defaultAppearance.setAmbient(0.4, 0.4, 0.8, 1.0);
 
         this.defaultTexture = new Texture('', this, '/tp1/scenes/default_images/missing-texture.jpg')
-        this.defaultTextureCoordinates = new TextureScaleFactors(1, 1)
+        this.defaultTextureScaling = new TextureScaleFactors(1, 1)
         this.displayAxis = false;
         this.axis = new CGFaxis(this);
         this.setUpdatePeriod(100);
