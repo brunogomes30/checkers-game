@@ -1,0 +1,390 @@
+<sxs>
+    <scene root="demoRoot" axis_length="5"/>
+
+    <views default="defaultCamera">
+        <perspective id="defaultCamera" near="0.1" far="500" angle="45">
+            <from x="30" y="15" z="30" />
+            <to x="0" y="-2" z="0" />
+        </perspective>
+    </views>
+
+    <ambient>
+        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
+        <background r="0.0" g="0.0" b="0.0" a="1.0" />
+    </ambient>
+
+    <lights>
+        <omni id="demoLight" enabled="1">
+            <location x="9.8" y="11.9" z="10" w="1.0" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+        </omni>
+    </lights>
+
+    <textures>
+        <texture id="demoTexture" file="scenes/images/vidral.jpg" />
+    </textures>
+
+    <materials>
+        <material id="caseMaterial" shininess="10">
+            <emission r="0.1" g="0.1" b="0.1" a="1.0" />
+            <ambient r="0.29411764705882354" g="0.29411764705882354" b="0.29411764705882354" a="1.0" />
+            <diffuse r="0.29411764705882354" g="0.29411764705882354" b="0.29411764705882354" a="1.0" />
+            <specular r="0.029411764705882354" g="0.029411764705882354" b="0.029411764705882354" a="1.0" />
+        </material>
+        <material id="buttonMaterial" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.054901960784313725" g="0.050980392156862744" b="0.050980392156862744" a="1.0" />
+            <diffuse r="0.054901960784313725" g="0.050980392156862744" b="0.050980392156862744" a="1.0" />
+            <specular r="0.054901960784313725" g="0.050980392156862744" b="0.050980392156862744" a="1.0" />
+        </material>
+        <material id="whiteBrightMaterial" shininess="10">
+            <emission r="1.0" g="1.0" b="1.0" a="1.0" />
+            <ambient r="0.054901960784313725" g="0.050980392156862744" b="0.050980392156862744" a="1.0" />
+            <diffuse r="0.054901960784313725" g="0.050980392156862744" b="0.050980392156862744" a="1.0" />
+            <specular r="0.054901960784313725" g="0.050980392156862744" b="0.050980392156862744" a="1.0" />
+        </material>
+        <material id="sunMaterial" shininess="10">
+            <emission r="0.2" g="0.0" b="0.0" a="1.0" />
+            <ambient r="1.0" g="0.2" b="0.2" a="1.0" />
+            <diffuse r="1.0" g="0.2" b="0.2" a="1.0" />
+            <specular r="1.0" g="0.0" b="0.0" a="1.0" />
+        </material>
+    </materials>
+
+    <transformations>
+        <transformation id="demoTransform">
+            <scale x="5" y="1" z="5" />
+            <rotate axis="x" angle="-45" />
+            <rotate axis="z" angle="-45" />
+        </transformation>
+    </transformations>
+
+    <primitives>
+        <primitive id="square">
+            <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
+        </primitive>
+        <primitive id="torus">
+            <torus outer="5" inner="4" slices="11" loops="12" />
+        </primitive>
+        <primitive id="cone">
+            <cylinder base="3" top="0" height="5" slices="16" stacks="16" />
+        </primitive>
+        <primitive id="triangle">
+            <triangle x1="0" y1="0" z1="0" x2="3" y2="0" z2="0" x3="0" y3="3" z3="0" />
+        </primitive>
+        <primitive id="sphere">
+            <sphere radius="2" stacks="12" slices="12" />
+        </primitive>
+    </primitives>
+
+    <components>
+        <component id="demoRoot">
+
+            <materials>
+                <material id="caseMaterial" />
+            </materials>
+
+            <transformation>
+                <scale x="1" y="1" z="1" />
+            </transformation>
+
+            <texture id="none"/>
+
+            <children>
+                <componentref id="computer_case" />
+            </children>
+        </component>
+        <component id="computer_case">
+            <materials>
+                <material id="caseMaterial" />
+            </materials>
+            <transformation>
+                
+            </transformation>
+            <texture id="none"/>
+        
+            <children>
+                <componentref id="computer_case_box_yneg"/>
+                <componentref id="computer_case_box_ypos"/>
+                <componentref id="computer_case_box_xpos"/>
+                <componentref id="computer_case_box_zpos"/>
+                <componentref id="computer_case_box_zneg"/>
+            </children>
+        </component>
+
+
+        <component id="computer_case_box_xpos">
+            <materials>
+                <material id="caseMaterial" />
+            </materials>
+            <transformation>
+                <translate x="0.5" y="0" z="0" />
+                <rotate axis="y" angle="90" />
+                <scale x="2" y="2" z="1"/>
+            </transformation>
+            <texture id="none"/>
+        
+            <children>
+                <componentref id="square_both"/>
+            </children>
+        </component>
+        <component id="computer_case_box_zneg">
+            <materials>
+                <material id="caseMaterial" />
+            </materials>
+            <transformation>
+                <translate x="0" y="0" z="-1" />
+                <scale x="1" y="2" z="1"/>
+                
+            </transformation>
+            <texture id="none"/>
+        
+            <children>
+                <componentref id="square_both"/>
+            </children>
+        </component>
+        <component id="computer_case_box_zpos">
+            <materials>
+                <material id="caseMaterial" />
+            </materials>
+            <transformation>
+                <translate x="0" y="0" z="1" />
+                <scale x="1" y="2" z="1"/>
+            </transformation>
+            <texture id="none"/>
+        
+            <children>
+                <componentref id="square_both"/>
+            </children>
+        </component>
+        <component id="computer_case_box_yneg">
+            <materials>
+                <material id="caseMaterial" />
+            </materials>
+            <transformation>
+                <translate x="0" y="-1" z="0" />
+                
+                <rotate axis="x" angle="90"/>
+                <scale x="1" y="2" z="1"/>
+            </transformation>
+            <texture id="none"/>
+            <children>
+                <componentref id="square_both"/>
+            </children>
+        </component>
+        <component id="computer_case_box_ypos">
+            <materials>
+                <material id="caseMaterial" />
+            </materials>
+            <transformation>
+                <translate x="0" y="1" z="0" />
+                <rotate axis="x" angle="90"/>
+            </transformation>
+            <texture id="none"/>
+            <children>
+                <componentref id="computer_case_panel_top"/>
+            </children>
+        </component>
+
+        <component id="computer_case_panel_top">
+            <!-- centered on origin -->
+            <transformation>
+                
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="computer_case_panel" />
+                <componentref id="case_powerbutton" />
+            </children>
+        </component>
+
+        <component id="case_powerbutton">
+            <!-- not centered on origin(positioned to fit in computer_case_panel_top) -->
+            <transformation>
+                
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="powerbutton" />
+            </children>
+        </component>
+
+        <component id="powerbutton">
+            <!-- centered on origin -->
+            <transformation>
+                <translate x="-0.4" y="0.9" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="button" />
+            </children>
+        </component>
+        <component id="button">
+            <!-- centered on origin -->
+            <transformation>
+                <scale x="0.05" y="0.05" z="0.05" />
+            </transformation>
+            <materials>
+                <material id="buttonMaterial" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="cubeBothfaces" />
+            </children>
+        </component>
+        
+        <component id="computer_case_panel">
+            <!-- centered on origin -->
+            <transformation>
+                <scale x="1" y="2" z="1"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="square_both" />
+            </children>
+        </component>
+        
+        <component id="square_both">
+            <!-- centered on origin -->
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="square" />
+                <componentref id="square_reverse" />
+            </children>
+        </component>
+
+        <component id="square_reverse">
+            <!-- centered on origin -->
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none"/>
+            <transformation>
+                <rotate axis="x" angle="180" />
+            </transformation>
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+
+        <!-- cube start -->
+        <component id="cubeBothfaces">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="cube_bottom" />
+                <componentref id="cube_top" />
+                <componentref id="cube_zneg" />
+                <componentref id="cube_zpos" />
+                <componentref id="cube_xpos" />
+                <componentref id="cube_xneg" />
+            </children>
+        </component>
+
+        <component id="cube_bottom">
+            <transformation>
+                <translate x="0" y="-0.5" z="0" />
+                <rotate axis="x" angle="90"/>
+             </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="square_both"/>
+            </children>
+        </component>
+
+        <component id="cube_top">
+            <transformation>
+                <translate x="0" y="0.5" z="0" />
+                <rotate axis="x" angle="-90"/>
+             </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="square_both"/>
+            </children>
+        </component>
+
+        <component id="cube_zneg">
+            <transformation>
+                <translate x="0" y="0" z = "-0.5"/>
+             </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="square_both"/>
+            </children>
+        </component>
+
+        <component id="cube_zpos">
+            <transformation>
+                <translate x="0" y="0" z = "0.5"/>
+             </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="square_both"/>
+            </children>
+        </component>
+
+        <component id="cube_xpos">
+            <transformation>
+                <translate x="0.5" y="0" z = "0"/>
+                <rotate axis="y" angle="90" />
+             </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="square_both"/>
+            </children>
+        </component>
+
+        <component id="cube_xneg">
+            <transformation>
+                <translate x="-0.5" y="0" z = "0"/>
+                <rotate axis="y" angle="90" />
+             </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="square_both"/>
+            </children>
+        </component>
+        <!-- cube end -->
+    </components>
+</sxs>
