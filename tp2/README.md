@@ -9,13 +9,10 @@
 
 ----
 ## Project information
-### TP1 - Scene Graph
+### TP2 - Improving WebGl technique
 #### Strong points
   - Parser
-    - Extensive error checking and forgiving defaults, displaying console warnings
-    - Debug folder in interface with lights position visibility, axis visibility and objects' normals
-    - Refactored codebase
-    - Default missing texture
+    - ...
 
   - Scene
 
@@ -23,7 +20,7 @@
 
 You can find the scene files at: [the scenes subfolder](./scenes/)
 
-Or run it online at: [https://paginas.fe.up.pt/~up201907216/SGI/tp1](https://paginas.fe.up.pt/~up201907216/SGI/tp1)
+Or run it online at: [https://paginas.fe.up.pt/~up201907216/SGI/tp2](https://paginas.fe.up.pt/~up201907216/SGI/tp2)
 
 
 #### Issues/Problems
