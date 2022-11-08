@@ -16,13 +16,14 @@ import { XMLscene } from "../XMLscene.js";
  * @class Component
  */
 export class Component{
-    constructor(scene, transformation, materials, texture, textureScaleFactor, children){
+    constructor(scene, {transformation, materials, texture, textureScaleFactor, children, highlight}){
         this.scene = scene;
         this.transformation = transformation;
         this.materials = materials;
         this.texture = texture;
         this.textureScaleFactor = textureScaleFactor;
         this.children = children;
+        this.highlight = highlight;
     }
 
     /**

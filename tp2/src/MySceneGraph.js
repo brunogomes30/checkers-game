@@ -71,6 +71,9 @@ export class MySceneGraph {
          * If any error occurs, the reader calls onXMLError on this object, with an error message
          */
         this.reader.open('scenes/' + filename, this);
+        this.timeFactor = 0;
+        this.piPrecision = 100;
+        this.piInteger = Math.round(Math.PI * this.piPrecision);
     }
 
     /*
@@ -197,6 +200,21 @@ export class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
+        this.updateHighLightShader();
         renderElement(this.rootElement);
     }
+
+    /**
+     * Updates the highLight shader timeFactor.
+     */
+    updateHighLightShader() {
+        this.timeFactor += 20;
+        console.log((this.timeFactor % this.piInteger) / this.piPrecision);
+        this.scene.highlightShader.setUniformsValues({
+            timeFactor: (this.timeFactor % this.piInteger) / this.piPrecision
+        }
+        );
+    }
+
+
 }

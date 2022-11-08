@@ -1174,6 +1174,7 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
+            <highlighted r="0.9" g="0.0" b="0.0" scale_h="1.1" />
         </component>
 
 
@@ -1442,6 +1443,7 @@
             <children>
                 <componentref id="round_table" />
             </children>
+            
         </component>
 
         <component id="round_table">
@@ -2546,6 +2548,7 @@
             <children>
                 <primitiveref id="unitCylinder" />
                 <componentref id="reverseCylinder" />
+                
             </children>
         </component>
 
@@ -2935,7 +2938,7 @@
                 <componentref id="leaf" />
             </children>
         </component>
-        ^
+        
         <component id="plant_leaf_2">
             <transformation>
                 <translate x="-0.3" y="1" z="0.28" />

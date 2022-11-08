@@ -1,6 +1,8 @@
 import { Component } from '../components/Component.js'
 import { parseTransformation } from './transformations.js';
+import {parseColor} from './utils.js';
 import { TextureScaleFactors } from '../textures/TextureScaleFactors.js'
+import { Highlight } from '../components/highlight.js';
 /**
    * Parses the <components> block.
    * @param {XMLNode} componentsNode - The components block element.
@@ -42,6 +44,7 @@ export function parseComponents(componentsNode, graph) {
         const materialsIndex = nodeNames.indexOf("materials");
         const textureIndex = nodeNames.indexOf("texture");
         const childrenIndex = nodeNames.indexOf("children");
+        const highlightIndex = nodeNames.indexOf("highlighted");
 
         // Transformations    
         if (transformationIndex == -1) {
@@ -122,6 +125,21 @@ export function parseComponents(componentsNode, graph) {
             }
         }
 
+        let highlight = new Highlight();
+        // Hightlight
+        if(highlightIndex != -1){
+            const highlightNode = grandChildren[highlightIndex];
+            highlight.color =  parseColor(highlightNode, ` highlight node in component "${componentID}"`, graph, false);
+            if(highlight.color instanceof String){
+                return highlight.color;
+            }
+            highlight.scale = graph.reader.getFloat(highlightNode, 'scale_h', false);
+            if (!(highlight.scale != null && !isNaN(highlight.scale))){
+                return `unable to set scale_h of the hightlight node in component "${componentID}"`;
+            }
+            highlight.isActive = true;
+            highlight.hasHighlight = true;
+        }
 
         // Children
         if (childrenIndex == -1) {
@@ -146,7 +164,19 @@ export function parseComponents(componentsNode, graph) {
 
         }
 
-        const component = new Component(graph.scene, transfMatrix, materials, texture, textureScaleFactor, componentChildren);
+        const component = new Component(graph.scene, {
+            transformation : transfMatrix,
+            materials : materials,
+            texture : texture, 
+            textureScaleFactor : textureScaleFactor, 
+            children : componentChildren,
+            highlight : highlight }
+        );
+        if(highlight.isActive){
+        console.log("component " + componentID + " created");
+        console.log(component);
+        }
+        
         graph.components[componentID] = component;
     }
 

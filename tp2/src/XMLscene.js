@@ -1,5 +1,5 @@
 import { Texture } from './textures/Texture.js'
-import { CGFappearance, CGFscene, CGFtexture } from '../../lib/CGF.js';
+import { CGFappearance, CGFscene, CGFtexture, CGFshader } from '../../lib/CGF.js';
 import { CGFaxis, CGFcamera } from '../../lib/CGF.js';
 import { buildInterface } from './interface/build.js';
 import { MyInterface } from './MyInterface.js';
@@ -49,8 +49,9 @@ export class XMLscene extends CGFscene {
         this.defaultAppearance.setSpecular(0.2, 0.4, 0.8, 1.0);
         this.defaultAppearance.setAmbient(0.4, 0.4, 0.8, 1.0);
 
-        this.defaultTexture = new Texture('', this, '/tp1/scenes/default_images/missing-texture.jpg')
-        this.defaultTextureScaling = new TextureScaleFactors(1, 1)
+        this.defaultTexture = new Texture('', this, '/tp1/scenes/default_images/missing-texture.jpg');
+        this.defaultTextureScaling = new TextureScaleFactors(1, 1);
+        this.highlightShader = new CGFshader(this.gl, "shaders/highlight.vert", "shaders/highlight.frag");
         this.displayAxis = false;
         this.axis = new CGFaxis(this);
         this.setUpdatePeriod(100);
@@ -159,6 +160,22 @@ export class XMLscene extends CGFscene {
         // ---- END Background, camera and axis setup
     }
 
+    setHighlightShader(red, green, blue, scale_h) {
+        console.log("Setting highlight shader with color: " + red + ", " + green + ", " + blue);
+        this.highlightShader.setUniformsValues({
+            redValue: red,
+            greenValue: green,
+            blueValue: blue,
+            scaleH: scale_h,
+        }
+        );
+        this.setActiveShader(this.highlightShader);
+    }
+
+
+    setDefaultShader() {
+        this.setActiveShader(this.defaultShader);
+    }
 }
 
 function setAttenuation(light, attenuationVec) {
@@ -166,3 +183,4 @@ function setAttenuation(light, attenuationVec) {
     light.setLinearAttenuation(attenuationVec[1]);
     light.setQuadraticAttenuation(attenuationVec[2])
 }
+

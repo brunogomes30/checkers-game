@@ -52,7 +52,14 @@ function displayPrimitive(element, parents) {
     else {
         element.disableNormalViz();
     }
+    const parent = parents[parents.length - 1];
+    if(parent.highlight.isActive){
+        element.scene.setHighlightShader(...parent.highlight.color, parent.highlight.scale);
+    }
     element.display();
+    if(parent.highlight.isActive){
+        element.scene.setDefaultShader();
+    }
 
 }
 
