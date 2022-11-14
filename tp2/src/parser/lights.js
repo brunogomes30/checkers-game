@@ -115,7 +115,7 @@ export function parseLights(lightsNode, graph) {
             const exponent = graph.reader.getFloat(children[i], 'exponent', false);
             if (exponent == null || isNaN(exponent))
                 return "unable to parse exponent of the light for ID = " + lightId;
-            if(exponent <= 0 || exponent > 128){
+            if(exponent < 0 || exponent > 128){
                 return "exponent must be between [0, 128[ for light with ID = " + lightId;
             }
             const targetIndex = nodeNames.indexOf("target");

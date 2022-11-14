@@ -75,7 +75,24 @@
         </primitive>
     </primitives>
 
-    <animations></animations>
+    <animations>
+        <keyframeanim id="demoAnim">
+            <keyframe instant="5">
+                <translation x="4" y="4" z="4" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="10">
+                <translation x="-8" y="-8" z="-8" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="90" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </keyframeanim >
+    </animations>
 
     <components>
         <component id="demoRoot">
@@ -86,9 +103,9 @@
             </materials>
             <texture id="none"/>
             <children>
-                
                 <componentref id="torus" />
             </children>
+            <animation id="demoAnim"/>
         </component>
         <component id="triangle">
             <transformation>
@@ -99,7 +116,7 @@
             </materials>
             <texture id="inherit"/>
             <children>
-                <primitiveref id="triatngle" />
+                <primitiveref id="triangle" />
             </children>
         </component>
         <component id="sphere">

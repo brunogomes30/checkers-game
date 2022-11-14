@@ -1,5 +1,5 @@
 import { Texture } from './textures/Texture.js'
-import { CGFappearance, CGFscene, CGFtexture } from '../../lib/CGF.js';
+import { CGFappearance, CGFscene } from '../../lib/CGF.js';
 import { CGFaxis, CGFcamera } from '../../lib/CGF.js';
 import { buildInterface } from './interface/build.js';
 import { MyInterface } from './MyInterface.js';
@@ -7,6 +7,8 @@ import { switchLight } from './controllers/lights.js'
 import { switchCamera } from './controllers/cameras.js'
 import { TextureScaleFactors } from './textures/TextureScaleFactors.js';
 
+
+let FRAME_RATE = 60;
 /**
  * XMLscene class, representing the scene that is to be rendered.
  */
@@ -51,9 +53,12 @@ export class XMLscene extends CGFscene {
 
         this.defaultTexture = new Texture('', this, '/tp1/scenes/default_images/missing-texture.jpg')
         this.defaultTextureScaling = new TextureScaleFactors(1, 1)
-        this.displayAxis = false;
+        
+        this.displayAxis = true;
         this.axis = new CGFaxis(this);
-        this.setUpdatePeriod(100);
+        
+        this.setUpdatePeriod(1000 / FRAME_RATE);
+        this.startTime = null;
     }
 
     /**
@@ -120,6 +125,15 @@ export class XMLscene extends CGFscene {
         buildInterface(this.interface, this);
 
         this.materialIndex = 0;
+    }
+
+    update(currTime){
+        if (this.sceneInited){
+            if (this.startTime === null)
+                this.startTime = currTime;
+
+            this.graph.computeAnimations((currTime - this.startTime) / 1000)
+        }
     }
 
     /**

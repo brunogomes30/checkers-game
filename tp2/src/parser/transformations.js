@@ -1,5 +1,4 @@
-import { degToRad } from "../primitives/geometryUtils.js";
-import { parseCoordinates3D } from "./utils.js"
+import { parseTransformationOperations } from "./common.js"
 
 /**
  * Parses the <transformations> block.
@@ -51,50 +50,17 @@ export function parseTransformation(transformationNode, graph, errorMsg, isInsid
     let transfMatrix = mat4.create();
 
     for (let operationId = 0; operationId < transformationNode.children.length; operationId++) {
-        let coordinates;
+
         const operation = transformationNode.children[operationId];
         switch (operation.nodeName) {
             case 'translate':
-                coordinates = parseCoordinates3D(operation, "translate transformation for " + errorMsg, graph);
-                if (!Array.isArray(coordinates))
-                    return coordinates;
-
-                transfMatrix = mat4.translate(transfMatrix, transfMatrix, coordinates);
-                break;
-
             case 'scale':
-                coordinates = parseCoordinates3D(operation, "scale transformation for " + errorMsg, graph);
-                if (!Array.isArray(coordinates))
-                    return coordinates;
-                transfMatrix = mat4.scale(transfMatrix, transfMatrix, coordinates)
-                break;
-
             case 'rotate':
-                let angle = graph.reader.getFloat(operation, "angle");
-                if (!(angle != null && !isNaN(angle))) {
-                    return "unable to parse angle of the rotation transformation for " + errorMsg;
-                }
-                angle = degToRad(angle);
+                let matrix = parseTransformationOperations(graph, operation, "transformation for " + errorMsg);
+                if (typeof matrix == 'string')
+                    return matrix;
 
-                const axis = graph.reader.getItem(operation, "axis", ["x", "y", "z"], true);
-                if (axis == null) {
-                    return "unable to parse axis of the rotation transformation for " + errorMsg;
-                }
-
-                let rotationVec;
-                switch (axis) {
-                    case 'x':
-                        rotationVec = vec3.fromValues(1, 0, 0);
-                        break;
-                    case 'y':
-                        rotationVec = vec3.fromValues(0, 1, 0);
-                        break;
-                    case 'z':
-                        rotationVec = vec3.fromValues(0, 0, 1);
-                        break;
-                }
-
-                transfMatrix = mat4.rotate(transfMatrix, transfMatrix, angle, rotationVec);
+                transfMatrix = mat4.multiply(transfMatrix, transfMatrix, matrix);
                 break;
 
             case 'transformationref':
@@ -110,7 +76,7 @@ export function parseTransformation(transformationNode, graph, errorMsg, isInsid
                 if (transformationID == '')
                     return "no ID defined for transformation for" + errorMsg;
 
-                if (!(transformationID in graph.transformations)){
+                if (!(transformationID in graph.transformations)) {
                     graph.onXMLMinorError(`Unable to find transformation with ID '${transformationID}' in component '${errorMsg}'`);
                     return mat4.create();
                 }

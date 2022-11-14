@@ -1,6 +1,8 @@
 import { CGFobject } from '../../../lib/CGF.js';
 import { truncateDecimalPlaces } from '../factory/utils.js';
 import { RADIANS_CIRCLE } from './geometryUtils.js';
+import { XMLscene } from '../XMLscene.js';
+
 
 /**
  * MyTorus

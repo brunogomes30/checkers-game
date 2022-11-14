@@ -1,5 +1,7 @@
 import { CGFobject } from '../../../lib/CGF.js';
-import { MySceneGraph } from '../MySceneGraph.js';
+import { XMLscene } from '../XMLscene.js';
+
+
 /**
  * MyRectangle
  * @constructor
