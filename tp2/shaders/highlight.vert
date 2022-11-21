@@ -116,11 +116,14 @@ vec4 get_current_color(vec4 vertex, vec3 normal) {
 
 
 uniform float scaleH;
+uniform bool uUseTexture;
 
 void main() {
     vec4 vertex = uMVMatrix * vec4(aVertexPosition, 1.0);
     vec3 normal = normalize(vec3(uNMatrix * vec4(aVertexNormal, 0.0)));
     vColor = get_current_color(vertex, normal);
-    vTextureCoord = aTextureCoord;
+    if(uUseTexture){
+        vTextureCoord = aTextureCoord;
+    }
 	gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition + aVertexNormal*length(aVertexPosition)*(scaleH - 1.0)*sin(timeFactor), 1.0);
 }
