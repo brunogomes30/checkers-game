@@ -6,7 +6,7 @@ attribute vec3 aVertexPosition;
 attribute vec3 aVertexNormal;
 attribute vec2 aTextureCoord;
 
-uniform sampler2D texture;
+uniform sampler2D uSampler;
 
 uniform float timeFactor;
 
@@ -47,11 +47,11 @@ uniform materialProperties uFrontMaterial;
 uniform materialProperties uBackMaterial;
 
 varying vec4 vColor;
-
+varying vec2 vTextureCoord;
 
 vec4 lighting(vec4 vertex, vec3 E, vec3 N) {
 
-    vec4 result = texture2D(texture, aTextureCoord);
+    vec4 result = vec4(0.0, 0.0, 0.0, 0.0);
 
     for (int i = 0; i < NUMBER_OF_LIGHTS; i++) {
         if (uLight[i].enabled) {
@@ -121,6 +121,6 @@ void main() {
     vec4 vertex = uMVMatrix * vec4(aVertexPosition, 1.0);
     vec3 normal = normalize(vec3(uNMatrix * vec4(aVertexNormal, 0.0)));
     vColor = get_current_color(vertex, normal);
-
+    vTextureCoord = aTextureCoord;
 	gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition + aVertexNormal*length(aVertexPosition)*(scaleH - 1.0)*sin(timeFactor), 1.0);
 }

@@ -172,10 +172,6 @@ export function parseComponents(componentsNode, graph) {
             children : componentChildren,
             highlight : highlight }
         );
-        if(highlight.isActive){
-        console.log("component " + componentID + " created");
-        console.log(component);
-        }
         
         graph.components[componentID] = component;
     }

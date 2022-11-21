@@ -1,7 +1,8 @@
-import { CGFappearance } from '../../../lib/CGF.js';
+import { CGFappearance, CGFtexture } from '../../../lib/CGF.js';
 import { Texture } from '../textures/Texture.js'
 import { TextureScaleFactors } from '../textures/TextureScaleFactors.js';
 import { Component } from './Component.js'
+
 
 /**
  * Renders a component or primitive.
@@ -54,7 +55,12 @@ function displayPrimitive(element, parents) {
     }
     const parent = parents[parents.length - 1];
     if(parent.highlight.isActive){
-        element.scene.setHighlightShader(...parent.highlight.color, parent.highlight.scale);
+        
+        const texture = getTexture(parents[0], parents);
+        element.scene.setHighlightShader(...parent.highlight.color, parent.highlight.scale, texture instanceof Texture ? texture.texture : null);
+        
+        
+        
     }
     element.display();
     if(parent.highlight.isActive){
@@ -130,6 +136,19 @@ function setTexture(element, parents, material) {
 
     material.setTexture(texture.texture);
     element.unknownTexture = false;
+}
+
+function getTexture(element, parents) {
+    let texture = element.texture;
+    if (texture === 'inherit') {
+        for (let i = parents.length - 1; i >= 0; i--) {
+            texture = parents[i].texture;
+            if (texture instanceof Texture || texture !== 'inherit') {
+                break;
+            }
+        }
+    }
+    return texture;
 }
 
 /**

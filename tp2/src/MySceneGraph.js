@@ -209,7 +209,6 @@ export class MySceneGraph {
      */
     updateHighLightShader() {
         this.timeFactor += 20;
-        console.log((this.timeFactor % this.piInteger) / this.piPrecision);
         this.scene.highlightShader.setUniformsValues({
             timeFactor: (this.timeFactor % this.piInteger) / this.piPrecision
         }

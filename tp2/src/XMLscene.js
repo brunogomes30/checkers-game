@@ -160,8 +160,7 @@ export class XMLscene extends CGFscene {
         // ---- END Background, camera and axis setup
     }
 
-    setHighlightShader(red, green, blue, scale_h) {
-        console.log("Setting highlight shader with color: " + red + ", " + green + ", " + blue);
+    setHighlightShader(red, green, blue, scale_h, texture) {
         this.highlightShader.setUniformsValues({
             redValue: red,
             greenValue: green,
@@ -169,7 +168,12 @@ export class XMLscene extends CGFscene {
             scaleH: scale_h,
         }
         );
+        
         this.setActiveShader(this.highlightShader);
+        if(texture != null){
+            texture.bind();
+        }
+        
     }
 
 
