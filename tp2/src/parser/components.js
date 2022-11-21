@@ -1,6 +1,6 @@
 import { Component } from '../components/Component.js'
 import { parseTransformation } from './transformations.js';
-import {parseColor} from './utils.js';
+import { parseColor } from './utils.js';
 import { TextureScaleFactors } from '../textures/TextureScaleFactors.js'
 import { Highlight } from '../components/highlight.js';
 /**
@@ -128,14 +128,14 @@ export function parseComponents(componentsNode, graph) {
 
         let highlight = new Highlight();
         // Hightlight
-        if(highlightIndex != -1){
+        if (highlightIndex != -1) {
             const highlightNode = grandChildren[highlightIndex];
-            highlight.color =  parseColor(highlightNode, ` highlight node in component "${componentID}"`, graph, false);
-            if(highlight.color instanceof String){
+            highlight.color = parseColor(highlightNode, ` highlight node in component "${componentID}"`, graph, false);
+            if (highlight.color instanceof String) {
                 return highlight.color;
             }
             highlight.scale = graph.reader.getFloat(highlightNode, 'scale_h', false);
-            if (!(highlight.scale != null && !isNaN(highlight.scale))){
+            if (!(highlight.scale != null && !isNaN(highlight.scale))) {
                 return `unable to set scale_h of the hightlight node in component "${componentID}"`;
             }
             highlight.isActive = true;
@@ -167,31 +167,37 @@ export function parseComponents(componentsNode, graph) {
         // Animation
         // <animation id="ss" />
         let animationId = null;
+        let animation = undefined;
+        if (animationIndex == -1) {
+            //graph.onXMLMinorError(`Animation tag missing for component ID = '${componentID}'`);
+        }
         if (animationIndex !== -1) {
             animationId = graph.reader.getString(grandChildren[animationIndex], "id", false);
-        }
-        if (animationId === null || animationId === 'none' || animationId === '') {
-            animation = undefined;
-        } else {
-            if (animationId in graph.animations) {
-                animation = graph.animations[animationId];
-            } else {
-                graph.onXMLMinorError(`Animation with ID '${animationId}' not found, continuing without animation.`);
+
+            if (animationId === null || animationId === 'none' || animationId === '') {
                 animation = undefined;
+            } else {
+                if (animationId in graph.animations) {
+                    animation = graph.animations[animationId];
+                } else {
+                    graph.onXMLMinorError(`Animation with ID '${animationId}' not found, continuing without animation.`);
+                    animation = undefined;
+                }
             }
         }
 
 
         const component = new Component(graph.scene, {
-            transformation : transfMatrix,
-            materials : materials,
-            texture : texture, 
-            textureScaleFactor : textureScaleFactor, 
-            children : componentChildren,
+            transformation: transfMatrix,
+            materials: materials,
+            texture: texture,
+            textureScaleFactor: textureScaleFactor,
+            children: componentChildren,
             animation: animation,
-            highlight : highlight }
+            highlight: highlight
+        }
         );
-        
+
         graph.components[componentID] = component;
     }
 

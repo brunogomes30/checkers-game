@@ -751,7 +751,24 @@
 
     </primitives>
 
-    <animations></animations>
+    <animations>
+        <keyframeanim id="rotating">
+            <keyframe instant="0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="10">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="3600" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </keyframeanim >
+    </animations>
 
     <components>
         <component id="demoRoot">
@@ -1173,6 +1190,7 @@
                 <material id="faceMaterial" />
             </materials>
             <texture id="rickface" length_s="1" length_t="1" />
+            <animation id="rotating" />
             <children>
                 <primitiveref id="sphere" />
             </children>
