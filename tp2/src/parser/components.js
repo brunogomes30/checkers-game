@@ -42,6 +42,7 @@ export function parseComponents(componentsNode, graph) {
         const materialsIndex = nodeNames.indexOf("materials");
         const textureIndex = nodeNames.indexOf("texture");
         const childrenIndex = nodeNames.indexOf("children");
+        const animationIndex = nodeNames.indexOf("animation");
 
         // Transformations    
         if (transformationIndex == -1) {
@@ -146,8 +147,22 @@ export function parseComponents(componentsNode, graph) {
 
         }
 
-        const component = new Component(graph.scene, transfMatrix, materials, texture, textureScaleFactor, componentChildren);
-        graph.components[componentID] = component;
+        // Animation
+        // <animation id="ss" />
+        let animationId = null;
+        if (animationIndex !== -1) {
+            animationId = graph.reader.getString(grandChildren[animationIndex], "id", false);
+        }
+        if (animationId === null || animationId === 'none' || animationId === '') {
+            graph.components[componentID] = new Component(graph.scene, transfMatrix, materials, texture, textureScaleFactor, componentChildren, undefined);
+        } else {
+            if (animationId in graph.animations) {
+                graph.components[componentID] = new Component(graph.scene, transfMatrix, materials, texture, textureScaleFactor, componentChildren, graph.animations[animationId]);
+            } else {
+                graph.onXMLMinorError(`Animation with ID '${animationId}' not found, continuing without animation.`);
+                graph.components[componentID] = new Component(graph.scene, transfMatrix, materials, texture, textureScaleFactor, componentChildren, undefined);
+            }
+        }
     }
 
 

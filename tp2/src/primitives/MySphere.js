@@ -1,6 +1,7 @@
 import { CGFobject } from '../../../lib/CGF.js';
-import { MySceneGraph } from '../MySceneGraph.js';
+import { XMLscene } from '../XMLscene.js';
 import { vectorNormalize } from './geometryUtils.js';
+
 
 /**
  * MySphere inspired on http://www.songho.ca/opengl/gl_sphere.html

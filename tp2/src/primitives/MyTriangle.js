@@ -1,6 +1,8 @@
 import { CGFobject } from '../../../lib/CGF.js';
 import { XMLscene } from '../XMLscene.js';
 import { sinFromCos, triangleCos as triangleCos, vector2points, vectorCrossProduct, vectorNormalize, vectorSize } from './geometryUtils.js';
+
+
 /**
  * MyTriangle
  * @constructor

@@ -15,14 +15,15 @@ import { XMLscene } from "../XMLscene.js";
  * @export
  * @class Component
  */
-export class Component{
-    constructor(scene, transformation, materials, texture, textureScaleFactor, children){
+export class Component {
+    constructor(scene, transformation, materials, texture, textureScaleFactor, children, animation) {
         this.scene = scene;
         this.transformation = transformation;
         this.materials = materials;
         this.texture = texture;
         this.textureScaleFactor = textureScaleFactor;
         this.children = children;
+        this.animation = animation
     }
 
     /**
@@ -30,9 +31,13 @@ export class Component{
      * @returns {CGFappearance} The current material of the component
      * @memberof Component
     */
-    getMaterial(){
+    getMaterial() {
         return this.materials != undefined && this.materials.length > 0
             ? this.materials[this.scene.materialIndex % this.materials.length]
             : undefined;
+    }
+
+    isDisplayed(){
+        return this.animation === undefined ? true : this.animation.started;
     }
 }

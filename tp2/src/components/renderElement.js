@@ -1,6 +1,5 @@
-import { CGFappearance } from '../../../lib/CGF.js';
+import { CGFappearance, CGFobject } from '../../../lib/CGF.js';
 import { Texture } from '../textures/Texture.js'
-import { TextureScaleFactors } from '../textures/TextureScaleFactors.js';
 import { Component } from './Component.js'
 
 /**
@@ -24,12 +23,20 @@ export function renderElement(element, parents = []) {
  * @param {Array} parents - The parents of the element
  */
 function renderComponent(element, parents) {
+    if (!element.isDisplayed()) {
+        return;
+    }
+
     parents.push(element);
     element.scene.pushMatrix();
-    //Apply transformations
-    element.scene.multMatrix(element.transformation)
 
-    //Apply textures
+    // Apply transformations and animations
+    if (element.animation !== undefined) {
+        element.animation.apply();
+    }
+    element.scene.multMatrix(element.transformation);
+
+    // Apply textures
     element.children.forEach(function (child) {
         applyAppearance(element, parents);
         renderElement(child, parents);

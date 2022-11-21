@@ -1,4 +1,5 @@
 import { CGFXMLreader } from '../../lib/CGF.js';
+import { PrimitiveFactory } from './factory/PrimitiveFactory.js';
 import { parseScene } from './parser/scene.js';
 import { parseView } from './parser/view.js';
 import { parseAmbient } from './parser/ambient.js';
@@ -7,8 +8,8 @@ import { parseTextures } from './parser/textures.js';
 import { parseMaterials } from './parser/materials.js';
 import { parseTransformations } from './parser/transformations.js';
 import { parsePrimitives } from './parser/primitives.js';
+import { parseAnimations } from './parser/animations.js';
 import { parseComponents } from './parser/components.js';
-import { PrimitiveFactory } from './factory/PrimitiveFactory.js';
 import { renderElement } from './components/renderElement.js';
 
 // Order of the groups in the XML document.
@@ -21,7 +22,8 @@ const XML_SEQUENCE_POSITION = {
     'materials': 5,
     'transformations': 6,
     'primitives': 7,
-    'components': 8
+    'animations': 8,
+    'components': 9
 }
 
 const PARSE_FUNCTION = {
@@ -33,6 +35,7 @@ const PARSE_FUNCTION = {
     'materials': parseMaterials,
     'transformations': parseTransformations,
     'primitives': parsePrimitives,
+    'animations': parseAnimations,
     'components': parseComponents
 }
 
@@ -198,5 +201,9 @@ export class MySceneGraph {
      */
     displayScene() {
         renderElement(this.rootElement);
+    }
+
+    computeAnimations(timeDelta) {
+        Object.values(this.animations).forEach(animation => animation.update(timeDelta));
     }
 }
