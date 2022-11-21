@@ -56,7 +56,7 @@ export class XMLscene extends CGFscene {
         
         this.displayAxis = true;
         this.axis = new CGFaxis(this);
-        
+        this.isLooping = true;
         this.setUpdatePeriod(1000 / FRAME_RATE);
         this.startTime = null;
     }

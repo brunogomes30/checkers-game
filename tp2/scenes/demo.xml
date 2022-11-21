@@ -751,7 +751,31 @@
 
     </primitives>
 
-    <animations></animations>
+    <animations>
+        <keyframeanim id="paperplaneAnim">
+            <keyframe instant="0">
+                <translation x="3" y="-3" z="3" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="25" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="5">
+                <translation x="3" y="-9" z="3" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="180" />
+                <rotation axis="x" angle="45" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="10">
+                <translation x="3" y="-3" z="3" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="360" />
+                <rotation axis="x" angle="25" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </keyframeanim >
+    </animations>
 
     <components>
         <component id="demoRoot">
@@ -3610,6 +3634,7 @@
                 <scale x="0.2" y="0.2" z="0.2" />
             </transformation>
             <texture id="none" />
+            <animation id="paperplaneAnim" />
             <children>
                 <componentref id="paperplane" />
             </children>
