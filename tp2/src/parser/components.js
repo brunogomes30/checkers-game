@@ -45,6 +45,7 @@ export function parseComponents(componentsNode, graph) {
         const textureIndex = nodeNames.indexOf("texture");
         const childrenIndex = nodeNames.indexOf("children");
         const highlightIndex = nodeNames.indexOf("highlighted");
+        const animationIndex = nodeNames.indexOf("animation");
 
         // Transformations    
         if (transformationIndex == -1) {
@@ -163,6 +164,23 @@ export function parseComponents(componentsNode, graph) {
             }
 
         }
+        // Animation
+        // <animation id="ss" />
+        let animationId = null;
+        if (animationIndex !== -1) {
+            animationId = graph.reader.getString(grandChildren[animationIndex], "id", false);
+        }
+        if (animationId === null || animationId === 'none' || animationId === '') {
+            animation = undefined;
+        } else {
+            if (animationId in graph.animations) {
+                animation = graph.animations[animationId];
+            } else {
+                graph.onXMLMinorError(`Animation with ID '${animationId}' not found, continuing without animation.`);
+                animation = undefined;
+            }
+        }
+
 
         const component = new Component(graph.scene, {
             transformation : transfMatrix,
@@ -170,6 +188,7 @@ export function parseComponents(componentsNode, graph) {
             texture : texture, 
             textureScaleFactor : textureScaleFactor, 
             children : componentChildren,
+            animation: animation,
             highlight : highlight }
         );
         

@@ -16,7 +16,7 @@ import { XMLscene } from "../XMLscene.js";
  * @class Component
  */
 export class Component{
-    constructor(scene, {transformation, materials, texture, textureScaleFactor, children, highlight}){
+    constructor(scene, {transformation, materials, texture, textureScaleFactor, children, highlight, animation}){
         this.scene = scene;
         this.transformation = transformation;
         this.materials = materials;
@@ -24,6 +24,7 @@ export class Component{
         this.textureScaleFactor = textureScaleFactor;
         this.children = children;
         this.highlight = highlight;
+        this.animation = animation
     }
 
     /**
@@ -31,9 +32,13 @@ export class Component{
      * @returns {CGFappearance} The current material of the component
      * @memberof Component
     */
-    getMaterial(){
+    getMaterial() {
         return this.materials != undefined && this.materials.length > 0
             ? this.materials[this.scene.materialIndex % this.materials.length]
             : undefined;
+    }
+
+    isDisplayed(){
+        return this.animation === undefined ? true : this.animation.started;
     }
 }
