@@ -105,18 +105,19 @@
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="none"/>
+            <texture id="demoTexture" length_s="1" length_t="1"/>
             <children>
                 <componentref id="barrel" />
             </children>
         </component>
+
         <component id="barrel">
             <transformation>
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="inherit" />
             </materials>
-            <texture id="none"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="barrelSide" />
                 <componentref id="barrelSide" />
@@ -129,9 +130,9 @@
                 <rotate axis="z" angle="180" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="inherit" />
             </materials>
-            <texture id="none"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="barrelSide" />
             </children>
@@ -141,9 +142,9 @@
                 <translate x="1" y="0" z="0" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="inherit" />
             </materials>
-            <texture id="none"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="barrelTop" />
             </children>
@@ -154,13 +155,12 @@
                 <rotate axis="y" angle="180" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="inherit" />
             </materials>
-            <texture id="none"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="barrelTop" />
             </children>
         </component>
-
     </components>
 </sxs>

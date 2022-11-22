@@ -136,6 +136,7 @@
         <texture id="camoTexture" file="scenes/images/camo.jpg" />
         <texture id="walltexture" file="scenes/images/wall.jpg" />
         <texture id="ceilingtexture" file="scenes/images/ceil.jpg" />
+        <texture id="barrelTexture" file="scenes/images/barrel.png" />
     </textures>
 
     <materials>
@@ -433,6 +434,40 @@
             </patch>
         </primitive>
 
+        <primitive id="barrelSide">
+            <!-- <patch degree_u=”ii” parts_u=”ii” degree_v=”ii” parts_v=”ii” > -->
+            <patch  degree_u="2" parts_u="10" degree_v="3" parts_v="10" >
+                <!-- <controlpoint x=”ff” y=”ff” z=”ff” /> -->
+                <controlpoint x="1" y="0" z="-0.5" />
+                <controlpoint x="1" y="0.65" z="-0.45" />
+                <controlpoint x="1" y="0.65" z="0.45" />
+                <controlpoint x="1" y="0" z="0.5" />
+                
+                <controlpoint x="0" y="0" z="-1.1" />
+                <controlpoint x="0" y="1.5" z="-0.85" />
+                <controlpoint x="0" y="1.5" z="0.85" />
+                <controlpoint x="0" y="0" z="1.1" />
+
+                <controlpoint x="-1" y="0" z="-0.5" />
+                <controlpoint x="-1" y="0.65" z="-0.45" />
+                <controlpoint x="-1" y="0.65" z="0.45" />
+                <controlpoint x="-1" y="0" z="0.5" />
+            </patch>
+        </primitive>
+        
+        <primitive id="barrelTop">
+            <patch  degree_u="1" parts_u="10" degree_v="3" parts_v="10" >
+                <controlpoint x="0" y="0" z="-0.5" />
+                <controlpoint x="0" y="-0.65" z="-0.45" />
+                <controlpoint x="0" y="-0.65" z="0.45" />
+                <controlpoint x="0" y="0" z="0.5" />
+                
+                <controlpoint x="0" y="0" z="-0.5" />
+                <controlpoint x="0" y="0.65" z="-0.45" />
+                <controlpoint x="0" y="0.65" z="0.45" />
+                <controlpoint x="0" y="0" z="0.5" />
+            </patch>
+        </primitive> 
     </primitives>
 
     <animations>
@@ -501,6 +536,7 @@
                 <componentref id="paperplanePos1" />
                 <componentref id="paperplanePos2" />
                 <componentref id="door" />
+                <componentref id="barrel_positioned" />
 
             </children>
         </component>
@@ -3372,5 +3408,77 @@
         </component>
 
         <!-- End triangle -->
+
+        <!-- Start barrel -->
+
+        <component id="barrel_positioned">
+            <transformation>
+                <translate x="21" y="1.3" z="-21" />
+                <scale x="4" y="4" z="4" />
+                <rotate axis="z" angle="90" />
+                <rotate axis="x" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="barrelTexture"/>
+            <children>
+                <componentref id="barrel" />
+            </children>
+        </component>
+
+        <component id="barrel">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="barrelSide" />
+                <componentref id="barrelSide" />
+                <componentref id="barrelTopRight" />
+                <componentref id="barrelTopLeft" />
+            </children>
+        </component>
+        <component id="barrelSide">
+            <transformation>
+                <rotate axis="z" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="barrelSide" />
+            </children>
+        </component>
+        <component id="barrelTopRight">
+            <transformation>
+                <translate x="1" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="barrelTop" />
+            </children>
+        </component>
+        <component id="barrelTopLeft">
+            <transformation>
+                <translate x="-1" y="0" z="0" />
+                <rotate axis="y" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="barrelTop" />
+            </children>
+        </component>
+
+        <!-- End barrel -->
     </components>
 </sxs>
