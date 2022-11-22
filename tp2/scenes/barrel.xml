@@ -67,22 +67,35 @@
             <patch  degree_u="2" parts_u="10" degree_v="3" parts_v="10" >
                 <!-- <controlpoint x=”ff” y=”ff” z=”ff” /> -->
                 <controlpoint x="1" y="0" z="-0.5" />
-                <controlpoint x="1" y="0.65" z="-0.40" />
-                <controlpoint x="1" y="0.65" z="0.40" />
+                <controlpoint x="1" y="0.65" z="-0.45" />
+                <controlpoint x="1" y="0.65" z="0.45" />
                 <controlpoint x="1" y="0" z="0.5" />
                 
-                
                 <controlpoint x="0" y="0" z="-1.1" />
-                <controlpoint x="0" y="1.5" z="-0.5" />
-                <controlpoint x="0" y="1.5" z="0.50" />
+                <controlpoint x="0" y="1.5" z="-0.85" />
+                <controlpoint x="0" y="1.5" z="0.85" />
                 <controlpoint x="0" y="0" z="1.1" />
 
                 <controlpoint x="-1" y="0" z="-0.5" />
-                <controlpoint x="-1" y="0.65" z="-0.40" />
-                <controlpoint x="-1" y="0.65" z="0.40" />
+                <controlpoint x="-1" y="0.65" z="-0.45" />
+                <controlpoint x="-1" y="0.65" z="0.45" />
                 <controlpoint x="-1" y="0" z="0.5" />
             </patch>
         </primitive>
+        <primitive id="barrelTop">
+            <patch  degree_u="1" parts_u="10" degree_v="3" parts_v="10" >
+                <controlpoint x="0" y="0" z="-0.5" />
+                <controlpoint x="0" y="-0.65" z="-0.45" />
+                <controlpoint x="0" y="-0.65" z="0.45" />
+                <controlpoint x="0" y="0" z="0.5" />
+                
+                <controlpoint x="0" y="0" z="-0.5" />
+                <controlpoint x="0" y="0.65" z="-0.45" />
+                <controlpoint x="0" y="0.65" z="0.45" />
+                <controlpoint x="0" y="0" z="0.5" />
+                
+            </patch>
+        </primitive> 
     </primitives>
 
     <components>
@@ -107,11 +120,13 @@
             <children>
                 <primitiveref id="barrelSide" />
                 <componentref id="barrelSide" />
+                <componentref id="barrelTopRight" />
+                <componentref id="barrelTopLeft" />
             </children>
         </component>
         <component id="barrelSide">
             <transformation>
-                <rotate axis="x" angle="180" />
+                <rotate axis="z" angle="180" />
             </transformation>
             <materials>
                 <material id="demoMaterial" />
@@ -121,5 +136,31 @@
                 <primitiveref id="barrelSide" />
             </children>
         </component>
+        <component id="barrelTopRight">
+            <transformation>
+                <translate x="1" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="barrelTop" />
+            </children>
+        </component>
+        <component id="barrelTopLeft">
+            <transformation>
+                <translate x="-1" y="0" z="0" />
+                <rotate axis="y" angle="180" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="barrelTop" />
+            </children>
+        </component>
+
     </components>
 </sxs>
