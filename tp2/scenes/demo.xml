@@ -122,7 +122,7 @@
     </lights>
 
     <textures>
-        <texture id="floorTexture" file="scenes/images/floorTexture.png" />
+        <texture id="floorTexture" file="scenes/images/floor2.jpg" />
         <texture id="ricktexture" file="scenes/images/rickboy.jpg" />
         <texture id="rickface" file="scenes/images/rickface3.jpg" />
         <texture id="keyboardTexture" file="scenes/images/keyboard.jpg" />
@@ -201,8 +201,8 @@
         </material>
         <material id="woodMaterial" shininess="10">
             <emission r="0.0" g="0.0" b="0.0" a="0.6" />
-            <ambient r="0.43137254901960786" g="0.14901960784313725" b="0.054901960784313725" a="1.0" />
-            <diffuse r="0.43137254901960786" g="0.14901960784313725" b="0.054901960784313725" a="1.0" />
+            <ambient r="0.65137254901960786" g="0.65901960784313725" b="0.654901960784313725" a="1.0" />
+            <diffuse r="0.44137254901960786" g="0.44901960784313725" b="0.444901960784313725" a="1.0" />
             <specular r="0.15" g="0.05901960784313725" b="0.020901960784313725" a="0.6" />
         </material>
         <material id="caseMaterial" shininess="10">
@@ -423,331 +423,15 @@
             <cylinder base="1" top="0.0" height="0.05" slices="16" stacks="16" />
         </primitive>
 
-
-        <primitive id="squarez0x0">
-            <rectangle x1="-0.5" y1="-0.5" x2="-0.4" y2="-0.4" />
+        <primitive id="detailedSquare">
+            <patch  degree_u="1" parts_u="200" degree_v="1" parts_v="200" >
+                <controlpoint x="0.5" y="0.5" z="0" />
+                <controlpoint x="0.5" y="-0.5" z="0" />
+                <controlpoint x="-0.5" y="0.5" z="0" />
+                <controlpoint x="-0.5" y="-0.5" z="0" />
+                
+            </patch>
         </primitive>
-
-        <primitive id="squarez0x1">
-            <rectangle x1="-0.4" y1="-0.5" x2="-0.30000000000000004" y2="-0.4" />
-        </primitive>
-
-        <primitive id="squarez0x2">
-            <rectangle x1="-0.30000000000000004" y1="-0.5" x2="-0.20000000000000004" y2="-0.4" />
-        </primitive>
-
-        <primitive id="squarez0x3">
-            <rectangle x1="-0.20000000000000004" y1="-0.5" x2="-0.10000000000000003" y2="-0.4" />
-        </primitive>
-
-        <primitive id="squarez0x4">
-            <rectangle x1="-0.10000000000000003" y1="-0.5" x2="-2.7755575615628914e-17" y2="-0.4" />
-        </primitive>
-
-        <primitive id="squarez0x5">
-            <rectangle x1="-2.7755575615628914e-17" y1="-0.5" x2="0.09999999999999998" y2="-0.4" />
-        </primitive>
-
-        <primitive id="squarez0x6">
-            <rectangle x1="0.09999999999999998" y1="-0.5" x2="0.19999999999999998" y2="-0.4" />
-        </primitive>
-
-        <primitive id="squarez0x7">
-            <rectangle x1="0.19999999999999998" y1="-0.5" x2="0.3" y2="-0.4" />
-        </primitive>
-
-        <primitive id="squarez0x8">
-            <rectangle x1="0.3" y1="-0.5" x2="0.5" y2="-0.4" />
-        </primitive>
-
-        <primitive id="squarez1x0">
-            <rectangle x1="-0.5" y1="-0.4" x2="-0.4" y2="-0.30000000000000004" />
-        </primitive>
-
-        <primitive id="squarez1x1">
-            <rectangle x1="-0.4" y1="-0.4" x2="-0.30000000000000004" y2="-0.30000000000000004" />
-        </primitive>
-
-        <primitive id="squarez1x2">
-            <rectangle x1="-0.30000000000000004" y1="-0.4" x2="-0.20000000000000004" y2="-0.30000000000000004" />
-        </primitive>
-
-        <primitive id="squarez1x3">
-            <rectangle x1="-0.20000000000000004" y1="-0.4" x2="-0.10000000000000003" y2="-0.30000000000000004" />
-        </primitive>
-
-        <primitive id="squarez1x4">
-            <rectangle x1="-0.10000000000000003" y1="-0.4" x2="-2.7755575615628914e-17" y2="-0.30000000000000004" />
-        </primitive>
-
-        <primitive id="squarez1x5">
-            <rectangle x1="-2.7755575615628914e-17" y1="-0.4" x2="0.09999999999999998" y2="-0.30000000000000004" />
-        </primitive>
-
-        <primitive id="squarez1x6">
-            <rectangle x1="0.09999999999999998" y1="-0.4" x2="0.19999999999999998" y2="-0.30000000000000004" />
-        </primitive>
-
-        <primitive id="squarez1x7">
-            <rectangle x1="0.19999999999999998" y1="-0.4" x2="0.3" y2="-0.30000000000000004" />
-        </primitive>
-
-        <primitive id="squarez1x8">
-            <rectangle x1="0.3" y1="-0.4" x2="0.5" y2="-0.30000000000000004" />
-        </primitive>
-
-        <primitive id="squarez2x0">
-            <rectangle x1="-0.5" y1="-0.30000000000000004" x2="-0.4" y2="-0.20000000000000004" />
-        </primitive>
-
-        <primitive id="squarez2x1">
-            <rectangle x1="-0.4" y1="-0.30000000000000004" x2="-0.30000000000000004" y2="-0.20000000000000004" />
-        </primitive>
-
-        <primitive id="squarez2x2">
-            <rectangle x1="-0.30000000000000004" y1="-0.30000000000000004" x2="-0.20000000000000004" y2="-0.20000000000000004" />
-        </primitive>
-
-        <primitive id="squarez2x3">
-            <rectangle x1="-0.20000000000000004" y1="-0.30000000000000004" x2="-0.10000000000000003" y2="-0.20000000000000004" />
-        </primitive>
-
-        <primitive id="squarez2x4">
-            <rectangle x1="-0.10000000000000003" y1="-0.30000000000000004" x2="-2.7755575615628914e-17" y2="-0.20000000000000004" />
-        </primitive>
-
-        <primitive id="squarez2x5">
-            <rectangle x1="-2.7755575615628914e-17" y1="-0.30000000000000004" x2="0.09999999999999998" y2="-0.20000000000000004" />
-        </primitive>
-
-        <primitive id="squarez2x6">
-            <rectangle x1="0.09999999999999998" y1="-0.30000000000000004" x2="0.19999999999999998" y2="-0.20000000000000004" />
-        </primitive>
-
-        <primitive id="squarez2x7">
-            <rectangle x1="0.19999999999999998" y1="-0.30000000000000004" x2="0.3" y2="-0.20000000000000004" />
-        </primitive>
-
-        <primitive id="squarez2x8">
-            <rectangle x1="0.3" y1="-0.30000000000000004" x2="0.5" y2="-0.20000000000000004" />
-        </primitive>
-
-        <primitive id="squarez3x0">
-            <rectangle x1="-0.5" y1="-0.20000000000000004" x2="-0.4" y2="-0.10000000000000003" />
-        </primitive>
-
-        <primitive id="squarez3x1">
-            <rectangle x1="-0.4" y1="-0.20000000000000004" x2="-0.30000000000000004" y2="-0.10000000000000003" />
-        </primitive>
-
-        <primitive id="squarez3x2">
-            <rectangle x1="-0.30000000000000004" y1="-0.20000000000000004" x2="-0.20000000000000004" y2="-0.10000000000000003" />
-        </primitive>
-
-        <primitive id="squarez3x3">
-            <rectangle x1="-0.20000000000000004" y1="-0.20000000000000004" x2="-0.10000000000000003" y2="-0.10000000000000003" />
-        </primitive>
-
-        <primitive id="squarez3x4">
-            <rectangle x1="-0.10000000000000003" y1="-0.20000000000000004" x2="-2.7755575615628914e-17" y2="-0.10000000000000003" />
-        </primitive>
-
-        <primitive id="squarez3x5">
-            <rectangle x1="-2.7755575615628914e-17" y1="-0.20000000000000004" x2="0.09999999999999998" y2="-0.10000000000000003" />
-        </primitive>
-
-        <primitive id="squarez3x6">
-            <rectangle x1="0.09999999999999998" y1="-0.20000000000000004" x2="0.19999999999999998" y2="-0.10000000000000003" />
-        </primitive>
-
-        <primitive id="squarez3x7">
-            <rectangle x1="0.19999999999999998" y1="-0.20000000000000004" x2="0.3" y2="-0.10000000000000003" />
-        </primitive>
-
-        <primitive id="squarez3x8">
-            <rectangle x1="0.3" y1="-0.20000000000000004" x2="0.5" y2="-0.10000000000000003" />
-        </primitive>
-
-        <primitive id="squarez4x0">
-            <rectangle x1="-0.5" y1="-0.10000000000000003" x2="-0.4" y2="-2.7755575615628914e-17" />
-        </primitive>
-
-        <primitive id="squarez4x1">
-            <rectangle x1="-0.4" y1="-0.10000000000000003" x2="-0.30000000000000004" y2="-2.7755575615628914e-17" />
-        </primitive>
-
-        <primitive id="squarez4x2">
-            <rectangle x1="-0.30000000000000004" y1="-0.10000000000000003" x2="-0.20000000000000004" y2="-2.7755575615628914e-17" />
-        </primitive>
-
-        <primitive id="squarez4x3">
-            <rectangle x1="-0.20000000000000004" y1="-0.10000000000000003" x2="-0.10000000000000003" y2="-2.7755575615628914e-17" />
-        </primitive>
-
-        <primitive id="squarez4x4">
-            <rectangle x1="-0.10000000000000003" y1="-0.10000000000000003" x2="-2.7755575615628914e-17" y2="-2.7755575615628914e-17" />
-        </primitive>
-
-        <primitive id="squarez4x5">
-            <rectangle x1="-2.7755575615628914e-17" y1="-0.10000000000000003" x2="0.09999999999999998" y2="-2.7755575615628914e-17" />
-        </primitive>
-
-        <primitive id="squarez4x6">
-            <rectangle x1="0.09999999999999998" y1="-0.10000000000000003" x2="0.19999999999999998" y2="-2.7755575615628914e-17" />
-        </primitive>
-
-        <primitive id="squarez4x7">
-            <rectangle x1="0.19999999999999998" y1="-0.10000000000000003" x2="0.3" y2="-2.7755575615628914e-17" />
-        </primitive>
-
-        <primitive id="squarez4x8">
-            <rectangle x1="0.3" y1="-0.10000000000000003" x2="0.5" y2="-2.7755575615628914e-17" />
-        </primitive>
-
-        <primitive id="squarez5x0">
-            <rectangle x1="-0.5" y1="-2.7755575615628914e-17" x2="-0.4" y2="0.09999999999999998" />
-        </primitive>
-
-        <primitive id="squarez5x1">
-            <rectangle x1="-0.4" y1="-2.7755575615628914e-17" x2="-0.30000000000000004" y2="0.09999999999999998" />
-        </primitive>
-
-        <primitive id="squarez5x2">
-            <rectangle x1="-0.30000000000000004" y1="-2.7755575615628914e-17" x2="-0.20000000000000004" y2="0.09999999999999998" />
-        </primitive>
-
-        <primitive id="squarez5x3">
-            <rectangle x1="-0.20000000000000004" y1="-2.7755575615628914e-17" x2="-0.10000000000000003" y2="0.09999999999999998" />
-        </primitive>
-
-        <primitive id="squarez5x4">
-            <rectangle x1="-0.10000000000000003" y1="-2.7755575615628914e-17" x2="-2.7755575615628914e-17" y2="0.09999999999999998" />
-        </primitive>
-
-        <primitive id="squarez5x5">
-            <rectangle x1="-2.7755575615628914e-17" y1="-2.7755575615628914e-17" x2="0.09999999999999998" y2="0.09999999999999998" />
-        </primitive>
-
-        <primitive id="squarez5x6">
-            <rectangle x1="0.09999999999999998" y1="-2.7755575615628914e-17" x2="0.19999999999999998" y2="0.09999999999999998" />
-        </primitive>
-
-        <primitive id="squarez5x7">
-            <rectangle x1="0.19999999999999998" y1="-2.7755575615628914e-17" x2="0.3" y2="0.09999999999999998" />
-        </primitive>
-
-        <primitive id="squarez5x8">
-            <rectangle x1="0.3" y1="-2.7755575615628914e-17" x2="0.5" y2="0.09999999999999998" />
-        </primitive>
-
-        <primitive id="squarez6x0">
-            <rectangle x1="-0.5" y1="0.09999999999999998" x2="-0.4" y2="0.19999999999999998" />
-        </primitive>
-
-        <primitive id="squarez6x1">
-            <rectangle x1="-0.4" y1="0.09999999999999998" x2="-0.30000000000000004" y2="0.19999999999999998" />
-        </primitive>
-
-        <primitive id="squarez6x2">
-            <rectangle x1="-0.30000000000000004" y1="0.09999999999999998" x2="-0.20000000000000004" y2="0.19999999999999998" />
-        </primitive>
-
-        <primitive id="squarez6x3">
-            <rectangle x1="-0.20000000000000004" y1="0.09999999999999998" x2="-0.10000000000000003" y2="0.19999999999999998" />
-        </primitive>
-
-        <primitive id="squarez6x4">
-            <rectangle x1="-0.10000000000000003" y1="0.09999999999999998" x2="-2.7755575615628914e-17" y2="0.19999999999999998" />
-        </primitive>
-
-        <primitive id="squarez6x5">
-            <rectangle x1="-2.7755575615628914e-17" y1="0.09999999999999998" x2="0.09999999999999998" y2="0.19999999999999998" />
-        </primitive>
-
-        <primitive id="squarez6x6">
-            <rectangle x1="0.09999999999999998" y1="0.09999999999999998" x2="0.19999999999999998" y2="0.19999999999999998" />
-        </primitive>
-
-        <primitive id="squarez6x7">
-            <rectangle x1="0.19999999999999998" y1="0.09999999999999998" x2="0.3" y2="0.19999999999999998" />
-        </primitive>
-
-        <primitive id="squarez6x8">
-            <rectangle x1="0.3" y1="0.09999999999999998" x2="0.5" y2="0.19999999999999998" />
-        </primitive>
-
-        <primitive id="squarez7x0">
-            <rectangle x1="-0.5" y1="0.19999999999999998" x2="-0.4" y2="0.3" />
-        </primitive>
-
-        <primitive id="squarez7x1">
-            <rectangle x1="-0.4" y1="0.19999999999999998" x2="-0.30000000000000004" y2="0.3" />
-        </primitive>
-
-        <primitive id="squarez7x2">
-            <rectangle x1="-0.30000000000000004" y1="0.19999999999999998" x2="-0.20000000000000004" y2="0.3" />
-        </primitive>
-
-        <primitive id="squarez7x3">
-            <rectangle x1="-0.20000000000000004" y1="0.19999999999999998" x2="-0.10000000000000003" y2="0.3" />
-        </primitive>
-
-        <primitive id="squarez7x4">
-            <rectangle x1="-0.10000000000000003" y1="0.19999999999999998" x2="-2.7755575615628914e-17" y2="0.3" />
-        </primitive>
-
-        <primitive id="squarez7x5">
-            <rectangle x1="-2.7755575615628914e-17" y1="0.19999999999999998" x2="0.09999999999999998" y2="0.3" />
-        </primitive>
-
-        <primitive id="squarez7x6">
-            <rectangle x1="0.09999999999999998" y1="0.19999999999999998" x2="0.19999999999999998" y2="0.3" />
-        </primitive>
-
-        <primitive id="squarez7x7">
-            <rectangle x1="0.19999999999999998" y1="0.19999999999999998" x2="0.3" y2="0.3" />
-        </primitive>
-
-        <primitive id="squarez7x8">
-            <rectangle x1="0.3" y1="0.19999999999999998" x2="0.5" y2="0.3" />
-        </primitive>
-
-        <primitive id="squarez8x0">
-            <rectangle x1="-0.5" y1="0.3" x2="-0.4" y2="0.5" />
-        </primitive>
-
-        <primitive id="squarez8x1">
-            <rectangle x1="-0.4" y1="0.3" x2="-0.30000000000000004" y2="0.5" />
-        </primitive>
-
-        <primitive id="squarez8x2">
-            <rectangle x1="-0.30000000000000004" y1="0.3" x2="-0.20000000000000004" y2="0.5" />
-        </primitive>
-
-        <primitive id="squarez8x3">
-            <rectangle x1="-0.20000000000000004" y1="0.3" x2="-0.10000000000000003" y2="0.5" />
-        </primitive>
-
-        <primitive id="squarez8x4">
-            <rectangle x1="-0.10000000000000003" y1="0.3" x2="-2.7755575615628914e-17" y2="0.5" />
-        </primitive>
-
-        <primitive id="squarez8x5">
-            <rectangle x1="-2.7755575615628914e-17" y1="0.3" x2="0.09999999999999998" y2="0.5" />
-        </primitive>
-
-        <primitive id="squarez8x6">
-            <rectangle x1="0.09999999999999998" y1="0.3" x2="0.19999999999999998" y2="0.5" />
-        </primitive>
-
-        <primitive id="squarez8x7">
-            <rectangle x1="0.19999999999999998" y1="0.3" x2="0.3" y2="0.5" />
-        </primitive>
-
-        <primitive id="squarez8x8">
-            <rectangle x1="0.3" y1="0.3" x2="0.5" y2="0.5" />
-        </primitive>
-
 
     </primitives>
 
@@ -1426,7 +1110,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="ceilingtexture" length_s="0.1" length_t="0.1" />
+            <texture id="none" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="detailedSquare" />
             </children>
@@ -3496,87 +3180,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <primitiveref id="squarez0x0" />
-                <primitiveref id="squarez0x1" />
-                <primitiveref id="squarez0x2" />
-                <primitiveref id="squarez0x3" />
-                <primitiveref id="squarez0x4" />
-                <primitiveref id="squarez0x5" />
-                <primitiveref id="squarez0x6" />
-                <primitiveref id="squarez0x7" />
-                <primitiveref id="squarez0x8" />
-                <primitiveref id="squarez1x0" />
-                <primitiveref id="squarez1x1" />
-                <primitiveref id="squarez1x2" />
-                <primitiveref id="squarez1x3" />
-                <primitiveref id="squarez1x4" />
-                <primitiveref id="squarez1x5" />
-                <primitiveref id="squarez1x6" />
-                <primitiveref id="squarez1x7" />
-                <primitiveref id="squarez1x8" />
-                <primitiveref id="squarez2x0" />
-                <primitiveref id="squarez2x1" />
-                <primitiveref id="squarez2x2" />
-                <primitiveref id="squarez2x3" />
-                <primitiveref id="squarez2x4" />
-                <primitiveref id="squarez2x5" />
-                <primitiveref id="squarez2x6" />
-                <primitiveref id="squarez2x7" />
-                <primitiveref id="squarez2x8" />
-                <primitiveref id="squarez3x0" />
-                <primitiveref id="squarez3x1" />
-                <primitiveref id="squarez3x2" />
-                <primitiveref id="squarez3x3" />
-                <primitiveref id="squarez3x4" />
-                <primitiveref id="squarez3x5" />
-                <primitiveref id="squarez3x6" />
-                <primitiveref id="squarez3x7" />
-                <primitiveref id="squarez3x8" />
-                <primitiveref id="squarez4x0" />
-                <primitiveref id="squarez4x1" />
-                <primitiveref id="squarez4x2" />
-                <primitiveref id="squarez4x3" />
-                <primitiveref id="squarez4x4" />
-                <primitiveref id="squarez4x5" />
-                <primitiveref id="squarez4x6" />
-                <primitiveref id="squarez4x7" />
-                <primitiveref id="squarez4x8" />
-                <primitiveref id="squarez5x0" />
-                <primitiveref id="squarez5x1" />
-                <primitiveref id="squarez5x2" />
-                <primitiveref id="squarez5x3" />
-                <primitiveref id="squarez5x4" />
-                <primitiveref id="squarez5x5" />
-                <primitiveref id="squarez5x6" />
-                <primitiveref id="squarez5x7" />
-                <primitiveref id="squarez5x8" />
-                <primitiveref id="squarez6x0" />
-                <primitiveref id="squarez6x1" />
-                <primitiveref id="squarez6x2" />
-                <primitiveref id="squarez6x3" />
-                <primitiveref id="squarez6x4" />
-                <primitiveref id="squarez6x5" />
-                <primitiveref id="squarez6x6" />
-                <primitiveref id="squarez6x7" />
-                <primitiveref id="squarez6x8" />
-                <primitiveref id="squarez7x0" />
-                <primitiveref id="squarez7x1" />
-                <primitiveref id="squarez7x2" />
-                <primitiveref id="squarez7x3" />
-                <primitiveref id="squarez7x4" />
-                <primitiveref id="squarez7x5" />
-                <primitiveref id="squarez7x6" />
-                <primitiveref id="squarez7x7" />
-                <primitiveref id="squarez7x8" />
-                <primitiveref id="squarez8x0" />
-                <primitiveref id="squarez8x1" />
-                <primitiveref id="squarez8x2" />
-                <primitiveref id="squarez8x3" />
-                <primitiveref id="squarez8x4" />
-                <primitiveref id="squarez8x5" />
-                <primitiveref id="squarez8x6" />
-                <primitiveref id="squarez8x7" />
-                <primitiveref id="squarez8x8" />
+                <primitiveref id="detailedSquare" />
             </children>
         </component>
 
