@@ -1,6 +1,8 @@
 import { Component } from '../components/Component.js'
 import { parseTransformation } from './transformations.js';
+import { parseColor } from './utils.js';
 import { TextureScaleFactors } from '../textures/TextureScaleFactors.js'
+import { Highlight } from '../components/Highlight.js';
 /**
    * Parses the <components> block.
    * @param {XMLNode} componentsNode - The components block element.
@@ -42,6 +44,7 @@ export function parseComponents(componentsNode, graph) {
         const materialsIndex = nodeNames.indexOf("materials");
         const textureIndex = nodeNames.indexOf("texture");
         const childrenIndex = nodeNames.indexOf("children");
+        const highlightIndex = nodeNames.indexOf("highlighted");
         const animationIndex = nodeNames.indexOf("animation");
 
         // Transformations    
@@ -123,6 +126,21 @@ export function parseComponents(componentsNode, graph) {
             }
         }
 
+        let highlight = new Highlight();
+        // Hightlight
+        if (highlightIndex != -1) {
+            const highlightNode = grandChildren[highlightIndex];
+            highlight.color = parseColor(highlightNode, ` highlight node in component "${componentID}"`, graph, false);
+            if (highlight.color instanceof String) {
+                return highlight.color;
+            }
+            highlight.scale = graph.reader.getFloat(highlightNode, 'scale_h', false);
+            if (!(highlight.scale != null && !isNaN(highlight.scale))) {
+                return `unable to set scale_h of the hightlight node in component "${componentID}"`;
+            }
+            highlight.isActive = true;
+            highlight.hasHighlight = true;
+        }
 
         // Children
         if (childrenIndex == -1) {
@@ -146,23 +164,41 @@ export function parseComponents(componentsNode, graph) {
             }
 
         }
-
         // Animation
         // <animation id="ss" />
         let animationId = null;
+        let animation = undefined;
+        if (animationIndex == -1) {
+            //graph.onXMLMinorError(`Animation tag missing for component ID = '${componentID}'`);
+        }
         if (animationIndex !== -1) {
             animationId = graph.reader.getString(grandChildren[animationIndex], "id", false);
-        }
-        if (animationId === null || animationId === 'none' || animationId === '') {
-            graph.components[componentID] = new Component(graph.scene, transfMatrix, materials, texture, textureScaleFactor, componentChildren, undefined);
-        } else {
-            if (animationId in graph.animations) {
-                graph.components[componentID] = new Component(graph.scene, transfMatrix, materials, texture, textureScaleFactor, componentChildren, graph.animations[animationId]);
+
+            if (animationId === null || animationId === 'none' || animationId === '') {
+                animation = undefined;
             } else {
-                graph.onXMLMinorError(`Animation with ID '${animationId}' not found, continuing without animation.`);
-                graph.components[componentID] = new Component(graph.scene, transfMatrix, materials, texture, textureScaleFactor, componentChildren, undefined);
+                if (animationId in graph.animations) {
+                    animation = graph.animations[animationId];
+                } else {
+                    graph.onXMLMinorError(`Animation with ID '${animationId}' not found, continuing without animation.`);
+                    animation = undefined;
+                }
             }
         }
+
+
+        const component = new Component(graph.scene, {
+            transformation: transfMatrix,
+            materials: materials,
+            texture: texture,
+            textureScaleFactor: textureScaleFactor,
+            children: componentChildren,
+            animation: animation,
+            highlight: highlight
+        }
+        );
+
+        graph.components[componentID] = component;
     }
 
 
