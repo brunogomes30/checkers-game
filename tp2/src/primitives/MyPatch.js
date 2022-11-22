@@ -12,18 +12,7 @@ export class MyPatch extends CGFnurbsObject {
      * Dummy function
      */
 	 updateTexCoords(length_s, length_t) {
-        if (length_s == undefined || length_t == undefined){
-			return;
-		}
-		
-		this.texCoords = [
-			0, this.yDist/ length_t ,
-			this.xDist / length_s,  this.yDist / length_t,
-			0, 0,
-			this.xDist/ length_s , 0
-		]
-        
-		this.updateTexCoordsGLBuffers();
+        return;
     }
 }
 
