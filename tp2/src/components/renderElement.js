@@ -2,6 +2,7 @@ import { CGFappearance, CGFobject } from '../../../lib/CGF.js';
 import { Texture } from '../textures/Texture.js'
 import { Component } from './Component.js'
 
+
 /**
  * Renders a component or primitive.
  * If it's a component, applies transformations, materials and textures
@@ -59,7 +60,19 @@ function displayPrimitive(element, parents) {
     else {
         element.disableNormalViz();
     }
+    const parent = parents[parents.length - 1];
+    if(parent.highlight.isActive){
+        
+        const texture = getTexture(parents[0], parents);
+        element.scene.setHighlightShader(...parent.highlight.color, parent.highlight.scale, texture instanceof Texture ? texture.texture : null);
+        
+        
+        
+    }
     element.display();
+    if(parent.highlight.isActive){
+        element.scene.setDefaultShader();
+    }
 
 }
 
@@ -130,6 +143,19 @@ function setTexture(element, parents, material) {
 
     material.setTexture(texture.texture);
     element.unknownTexture = false;
+}
+
+function getTexture(element, parents) {
+    let texture = element.texture;
+    if (texture === 'inherit') {
+        for (let i = parents.length - 1; i >= 0; i--) {
+            texture = parents[i].texture;
+            if (texture instanceof Texture || texture !== 'inherit') {
+                break;
+            }
+        }
+    }
+    return texture;
 }
 
 /**
