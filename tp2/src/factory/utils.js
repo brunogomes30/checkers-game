@@ -6,14 +6,14 @@
  * @param {String} id 
  * @returns 
  */
-export function buildValues(attributes, reader, node, id){
+export function buildValues(attributes, reader, node, id) {
     const values = {};
     const keys = Object.keys(attributes);
-    for(let i=0; i < keys.length; i++){
+    for (let i = 0; i < keys.length; i++) {
         const key = keys[i];
         const varType = attributes[key];
         let value;
-        switch(varType){
+        switch (varType) {
             case 'float':
                 value = reader.getFloat(node, key, false);
                 if (!(value != null && !isNaN(value)))
@@ -27,7 +27,7 @@ export function buildValues(attributes, reader, node, id){
         }
         values[key] = value;
     }
-    
+
     return values;
 }
 
@@ -38,6 +38,6 @@ export function buildValues(attributes, reader, node, id){
  * @param {Number} decimalPlaces
  * @return {Float} 
  */
-export function truncateDecimalPlaces(number, decimalPlaces){
+export function truncateDecimalPlaces(number, decimalPlaces) {
     return Number.parseFloat(Number.parseFloat(number).toFixed(decimalPlaces));
 }
