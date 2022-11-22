@@ -61,7 +61,7 @@ function buildDebugFolder(ui, scene) {
     })
 
     folder.add(scene, 'isLooping').name('Loop animations').onChange(() => {
-        scene.isLooping = !scene.isLooping;
+        //scene.isLooping = !scene.isLooping;
     });
 
 

@@ -436,29 +436,7 @@
     </primitives>
 
     <animations>
-        <keyframeanim id="paperplaneAnim">
-            <keyframe instant="0">
-                <translation x="3" y="-3" z="3" />
-                <rotation axis="z" angle="0" />
-                <rotation axis="y" angle="0" />
-                <rotation axis="x" angle="25" />
-                <scale x="1" y="1" z="1" />
-            </keyframe>
-            <keyframe instant="5">
-                <translation x="3" y="-9" z="3" />
-                <rotation axis="z" angle="0" />
-                <rotation axis="y" angle="180" />
-                <rotation axis="x" angle="45" />
-                <scale x="1" y="1" z="1" />
-            </keyframe>
-            <keyframe instant="10">
-                <translation x="3" y="-3" z="3" />
-                <rotation axis="z" angle="0" />
-                <rotation axis="y" angle="360" />
-                <rotation axis="x" angle="25" />
-                <scale x="1" y="1" z="1" />
-            </keyframe>
-        </keyframeanim>
+        
         <keyframeanim id="rotatingAnim">
             <keyframe instant="0">
                 <translation x="0" y="0" z="0" />
@@ -467,9 +445,16 @@
                 <rotation axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
-            <keyframe instant="10">
-                <translation x="0" y="0" z="0" />
-                <rotation axis="z" angle="3600" />
+            <keyframe instant="1">
+                <translation x="0" y="0" z="0.5" />
+                <rotation axis="z" angle="360" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="2">
+                <translation x="0" y="0" z="2" />
+                <rotation axis="z" angle="720" />
                 <rotation axis="y" angle="0" />
                 <rotation axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
@@ -901,7 +886,7 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
-            <highlighted r="0.9" g="0.0" b="0.0" scale_h="1.1" />
+            
         </component>
 
 
@@ -3258,7 +3243,7 @@
                 <scale x="0.2" y="0.2" z="0.2" />
             </transformation>
             <texture id="none" />
-            <animation id="paperplaneAnim" />
+            
             <children>
                 <componentref id="paperplane" />
             </children>
