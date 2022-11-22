@@ -31,11 +31,12 @@ function renderComponent(element, parents) {
     parents.push(element);
     element.scene.pushMatrix();
 
+    element.scene.multMatrix(element.transformation);
     // Apply transformations and animations
     if (element.animation !== undefined) {
         element.animation.apply();
     }
-    element.scene.multMatrix(element.transformation);
+    
 
     // Apply textures
     element.children.forEach(function (child) {

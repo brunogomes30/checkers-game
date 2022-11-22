@@ -436,7 +436,7 @@
     </primitives>
 
     <animations>
-        <keyframeanim id="rotating">
+        <keyframeanim id="rotatingAnim">
             <keyframe instant="0">
                 <translation x="0" y="0" z="0" />
                 <rotation axis="z" angle="0" />
@@ -874,7 +874,7 @@
                 <material id="faceMaterial" />
             </materials>
             <texture id="rickface" length_s="1" length_t="1" />
-            <animation id="rotating" />
+            <animation id="rotatingAnim" />
             <children>
                 <primitiveref id="sphere" />
             </children>
