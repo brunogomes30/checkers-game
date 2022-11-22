@@ -4,7 +4,6 @@ export class MyKeyframeAnimation extends MyAnimation {
     constructor(scene, id, keyframes) {
         super(scene, id, Object.keys(keyframes)[0], Object.keys(keyframes)[Object.keys(keyframes).length - 1])
         this.keyframes = keyframes;
-        console.log(keyframes);
         this.lastKeyFrameTime = this.startTime;
         this.previousTransformations = this.keyframes[this.startTime];
 
@@ -62,7 +61,7 @@ export class MyKeyframeAnimation extends MyAnimation {
         let t = (timeDelta - this.lastKeyFrameTime) / (this.nextKeyFrameTime - this.lastKeyFrameTime);
 
         if (t > 1) {
-
+            //Last frame in current keyframe
             let newIndex = keyFramesKeys.indexOf(this.nextKeyFrameTime) + 1;
             this.previousTransformations = this.nextTransformations;
             this.lastKeyFrameTime = this.nextKeyFrameTime;
