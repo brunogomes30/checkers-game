@@ -424,18 +424,19 @@
         </primitive>
 
         <primitive id="detailedSquare">
-            <patch  degree_u="1" parts_u="200" degree_v="1" parts_v="200" >
+            <patch degree_u="1" parts_u="200" degree_v="1" parts_v="200">
                 <controlpoint x="0.5" y="0.5" z="0" />
                 <controlpoint x="0.5" y="-0.5" z="0" />
                 <controlpoint x="-0.5" y="0.5" z="0" />
                 <controlpoint x="-0.5" y="-0.5" z="0" />
-                
+
             </patch>
         </primitive>
 
     </primitives>
 
     <animations>
+        
         <keyframeanim id="rotatingAnim">
             <keyframe instant="0">
                 <translation x="0" y="0" z="0" />
@@ -444,14 +445,21 @@
                 <rotation axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
-            <keyframe instant="10">
-                <translation x="0" y="0" z="0" />
-                <rotation axis="z" angle="3600" />
+            <keyframe instant="1">
+                <translation x="0" y="0" z="0.5" />
+                <rotation axis="z" angle="360" />
                 <rotation axis="y" angle="0" />
                 <rotation axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
-        </keyframeanim >
+            <keyframe instant="2">
+                <translation x="0" y="0" z="2" />
+                <rotation axis="z" angle="720" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </keyframeanim>
     </animations>
 
     <components>
@@ -878,7 +886,7 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
-            <highlighted r="0.9" g="0.0" b="0.0" scale_h="1.1" />
+            
         </component>
 
 
@@ -1147,7 +1155,7 @@
             <children>
                 <componentref id="round_table" />
             </children>
-            
+
         </component>
 
         <component id="round_table">
@@ -2252,7 +2260,7 @@
             <children>
                 <primitiveref id="unitCylinder" />
                 <componentref id="reverseCylinder" />
-                
+
             </children>
         </component>
 
@@ -2642,7 +2650,7 @@
                 <componentref id="leaf" />
             </children>
         </component>
-        
+
         <component id="plant_leaf_2">
             <transformation>
                 <translate x="-0.3" y="1" z="0.28" />
@@ -3235,6 +3243,7 @@
                 <scale x="0.2" y="0.2" z="0.2" />
             </transformation>
             <texture id="none" />
+            
             <children>
                 <componentref id="paperplane" />
             </children>

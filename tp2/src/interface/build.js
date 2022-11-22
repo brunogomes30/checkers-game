@@ -60,6 +60,11 @@ function buildDebugFolder(ui, scene) {
         })
     })
 
+    folder.add(scene, 'isLooping').name('Loop animations').onChange(() => {
+        //scene.isLooping = !scene.isLooping;
+    });
+
+
     folder.add(scene, 'setLightsVisible').name('Display lights').onChange(() => {
         for (let i = 0; i < 8; i++) {
             scene.lights[i].setVisible(scene.setLightsVisible);
