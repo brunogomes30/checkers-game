@@ -4,20 +4,20 @@
  * @param {String} messageError - message to be displayed in case of error
  */
 export function parseCoordinates3D(node, messageError, graph) {
-    var position = [];
+    const position = [];
 
     // x
-    var x = graph.reader.getFloat(node, 'x', false);
+    const x = graph.reader.getFloat(node, 'x', false);
     if (!(x != null && !isNaN(x)))
         return "unable to parse x-coordinate of the " + messageError;
 
     // y
-    var y = graph.reader.getFloat(node, 'y', false);
+    const y = graph.reader.getFloat(node, 'y', false);
     if (!(y != null && !isNaN(y)))
         return "unable to parse y-coordinate of the " + messageError;
 
     // z
-    var z = graph.reader.getFloat(node, 'z', false);
+    const z = graph.reader.getFloat(node, 'z', false);
     if (!(z != null && !isNaN(z)))
         return "unable to parse z-coordinate of the " + messageError;
 
@@ -32,15 +32,14 @@ export function parseCoordinates3D(node, messageError, graph) {
  * @param {message to be displayed in case of error} messageError
  */
 export function parseCoordinates4D(node, messageError, graph) {
-    var position = [];
 
     //Get x, y, z
-    position = parseCoordinates3D(node, messageError, graph);
+    const position  = parseCoordinates3D(node, messageError, graph);
     if (!Array.isArray(position))
         return position;
 
     // Get w
-    var w = graph.reader.getFloat(node, 'w', false);
+    const w = graph.reader.getFloat(node, 'w', false);
     if (w == null || isNaN(w))
         return "unable to parse w-coordinate of the " + messageError;
 
@@ -54,7 +53,7 @@ export function parseCoordinates4D(node, messageError, graph) {
  * @param {block element} node
  * @param {message to be displayed in case of error} messageError
  */
-export function parseColor(node, messageError, graph) {
+export function parseColor(node, messageError, graph, hasAlpha = true) {
     const color = [];
 
     // R
@@ -81,15 +80,17 @@ export function parseColor(node, messageError, graph) {
         return 'b attribute must be between [0, 1] of the ' + messageError;
     }
 
-    // A
-    const a = graph.reader.getFloat(node, 'a', false);
-    if (!(a != null && !isNaN(a) && a >= 0 && a <= 1))
-        return "unable to parse a attribute of the " + messageError;
-    if (a < 0 || a > 1) {
-        return 'a attribute must be between [0, 1] of the ' + messageError;
+    if(hasAlpha){
+        // A
+        const a = graph.reader.getFloat(node, 'a', false);
+        if (!(a != null && !isNaN(a) && a >= 0 && a <= 1))
+            return "unable to parse a attribute of the " + messageError;
+        if (a < 0 || a > 1) {
+            return 'a attribute must be between [0, 1] of the ' + messageError;
+        }
+        color.push(...[r, g, b, a]);
+        return color;
     }
-
-    color.push(...[r, g, b, a]);
-
+    color.push(...[r, g, b]);
     return color;
 }

@@ -1,8 +1,9 @@
 import { RectangleFactory } from "./RectangleFactory.js"
 import { TriangleFactory } from "./TriangleFactory.js"
 import { CylinderFactory } from "./CylinderFactory.js"
-import { TorusFactory } from "./TorusFactory.js";
+import { TorusFactory } from "./TorusFactory.js"
 import {SphereFactory} from "./SphereFactory.js"
+import {PatchFactory} from "./PatchFactory.js"
 
 
 /**
@@ -20,7 +21,8 @@ export class PrimitiveFactory {
             triangle: new TriangleFactory(),
             cylinder: new CylinderFactory(),
             torus: new TorusFactory(),
-            sphere: new SphereFactory()
+            sphere: new SphereFactory(),
+            patch: new PatchFactory()
 
         };
     }

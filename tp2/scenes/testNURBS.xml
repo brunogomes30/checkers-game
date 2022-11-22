@@ -1,0 +1,88 @@
+<sxs>
+    <scene root="demoRoot" axis_length="5"/>
+
+    <views default="defaultCamera">
+        <perspective id="defaultCamera" near="0.1" far="500" angle="45">
+            <from x="10" y="10" z="10" />
+            <to x="0" y="0" z="0" />
+        </perspective>
+        <ortho id="orthoCam" near="-5" far="5" left="-5" right="5" bottom="-5" top="5">
+            <from x="0" y="0" z="3" />
+            <to x="00" y="0" z="0" />
+        </ortho>
+    </views>
+
+    <ambient>
+        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
+        <background r="0.0" g="0.0" b="0.0" a="1.0" />
+    </ambient>
+
+    <lights>
+        <omni id="demoLight" enabled="1">
+            <location x="9.8" y="11.9" z="10" w="1.0" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <attenuation constant="1.0" linear="0.0" quadratic="0.0" /> 
+        </omni>
+        <spot id="spotlight" enabled="1" angle="20" exponent="0" >
+            <location x="5.0" y="5.0" z="5.0" w="1" />
+            <target x="0" y="1" z="0" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <attenuation constant="0.0" linear="1.0" quadratic="0.0" /> 
+        </spot>
+    </lights>
+
+    <textures>
+        <texture id="demoTexture" file="scenes/images/rickboy.jpg" />
+    </textures>
+
+    <materials>
+        <material id="demoMaterial" shininess="5">
+            <emission r="0.2" g="0.2" b="0.2" a="1.0" />
+            <ambient r="0.5" g="0.5" b="0.9" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.9" a="1.0" />
+            <specular r="0.1" g="0.1" b="0.9" a="1.0" />
+        </material>
+    </materials>
+
+    <transformations>
+        <transformation id="demoTransform">
+            <scale x="5" y="1" z="5" />
+            <rotate axis="x" angle="-45" />
+            <rotate axis="z" angle="-45" />
+        </transformation>
+    </transformations>
+
+    <primitives>
+        <primitive id="rectangle">
+            <rectangle x1="-0.5" y1="-1" x2="0.5" y2="1" />
+        </primitive>
+        <primitive id="test_nurb">
+            <!-- <patch degree_u=”ii” parts_u=”ii” degree_v=”ii” parts_v=”ii” > -->
+            <patch  degree_u="1" parts_u="1" degree_v="1" parts_v="1" >
+                <!-- <controlpoint x=”ff” y=”ff” z=”ff” /> -->
+                <controlpoint x="-0.5" y="2" z="0" />
+                <controlpoint x="-0.5" y="-2" z="0" />
+                <controlpoint x="0.5" y="2" z="0" />
+                <controlpoint x="0.5" y="-2" z="0" />
+            </patch>
+        </primitive>
+    </primitives>
+
+    <components>
+        <component id="demoRoot">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="test_nurb" />
+            </children>
+        </component>
+    </components>
+</sxs>
