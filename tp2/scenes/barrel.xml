@@ -55,24 +55,32 @@
             <rotate axis="z" angle="-45" />
         </transformation>
     </transformations>
-
+    
     <animations></animations>
 
     <primitives>
         <primitive id="rectangle">
             <rectangle x1="-0.5" y1="-1" x2="0.5" y2="1" />
         </primitive>
-        <primitive id="tent">
+        <primitive id="barrelSide">
             <!-- <patch degree_u=”ii” parts_u=”ii” degree_v=”ii” parts_v=”ii” > -->
-            <patch  degree_u="1" parts_u="5" degree_v="2" parts_v="5" >
+            <patch  degree_u="2" parts_u="10" degree_v="3" parts_v="10" >
                 <!-- <controlpoint x=”ff” y=”ff” z=”ff” /> -->
-                <controlpoint x="-0.5" y="-0.5" z="0" />
-                <controlpoint x="-0.5" y="0" z="0.5" />
-                <controlpoint x="-0.5" y="0.5" z="0" />
+                <controlpoint x="-1" y="-0.5" z="0" />
+                <controlpoint x="-1" y="-0.37" z="0.65" />
+                <controlpoint x="-1" y="0.37" z="0.65" />
+                <controlpoint x="-1" y="0.5" z="0" />
                 
-                <controlpoint x="0.5" y="-0.5" z="0" />
-                <controlpoint x="0.5" y="0" z="0.5" />
-                <controlpoint x="0.5" y="0.5" z="0" />
+                <controlpoint x="0" y="-1.1" z="0" />
+                <controlpoint x="0" y="-0.67" z="1.4" />
+                <controlpoint x="0" y="0.67" z="1.4" />
+                <controlpoint x="0" y="1.1" z="0" />
+
+
+                <controlpoint x="1" y="-0.5" z="0" />
+                <controlpoint x="1" y="-0.37" z="0.65" />
+                <controlpoint x="1" y="0.37" z="0.65" />
+                <controlpoint x="1" y="0.5" z="0" />
             </patch>
         </primitive>
     </primitives>
@@ -86,7 +94,31 @@
             </materials>
             <texture id="none"/>
             <children>
-                <primitiveref id="tent" />
+                <componentref id="barrel" />
+            </children>
+        </component>
+        <component id="barrel">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="barrelSide" />
+                <componentref id="barrelSide" />
+            </children>
+        </component>
+        <component id="barrelSide">
+            <transformation>
+                <rotate axis="x" angle="180" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="barrelSide" />
             </children>
         </component>
     </components>
