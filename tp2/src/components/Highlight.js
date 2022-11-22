@@ -1,6 +1,3 @@
-
-
-
 export class Highlight{
 
     constructor(){

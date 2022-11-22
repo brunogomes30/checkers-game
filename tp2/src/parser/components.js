@@ -2,7 +2,7 @@ import { Component } from '../components/Component.js'
 import { parseTransformation } from './transformations.js';
 import { parseColor } from './utils.js';
 import { TextureScaleFactors } from '../textures/TextureScaleFactors.js'
-import { Highlight } from '../components/highlight.js';
+import { Highlight } from '../components/Highlight.js';
 /**
    * Parses the <components> block.
    * @param {XMLNode} componentsNode - The components block element.
