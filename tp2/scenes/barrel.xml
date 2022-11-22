@@ -66,21 +66,21 @@
             <!-- <patch degree_u=”ii” parts_u=”ii” degree_v=”ii” parts_v=”ii” > -->
             <patch  degree_u="2" parts_u="10" degree_v="3" parts_v="10" >
                 <!-- <controlpoint x=”ff” y=”ff” z=”ff” /> -->
-                <controlpoint x="-1" y="-0.5" z="0" />
-                <controlpoint x="-1" y="-0.37" z="0.65" />
-                <controlpoint x="-1" y="0.37" z="0.65" />
-                <controlpoint x="-1" y="0.5" z="0" />
+                <controlpoint x="1" y="0" z="-0.5" />
+                <controlpoint x="1" y="0.65" z="-0.40" />
+                <controlpoint x="1" y="0.65" z="0.40" />
+                <controlpoint x="1" y="0" z="0.5" />
                 
-                <controlpoint x="0" y="-1.1" z="0" />
-                <controlpoint x="0" y="-0.67" z="1.4" />
-                <controlpoint x="0" y="0.67" z="1.4" />
-                <controlpoint x="0" y="1.1" z="0" />
+                
+                <controlpoint x="0" y="0" z="-1.1" />
+                <controlpoint x="0" y="1.5" z="-0.5" />
+                <controlpoint x="0" y="1.5" z="0.50" />
+                <controlpoint x="0" y="0" z="1.1" />
 
-
-                <controlpoint x="1" y="-0.5" z="0" />
-                <controlpoint x="1" y="-0.37" z="0.65" />
-                <controlpoint x="1" y="0.37" z="0.65" />
-                <controlpoint x="1" y="0.5" z="0" />
+                <controlpoint x="-1" y="0" z="-0.5" />
+                <controlpoint x="-1" y="0.65" z="-0.40" />
+                <controlpoint x="-1" y="0.65" z="0.40" />
+                <controlpoint x="-1" y="0" z="0.5" />
             </patch>
         </primitive>
     </primitives>
