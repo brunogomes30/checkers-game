@@ -33,6 +33,7 @@ export class XMLscene extends CGFscene {
         this.sceneInited = false;
         this.setLightsVisible = false;
         this.displayNormals = false;
+        this.displayAxis = true;
 
         this.initCameras();
 
@@ -53,8 +54,6 @@ export class XMLscene extends CGFscene {
 
         this.defaultTexture = new Texture('', this, '/tp1/scenes/default_images/missing-texture.jpg')
         this.defaultTextureScaling = new TextureScaleFactors(1, 1)
-        
-        this.displayAxis = true;
         this.axis = new CGFaxis(this);
         
         this.setUpdatePeriod(1000 / FRAME_RATE);
