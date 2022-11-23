@@ -434,6 +434,7 @@
             </patch>
         </primitive>
 
+        <!-- Barrel -->
         <primitive id="barrelSide">
             <!-- <patch degree_u=”ii” parts_u=”ii” degree_v=”ii” parts_v=”ii” > -->
             <patch  degree_u="2" parts_u="10" degree_v="3" parts_v="10" >
@@ -454,7 +455,6 @@
                 <controlpoint x="-1" y="0" z="0.5" />
             </patch>
         </primitive>
-        
         <primitive id="barrelTop">
             <patch  degree_u="1" parts_u="10" degree_v="3" parts_v="10" >
                 <controlpoint x="0" y="0" z="-0.5" />
@@ -467,7 +467,31 @@
                 <controlpoint x="0" y="0.65" z="0.45" />
                 <controlpoint x="0" y="0" z="0.5" />
             </patch>
-        </primitive> 
+        </primitive>
+
+        <!-- Tent -->
+        <primitive id="tentOuter">
+            <patch  degree_u="1" parts_u="10" degree_v="2" parts_v="10" >
+                <controlpoint x="2" y="0" z="-2" />
+                <controlpoint x="2" y="5" z="0" />
+                <controlpoint x="2" y="0" z="2" />
+                
+                <controlpoint x="-2" y="0" z="-2" />
+                <controlpoint x="-2" y="5" z="0" />
+                <controlpoint x="-2" y="0" z="2" />
+            </patch>
+        </primitive>
+        <primitive id="tentInner">
+            <patch  degree_u="1" parts_u="10" degree_v="2" parts_v="10" >
+                <controlpoint x="-2" y="0" z="-2" />
+                <controlpoint x="-2" y="5" z="0" />
+                <controlpoint x="-2" y="0" z="2" />
+                
+                <controlpoint x="2" y="0" z="-2" />
+                <controlpoint x="2" y="5" z="0" />
+                <controlpoint x="2" y="0" z="2" />
+            </patch>
+        </primitive>
     </primitives>
 
     <animations>
@@ -768,6 +792,7 @@
                 <componentref id="paperplanePos2" />
                 <componentref id="door" />
                 <componentref id="barrel_positioned" />
+                <componentref id="tent_positioned" />
 
             </children>
         </component>
@@ -1198,7 +1223,7 @@
 
         <component id="present">
             <transformation>
-                <translate x="-22" y="-1.4" z="-10" />
+                <translate x="-20" y="-1.4" z="-10" />
                 <rotate axis="y" angle="90" />
             </transformation>
             <materials>
@@ -3728,5 +3753,36 @@
         </component>
 
         <!-- End barrel -->
+
+        <!-- Start tent -->
+
+        <component id="tent_positioned">
+            <transformation>
+                <translate x="-20" y="-2.6" z="-10" />
+                <rotate axis="y" angle="-25" />
+                <scale x="1.5" y="1.5" z="1.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="camoTexture"/>
+            <children>
+                <componentref id="tent" />
+            </children>
+        </component>
+        <component id="tent">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="tentOuter" />
+                <primitiveref id="tentInner" />
+            </children>
+        </component>
+
+        <!-- End Tent -->
     </components>
 </sxs>
