@@ -62,17 +62,26 @@
         <primitive id="rectangle">
             <rectangle x1="-0.5" y1="-1" x2="0.5" y2="1" />
         </primitive>
-        <primitive id="tent">
-            <!-- <patch degree_u=”ii” parts_u=”ii” degree_v=”ii” parts_v=”ii” > -->
-            <patch  degree_u="1" parts_u="5" degree_v="2" parts_v="5" >
-                <!-- <controlpoint x=”ff” y=”ff” z=”ff” /> -->
-                <controlpoint x="-0.5" y="-0.5" z="0" />
-                <controlpoint x="-0.5" y="0" z="0.5" />
-                <controlpoint x="-0.5" y="0.5" z="0" />
+        <primitive id="tentOuter">
+            <patch  degree_u="1" parts_u="10" degree_v="2" parts_v="10" >
+                <controlpoint x="2" y="0" z="-2" />
+                <controlpoint x="2" y="5" z="0" />
+                <controlpoint x="2" y="0" z="2" />
                 
-                <controlpoint x="0.5" y="-0.5" z="0" />
-                <controlpoint x="0.5" y="0" z="0.5" />
-                <controlpoint x="0.5" y="0.5" z="0" />
+                <controlpoint x="-2" y="0" z="-2" />
+                <controlpoint x="-2" y="5" z="0" />
+                <controlpoint x="-2" y="0" z="2" />
+            </patch>
+        </primitive>
+        <primitive id="tentInner">
+            <patch  degree_u="1" parts_u="10" degree_v="2" parts_v="10" >
+                <controlpoint x="-2" y="0" z="-2" />
+                <controlpoint x="-2" y="5" z="0" />
+                <controlpoint x="-2" y="0" z="2" />
+                
+                <controlpoint x="2" y="0" z="-2" />
+                <controlpoint x="2" y="5" z="0" />
+                <controlpoint x="2" y="0" z="2" />
             </patch>
         </primitive>
     </primitives>
@@ -84,9 +93,21 @@
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="none"/>
+            <texture id="demoTexture"/>
             <children>
-                <primitiveref id="tent" />
+                <componentref id="tent" />
+            </children>
+        </component>
+        <component id="tent">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="tentOuter" />
+                <primitiveref id="tentInner" />
             </children>
         </component>
     </components>
