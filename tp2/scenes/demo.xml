@@ -3689,6 +3689,7 @@
             <transformation>
                 <translate x="21" y="1.3" z="-21" />
                 <scale x="4" y="4" z="4" />
+                <rotate axis="y" angle="40" />
                 <rotate axis="z" angle="90" />
                 <rotate axis="x" angle="180" />
             </transformation>
@@ -3708,6 +3709,7 @@
                 <material id="inherit" />
             </materials>
             <texture id="inherit"/>
+            <highlighted  r="0" g="0" b="0" scale_h="1.2"/>
             <children>
                 <primitiveref id="barrelSide" />
                 <componentref id="barrelSide" />
