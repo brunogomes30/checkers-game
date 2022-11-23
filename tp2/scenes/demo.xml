@@ -482,14 +482,14 @@
             </keyframe>
             <keyframe instant="1">
                 <translation x="0" y="0" z="0" />
-                <rotation axis="z" angle="360" />
+                <rotation axis="z" angle="0" />
                 <rotation axis="y" angle="0" />
                 <rotation axis="x" angle="0" />
-                <scale x="1" y="1" z="1" />
+                <scale x="0.9" y="0.9" z="0.9" />
             </keyframe>
             <keyframe instant="2">
                 <translation x="0" y="0" z="0" />
-                <rotation axis="z" angle="720" />
+                <rotation axis="z" angle="0" />
                 <rotation axis="y" angle="0" />
                 <rotation axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
@@ -572,28 +572,28 @@
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="1.01">
-                <translation x="1" y="0" z="17.5" />
+                <translation x="1" y="0.5" z="17.5" />
                 <rotation axis="z" angle="0" />
                 <rotation axis="y" angle="-40" />
                 <rotation axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="2.2">
-                <translation x="1" y="0" z="17.5" />
+                <translation x="1" y="0.5" z="17.5" />
                 <rotation axis="z" angle="0" />
                 <rotation axis="y" angle="-40" />
                 <rotation axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="2.21">
-                <translation x="1" y="0" z="25.5" />
+                <translation x="1" y="0.5" z="25.5" />
                 <rotation axis="z" angle="0" />
                 <rotation axis="y" angle="-140" />
                 <rotation axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="3.4">
-                <translation x="1" y="0" z="25.5" />
+                <translation x="1" y="0.5" z="25.5" />
                 <rotation axis="z" angle="0" />
                 <rotation axis="y" angle="-140" />
                 <rotation axis="x" angle="0" />
@@ -711,7 +711,7 @@
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="1">
-                <translation x="0" y="0" z="0" />
+                <translation x="0" y="1" z="0" />
                 <rotation axis="z" angle="0" />
                 <rotation axis="y" angle="10" />
                 <rotation axis="x" angle="0" />
@@ -2128,13 +2128,14 @@
                 <material id="whiteBrightMaterial" />
             </materials>
             <transformation>
-                <translate x="0" y="0" z="0.05" />
+                <translate x="0.0" y="0" z="0.15" />
                 <scale x="3.8" y="2.3" z="0.10" />
             </transformation>
             <texture id="ricktexture" length_s="1" length_t="1" />
-            git
+            <highlighted  r="1" g="0.4" b="0.4" scale_h="1.0"/>
             <children>
-                <componentref id="cubeBothfaces" />
+                <primitiveref id="square" />
+                
             </children>
         </component>
         <component id="monitor_base">
