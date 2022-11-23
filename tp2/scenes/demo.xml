@@ -481,20 +481,251 @@
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="1">
-                <translation x="0" y="0" z="0.5" />
+                <translation x="0" y="0" z="0" />
                 <rotation axis="z" angle="360" />
                 <rotation axis="y" angle="0" />
                 <rotation axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="2">
-                <translation x="0" y="0" z="2" />
+                <translation x="0" y="0" z="0" />
                 <rotation axis="z" angle="720" />
                 <rotation axis="y" angle="0" />
                 <rotation axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
         </keyframeanim>
+        <keyframeanim id="paperplaneAnim">
+            <keyframe instant="0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="5">
+                <translation x="0" y="-5" z="0" />
+                <rotation axis="z" angle="-60" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="-20" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="10">
+                <translation x="0" y="-12.3" z="0" />
+                <rotation axis="z" angle="-60" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="-20" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="15">
+                <translation x="0" y="-5" z="0" />
+                <rotation axis="z" angle="-60" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="20" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="20">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </keyframeanim>
+        <keyframeanim id="paperplaneFlyAnim">
+            <keyframe instant="0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="10">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="360" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="20">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="720" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </keyframeanim>
+
+        <keyframeanim id="person1Anim">
+            <keyframe instant="0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="1.0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="1.01">
+                <translation x="1" y="0" z="17.5" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="-40" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="2.2">
+                <translation x="1" y="0" z="17.5" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="-40" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="2.21">
+                <translation x="1" y="0" z="25.5" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="-140" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="3.4">
+                <translation x="1" y="0" z="25.5" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="-140" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="3.41">
+                <translation x="-17.5" y="3" z="12" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="90" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="4.40">
+                <translation x="-17.5" y="3" z="12" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="90" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            
+            <keyframe instant="5.40">
+                <translation x="-17.5" y="3" z="12" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="90" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </keyframeanim>
+
+        <keyframeanim id="person2Anim">
+            <keyframe instant="0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="1.0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="2.2">
+                <translation x="6" y="0" z="0.0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="4.40">
+                <translation x="6" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            
+            <keyframe instant="5.40">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </keyframeanim>
+
+        <keyframeanim id="fastRotationAnim">
+            <keyframe instant="0.0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="0.5">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="360" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </keyframeanim>
+        <keyframeanim id="leafAnim">
+            <keyframe instant="0.0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="1">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="10" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="2">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </keyframeanim>
+
+        <keyframeanim id="plantGrowAnim">
+            <keyframe instant="0.0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="1">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="10" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="2.5" z="1" />
+            </keyframe>
+            <keyframe instant="2">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </keyframeanim>
+        
     </animations>
 
     <components>
@@ -533,7 +764,7 @@
                 <componentref id="plant_position_3" />
                 <componentref id="plant_position_4" />
                 <componentref id="sofa_position" />
-                <componentref id="paperplanePos1" />
+                <componentref id="paperplaneFlying" />
                 <componentref id="paperplanePos2" />
                 <componentref id="door" />
                 <componentref id="barrel_positioned" />
@@ -640,7 +871,7 @@
 
         <component id="rick_position">
             <transformation>
-                <translate x="-12" y="3" z="-15" />
+                <translate x="-12.7" y="3" z="-15" />
                 <rotate axis="y" angle="-90" />
             </transformation>
             <materials>
@@ -661,6 +892,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
+            <animation id="person1Anim" />
             <texture id="none" />
             <children>
                 <componentref id="person" />
@@ -675,6 +907,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
+            <animation id="person2Anim" />
             <texture id="none" />
             <children>
                 <componentref id="person" />
@@ -1675,7 +1908,7 @@
                 <material id="woodMaterial" />
             </materials>
             <transformation>
-                <translate x="-12" y="-2.7" z="-15" />
+                <translate x="-12.5" y="-2.7" z="-15" />
                 <rotate axis="y" angle="-90" />
                 <scale x="1.7" y="1.7" z="1.7" />
             </transformation>
@@ -2308,6 +2541,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
+            <highlighted  r="1" g="1" b="1" scale_h="1.2"/>
             <texture id="coffeeTexture" length_s="1" length_t="1" />
 
             <children>
@@ -2491,6 +2725,7 @@
                 <material id="inherit" />
             </materials>
             <texture id="none" />
+            <animation id="plantGrowAnim" />
             <children>
                 <componentref id="plant" />
             </children>
@@ -2795,6 +3030,7 @@
                 <material id="inherit" />
             </materials>
             <texture id="inherit" />
+            <animation id="leafAnim" />
             <children>
                 <componentref id="leaf_part_bottom" />
                 <componentref id="leaf_part_middle" />
@@ -3254,13 +3490,24 @@
                 <material id="paperMaterial" />
             </materials>
             <transformation>
-                <translate x="-20" y="1" z="20" />
+                <translate x="-20" y="-0.8" z="23" />
                 <rotate axis="x" angle="30" />
-                <scale x="0.2" y="0.2" z="0.2" />
             </transformation>
             <texture id="camoTexture" length_s="2.0" length_t="1.0" />
             <children>
                 <componentref id="paperplane" />
+            </children>
+        </component>
+
+        <component id="paperplaneFlying">
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <transformation>
+            </transformation>
+            <animation id="paperplaneFlyAnim" />
+            <children>
+                <componentref id="paperplanePos1" />
             </children>
         </component>
 
@@ -3272,11 +3519,11 @@
                 <material id="paperMaterial3" />
                 <material id="paperMaterial4" />
             </materials>
+            <animation id="paperplaneAnim" />
             <transformation>
-                <translate x="-5" y="12" z="-15" />
+                <translate x="-5" y="12" z="-14.5" />
                 <rotate axis="z" angle="-20" />
                 <rotate axis="y" angle="-45" />
-                <scale x="0.2" y="0.2" z="0.2" />
             </transformation>
             <texture id="none" />
             
@@ -3293,6 +3540,7 @@
             </materials>
             <transformation>
                 <translate x="0" y="0" z="-4.5" />
+                <scale x="0.2" y="0.2" z="0.2" />
             </transformation>
             <texture id="inherit" />
             <children>
