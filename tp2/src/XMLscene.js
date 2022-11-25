@@ -56,7 +56,7 @@ export class XMLscene extends CGFscene {
         this.defaultTextureScaling = new TextureScaleFactors(1, 1);
         this.highlightShader = new CGFshader(this.gl, "shaders/highlight.vert", "shaders/highlight.frag");
         this.axis = new CGFaxis(this);
-        this.isLooping = true;
+        this.isLooping = false;
         this.setUpdatePeriod(1000 / FRAME_RATE);
         this.startTime = null;
         this.textures = {};
