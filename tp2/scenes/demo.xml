@@ -556,6 +556,199 @@
                 <scale x="1" y="1" z="1" />
             </keyframe>
         </keyframeanim>
+        
+        <keyframeanim id="jetplaneFlyAnim">
+            <keyframe instant="0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="1">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="30" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="4">
+                <translation x="0" y="15" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="60" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="5.0">
+                <translation x="0" y="15" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="90" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="8.0">
+                <translation x="0" y="15" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="300" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="10.0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="340" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="11.0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="360" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </keyframeanim>
+
+        <keyframeanim id="jetplane1Anim">
+            <keyframe instant="0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="1">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <!-- Climbing -->
+            <keyframe instant="2">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="-45" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="4">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <!-- Adjusting inclination -->
+            <keyframe instant="5.0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <!-- Constant flight -->
+            <keyframe instant="8.0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="720" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <!-- Descending -->
+            <keyframe instant="9.0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="720" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="45" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="10.0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="720" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="45" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <!-- Landing -->
+            <keyframe instant="11.0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="720" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </keyframeanim>
+        <keyframeanim id="jetplane2Anim">
+            <keyframe instant="0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="1">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <!-- Climbing -->
+            <keyframe instant="2">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="-45" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="4">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <!-- Adjusting inclination -->
+            <keyframe instant="5.0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <!-- Constant flight -->
+            <keyframe instant="8.0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="720" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <!-- Descending -->
+            <keyframe instant="9.0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="720" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="45" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="10.0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="720" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="45" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <!-- Landing -->
+            <keyframe instant="11.0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="720" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </keyframeanim>
         <keyframeanim id="paperplaneFlyAnim">
             <keyframe instant="0">
                 <translation x="0" y="0" z="0" />
@@ -579,6 +772,7 @@
                 <scale x="1" y="1" z="1" />
             </keyframe>
         </keyframeanim>
+
 
         <keyframeanim id="person1Anim">
             <keyframe instant="0">
@@ -792,7 +986,7 @@
                 <componentref id="paperplanePos2" />
                 <componentref id="door" />
                 <componentref id="barrel_positioned" />
-                <componentref id="tent_positioned" />
+                <componentref id="hangar"/>
 
             </children>
         </component>
@@ -1431,7 +1625,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none" length_s="0.1" length_t="0.1" />
+            <texture id="none" />
             <children>
                 <componentref id="detailedSquare" />
             </children>
@@ -1982,7 +2176,7 @@
                 <material id="woodMaterial" />
             </materials>
             <transformation></transformation>
-            <texture id="none" />
+            <texture id="none"  />
             <children>
                 <componentref id="chair_base" />
                 <componentref id="chair_back" />
@@ -2001,7 +2195,7 @@
                 <translate x="0" y="3.4" z="-0.80" />
                 <scale x="2" y="3" z="0.1" />
             </transformation>
-            <texture id="none" />
+            <texture id="inherit" />
 
             <children>
                 <componentref id="cubeBothfaces" />
@@ -2015,7 +2209,7 @@
                 <translate x="0" y="2" z="0" />
                 <scale x="2" y="0.2" z="2" />
             </transformation>
-            <texture id="none" />
+            <texture id="inherit" />
 
             <children>
                 <componentref id="cubeBothfaces" />
@@ -2028,7 +2222,7 @@
             <transformation>
                 <translate x="0.75" y="0" z="0.75" />
             </transformation>
-            <texture id="none" />
+            <texture id="inherit" />
 
             <children>
                 <componentref id="chair_leg" />
@@ -2041,7 +2235,7 @@
             <transformation>
                 <translate x="0.75" y="0" z="-0.75" />
             </transformation>
-            <texture id="none" />
+            <texture id="inherit" />
 
             <children>
                 <componentref id="chair_leg" />
@@ -2054,7 +2248,7 @@
             <transformation>
                 <translate x="-0.75" y="0" z="-0.75" />
             </transformation>
-            <texture id="none" />
+            <texture id="inherit" />
 
             <children>
                 <componentref id="chair_leg" />
@@ -2067,7 +2261,7 @@
             <transformation>
                 <translate x="-0.75" y="0" z="0.75" />
             </transformation>
-            <texture id="none" />
+            <texture id="inherit" />
 
             <children>
                 <componentref id="chair_leg" />
@@ -2081,7 +2275,7 @@
                 <translate x="0" y="1" z="0" />
                 <scale x="0.25" y="2" z="0.25" />
             </transformation>
-            <texture id="none" />
+            <texture id="inherit" />
 
             <children>
                 <componentref id="cubeBothfaces" />
@@ -3531,10 +3725,11 @@
             </materials>
             <transformation>
             </transformation>
-            <animation id="paperplaneFlyAnim" />
+            <texture id="inherit" />
             <children>
                 <componentref id="paperplanePos1" />
             </children>
+            <animation id="paperplaneFlyAnim" />
         </component>
 
         <component id="paperplanePos1">
@@ -3551,6 +3746,77 @@
                 <rotate axis="z" angle="-20" />
                 <rotate axis="y" angle="-45" />
             </transformation>
+            <texture id="none" />
+            
+            <children>
+                <componentref id="paperplane" />
+            </children>
+        </component>
+
+        <component id="hangar">
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <transformation>
+            </transformation>
+            <texture id="inherit" />
+            <children>
+                <componentref id="tent_positioned" />
+                <componentref id="jetplaneFlying" />
+            </children>
+        </component>
+
+        <component id="jetplaneFlying">
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <transformation>
+            </transformation>
+            <texture id="inherit" />
+            <children>
+                <componentref id="jetplanePos1" />
+                <componentref id="jetplanePos2" />
+            </children>
+            <animation id="jetplaneFlyAnim" />
+        </component>
+
+        <component id="jetplanePos1">
+            <transformation>
+                <translate x="3" y="-2" z="19" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <animation id="jetplane1Anim" />
+            <materials>
+                <material id="paperMaterial2" />
+                <material id="paperMaterial" />
+                <material id="paperMaterial1" />
+                <material id="paperMaterial3" />
+                <material id="paperMaterial4" />
+            </materials>
+            
+            
+            <texture id="none" />
+            
+            <children>
+                <componentref id="paperplane" />
+            </children>
+        </component>
+
+        <component id="jetplanePos2">
+            <transformation>
+                <translate x="3" y="-2" z="21" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <animation id="jetplane2Anim" />
+            <materials>
+                <material id="paperMaterial2" />
+                <material id="paperMaterial" />
+                <material id="paperMaterial1" />
+                <material id="paperMaterial3" />
+                <material id="paperMaterial4" />
+            </materials>
+            
+            
             <texture id="none" />
             
             <children>
@@ -3696,7 +3962,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="barrelTexture"/>
+            <texture id="barrelTexture" length_s="1.0" length_t="1.0"/>
             <children>
                 <componentref id="barrel" />
             </children>
@@ -3709,13 +3975,13 @@
                 <material id="inherit" />
             </materials>
             <texture id="inherit"/>
-            <highlighted  r="0" g="0" b="0" scale_h="1.2"/>
             <children>
                 <primitiveref id="barrelSide" />
                 <componentref id="barrelSide" />
                 <componentref id="barrelTopRight" />
                 <componentref id="barrelTopLeft" />
             </children>
+            <highlighted  r="0" g="0" b="0" scale_h="1.2"/>
         </component>
         <component id="barrelSide">
             <transformation>
@@ -3761,14 +4027,14 @@
 
         <component id="tent_positioned">
             <transformation>
-                <translate x="-20" y="-2.6" z="-10" />
-                <rotate axis="y" angle="-25" />
+                <translate x="0" y="-2.6" z="20" />
+                <rotate axis="y" angle="0" />
                 <scale x="1.5" y="1.5" z="1.5" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="camoTexture"/>
+            <texture id="camoTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <componentref id="tent" />
             </children>

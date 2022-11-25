@@ -27,6 +27,10 @@ export function parseTextures(texturesNode, graph) {
         graph.textures.push(new Texture(textureID, graph.scene, textureURL))
     }
 
+    for (let i = 0; i < graph.textures.length; i++) {
+        const texture = graph.textures[i];
+        graph.scene.textures[texture.id] = texture.texture;
+    }
     graph.log("Parsed textures");
 
     return null;

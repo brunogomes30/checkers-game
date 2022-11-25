@@ -59,6 +59,7 @@ export class XMLscene extends CGFscene {
         this.isLooping = true;
         this.setUpdatePeriod(1000 / FRAME_RATE);
         this.startTime = null;
+        this.textures = {};
     }
 
     /**
@@ -104,6 +105,15 @@ export class XMLscene extends CGFscene {
     setDefaultAppearance() {
         this.defaultAppearance.apply()
     }
+
+    getDefaultApperance() {
+        return this.defaultAppearance;
+    }
+
+    getHighlightShader() {
+        return this.highlightShader;
+    }
+
     /** Handler called when the graph is finally loaded. 
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
@@ -127,8 +137,8 @@ export class XMLscene extends CGFscene {
         this.materialIndex = 0;
     }
 
-    update(currTime){
-        if (this.sceneInited){
+    update(currTime) {
+        if (this.sceneInited) {
             if (this.startTime === null)
                 this.startTime = currTime;
 
@@ -140,6 +150,8 @@ export class XMLscene extends CGFscene {
      * Displays the scene.
      */
     display() {
+        this.setDefaultShader();
+        this.shaderMap = new Map();
         // ---- BEGIN Background, camera and axis setup
 
         // Clear image and depth buffer everytime we update the scene
@@ -167,11 +179,70 @@ export class XMLscene extends CGFscene {
                 this.lights[i].update();
             }
             this.graph.displayScene();
-        }
+            let firstShader = true;
+            for (const [key, list] of Object.entries(this.shaderMap)) {
+                const shader = JSON.parse(key);
+                if (!firstShader) {
+                    this.setActiveShader(shader.shader, shader.values, shader.texture);
+                }
+                firstShader = false;
+                for (const value of list) {
+                    this.pushMatrix();
+                    this.loadIdentity();
+                    this.multMatrix(value.matrix);
+                    if (value.texture == null) {
+                        value.apperance.setTexture(null);
+                    }
+                    else {
+                        value.apperance.setTexture(value.texture.texture);
+                        const textureScalling = value.textureScalling;
+                        value.element.updateTexCoords(textureScalling.length_s, textureScalling.length_t);
+                    }
+                    value.apperance.apply();
 
+                    value.element.display();
+                    this.popMatrix();
+                }
+            }
+
+        }
         this.popMatrix();
         // ---- END Background, camera and axis setup
     }
+
+    setActiveShader(shaderr, values, texture) {
+        const valuesToShader = {};
+
+        for (const [key, value] of Object.entries(values)) {
+            switch (value.type) {
+                case 'texture':
+                    valuesToShader[key] = this.textures[texture];
+                    break;
+                case 'literal':
+                    valuesToShader[key] = value.value;
+                    break;
+            }
+        }
+
+        let shader = shaderr.vertexURL === 'shaders/highlight.vert' ? this.highlightShader : this.defaultShader;
+        if (Object.keys(values).length > 0) {
+            shader.setUniformsValues(valuesToShader);
+        }
+        if (texture != null) {
+            texture.bind();
+        }
+        super.setActiveShader(shader);
+    }
+
+
+    addElementToDisplay(element) {
+        const key = JSON.stringify(element.shader);
+        if (this.shaderMap[key] == undefined) {
+            this.shaderMap[key] = [];
+        }
+        this.shaderMap[key].push(element);
+    }
+
 
     setHighlightShader(red, green, blue, scale_h, texture) {
         this.highlightShader.setUniformsValues({
@@ -179,19 +250,18 @@ export class XMLscene extends CGFscene {
             greenValue: green,
             blueValue: blue,
             scaleH: scale_h,
-        }
-        );
-        
+        });
+
         this.setActiveShader(this.highlightShader);
-        if(texture != null){
+        if (texture != null) {
             texture.bind();
         }
-        
+
     }
 
 
     setDefaultShader() {
-        this.setActiveShader(this.defaultShader);
+        super.setActiveShader(this.defaultShader);
     }
 }
 
@@ -200,4 +270,3 @@ function setAttenuation(light, attenuationVec) {
     light.setLinearAttenuation(attenuationVec[1]);
     light.setQuadraticAttenuation(attenuationVec[2])
 }
-
