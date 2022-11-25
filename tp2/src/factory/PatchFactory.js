@@ -61,7 +61,7 @@ export class PatchFactory {
      * @param {Scene} scene Scene to which the patch belongs
      * @param {string} id ID of the patch
      * 
-     * @returns {MyPatch} Patch primitive
+     * @returns {MyPatch} Patch primitive or error string if any of the attributes is missing
      */ 
     build(reader, node, scene, id) {
         const values = buildValues(this.attributes, reader, node, id);
