@@ -60,7 +60,6 @@ export class XMLscene extends CGFscene {
         this.setUpdatePeriod(1000 / FRAME_RATE);
         this.startTime = null;
         this.textures = {};
-        this.textures['default'] = this.defaultTexture;
     }
 
     /**
@@ -151,7 +150,7 @@ export class XMLscene extends CGFscene {
      * Displays the scene.
      */
     display() {
-        this.setDefaultShader();   
+        this.setDefaultShader();
         this.shaderMap = new Map();
         // ---- BEGIN Background, camera and axis setup
 
@@ -183,7 +182,7 @@ export class XMLscene extends CGFscene {
             let firstShader = true;
             for (const [key, list] of Object.entries(this.shaderMap)) {
                 const shader = JSON.parse(key);
-                if(!firstShader){
+                if (!firstShader) {
                     this.setActiveShader(shader.shader, shader.values, shader.texture);
                 }
                 firstShader = false;
@@ -201,15 +200,12 @@ export class XMLscene extends CGFscene {
                     }
                     value.apperance.apply();
 
-
                     value.element.display();
                     this.popMatrix();
                 }
             }
 
         }
-
-
         this.popMatrix();
         // ---- END Background, camera and axis setup
     }
@@ -236,8 +232,6 @@ export class XMLscene extends CGFscene {
             texture.bind();
         }
         super.setActiveShader(shader);
-
-
     }
 
 
@@ -247,9 +241,7 @@ export class XMLscene extends CGFscene {
             this.shaderMap[key] = [];
         }
         this.shaderMap[key].push(element);
-
     }
-
 
 
     setHighlightShader(red, green, blue, scale_h, texture) {
@@ -278,4 +270,3 @@ function setAttenuation(light, attenuationVec) {
     light.setLinearAttenuation(attenuationVec[1]);
     light.setQuadraticAttenuation(attenuationVec[2])
 }
-

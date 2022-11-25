@@ -12,7 +12,7 @@ import { Component } from './Component.js'
  */
 export function renderElement(element, parents = [], appearance = undefined) {
     if (element instanceof Component) {
-        renderComponent(element, parents, appearance);
+        renderComponent(element, parents);
     } else {
         displayPrimitive(element, parents, appearance);
     }
@@ -54,7 +54,7 @@ function renderComponent(element, parents) {
  * @param {Array} parents - The parents of the primitive
  */
 function displayPrimitive(element, parents, appearance = undefined) {
-    const textureScalling = getTextureScaling(element, parents);
+    const textureScalling = getTextureScaling(parents);
     if (element.scene.displayNormals) {
         element.enableNormalViz();
     }
@@ -86,18 +86,9 @@ function displayPrimitive(element, parents, appearance = undefined) {
                 type: 'literal',
                 value: parent.highlight.scale
             }
-            //uSampler: {
-            //    type: 'texture',
-            //    value: texture instanceof Texture ? texture.id : 'default'
-            //},
         }
     } else {
-        shaderValues = {
-            //uSampler: {
-            //    type: 'texture',
-            //    value: texture instanceof Texture ? texture.id : 'default'
-            //},
-        };
+        shaderValues = {};
         shaderToApply = parent.scene.defaultShader;
     }
 
@@ -116,9 +107,6 @@ function displayPrimitive(element, parents, appearance = undefined) {
             textureScalling: textureScalling
         }
     );
-    //element.display();
-
-
 }
 
 /**
@@ -130,7 +118,6 @@ function applyAppearance(element, parents) {
     let material = getMaterial(element, parents);
     setTexture(element, parents, material)
     return material;
-    //material.apply()
 }
 
 /**
@@ -209,7 +196,7 @@ function getTexture(element, parents) {
  * @param {CGFobject} primitive
  * @param {Array} parents - The parents of the element
  */
-function getTextureScaling(primitive, parents) {
+function getTextureScaling(parents) {
     let parentsIndex = parents.length;
     let textureScaleFactor;
     // Setting default texture scaling from scene
@@ -217,7 +204,6 @@ function getTextureScaling(primitive, parents) {
         textureScaleFactor = parents[parentsIndex - 1].scene.defaultTextureScaling;
     } else {
         // A primitive is never drawn without a parent; Never happens
-        console.log("AQUI");
         return;
     }
 
@@ -232,5 +218,4 @@ function getTextureScaling(primitive, parents) {
     }
 
     return textureScaleFactor;
-    //primitive.updateTexCoords(textureScaleFactor.length_s, textureScaleFactor.length_t);
 }
