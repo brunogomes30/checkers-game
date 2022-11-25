@@ -55,6 +55,7 @@ export class MyKeyframeAnimation extends MyAnimation {
             if (timeDelta > lastKeyFramesKey) {
                 //Stay at last keyframe when animation is over and isn't looping
                 timeDelta = lastKeyFramesKey;
+                return;
             }
 
         }
