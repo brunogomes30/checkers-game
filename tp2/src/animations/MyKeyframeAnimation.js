@@ -61,7 +61,6 @@ export class MyKeyframeAnimation extends MyAnimation {
 
         //Can't display if animation hasn't started
         if (timeDelta < this.startTime) {
-            console.log("Animation hasn't started yet");
             this.started = false;
             return;
         }
