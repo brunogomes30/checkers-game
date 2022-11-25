@@ -793,6 +793,8 @@
                 <componentref id="door" />
                 <componentref id="barrel_positioned" />
                 <componentref id="tent_positioned" />
+                <componentref id="jetplanePos1"/>
+                <componentref id="jetplanePos2"/>
 
             </children>
         </component>
@@ -1982,7 +1984,7 @@
                 <material id="woodMaterial" />
             </materials>
             <transformation></transformation>
-            <texture id="none" />
+            <texture id="none"  />
             <children>
                 <componentref id="chair_base" />
                 <componentref id="chair_back" />
@@ -2001,7 +2003,7 @@
                 <translate x="0" y="3.4" z="-0.80" />
                 <scale x="2" y="3" z="0.1" />
             </transformation>
-            <texture id="none" />
+            <texture id="inherit" />
 
             <children>
                 <componentref id="cubeBothfaces" />
@@ -2015,7 +2017,7 @@
                 <translate x="0" y="2" z="0" />
                 <scale x="2" y="0.2" z="2" />
             </transformation>
-            <texture id="none" />
+            <texture id="inherit" />
 
             <children>
                 <componentref id="cubeBothfaces" />
@@ -2028,7 +2030,7 @@
             <transformation>
                 <translate x="0.75" y="0" z="0.75" />
             </transformation>
-            <texture id="none" />
+            <texture id="inherit" />
 
             <children>
                 <componentref id="chair_leg" />
@@ -2041,7 +2043,7 @@
             <transformation>
                 <translate x="0.75" y="0" z="-0.75" />
             </transformation>
-            <texture id="none" />
+            <texture id="inherit" />
 
             <children>
                 <componentref id="chair_leg" />
@@ -2054,7 +2056,7 @@
             <transformation>
                 <translate x="-0.75" y="0" z="-0.75" />
             </transformation>
-            <texture id="none" />
+            <texture id="inherit" />
 
             <children>
                 <componentref id="chair_leg" />
@@ -2067,7 +2069,7 @@
             <transformation>
                 <translate x="-0.75" y="0" z="0.75" />
             </transformation>
-            <texture id="none" />
+            <texture id="inherit" />
 
             <children>
                 <componentref id="chair_leg" />
@@ -2081,7 +2083,7 @@
                 <translate x="0" y="1" z="0" />
                 <scale x="0.25" y="2" z="0.25" />
             </transformation>
-            <texture id="none" />
+            <texture id="inherit" />
 
             <children>
                 <componentref id="cubeBothfaces" />
@@ -3558,6 +3560,48 @@
             </children>
         </component>
 
+        <component id="jetplanePos1">
+            <transformation>
+                <translate x="3" y="-2" z="19" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="paperMaterial2" />
+                <material id="paperMaterial" />
+                <material id="paperMaterial1" />
+                <material id="paperMaterial3" />
+                <material id="paperMaterial4" />
+            </materials>
+            
+            
+            <texture id="none" />
+            
+            <children>
+                <componentref id="paperplane" />
+            </children>
+        </component>
+
+        <component id="jetplanePos2">
+            <transformation>
+                <translate x="3" y="-2" z="21" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="paperMaterial2" />
+                <material id="paperMaterial" />
+                <material id="paperMaterial1" />
+                <material id="paperMaterial3" />
+                <material id="paperMaterial4" />
+            </materials>
+            
+            
+            <texture id="none" />
+            
+            <children>
+                <componentref id="paperplane" />
+            </children>
+        </component>
+
         <!-- Start paperplane -->
 
         <component id="paperplane">
@@ -3761,8 +3805,8 @@
 
         <component id="tent_positioned">
             <transformation>
-                <translate x="-20" y="-2.6" z="-10" />
-                <rotate axis="y" angle="-25" />
+                <translate x="0" y="-2.6" z="20" />
+                <rotate axis="y" angle="0" />
                 <scale x="1.5" y="1.5" z="1.5" />
             </transformation>
             <materials>

@@ -10,11 +10,11 @@ import { Component } from './Component.js'
  * @param {Component|CGFobject} element 
  * @param {Array} parents - The parents of the element
  */
-export function renderElement(element, parents = []) {
+export function renderElement(element, parents = [], appearance = undefined) {
     if (element instanceof Component) {
-        renderComponent(element, parents);
+        renderComponent(element, parents, appearance);
     } else {
-        displayPrimitive(element, parents);
+        displayPrimitive(element, parents, appearance);
     }
 }
 
@@ -36,12 +36,12 @@ function renderComponent(element, parents) {
     if (element.animation !== undefined) {
         element.animation.apply();
     }
-    
+
 
     // Apply textures
     element.children.forEach(function (child) {
-        applyAppearance(element, parents);
-        renderElement(child, parents);
+        const apperance = applyAppearance(element, parents);
+        renderElement(child, parents, apperance);
     });
     element.scene.popMatrix();
     parents.pop();
@@ -53,8 +53,8 @@ function renderComponent(element, parents) {
  * @param {CGFobject} element
  * @param {Array} parents - The parents of the primitive
  */
-function displayPrimitive(element, parents) {
-    applyTextureScaling(element, parents)
+function displayPrimitive(element, parents, appearance = undefined) {
+    const textureScalling = getTextureScaling(element, parents);
     if (element.scene.displayNormals) {
         element.enableNormalViz();
     }
@@ -62,18 +62,62 @@ function displayPrimitive(element, parents) {
         element.disableNormalViz();
     }
     const parent = parents[parents.length - 1];
-    if(parent.highlight.isActive){
-        
-        const texture = getTexture(parents[0], parents);
-        element.scene.setHighlightShader(...parent.highlight.color, parent.highlight.scale, texture instanceof Texture ? texture.texture : null);
-        
-        
-        
+
+    let shaderToApply;
+    let shaderValues;
+    const texture = getTexture(parents[0], parents);
+    if (parent.highlight.isActive) {
+        shaderToApply = parent.scene.highlightShader;
+        const [r, g, b] = parent.highlight.color;
+        shaderValues = {
+            redValue: {
+                type: 'literal',
+                value: r
+            },
+            greenValue: {
+                type: 'literal',
+                value: g
+            },
+            blueValue: {
+                type: 'literal',
+                value: b
+            },
+            scaleH: {
+                type: 'literal',
+                value: parent.highlight.scale
+            }
+            //uSampler: {
+            //    type: 'texture',
+            //    value: texture instanceof Texture ? texture.id : 'default'
+            //},
+        }
+    } else {
+        shaderValues = {
+            //uSampler: {
+            //    type: 'texture',
+            //    value: texture instanceof Texture ? texture.id : 'default'
+            //},
+        };
+        shaderToApply = parent.scene.defaultShader;
     }
-    element.display();
-    if(parent.highlight.isActive){
-        element.scene.setDefaultShader();
-    }
+
+
+    const currentMatrix = parent.scene.getMatrix();
+    parent.scene.addElementToDisplay(
+        {
+            element: element,
+            shader: {
+                shader: shaderToApply,
+                values: shaderValues,
+            },
+            matrix: currentMatrix,
+            texture: texture instanceof Texture ? texture : null,
+            apperance: appearance,
+            textureScalling: textureScalling
+        }
+    );
+    //element.display();
+
 
 }
 
@@ -85,7 +129,8 @@ function displayPrimitive(element, parents) {
 function applyAppearance(element, parents) {
     let material = getMaterial(element, parents);
     setTexture(element, parents, material)
-    material.apply()
+    return material;
+    //material.apply()
 }
 
 /**
@@ -164,7 +209,7 @@ function getTexture(element, parents) {
  * @param {CGFobject} primitive
  * @param {Array} parents - The parents of the element
  */
-function applyTextureScaling(primitive, parents) {
+function getTextureScaling(primitive, parents) {
     let parentsIndex = parents.length;
     let textureScaleFactor;
     // Setting default texture scaling from scene
@@ -172,9 +217,9 @@ function applyTextureScaling(primitive, parents) {
         textureScaleFactor = parents[parentsIndex - 1].scene.defaultTextureScaling;
     } else {
         // A primitive is never drawn without a parent; Never happens
+        console.log("AQUI");
         return;
     }
-    
 
     // If the primitive parent doesn't have a problematic texture, search for a texture scaling
     if (!parents[parentsIndex - 1].unknownTexture) {
@@ -186,5 +231,6 @@ function applyTextureScaling(primitive, parents) {
         }
     }
 
-    primitive.updateTexCoords(textureScaleFactor.length_s, textureScaleFactor.length_t);
+    return textureScaleFactor;
+    //primitive.updateTexCoords(textureScaleFactor.length_s, textureScaleFactor.length_t);
 }
