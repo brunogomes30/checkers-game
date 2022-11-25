@@ -1625,7 +1625,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none" length_s="0.1" length_t="0.1" />
+            <texture id="none" />
             <children>
                 <componentref id="detailedSquare" />
             </children>
@@ -3725,10 +3725,11 @@
             </materials>
             <transformation>
             </transformation>
-            <animation id="paperplaneFlyAnim" />
+            <texture id="inherit" />
             <children>
                 <componentref id="paperplanePos1" />
             </children>
+            <animation id="paperplaneFlyAnim" />
         </component>
 
         <component id="paperplanePos1">
@@ -3758,7 +3759,7 @@
             </materials>
             <transformation>
             </transformation>
-            
+            <texture id="inherit" />
             <children>
                 <componentref id="tent_positioned" />
                 <componentref id="jetplaneFlying" />
@@ -3771,11 +3772,12 @@
             </materials>
             <transformation>
             </transformation>
-            <animation id="jetplaneFlyAnim" />
+            <texture id="inherit" />
             <children>
                 <componentref id="jetplanePos1" />
                 <componentref id="jetplanePos2" />
             </children>
+            <animation id="jetplaneFlyAnim" />
         </component>
 
         <component id="jetplanePos1">
@@ -3960,7 +3962,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="barrelTexture"/>
+            <texture id="barrelTexture" length_s="1.0" length_t="1.0"/>
             <children>
                 <componentref id="barrel" />
             </children>
@@ -3973,13 +3975,13 @@
                 <material id="inherit" />
             </materials>
             <texture id="inherit"/>
-            <highlighted  r="0" g="0" b="0" scale_h="1.2"/>
             <children>
                 <primitiveref id="barrelSide" />
                 <componentref id="barrelSide" />
                 <componentref id="barrelTopRight" />
                 <componentref id="barrelTopLeft" />
             </children>
+            <highlighted  r="0" g="0" b="0" scale_h="1.2"/>
         </component>
         <component id="barrelSide">
             <transformation>
@@ -4032,7 +4034,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="camoTexture"/>
+            <texture id="camoTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <componentref id="tent" />
             </children>
