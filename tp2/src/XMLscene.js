@@ -200,11 +200,12 @@ export class XMLscene extends CGFscene {
             for (const [key, list] of Object.entries(this.shaderMap)) {
                 const shader = JSON.parse(key);
                 if (!firstShader) {
-                    this.setActiveShader(shader.shader, shader.values, shader.texture);
+                    this.setActiveShader(shader, {}, undefined);
                 }
                 firstShader = false;
                 for (const value of list) {
                     this.pushMatrix();
+                    this.setValuesToShader(value.shader.shader, value.shader.values, value.shader.texture);
                     this.loadIdentity();
                     this.multMatrix(value.matrix);
                     if (value.texture == null) {
@@ -235,6 +236,11 @@ export class XMLscene extends CGFscene {
      * @param {CGFtexture} texture Texture to be passed to the shader.
      */ 
     setActiveShader(shader, values, texture) {
+        const current_shader = this.setValuesToShader(shader, values, texture);
+        super.setActiveShader(current_shader);
+    }
+
+    setValuesToShader(shader, values, texture){
         const valuesToShader = {};
 
         for (const [key, value] of Object.entries(values)) {
@@ -252,10 +258,10 @@ export class XMLscene extends CGFscene {
         if (Object.keys(values).length > 0) {
             current_shader.setUniformsValues(valuesToShader);
         }
-        if (texture != null) {
+        if (texture != undefined) {
             texture.bind();
         }
-        super.setActiveShader(current_shader);
+        return current_shader;
     }
 
     /**
@@ -263,7 +269,7 @@ export class XMLscene extends CGFscene {
      * @param {CGFobject} element Element to be displayed.
      */ 
     addElementToDisplay(element) {
-        const key = JSON.stringify(element.shader);
+        const key = JSON.stringify(element.shader.shader);
         if (this.shaderMap[key] == undefined) {
             this.shaderMap[key] = [];
         }
