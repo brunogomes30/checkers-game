@@ -33,10 +33,7 @@ export class MyKeyframeAnimation extends MyAnimation {
      * @returns 
      */
     update(timeDelta) {
-        //Can't display if animation hasn't started
-        if (timeDelta < this.startTime) {
-            return;
-        }
+        
 
         const keyFramesKeys = Object.keys(this.keyframes);
         const lastKeyFramesKey = keyFramesKeys[keyFramesKeys.length - 1];
@@ -62,10 +59,16 @@ export class MyKeyframeAnimation extends MyAnimation {
 
         }
 
+        //Can't display if animation hasn't started
+        if (timeDelta < this.startTime) {
+            console.log("Animation hasn't started yet");
+            this.started = false;
+            return;
+        }
+        this.started = true;
         
         if (this.currentMatrix === null) {
             //Initialize animation
-            this.started = true;
             this.currentMatrix = mat4.create();
             mat4.translate(this.currentMatrix, this.currentMatrix, this.previousTransformations[0]);
             mat4.rotateZ(this.currentMatrix, this.currentMatrix, this.previousTransformations[1]);

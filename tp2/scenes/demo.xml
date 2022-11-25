@@ -943,6 +943,30 @@
                 <scale x="1" y="1" z="1" />
             </keyframe>
         </keyframeanim>
+
+        <keyframeanim id="planeCrashAnimation">
+            <keyframe instant="3">
+                <translation x="0" y="0" z="-42"/>
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="6">
+                <translation x="0" y="0" z="0"/>
+                <rotation axis="z" angle="3600" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="10">
+                <translation x="0" y="0" z="0"/>
+                <rotation axis="z" angle="3600" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </keyframeanim>
         
     </animations>
 
@@ -3714,6 +3738,7 @@
                 <rotate axis="x" angle="30" />
             </transformation>
             <texture id="camoTexture" length_s="2.0" length_t="1.0" />
+            <animation id="planeCrashAnimation" />
             <children>
                 <componentref id="paperplane" />
             </children>
@@ -4027,8 +4052,8 @@
 
         <component id="tent_positioned">
             <transformation>
-                <translate x="0" y="-2.6" z="20" />
-                <rotate axis="y" angle="0" />
+                <translate x="0" y="-2.6" z="19.5" />
+                <rotate axis="y" angle="10" />
                 <scale x="1.5" y="1.5" z="1.5" />
             </transformation>
             <materials>
