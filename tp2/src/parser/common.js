@@ -1,7 +1,16 @@
 import { degToRad } from "../primitives/geometryUtils.js";
 import { parseCoordinates3D } from "./utils.js"
+import { MySceneGraph } from "../MySceneGraph.js";
 
-
+/**
+ * Parses a transformation from a transformation block or from a keyframeanimation block.
+ * 
+ * @param {MySceneGraph} graph Scene graph
+ * @param {*} operationNode Node with the operation to be parsed
+ * @param {string} errorMsg Error message to be displayed
+ * @param {boolean} isKeyframe If the operation is part of a keyframe animation description
+ * @returns 
+ */
 export function parseTransformationOperations(graph, operationNode, errorMsg, isKeyframe) {
     let parsedOp = mat4.create();
     let coordinates;

@@ -1,8 +1,15 @@
 import { parseTransformationOperations } from "./common.js"
 import { MyKeyframeAnimation } from "../animations/MyKeyframeAnimation.js"
 
+/**
+ * Parses a keyframe animations from a animations block.
+ * 
+ * @param {MySceneGraph} graph Scene graph
+ * @param {*} animationNode Node with the animations to be parsed
+ */
 export function parseAnimations(animationsNode, graph) {
     graph.animations = [];
+
     // Any number of animations.
     for (let animation of animationsNode.children) {
 
@@ -38,16 +45,37 @@ export function parseAnimations(animationsNode, graph) {
     return null;
 }
 
+/**
+ * Order of transformations in the keyframe animation block
+ */
 const transformationOperationsOrder = ['translation', 'rotation', 'rotation', 'rotation', 'scale'];
+
+/**
+ * Order of the rotation axis in the keyframe animation block
+ */
 const rotationOperationsOrder = ['z', 'y', 'x'];
+
+/**
+ * Parses a keyframe keyframeanim from a animations block.
+ * 
+ * @param {animationNode} Node with the animation to be parsed
+ * @param {MySceneGraph} graph Scene graph
+ * @param {string} errorMsg Error message to be displayed in case of error
+ */
 export function parseKeyframeAnimation(animationNode, graph, errorMsg) {
+    // Chck if animation has any keyframes defined
     if (animationNode.children.length < 1) {
         return "no keyframes defined for animation " + errorMsg;
     }
 
     let keyframes = []
     let lastInstant = null;
+    // Iterate over the keyframes and parse them
     for (let keyframe = 0; keyframe < animationNode.children.length; keyframe++) {
+        if (animationNode.children[keyframe].nodeName != "keyframe") {
+            return "unknown tag <" + animationNode.children[keyframe].nodeName + ">; error in animation with " + errorMsg;
+        }
+
         let instant = graph.reader.getFloat(animationNode.children[keyframe], 'instant', false);
         if (!(instant != null && !isNaN(instant))) {
             return "unable to parse keyframe instant of animation with " + errorMsg;
@@ -58,7 +86,7 @@ export function parseKeyframeAnimation(animationNode, graph, errorMsg) {
         }
         lastInstant = instant;
 
-        let animNode = [];
+        let keyframe_description = [];
 
         for (let operationIndex = 0; operationIndex < transformationOperationsOrder.length; operationIndex++) {
             if (animationNode.children[keyframe].children.length < operationIndex + 1) {
@@ -84,10 +112,11 @@ export function parseKeyframeAnimation(animationNode, graph, errorMsg) {
             let matrix = parseTransformationOperations(graph, operation, "component of keyframe animation with " + errorMsg, true);
             if (typeof matrix == 'string')
                 return matrix;
-            animNode.push(matrix);
+            
+            keyframe_description.push(matrix);
         }
 
-        keyframes[instant] = animNode;
+        keyframes[instant] = keyframe_description;
     }
 
     return keyframes;

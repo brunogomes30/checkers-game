@@ -1,5 +1,5 @@
 import { Texture } from './textures/Texture.js'
-import { CGFappearance, CGFscene, CGFtexture, CGFshader } from '../../lib/CGF.js';
+import { CGFappearance, CGFscene, CGFtexture, CGFshader, CGFobject, CGFlight } from '../../lib/CGF.js';
 import { CGFaxis, CGFcamera } from '../../lib/CGF.js';
 import { buildInterface } from './interface/build.js';
 import { MyInterface } from './MyInterface.js';
@@ -102,14 +102,23 @@ export class XMLscene extends CGFscene {
         }
     }
 
+    /**
+     * Sets the default appearance.
+     */
     setDefaultAppearance() {
         this.defaultAppearance.apply()
     }
 
+    /**
+     * Gets the default appearance.
+     */
     getDefaultApperance() {
         return this.defaultAppearance;
     }
 
+    /**
+     * Gets the highlight shader.
+     */ 
     getHighlightShader() {
         return this.highlightShader;
     }
@@ -137,12 +146,20 @@ export class XMLscene extends CGFscene {
         this.materialIndex = 0;
     }
 
+    /**
+     * Updates the time passed since the start of the scene.
+     * Used in animations and shaders.
+     * 
+     * @param {Number} currTime Current time in milliseconds.
+     */ 
     update(currTime) {
         if (this.sceneInited) {
             if (this.startTime === null)
                 this.startTime = currTime;
 
-            this.graph.computeAnimations((currTime - this.startTime) / 1000)
+            let timeDelta = currTime - this.startTime;
+            this.graph.computeAnimations(timeDelta / 1000)
+            this.graph.updateHighLightShader(timeDelta);
         }
     }
 
@@ -210,7 +227,14 @@ export class XMLscene extends CGFscene {
         // ---- END Background, camera and axis setup
     }
 
-    setActiveShader(shaderr, values, texture) {
+    /**
+     * Sets the active shader.
+     * 
+     * @param {CGFshader} shader Shader to be used.
+     * @param {Object} values Values to be passed to the shader.
+     * @param {CGFtexture} texture Texture to be passed to the shader.
+     */ 
+    setActiveShader(shader, values, texture) {
         const valuesToShader = {};
 
         for (const [key, value] of Object.entries(values)) {
@@ -224,17 +248,20 @@ export class XMLscene extends CGFscene {
             }
         }
 
-        let shader = shaderr.vertexURL === 'shaders/highlight.vert' ? this.highlightShader : this.defaultShader;
+        let current_shader = shader.vertexURL === 'shaders/highlight.vert' ? this.highlightShader : this.defaultShader;
         if (Object.keys(values).length > 0) {
-            shader.setUniformsValues(valuesToShader);
+            current_shader.setUniformsValues(valuesToShader);
         }
         if (texture != null) {
             texture.bind();
         }
-        super.setActiveShader(shader);
+        super.setActiveShader(current_shader);
     }
 
-
+    /**
+     * Register element to be displayed with the respective shader.
+     * @param {CGFobject} element Element to be displayed.
+     */ 
     addElementToDisplay(element) {
         const key = JSON.stringify(element.shader);
         if (this.shaderMap[key] == undefined) {
@@ -243,7 +270,15 @@ export class XMLscene extends CGFscene {
         this.shaderMap[key].push(element);
     }
 
-
+    /**
+     * Sets the higlighted shader with the respective options.
+     * 
+     * @param {Number} r Red component of the highlight color
+     * @param {Number} g Green component of the highlight color
+     * @param {Number} b Blue component of the highlight color
+     * @param {Number} scale_h Scale factor for the highlight
+     * @param {CGFtexture} texture Texture to be applied to the highlighted object
+     */ 
     setHighlightShader(red, green, blue, scale_h, texture) {
         this.highlightShader.setUniformsValues({
             redValue: red,
@@ -259,12 +294,20 @@ export class XMLscene extends CGFscene {
 
     }
 
-
+    /**
+     * Sets the default shader.
+     */ 
     setDefaultShader() {
         super.setActiveShader(this.defaultShader);
     }
 }
 
+/**
+ * Sets light attenuation for a given light.
+ * 
+ * @param {CGFlight} light  The light to set the attenuation for.
+ * @param {Array} attenuationVec Array with 3 values. One for each attenuation factor (constant, linear and quadratic).
+ */ 
 function setAttenuation(light, attenuationVec) {
     light.setConstantAttenuation(attenuationVec[0]);
     light.setLinearAttenuation(attenuationVec[1]);

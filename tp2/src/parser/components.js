@@ -168,20 +168,14 @@ export function parseComponents(componentsNode, graph) {
         // <animation id="ss" />
         let animationId = null;
         let animation = undefined;
-        if (animationIndex == -1) {
-            //graph.onXMLMinorError(`Animation tag missing for component ID = '${componentID}'`);
-        }
         if (animationIndex !== -1) {
             animationId = graph.reader.getString(grandChildren[animationIndex], "id", false);
 
-            if (animationId === null || animationId === 'none' || animationId === '') {
-                animation = undefined;
-            } else {
+            if (animationId !== null && animationId !== 'none' && animationId !== '') {
                 if (animationId in graph.animations) {
                     animation = graph.animations[animationId];
                 } else {
                     graph.onXMLMinorError(`Animation with ID '${animationId}' not found, continuing without animation.`);
-                    animation = undefined;
                 }
             }
         }

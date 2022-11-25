@@ -19,7 +19,7 @@ export function renderElement(element, parents = [], appearance = undefined) {
 }
 
 /**
- * Renders a component
+ * Processes a component to render its parts
  * @param {Component|CGFobject} element 
  * @param {Array} parents - The parents of the element
  */
@@ -49,8 +49,8 @@ function renderComponent(element, parents) {
 
 
 /**
- * Displays a primitive
- * @param {CGFobject} element
+ * Registers a primitive to be displayed with the correct properties
+ * @param {CGFobject} element Primitive to be displayed
  * @param {Array} parents - The parents of the primitive
  */
 function displayPrimitive(element, parents, appearance = undefined) {

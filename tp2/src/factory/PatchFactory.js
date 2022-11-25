@@ -1,11 +1,12 @@
+import { CGFXMLreader } from "../../../lib/CGF.js";
 import { MyPatch } from "../primitives/MyPatch.js";
 import { buildValues } from "./utils.js";
 
 /**
- * Rectangle factory that creates new rectangles
- * @export
- * @class RectangleFactory
- */
+ * @export PatchFactory
+ * @class PatchFactory
+ * Builds a patch primitive
+ */ 
 export class PatchFactory {
     // <patch degree_u=”ii” parts_u=”ii” degree_v=”ii” parts_v=”ii” >
     constructor() {
@@ -17,6 +18,17 @@ export class PatchFactory {
         }
     }
 
+    /**
+     * Parses the control points of the patch
+     * 
+     * @param {CGFXMLreader} reader Node reader
+     * @param {XMLNode} node Control points tag to be read
+     * @param {string} id ID of the patch
+     * @param {number} degree_u Degree in the u direction
+     * @param {number} degree_v Degree in the v direction
+     * 
+     * @returns {Array} Control points array
+     */
     buildControlPoints(reader, node, id, degree_u, degree_v) {
         const controlPoints = [];
         const children = node.children;
@@ -42,15 +54,15 @@ export class PatchFactory {
     }
 
     /**
-     * Builds a rectangle based on the given node, reading its attributes
-     * @param {XMLReader} reader
-     * @param {XMLNode} node
-     * @param {Scene} scene
-     * @param {string} id
-     * @returns {MyPatch} or error string if any of the attributes is missing
-     * @memberof PatchFactory
-     
-     */
+     * Builds a patch primitive
+     * 
+     * @param {CGFXMLreader} reader Node reader
+     * @param {XMLNode} node Patch tag to be read
+     * @param {Scene} scene Scene to which the patch belongs
+     * @param {string} id ID of the patch
+     * 
+     * @returns {MyPatch} Patch primitive
+     */ 
     build(reader, node, scene, id) {
         const values = buildValues(this.attributes, reader, node, id);
         // Check if values are correctly parsed

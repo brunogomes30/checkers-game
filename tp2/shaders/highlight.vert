@@ -121,9 +121,15 @@ uniform bool uUseTexture;
 void main() {
     vec4 vertex = uMVMatrix * vec4(aVertexPosition, 1.0);
     vec3 normal = normalize(vec3(uNMatrix * vec4(aVertexNormal, 0.0)));
+    
+    // Calculate the color according to the position
     vColor = get_current_color(vertex, normal);
+
+    // Apply texture
     if(uUseTexture){
         vTextureCoord = aTextureCoord;
     }
+
+    // Make the vertexes move in their normal's direction
 	gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition + aVertexNormal*length(aVertexPosition)*(scaleH - 1.0)*sin(timeFactor), 1.0);
 }
