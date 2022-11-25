@@ -1,5 +1,15 @@
 import { MyAnimation } from "./MyAnimation.js";
 
+/**
+ * Animation class, representing an animation.
+ * 
+ * @constructor
+ * @param {CGFscene} scene Scene to which the animation belongs
+ * @param {string} id ID of the animation
+ * @param {Array} keyframes Array of keyframes describing the animation (instant: [...transformations])
+ * 
+ * @extends MyAnimation
+ * */
 export class MyKeyframeAnimation extends MyAnimation {
     constructor(scene, id, keyframes) {
         super(scene, id, Object.keys(keyframes)[0], Object.keys(keyframes)[Object.keys(keyframes).length - 1])
@@ -16,6 +26,12 @@ export class MyKeyframeAnimation extends MyAnimation {
         this.nloops = 0;
     }
 
+    /**
+     * Update the animation according to the time elapsed since the scene started
+     * 
+     * @param {number} timeDelta Elapsed time since the scene first started
+     * @returns 
+     */
     update(timeDelta) {
         //Can't display if animation hasn't started
         if (timeDelta < this.startTime) {

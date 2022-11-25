@@ -1881,7 +1881,7 @@
 
         <component id="keyboard_position">
             <transformation>
-                <translate x="-16" y="3.55" z="-15" />
+                <translate x="-16" y="3.56" z="-15" />
             </transformation>
             <materials>
                 <material id="inherit" />

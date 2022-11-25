@@ -74,7 +74,6 @@ export class MySceneGraph {
          * If any error occurs, the reader calls onXMLError on this object, with an error message
          */
         this.reader.open('scenes/' + filename, this);
-        this.timeFactor = 0;
         this.piPrecision = 100;
         this.piInteger = Math.round(Math.PI * this.piPrecision);
     }
@@ -203,25 +202,28 @@ export class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        this.updateHighLightShader();
         renderElement(this.rootElement);
     }
 
     /**
-     * Updates the highLight shader timeFactor.
+     * Updates the highLight shader timeFactor at a given time.
+     * 
+     * @param {number} timeDeltaMilis Time in miliseconds elapsed since the scene first started.
      */
-    updateHighLightShader() {
-        this.timeFactor += 20;
-        this.scene.highlightShader.setUniformsValues({
-            timeFactor: (this.timeFactor % this.piInteger) / this.piPrecision
-        }
-        );
+    updateHighLightShader(timeDeltaMilis) {
+        this.scene.highlightShader.setUniformsValues({ timeFactor: ((timeDeltaMilis / 5) % this.piInteger) / this.piPrecision });
     }
 
+    /**
+     * Function to update animations with at a given time.
+     * 
+     * @param {number} timeDelta Time in seconds elapsed since the scene first started.
+     */
     computeAnimations(timeDelta) {
+        // Iterates over all animations and updates them.
         Object.values(this.animations).forEach(animation => animation.update(timeDelta));
     }
-    
+
 }
-    
+
 

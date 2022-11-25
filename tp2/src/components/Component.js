@@ -38,6 +38,10 @@ export class Component{
             : undefined;
     }
 
+    /**
+     * Check if object is to be displayed. In case of an animated object means that the animations started. Otherwise, it means that the object is always displayed.
+     * @returns {boolean} True if object is to be displayed, false otherwise
+     */
     isDisplayed(){
         return this.animation === undefined ? true : this.animation.started;
     }

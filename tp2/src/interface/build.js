@@ -60,9 +60,8 @@ function buildDebugFolder(ui, scene) {
         })
     })
 
-    folder.add(scene, 'isLooping').name('Loop animations').onChange(() => {
-        //scene.isLooping = !scene.isLooping;
-    });
+    // Add animations loop controller
+    folder.add(scene, 'isLooping').name('Loop animations');
 
 
     folder.add(scene, 'setLightsVisible').name('Display lights').onChange(() => {
