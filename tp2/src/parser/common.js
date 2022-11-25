@@ -6,7 +6,7 @@ import { MySceneGraph } from "../MySceneGraph.js";
  * Parses a transformation from a transformation block or from a keyframeanimation block.
  * 
  * @param {MySceneGraph} graph Scene graph
- * @param {*} operationNode Node with the operation to be parsed
+ * @param {XMLNode} operationNode Node with the operation to be parsed
  * @param {string} errorMsg Error message to be displayed
  * @param {boolean} isKeyframe If the operation is part of a keyframe animation description
  * @returns 
