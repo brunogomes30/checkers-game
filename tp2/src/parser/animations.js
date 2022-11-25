@@ -5,7 +5,7 @@ import { MyKeyframeAnimation } from "../animations/MyKeyframeAnimation.js"
  * Parses a keyframe animations from a animations block.
  * 
  * @param {MySceneGraph} graph Scene graph
- * @param {*} animationNode Node with the animations to be parsed
+ * @param {XMLNode} animationNode Node with the animations to be parsed
  */
 export function parseAnimations(animationsNode, graph) {
     graph.animations = [];
@@ -58,7 +58,7 @@ const rotationOperationsOrder = ['z', 'y', 'x'];
 /**
  * Parses a keyframe keyframeanim from a animations block.
  * 
- * @param {animationNode} Node with the animation to be parsed
+ * @param {XMLNode} Node with the animation to be parsed
  * @param {MySceneGraph} graph Scene graph
  * @param {string} errorMsg Error message to be displayed in case of error
  */
