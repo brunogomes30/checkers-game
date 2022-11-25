@@ -180,10 +180,13 @@ export class XMLscene extends CGFscene {
                 this.lights[i].update();
             }
             this.graph.displayScene();
-
+            let firstShader = true;
             for (const [key, list] of Object.entries(this.shaderMap)) {
                 const shader = JSON.parse(key);
-                this.setActiveShader(shader.shader, shader.values, shader.texture);
+                if(!firstShader){
+                    this.setActiveShader(shader.shader, shader.values, shader.texture);
+                }
+                firstShader = false;
                 for (const value of list) {
                     this.pushMatrix();
                     this.loadIdentity();
