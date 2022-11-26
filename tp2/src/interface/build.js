@@ -31,6 +31,12 @@ function buildLightsFolder(ui, scene) {
     });
 }
 
+/**
+* Builds the highligths folder in the UI with the given scene
+* with the functionality to enable/disable each highligth
+* @param {dat.GUI} gui
+* @param {MySceneGraph} scene
+*/
 function buildHighligthsFolder(ui, scene) {
     const folder = ui.gui.addFolder("Highlights");
     console.log(scene.highlightedComponents)
