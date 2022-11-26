@@ -140,6 +140,7 @@ export function parseComponents(componentsNode, graph) {
             }
             highlight.isActive = true;
             highlight.hasHighlight = true;
+            graph.scene.highlightedComponents[componentID] = true;
         }
 
         // Children

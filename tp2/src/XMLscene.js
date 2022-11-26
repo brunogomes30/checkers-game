@@ -60,6 +60,7 @@ export class XMLscene extends CGFscene {
         this.setUpdatePeriod(1000 / FRAME_RATE);
         this.startTime = null;
         this.textures = {};
+        this.highlightedComponents = [];
     }
 
     /**

@@ -9,6 +9,7 @@ import { switchCamera } from '../controllers/cameras.js'
 export function buildInterface(ui, scene) {
     buildCameraSelector(ui, scene);
     buildLightsFolder(ui, scene);
+    buildHighligthsFolder(ui, scene);
     buildDebugFolder(ui, scene);
 }
 
@@ -30,6 +31,25 @@ function buildLightsFolder(ui, scene) {
     });
 }
 
+/**
+* Builds the highligths folder in the UI with the given scene
+* with the functionality to enable/disable each highligth
+* @param {dat.GUI} gui
+* @param {MySceneGraph} scene
+*/
+function buildHighligthsFolder(ui, scene) {
+    const folder = ui.gui.addFolder("Highlights");
+    console.log(scene.highlightedComponents)
+    Object.keys( scene.highlightedComponents).forEach(function (key, value) {
+        folder.add(scene.highlightedComponents, key).name(key).onChange(
+            function () {
+                const component = scene.graph.components[key];
+                component.highlight.isActive = scene.highlightedComponents[key];
+            }
+        );
+    });
+    
+}
 
 /**
  * Builds the camera selector in the UI with the given scene
