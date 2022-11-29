@@ -22,71 +22,25 @@ export function parseObjFile(scene, modelname) {
 function parseModel(scene, data) {
     const lines = data.split("\n");
     const verticesValues = [];
-    let textureBegin, normalsBegin, facesBegin;
-    //Parse vertices
-    for (let nline = 0; nline < lines.length; nline++) {
-        const line = lines[nline];
-        if (line.startsWith("#")) {
-            continue;
-        }
-        const coords = line.split(" ");
-        if (coords[0] == "v") {
-            verticesValues.push(parseFloat(coords[1]), parseFloat(coords[2]), parseFloat(coords[3]));
-        }
-        console.log(line);
-        if (line.indexOf("vt") !== -1) {
-            textureBegin = nline;
-            break;
-        }
-    }
-
-    //Parse texture coordinates
     const textureCoords = [];
-    for (let nline = textureBegin; nline < lines.length; nline++) {
-        const line = lines[nline];
-        if (line.startsWith("#")) {
-            continue;
-        }
-        const coords = line.split(" ");
-        if (coords[0] == "vt") {
-            textureCoords.push(parseFloat(coords[1]), parseFloat(coords[2]));
-        }
-        if (line.indexOf("vn") !== -1) {
-            normalsBegin = nline;
-            break;
-        }
-    }
-
-    //Parse normals
     const normalsVertices = [];
-    for (let nline = normalsBegin; nline < lines.length; nline++) {
-        const line = lines[nline];
-        if (line.startsWith("#")) {
-            continue;
-        }
-        const coords = line.split(" ");
-        if (coords[0] == "vn") {
-            normalsVertices.push(parseFloat(coords[1]), parseFloat(coords[2]), parseFloat(coords[3]));
-        }
-        if (line.indexOf("f") !== -1) {
-            facesBegin = nline;
-            break;
-        }
-    }
 
-    //Parse faces which contain the indices, normals and texture coordinates
+    const vertexData = {};
+    const vertexDataOrder = [];
     const indices = [];
     const texCoords = [];
     const normals = [];
-    const vertexData = {};
     const vertices = [];
-    const vertexDataOrder = [];
-    for (let nline = facesBegin; nline < lines.length; nline++) {
-        const line = lines[nline];
-        if (line.startsWith("#") || !line.startsWith("f")) {
-            continue;
-        }
-        const coords = line.split(" ");
+    const parseVertex = (coords) => {
+        verticesValues.push(parseFloat(coords[1]), parseFloat(coords[2]), parseFloat(coords[3]));
+    }
+    const parseTexture = (coords) => {
+        textureCoords.push(parseFloat(coords[1]), parseFloat(coords[2]));
+    }
+    const parseNormal = (coords) => {
+        normalsVertices.push(parseFloat(coords[1]), parseFloat(coords[2]), parseFloat(coords[3]));
+    }
+    const parseFace = (coords) => {
         for (let i = 1; i < coords.length; i++) {
             const face = coords[i].split("/");
             const values = [];
@@ -110,16 +64,42 @@ function parseModel(scene, data) {
             indices.push(id);
 
             if (vertexData[vertexIndex] == undefined) {
-                
+
             }
 
             //faces.push(parseInt(coords[3]), parseInt(coords[2]), parseInt(coords[1]));
         }
+    };
+
+    let parsers = {
+        "v": parseVertex,
+        "vt": parseTexture,
+        "vn": parseNormal,
+        "f": parseFace
+    };
+
+
+    for (let nline = 0; nline < lines.length; nline++) {
+        const line = lines[nline];
+        if (line.startsWith("#")) {
+            continue;
+        }
+        const coords = line.split(" ");
+        const parser = parsers[coords[0]];
+        if (!parser) {
+            console.warn("Unknown line in .obj file: " + line);
+            continue
+        }
+        parser(coords);
+
     }
-    for(let i = 0; i < indices.length; i++){
+
+    for (let i = 0; i < indices.length; i++) {
         const id = indices[i];
         indices[i] = vertexData[id].index;
     }
+
+
 
     for (let i = 0; i < vertexDataOrder.length; i++) {
         const key = vertexDataOrder[i];
