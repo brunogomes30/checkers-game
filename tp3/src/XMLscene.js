@@ -218,7 +218,6 @@ export class XMLscene extends CGFscene {
                         value.element.updateTexCoords(textureScalling.length_s, textureScalling.length_t);
                     }
                     value.apperance.apply();
-
                     value.element.display();
                     this.popMatrix();
                 }

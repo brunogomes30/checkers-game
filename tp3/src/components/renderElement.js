@@ -93,7 +93,7 @@ function displayPrimitive(element, parents, appearance = undefined) {
     }
 
 
-    const currentMatrix = parent.scene.getMatrix()
+    const currentMatrix = parent.scene.getMatrix();
     parent.scene.addElementToDisplay(
         {
             element: element,

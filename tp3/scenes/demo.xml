@@ -1,5 +1,5 @@
 <sxs>
-    <scene root="demoRoot" axis_length="5"/>
+    <scene root="demoRoot" axis_length="5" />
 
     <views default="defaultCamera">
         <perspective id="defaultCamera" near="0.1" far="500" angle="45">
@@ -23,15 +23,15 @@
             <ambient r="0" g="0" b="0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <attenuation constant="1.0" linear="0.0" quadratic="0.0" /> 
+            <attenuation constant="1.0" linear="0.0" quadratic="0.0" />
         </omni>
-        <spot id="spotlight" enabled="1" angle="20" exponent="0" >
+        <spot id="spotlight" enabled="1" angle="20" exponent="0">
             <location x="5.0" y="5.0" z="5.0" w="1" />
             <target x="0" y="1" z="0" />
             <ambient r="0" g="0" b="0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <attenuation constant="0.0" linear="1.0" quadratic="0.0" /> 
+            <attenuation constant="0.0" linear="1.0" quadratic="0.0" />
         </spot>
     </lights>
 
@@ -63,22 +63,22 @@
             <rectangle x1="-0.5" y1="-1" x2="0.5" y2="1" />
         </primitive>
         <primitive id="tentOuter">
-            <patch  degree_u="1" parts_u="10" degree_v="2" parts_v="10" >
+            <patch degree_u="1" parts_u="10" degree_v="2" parts_v="10">
                 <controlpoint x="2" y="0" z="-2" />
                 <controlpoint x="2" y="5" z="0" />
                 <controlpoint x="2" y="0" z="2" />
-                
+
                 <controlpoint x="-2" y="0" z="-2" />
                 <controlpoint x="-2" y="5" z="0" />
                 <controlpoint x="-2" y="0" z="2" />
             </patch>
         </primitive>
         <primitive id="tentInner">
-            <patch  degree_u="1" parts_u="10" degree_v="2" parts_v="10" >
+            <patch degree_u="1" parts_u="10" degree_v="2" parts_v="10">
                 <controlpoint x="-2" y="0" z="-2" />
                 <controlpoint x="-2" y="5" z="0" />
                 <controlpoint x="-2" y="0" z="2" />
-                
+
                 <controlpoint x="2" y="0" z="-2" />
                 <controlpoint x="2" y="5" z="0" />
                 <controlpoint x="2" y="0" z="2" />
@@ -86,28 +86,45 @@
         </primitive>
     </primitives>
 
+    <models>
+        <model id="testModel" file="test.obj">
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+
+            <object id="Torus">
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                <texture id="inherit" />
+            </object>
+        </model>
+    </models>   
+
     <components>
         <component id="demoRoot">
-            <transformation>
-            </transformation>
+            <transformation></transformation>
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="none"/>
+            <texture id="demoTexture" />
             <children>
                 <componentref id="tent" />
             </children>
         </component>
         <component id="tent">
-            <transformation>
-            </transformation>
+            <transformation></transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
-                <modelref id="test.obj" />
+                <modelref id="testModel" />
+
             </children>
         </component>
     </components>
+
+    
 </sxs>

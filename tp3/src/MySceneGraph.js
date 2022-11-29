@@ -11,6 +11,7 @@ import { parsePrimitives } from './parser/primitives.js';
 import { parseAnimations } from './parser/animations.js';
 import { parseComponents } from './parser/components.js';
 import { renderElement } from './components/renderElement.js';
+import { parseModels } from './parser/models.js';
 
 // Order of the groups in the XML document.
 const XML_SEQUENCE_POSITION = {
@@ -23,7 +24,8 @@ const XML_SEQUENCE_POSITION = {
     'transformations': 6,
     'primitives': 7,
     'animations': 8,
-    'components': 9
+    'models': 9,
+    'components': 10,
 }
 
 const PARSE_FUNCTION = {
@@ -36,6 +38,7 @@ const PARSE_FUNCTION = {
     'transformations': parseTransformations,
     'primitives': parsePrimitives,
     'animations': parseAnimations,
+    'models': parseModels,
     'components': parseComponents
 }
 
