@@ -4,7 +4,6 @@ import { MyObject } from "../primitives/MyObject.js";
 export function parseObjFile(scene, modelname) {
     const PATH = 'scenes/models/';
     const filepath = PATH + modelname;
-    console.log(filepath);
     const objFile = new XMLHttpRequest();
     objFile.open('GET', filepath, false);
     objFile.send(null);

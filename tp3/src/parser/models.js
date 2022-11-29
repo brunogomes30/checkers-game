@@ -58,7 +58,7 @@ export function parseModels(modelsNode, graph){
         models[id] = model;
 
     };
-    console.log("models = ", models);
+
     graph.models = models;
 }
 

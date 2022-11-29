@@ -8,7 +8,7 @@ export function parseTexture(graph, textureNode, id, type) {
         }
     }
 
-    if(textureNode == null){
+    if (textureNode == null) {
         graph.onXMLMinorError(`No texture tag defined for ${type} with ID = ${id}, using default texture`);
         return getDefaultValues();
     }
@@ -16,14 +16,13 @@ export function parseTexture(graph, textureNode, id, type) {
 
     let texture = undefined;
     let length_s, length_t = undefined;
-    console.log("textureNode = ", textureNode);
     texture = graph.reader.getString(textureNode, 'id');
     if (texture === null) {
         graph.onXMLMinorError(`No ID defined for ${type} with ID = ${id}, using default texture`);
         texture = graph.scene.defaultTexture;
     }
 
-    if(texture == 'none'){
+    if (texture == 'none') {
         return {
             texture: 'none',
             textureScaleFactor: graph.scene.defaultTextureScaling
@@ -41,6 +40,22 @@ export function parseTexture(graph, textureNode, id, type) {
         length_t = 1;
     }
     const textureScaleFactor = new TextureScaleFactors(length_s, length_t);
+
+    if (texture === 'inherit') {
+        return {
+            texture: texture,
+            textureScaleFactor: textureScaleFactor
+        };
+
+    }
+
+    
+    if (!texture in graph.scene.textures) {
+        texture = graph.scene.defaultTexture;
+    } else {
+        texture = graph.textures.filter(tex => tex.id == texture)[0];
+    }
+
     return {
         texture: texture,
         textureScaleFactor: textureScaleFactor

@@ -10,8 +10,6 @@ export class MyObject extends CGFobject {
         this.indices = buffers.indices;
         this.normals = buffers.normals;
         this.texCoords = buffers.texCoords;
-        // print parameters
-        console.log("Created object " + id);
 
 		this.initBuffers();
 	}

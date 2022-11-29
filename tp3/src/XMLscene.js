@@ -209,6 +209,9 @@ export class XMLscene extends CGFscene {
                     this.setValuesToShader(value.shader.shader, value.shader.values, value.shader.texture);
                     this.loadIdentity();
                     this.multMatrix(value.matrix);
+                    if(value.textures != null){
+                        console.log("Displaying ", value);
+                    }
                     if (value.texture == null) {
                         value.apperance.setTexture(null);
                     }

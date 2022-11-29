@@ -1,7 +1,6 @@
 export function parseMaterials(graph, materialsNode, id, type) {
     const materials = [];
     const children = materialsNode.children;
-    console.log("materialsNode = ", materialsNode);
     if (materialsNode === undefined || children.length === 0) {
         graph.onXMLMinorError(`No materials defined for ${type} with ID = ${id}, using default material`);
         materials.push(graph.scene.defaultAppearance);
