@@ -1,16 +1,11 @@
 import { CGFobject } from '../../../lib/CGF.js';
 import { XMLscene } from '../XMLscene.js';
 
-export class MyObject extends CGFobject {
+export class MyObject{
 	constructor(scene, id, buffers) {
-		super(scene);
-
+		this.scene = scene;
 		this.id = id;
-		this.vertices = buffers.vertices;
-        this.indices = buffers.indices;
-        this.normals = buffers.normals;
-        this.texCoords = buffers.texCoords;
-
+		this.fragments = buffers.fragments;
 		this.initBuffers();
 	}
 	
@@ -20,8 +15,19 @@ export class MyObject extends CGFobject {
 	 * @private
 	 */
 	initBuffers() {
-		this.primitiveType = this.scene.gl.TRIANGLES;
-		this.initGLBuffers();
+		for(let i=0; i<this.fragments.length; i++){
+			this.fragments[i].initBuffers();
+		}
+	}
+
+	display(){
+		for(let i=0; i<this.fragments.length; i++){
+			const material = this.fragments[i].material;
+			if(material != undefined) {
+				material.apply();
+			}
+			this.fragments[i].display();
+		}
 	}
 
 	/**
@@ -32,5 +38,23 @@ export class MyObject extends CGFobject {
 	 */
 	updateTexCoords(length_s, length_t){
 	
+    }
+
+	updateTexCoords(length_s, length_t) {
+        for(let i=0; i<this.fragments.length; i++){
+			this.fragments[i].updateTexCoords(length_s, length_t);
+		}
+    }
+
+    enableNormalViz() {
+        for(let i=0; i<this.fragments.length; i++){
+			this.fragments[i].enableNormalViz();
+		}
+    }
+
+    disableNormalViz() {
+        for(let i=0; i<this.fragments.length; i++){
+			this.fragments[i].disableNormalViz();
+		}
     }
 }

@@ -64,8 +64,6 @@ export function parseComponents(componentsNode, graph) {
         // <texture id="ss" length_s="ff" length_t="ff"/>        
         let textureNode = grandChildren[textureIndex]
         let { texture, textureScaleFactor } = parseTexture(graph, textureNode, componentID, 'component');
-        console.log('texture', texture);
-        console.log('textureScaleFactor', textureScaleFactor);
 
         let highlight = new Highlight();
         // Hightlight
@@ -102,7 +100,6 @@ export function parseComponents(componentsNode, graph) {
             } else if (child.nodeName === 'componentref') {
                 componentChildren.push(id);
             } else if (child.nodeName === 'modelref') {
-                console.log("Aquii");
                 const model = graph.models[id];
                 if (model instanceof String) {
                     return `Error parsing model "${id}" in component "${componentID}"`;

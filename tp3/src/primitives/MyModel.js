@@ -18,6 +18,11 @@ export class MyModel{
     display() {
         
         Object.keys(this.objects).forEach((key) => {
+            const object = this.objects[key];
+            const material = object.material;
+            if(material != undefined) {
+                material.apply();
+            }
             this.objects[key].display();
         });
         

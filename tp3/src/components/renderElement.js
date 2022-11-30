@@ -1,5 +1,6 @@
-import { CGFappearance, CGFobject } from '../../../lib/CGF.js';
+import { CGFappearance, CGFobject } from '../../../lib/CGF.js'
 import { Texture } from '../textures/Texture.js'
+import { MyModel } from '../primitives/MyModel.js'
 import { Component } from './Component.js'
 
 
@@ -13,6 +14,8 @@ import { Component } from './Component.js'
 export function renderElement(element, parents = [], appearance = undefined) {
     if (element instanceof Component) {
         renderComponent(element, parents);
+    } else if(element instanceof MyModel) {
+        displayPrimitive(element, parents, appearance);
     } else {
         displayPrimitive(element, parents, appearance);
     }
