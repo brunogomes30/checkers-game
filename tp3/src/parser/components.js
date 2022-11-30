@@ -102,6 +102,7 @@ export function parseComponents(componentsNode, graph) {
             } else if (child.nodeName === 'componentref') {
                 componentChildren.push(id);
             } else if (child.nodeName === 'modelref') {
+                console.log("Aquii");
                 const model = graph.models[id];
                 if (model instanceof String) {
                     return `Error parsing model "${id}" in component "${componentID}"`;

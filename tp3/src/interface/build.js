@@ -39,7 +39,6 @@ function buildLightsFolder(ui, scene) {
 */
 function buildHighligthsFolder(ui, scene) {
     const folder = ui.gui.addFolder("Highlights");
-    console.log(scene.highlightedComponents)
     Object.keys( scene.highlightedComponents).forEach(function (key, value) {
         folder.add(scene.highlightedComponents, key).name(key).onChange(
             function () {

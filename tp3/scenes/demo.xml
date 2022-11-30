@@ -970,7 +970,9 @@
 
     </animations>
 
-    <models></models>
+    <models>
+        <model id="car" file="nissan.obj" />
+    </models>
 
     <components>
         <component id="demoRoot">
@@ -1013,6 +1015,7 @@
                 <componentref id="door" />
                 <componentref id="barrel_positioned" />
                 <componentref id="hangar" />
+
 
             </children>
         </component>
@@ -3856,14 +3859,12 @@
             </materials>
             <transformation>
                 <translate x="0" y="0" z="-4.5" />
-                <scale x="0.2" y="0.2" z="0.2" />
+                <rotate axis="y" angle="180" />
+                <scale x="1.5" y="1.5" z="1.5" />
             </transformation>
             <texture id="inherit" />
             <children>
-                <componentref id="leftWing" />
-                <componentref id="rightWing" />
-                <componentref id="undersideLeft" />
-                <componentref id="undersideRight" />
+                <modelref id="car" />
             </children>
         </component>
 
