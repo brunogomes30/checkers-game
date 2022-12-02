@@ -87,11 +87,15 @@ vec4 lighting(vec4 vertex, vec3 E, vec3 N) {
 
             vec4 Id;
 
-            if(att * lambertTerm > 0.2){
+
+            float diffuseThreshold = 0.8;            
+            if(att * lambertTerm > diffuseThreshold){
                 Id = uLight[i].diffuse * uFrontMaterial.diffuse * 1.0;
             } else {
-                Id = uLight[i].diffuse * uFrontMaterial.diffuse * 0.1;
+                Id = uLight[i].diffuse * uFrontMaterial.diffuse * 
+                    smoothstep(0.0, diffuseThreshold, att * lambertTerm);
             }
+
 
             
             vec4 Is = vec4(0.0, 0.0, 0.0, 0.0);
@@ -101,7 +105,7 @@ vec4 lighting(vec4 vertex, vec3 E, vec3 N) {
                 float specular = 0.0;
                 vec3 R = reflect(-L, N);
                 if(dot(N, L) > 0.0){
-                        specular = smoothstep(0.95, 1.0, att * pow(max(dot(R, E), 0.0), uFrontMaterial.shininess));
+                        specular = smoothstep(0.0, 1.0, att * pow(max(dot(R, E), 0.0), uFrontMaterial.shininess));
                 }
                 Is = uLight[i].specular * uFrontMaterial.specular * specular;
             }
@@ -113,12 +117,7 @@ vec4 lighting(vec4 vertex, vec3 E, vec3 N) {
             } else {
                 color = spot_effect * (Ia + Id + Is);
             }
-            if(att > 0.5){
-                result += 1.0 * color;
-            } else if(att > 0.1){
-                result += 0.0 * color ;
-            }
-            //result += att * color;
+            result += smoothstep(0.45, 0.5, att) * color;
 
         }
     }
