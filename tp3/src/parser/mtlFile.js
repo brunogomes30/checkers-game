@@ -74,8 +74,8 @@ function parseMaterial(scene, data) {
 
     const parseAmbient = (line) => {
         const valuesStr = line.slice(1);
-        //ambient = valuesStr.map((value) => parseFloat(value));
-        ambient = [0.1, 0.1, 0.1];
+        ambient = valuesStr.map((value) => parseFloat(value));
+        //ambient = [0.1, 0.1, 0.1];
     };
 
     const parseEmission = (line) => {

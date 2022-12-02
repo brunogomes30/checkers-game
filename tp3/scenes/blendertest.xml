@@ -13,26 +13,18 @@
     </views>
 
     <ambient>
-        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
-        <background r="0.0" g="0.0" b="0.0" a="1.0" />
+        <ambient r="0.1" g="0.1" b="0.1" a="1.0" />
+        <background r="0.3" g="0.3" b="0.3" a="1.0" />
     </ambient>
 
     <lights>
         <omni id="demoLight" enabled="1">
             <location x="9.8" y="11.9" z="10" w="1.0" />
-            <ambient r="0" g="0" b="0" a="1.0" />
+            <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
             <attenuation constant="1.0" linear="0.0" quadratic="0.0" />
         </omni>
-        <spot id="spotlight" enabled="1" angle="20" exponent="0">
-            <location x="5.0" y="5.0" z="5.0" w="1" />
-            <target x="0" y="1" z="0" />
-            <ambient r="0" g="0" b="0" a="1.0" />
-            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
-            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <attenuation constant="0.0" linear="1.0" quadratic="0.0" />
-        </spot>
     </lights>
 
     <textures>
@@ -87,7 +79,7 @@
     </primitives>
 
     <models>
-        <model id="testModel" file="test.obj">
+        <model id="testModel" file="trueno.obj">
             <materials>
                 <material id="inherit" />
             </materials>

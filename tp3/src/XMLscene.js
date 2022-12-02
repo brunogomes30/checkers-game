@@ -55,6 +55,7 @@ export class XMLscene extends CGFscene {
         this.defaultTexture = new Texture('', this, '/tp2/scenes/default_images/missing-texture.jpg');
         this.defaultTextureScaling = new TextureScaleFactors(1, 1);
         this.highlightShader = new CGFshader(this.gl, "shaders/highlight.vert", "shaders/highlight.frag");
+        this.defaultShader = new CGFshader(this.gl, "shaders/toon.glsl", "shaders/toonFrag.glsl");
         this.axis = new CGFaxis(this);
         this.isLooping = false;
         this.setUpdatePeriod(1000 / FRAME_RATE);
