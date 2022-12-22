@@ -56,6 +56,7 @@ export class XMLscene extends CGFscene {
         this.defaultTextureScaling = new TextureScaleFactors(1, 1);
         this.highlightShader = new CGFshader(this.gl, "shaders/highlight.vert", "shaders/highlight.frag");
         this.defaultShader = new CGFshader(this.gl, "shaders/toon.glsl", "shaders/toonFrag.glsl");
+        this.outlineShader = new CGFshader(this.gl, "shaders/depthVert.glsl", "shaders/depthFrag.glsl");
         this.axis = new CGFaxis(this);
         this.isLooping = false;
         this.setUpdatePeriod(1000 / FRAME_RATE);
@@ -120,7 +121,7 @@ export class XMLscene extends CGFscene {
 
     /**
      * Gets the highlight shader.
-     */ 
+     */
     getHighlightShader() {
         return this.highlightShader;
     }
@@ -146,6 +147,8 @@ export class XMLscene extends CGFscene {
         buildInterface(this.interface, this);
 
         this.materialIndex = 0;
+
+        this.prepareOutlineRenderPass();
     }
 
     /**
@@ -153,7 +156,7 @@ export class XMLscene extends CGFscene {
      * Used in animations and shaders.
      * 
      * @param {Number} currTime Current time in milliseconds.
-     */ 
+     */
     update(currTime) {
         if (this.sceneInited) {
             if (this.startTime === null)
@@ -165,11 +168,63 @@ export class XMLscene extends CGFscene {
         }
     }
 
+    prepareOutlineRenderPass() {
+        this.outlineTargetTexture = this.gl.createTexture();
+        const gl = this.gl;
+        const [width, height] = [gl.canvas.width, gl.canvas.height];
+        //this.setActiveShader(this.defaultShader, {}, undefined);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.outlineTargetTexture);
+        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, width, height, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, null);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
+        
+        
+
+        this.outlineFrameBuffer = this.gl.createFramebuffer();
+        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.outlineFrameBuffer);
+        // attach texture as the first color attachment
+        const attachmentPoint = this.gl.COLOR_ATTACHMENT0;
+        this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, attachmentPoint, this.gl.TEXTURE_2D, this.outlineTargetTexture, 0);
+        if (this.gl.checkFramebufferStatus(this.gl.FRAMEBUFFER) !== this.gl.FRAMEBUFFER_COMPLETE) {
+            console.log("Framebuffer not complete");
+        }
+
+        // create a depth renderbuffer
+        const depthBuffer = gl.createRenderbuffer();
+        gl.bindRenderbuffer(gl.RENDERBUFFER, depthBuffer);
+        
+        // make a depth buffer and the same size as the targetTexture
+        gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, this.gl.canvas.width, this.gl.canvas.height);
+        gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, depthBuffer);
+
+        this.gl.bindTexture(this.gl.TEXTURE_2D, null);
+    }
+
+    outlineRenderPass(list){
+        this.gl.bindTexture(this.gl.TEXTURE_2D, null);
+        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.outlineFrameBuffer);
+        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+        this.gl.enable(this.gl.DEPTH_TEST);
+        this.setActiveShader(this.outlineShader, {}, undefined);
+        this.pushMatrix();
+        
+        for (const value of list) {
+            this.pushMatrix();
+            this.loadIdentity();
+            this.multMatrix(value.matrix);
+            value.element.display();
+            this.popMatrix();
+        }
+        this.popMatrix();
+        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
+    }
+
     /**
      * Displays the scene.
      */
     display() {
-        this.setDefaultShader();
+        //this.setDefaultShader();
         this.shaderMap = new Map();
         // ---- BEGIN Background, camera and axis setup
 
@@ -201,13 +256,23 @@ export class XMLscene extends CGFscene {
             let firstShader = true;
             for (const [key, list] of Object.entries(this.shaderMap)) {
                 const shader = JSON.parse(key);
-                if (!firstShader) {
-                    this.setActiveShader(shader, {}, undefined);
+                if (shader.fragmentURL === this.defaultShader.fragmentURL) {
+                    this.outlineRenderPass(list);
                 }
-                firstShader = false;
+                this.gl.clearColor(this.graph.background[0], this.graph.background[1], this.graph.background[2], this.graph.background[3]);
+                this.setActiveShader(shader, {
+                    outlineTexture: {
+                        type: 'webglTexture',
+                        value: this.outlineTargetTexture,
+                    },
+                }, undefined);
+
+
+
+                
                 for (const value of list) {
                     this.pushMatrix();
-                    this.setValuesToShader(value.shader.shader, value.shader.values, value.shader.texture);
+
                     this.loadIdentity();
                     this.multMatrix(value.matrix);
                     if (value.texture == null) {
@@ -218,7 +283,10 @@ export class XMLscene extends CGFscene {
                         const textureScalling = value.textureScalling;
                         value.element.updateTexCoords(textureScalling.length_s, textureScalling.length_t);
                     }
+                    this.setValuesToShader(value.shader.shader, value.shader.values, value.shader.texture);
                     value.apperance.apply();
+                    //this.gl.activeTexture(this.gl.TEXTURE0);
+                    //this.gl.bindTexture(this.gl.TEXTURE_2D, this.outlineTargetTexture);
                     value.element.display();
                     this.popMatrix();
                 }
@@ -235,13 +303,13 @@ export class XMLscene extends CGFscene {
      * @param {CGFshader} shader Shader to be used.
      * @param {Object} values Values to be passed to the shader.
      * @param {CGFtexture} texture Texture to be passed to the shader.
-     */ 
+     */
     setActiveShader(shader, values, texture) {
         const current_shader = this.setValuesToShader(shader, values, texture);
         super.setActiveShader(current_shader);
     }
 
-    setValuesToShader(shader, values, texture){
+    setValuesToShader(shader, values, texture) {
         const valuesToShader = {};
 
         for (const [key, value] of Object.entries(values)) {
@@ -252,10 +320,28 @@ export class XMLscene extends CGFscene {
                 case 'literal':
                     valuesToShader[key] = value.value;
                     break;
+                case 'webglTexture':
+                    this.gl.activeTexture(this.gl.TEXTURE0 + 1);
+                    this.gl.bindTexture(this.gl.TEXTURE_2D, value.value);
+                    valuesToShader[key] = 1;
+                    break;
             }
         }
 
-        let current_shader = shader.vertexURL === 'shaders/highlight.vert' ? this.highlightShader : this.defaultShader;
+        let current_shader = this.defaultShader;
+        switch(shader.fragmentURL) {
+            case 'shaders/outlineFrag.glsl':
+                current_shader = this.outlineShader;
+                break;
+            case 'shaders/highlight.vert':
+                current_shader = this.outlineShader;
+                break;
+            case 'shaders/toonFrag.glsl':
+                current_shader = this.defaultShader;
+                break;
+        }
+        valuesToShader['canvasWidth'] = this.gl.canvas.width;
+        valuesToShader['canvasHeight'] = this.gl.canvas.height;
         if (Object.keys(values).length > 0) {
             current_shader.setUniformsValues(valuesToShader);
         }
@@ -268,7 +354,7 @@ export class XMLscene extends CGFscene {
     /**
      * Register element to be displayed with the respective shader.
      * @param {CGFobject} element Element to be displayed.
-     */ 
+     */
     addElementToDisplay(element) {
         const key = JSON.stringify(element.shader.shader);
         if (this.shaderMap[key] == undefined) {
@@ -285,7 +371,7 @@ export class XMLscene extends CGFscene {
      * @param {Number} b Blue component of the highlight color
      * @param {Number} scale_h Scale factor for the highlight
      * @param {CGFtexture} texture Texture to be applied to the highlighted object
-     */ 
+     */
     setHighlightShader(red, green, blue, scale_h, texture) {
         this.highlightShader.setUniformsValues({
             redValue: red,
@@ -303,7 +389,7 @@ export class XMLscene extends CGFscene {
 
     /**
      * Sets the default shader.
-     */ 
+     */
     setDefaultShader() {
         super.setActiveShader(this.defaultShader);
     }
@@ -314,7 +400,7 @@ export class XMLscene extends CGFscene {
  * 
  * @param {CGFlight} light  The light to set the attenuation for.
  * @param {Array} attenuationVec Array with 3 values. One for each attenuation factor (constant, linear and quadratic).
- */ 
+ */
 function setAttenuation(light, attenuationVec) {
     light.setConstantAttenuation(attenuationVec[0]);
     light.setLinearAttenuation(attenuationVec[1]);
