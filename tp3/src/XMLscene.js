@@ -59,8 +59,6 @@ export class XMLscene extends CGFscene {
 
         //Shaders order : depth -> toon -> outline
         this.defaultShader = new CGFshader(this.gl, "shaders/outlineVert.glsl", "shaders/outlineFrag.glsl");
-        this.depthShader = new CGFshader(this.gl, "shaders/depthVert.glsl", "shaders/depthFrag.glsl");
-        this.colorPassShader = new CGFshader(this.gl, "shaders/toon.glsl", "shaders/toonFrag.glsl");
         this.toonShader = new ToonShader(this);
 
         this.axis = new CGFaxis(this);
@@ -153,9 +151,6 @@ export class XMLscene extends CGFscene {
         buildInterface(this.interface, this);
 
         this.materialIndex = 0;
-
-        this.prepareDepthRenderPass();
-        this.prepareColorRenderPass();
     }
 
     /**
@@ -210,17 +205,24 @@ export class XMLscene extends CGFscene {
                     this.toonShader.render(list);
                     continue;
                 }
-                this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
                 if (this.displayAxis) {
                     this.axis.display();
                 }
-                this.gl.clearColor(this.graph.background[0], this.graph.background[1], this.graph.background[2], this.graph.background[3]);
-                
                 this.setActiveShader(shader, {}, undefined);
                 for (const value of list) {
                     this.pushMatrix();
                     this.loadIdentity();
                     this.multMatrix(value.matrix);
+                    if (value.texture == null) {
+                        value.apperance.setTexture(null);
+                    }
+                    else {
+                        value.apperance.setTexture(value.texture.texture);
+                        const textureScalling = value.textureScalling;
+                        value.element.updateTexCoords(textureScalling.length_s, textureScalling.length_t);
+                    }
+                    this.setValuesToShader(value.shader.shader, value.shader.values, value.shader.texture);
+                    value.apperance.apply();
                     value.element.display();
                     this.popMatrix();
                 }
@@ -238,12 +240,12 @@ export class XMLscene extends CGFscene {
      * @param {Object} values Values to be passed to the shader.
      * @param {CGFtexture} texture Texture to be passed to the shader.
      */
-    setActiveShader(shader, values, texture) {
-        const current_shader = this.setValuesToShader(shader, values, texture);
+    setActiveShader(shader, values, texture, findShader = true) {
+        const current_shader = this.setValuesToShader(shader, values, texture, findShader);
         super.setActiveShader(current_shader);
     }
 
-    setValuesToShader(shader, values, texture) {
+    setValuesToShader(shader, values, texture, findShader) {
         const valuesToShader = {};
 
         for (const [key, value] of Object.entries(values)) {
@@ -261,27 +263,23 @@ export class XMLscene extends CGFscene {
                     break;
             }
         }
-
-        let current_shader = this.defaultShader;
-        switch(shader.fragmentURL) {
-            // This should be changed
-            case 'shaders/depthFrag.glsl':
-                current_shader = this.depthShader;
-                break;
-            case 'shaders/highlight.vert':
-                current_shader = this.highlightShader;
-                break;
-            case 'shaders/outlineFrag.glsl':
-                current_shader = this.defaultShader;
-                break;
-            case 'shaders/toonFrag.glsl':
-                current_shader = this.colorPassShader;
-                break;
+        let current_shader = shader;
+        if(findShader){
+            current_shader = this.defaultShader;
+            switch(shader.fragmentURL) {
+                // This should be changed
+                case 'shaders/highlight.frag':
+                    current_shader = this.highlightShader;
+                    break;
+                case 'shaders/outlineFrag.glsl':
+                    current_shader = this.defaultShader;
+                    break;
+                
+            }
         }
         valuesToShader['canvasWidth'] = this.gl.canvas.width;
         valuesToShader['canvasHeight'] = this.gl.canvas.height;
         if (Object.keys(values).length > 0) {
-            console.log('shader values = ', valuesToShader);
             current_shader.setUniformsValues(valuesToShader);
         }
         if (texture != undefined) {

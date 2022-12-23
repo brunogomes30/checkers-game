@@ -121,6 +121,5 @@ function parseMaterial(scene, data) {
         }
     }
     saveMaterial();
-    console.log('materials ', materials);
     return materials;
 }

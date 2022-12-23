@@ -49,7 +49,6 @@ export class ShaderPass{
         const scene = this.scene;
         const gl = this.gl;
         gl.bindTexture(gl.TEXTURE_2D, null);
-        console.log('rendering pass: ' + this.targetTexture);
         gl.bindFramebuffer(gl.FRAMEBUFFER, this.frameBuffer);
 
         const shaderValues = {};
@@ -60,10 +59,12 @@ export class ShaderPass{
                 value: pass.pass.targetTexture,
             };
         }
-
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-        gl.enable(gl.DEPTH_TEST);
-        scene.setActiveShader(this.shader, shaderValues, undefined);
+        if(this.targetTexture){
+            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+            gl.enable(gl.DEPTH_TEST);
+        }
+        
+        scene.setActiveShader(this.shader, shaderValues, undefined, false);
         scene.pushMatrix();
         if(this.attributes.useLighting){
             for (let i = 0; i < 8; i++) {
@@ -90,6 +91,6 @@ export class ShaderPass{
             scene.popMatrix();
         }
         scene.popMatrix();
-        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        
     }
 }

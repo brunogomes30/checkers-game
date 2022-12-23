@@ -20,7 +20,7 @@ void main(){
     //float linearDepth = linearize_depth((gl_FragCoord.z ), near, far);
     float depth = (2.0 * gl_FragCoord.z - gl_DepthRange.near - gl_DepthRange.far) / (gl_DepthRange.far - gl_DepthRange.near);
     float linearDepth = (gl_FragCoord.z / gl_FragCoord.w) / far;
-    fragColor = vec4(vNormal.xyz, linearDepth);
+    fragColor = vec4((vNormal.xyz + vec3(1.0, 1.0, 1.0)) / 2.0, linearDepth);
 
     
 }
