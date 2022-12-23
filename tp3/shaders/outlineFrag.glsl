@@ -47,8 +47,8 @@ void main() {
 	}
 
 	//Multiply depth factor by 5.0 to make it more visible
-	sumX.a *= 9.5;
-	sumY.a *= 9.5;
+	sumX.a *= 10.0;
+	sumY.a *= 10.0;
 
 	float G = max(
         dot(sqrt(sumX * sumX + sumY * sumY), vec4(1.0, 1.0, 1.0, 1.0)),
@@ -56,7 +56,7 @@ void main() {
     );
 
 	//Increase the threshold to make the outline less visible
-	if(G > 1.0 ){
+	if(G > 1.5 ){
 		fragColor = vec4(0.0, 0.0, 0.0, 1.0);
 	}
 }

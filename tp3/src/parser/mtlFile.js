@@ -42,7 +42,7 @@ function parseMaterial(scene, data) {
 
     const saveMaterial = () => {
         const material = new CGFappearance(scene);
-        material.setAmbient(ambient[0], ambient[1], ambient[2], transparency);
+        material.setAmbient(diffuse[0], diffuse[1], diffuse[2], transparency);
         material.setDiffuse(diffuse[0], diffuse[1], diffuse[2], transparency);
         material.setSpecular(specular[0], specular[1], specular[2], transparency);
         material.setShininess(1.0);

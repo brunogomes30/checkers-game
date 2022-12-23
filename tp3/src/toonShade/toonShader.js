@@ -9,6 +9,7 @@ export class ToonShader {
         const defaultAttributes = {
             'useLighting': false,
             'applyApperance': true,
+            'displayAxis': false,
         }
 
         const depthAttributes = {...defaultAttributes};
@@ -16,6 +17,7 @@ export class ToonShader {
         const toonAttributes = {...defaultAttributes};
         toonAttributes.useLighting = true;
         toonAttributes.applyApperance = true;
+        toonAttributes.displayAxis = true;
 
         const outlineAttributes = {...defaultAttributes};
         outlineAttributes.applyApperance = false;

@@ -52,11 +52,11 @@ export class ShaderPass{
         gl.bindFramebuffer(gl.FRAMEBUFFER, this.frameBuffer);
 
         const shaderValues = {};
-        for (const pass of this.passDependencies) {
-            shaderValues[pass.textureName] = {
+        for (const dependency of this.passDependencies) {
+            shaderValues[dependency.textureName] = {
                 type: 'webglTexture',
-                bind: pass.bind,
-                value: pass.pass.targetTexture,
+                bind: dependency.bind,
+                value: dependency.pass.targetTexture,
             };
         }
         if(this.targetTexture){
@@ -70,6 +70,11 @@ export class ShaderPass{
             for (let i = 0; i < 8; i++) {
                 scene.lights[i].update();
             }
+        }
+
+        if (this.attributes.displayAxis && scene.displayAxis) {
+            scene.setDefaultAppearance();
+            scene.axis.display();
         }
         for (const value of list) {
             scene.pushMatrix();

@@ -12,6 +12,6 @@ uniform mat4 uNMatrix;
 
 void main(){
     vec4 vertex = uMVMatrix * vec4(aVertexPosition, 1.0);
-    vNormal = aVertexNormal;
+    vNormal = normalize(vec3(uNMatrix * vec4(aVertexNormal, 1.0)));
     gl_Position = uPMatrix * vertex;
 }

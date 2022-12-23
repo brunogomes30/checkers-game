@@ -190,7 +190,6 @@ export class XMLscene extends CGFscene {
         this.applyViewMatrix();
 
         this.pushMatrix();
-        
 
         if (this.sceneInited) {
             // Draw axis
@@ -204,9 +203,6 @@ export class XMLscene extends CGFscene {
                 if (shader.fragmentURL === this.defaultShader.fragmentURL) {
                     this.toonShader.render(list);
                     continue;
-                }
-                if (this.displayAxis) {
-                    this.axis.display();
                 }
                 this.setActiveShader(shader, {}, undefined);
                 for (const value of list) {
