@@ -55,8 +55,11 @@ export class XMLscene extends CGFscene {
         this.defaultTexture = new Texture('', this, '/tp2/scenes/default_images/missing-texture.jpg');
         this.defaultTextureScaling = new TextureScaleFactors(1, 1);
         this.highlightShader = new CGFshader(this.gl, "shaders/highlight.vert", "shaders/highlight.frag");
-        this.defaultShader = new CGFshader(this.gl, "shaders/toon.glsl", "shaders/toonFrag.glsl");
-        this.outlineShader = new CGFshader(this.gl, "shaders/depthVert.glsl", "shaders/depthFrag.glsl");
+
+        //Shaders order : depth -> toon -> outline
+        this.defaultShader = new CGFshader(this.gl, "shaders/outlineVert.glsl", "shaders/outlineFrag.glsl");
+        this.depthShader = new CGFshader(this.gl, "shaders/depthVert.glsl", "shaders/depthFrag.glsl");
+        this.colorPassShader = new CGFshader(this.gl, "shaders/toon.glsl", "shaders/toonFrag.glsl");
         this.axis = new CGFaxis(this);
         this.isLooping = false;
         this.setUpdatePeriod(1000 / FRAME_RATE);
@@ -148,7 +151,8 @@ export class XMLscene extends CGFscene {
 
         this.materialIndex = 0;
 
-        this.prepareOutlineRenderPass();
+        this.prepareDepthRenderPass();
+        this.prepareColorRenderPass();
     }
 
     /**
@@ -168,12 +172,12 @@ export class XMLscene extends CGFscene {
         }
     }
 
-    prepareOutlineRenderPass() {
-        this.outlineTargetTexture = this.gl.createTexture();
+    prepareDepthRenderPass() {
+        this.depthTargetTexture = this.gl.createTexture();
         const gl = this.gl;
         const [width, height] = [gl.canvas.width, gl.canvas.height];
         //this.setActiveShader(this.defaultShader, {}, undefined);
-        this.gl.bindTexture(this.gl.TEXTURE_2D, this.outlineTargetTexture);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.depthTargetTexture);
         this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, width, height, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, null);
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
@@ -181,11 +185,11 @@ export class XMLscene extends CGFscene {
         
         
 
-        this.outlineFrameBuffer = this.gl.createFramebuffer();
-        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.outlineFrameBuffer);
+        this.depthFrameBuffer = this.gl.createFramebuffer();
+        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.depthFrameBuffer);
         // attach texture as the first color attachment
         const attachmentPoint = this.gl.COLOR_ATTACHMENT0;
-        this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, attachmentPoint, this.gl.TEXTURE_2D, this.outlineTargetTexture, 0);
+        this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, attachmentPoint, this.gl.TEXTURE_2D, this.depthTargetTexture, 0);
         if (this.gl.checkFramebufferStatus(this.gl.FRAMEBUFFER) !== this.gl.FRAMEBUFFER_COMPLETE) {
             console.log("Framebuffer not complete");
         }
@@ -201,12 +205,12 @@ export class XMLscene extends CGFscene {
         this.gl.bindTexture(this.gl.TEXTURE_2D, null);
     }
 
-    outlineRenderPass(list){
+    depthRenderPass(list){
         this.gl.bindTexture(this.gl.TEXTURE_2D, null);
-        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.outlineFrameBuffer);
+        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.depthFrameBuffer);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
         this.gl.enable(this.gl.DEPTH_TEST);
-        this.setActiveShader(this.outlineShader, {}, undefined);
+        this.setActiveShader(this.depthShader, {}, undefined);
         this.pushMatrix();
         
         for (const value of list) {
@@ -218,6 +222,74 @@ export class XMLscene extends CGFscene {
         }
         this.popMatrix();
         this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
+    }
+
+    prepareColorRenderPass() {
+        this.colorTargetTexture = this.gl.createTexture();
+        const gl = this.gl;
+        const [width, height] = [gl.canvas.width, gl.canvas.height];
+        //this.setActiveShader(this.defaultShader, {}, undefined);
+        gl.bindTexture(gl.TEXTURE_2D, this.colorTargetTexture);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        
+        
+
+        this.colorFrameBuffer = gl.createFramebuffer();
+        gl.bindFramebuffer(gl.FRAMEBUFFER, this.colorFrameBuffer);
+        // attach texture as the first color attachment
+        const attachmentPoint = gl.COLOR_ATTACHMENT0;
+        gl.framebufferTexture2D(gl.FRAMEBUFFER, attachmentPoint, gl.TEXTURE_2D, this.colorTargetTexture, 0);
+        if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) !== gl.FRAMEBUFFER_COMPLETE) {
+            console.log("Framebuffer not complete");
+        }
+
+        // create a depth renderbuffer
+        const colorBuffer = gl.createRenderbuffer();
+        gl.bindRenderbuffer(gl.RENDERBUFFER, colorBuffer);
+        
+        // make a depth buffer and the same size as the targetTexture
+        gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, gl.canvas.width, gl.canvas.height);
+        gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, colorBuffer);
+
+        gl.bindTexture(gl.TEXTURE_2D, null);
+    }
+
+    colorRenderPass(list){
+        const gl = this.gl;
+        gl.bindTexture(gl.TEXTURE_2D, null);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, this.colorFrameBuffer);
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        gl.enable(gl.DEPTH_TEST);
+        this.setActiveShader(this.colorPassShader, {}, undefined);
+        this.pushMatrix();
+        for (let i = 0; i < 8; i++) {
+            this.lights[i].update();
+        }
+        for (const value of list) {
+            this.pushMatrix();
+
+            this.loadIdentity();
+            this.multMatrix(value.matrix);
+            if (value.texture == null) {
+                value.apperance.setTexture(null);
+            }
+            else {
+                value.apperance.setTexture(value.texture.texture);
+                const textureScalling = value.textureScalling;
+                value.element.updateTexCoords(textureScalling.length_s, textureScalling.length_t);
+            }
+            this.setValuesToShader(value.shader.shader, value.shader.values, value.shader.texture);
+            value.apperance.apply();
+            //this.gl.activeTexture(this.gl.TEXTURE0);
+            //this.gl.bindTexture(this.gl.TEXTURE_2D, this.outlineTargetTexture);
+            value.element.display();
+            this.popMatrix();
+        }
+        this.popMatrix();
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     }
 
     /**
@@ -247,46 +319,35 @@ export class XMLscene extends CGFscene {
         if (this.sceneInited) {
             // Draw axis
             this.setDefaultAppearance();
-
+            
             // Displays the scene (MySceneGraph function).
-            for (let i = 0; i < 8; i++) {
-                this.lights[i].update();
-            }
+            
             this.graph.displayScene();
-            let firstShader = true;
             for (const [key, list] of Object.entries(this.shaderMap)) {
                 const shader = JSON.parse(key);
                 if (shader.fragmentURL === this.defaultShader.fragmentURL) {
-                    this.outlineRenderPass(list);
+                    this.depthRenderPass(list);
+                    this.colorRenderPass(list);
                 }
+                this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
                 this.gl.clearColor(this.graph.background[0], this.graph.background[1], this.graph.background[2], this.graph.background[3]);
+                
                 this.setActiveShader(shader, {
-                    outlineTexture: {
+                    depthTexture: {
                         type: 'webglTexture',
-                        value: this.outlineTargetTexture,
+                        bind: 1,
+                        value: this.depthTargetTexture,
+                    },
+                    colorTexture:{
+                        type: 'webglTexture',
+                        bind: 2,
+                        value: this.colorTargetTexture,
                     },
                 }, undefined);
-
-
-
-                
                 for (const value of list) {
                     this.pushMatrix();
-
                     this.loadIdentity();
                     this.multMatrix(value.matrix);
-                    if (value.texture == null) {
-                        value.apperance.setTexture(null);
-                    }
-                    else {
-                        value.apperance.setTexture(value.texture.texture);
-                        const textureScalling = value.textureScalling;
-                        value.element.updateTexCoords(textureScalling.length_s, textureScalling.length_t);
-                    }
-                    this.setValuesToShader(value.shader.shader, value.shader.values, value.shader.texture);
-                    value.apperance.apply();
-                    //this.gl.activeTexture(this.gl.TEXTURE0);
-                    //this.gl.bindTexture(this.gl.TEXTURE_2D, this.outlineTargetTexture);
                     value.element.display();
                     this.popMatrix();
                 }
@@ -321,28 +382,33 @@ export class XMLscene extends CGFscene {
                     valuesToShader[key] = value.value;
                     break;
                 case 'webglTexture':
-                    this.gl.activeTexture(this.gl.TEXTURE0 + 1);
+                    this.gl.activeTexture(this.gl.TEXTURE0 + value.bind);
                     this.gl.bindTexture(this.gl.TEXTURE_2D, value.value);
-                    valuesToShader[key] = 1;
+                    valuesToShader[key] = value.bind;
                     break;
             }
         }
 
         let current_shader = this.defaultShader;
         switch(shader.fragmentURL) {
-            case 'shaders/outlineFrag.glsl':
-                current_shader = this.outlineShader;
+            // This should be changed
+            case 'shaders/depthFrag.glsl':
+                current_shader = this.depthShader;
                 break;
             case 'shaders/highlight.vert':
-                current_shader = this.outlineShader;
+                current_shader = this.highlightShader;
+                break;
+            case 'shaders/outlineFrag.glsl':
+                current_shader = this.defaultShader;
                 break;
             case 'shaders/toonFrag.glsl':
-                current_shader = this.defaultShader;
+                current_shader = this.colorPassShader;
                 break;
         }
         valuesToShader['canvasWidth'] = this.gl.canvas.width;
         valuesToShader['canvasHeight'] = this.gl.canvas.height;
         if (Object.keys(values).length > 0) {
+            console.log('shader values = ', valuesToShader);
             current_shader.setUniformsValues(valuesToShader);
         }
         if (texture != undefined) {
