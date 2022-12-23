@@ -29,23 +29,32 @@ void main() {
 	vec4 sumX = vec4(0.0, 0.0, 0.0, 0.0);
 	vec4 sumY = vec4(0.0, 0.0, 0.0, 0.0);
 
+    vec4 sumColorX = vec4(0.0, 0.0, 0.0, 0.0);
+	vec4 sumColorY = vec4(0.0, 0.0, 0.0, 0.0);
+
 	if(xIndex > 0.0 && xIndex < canvasWidth - 1.0 && yIndex > 0.0 && yIndex < canvasHeight - 1.0){
 		for(int i = -1; i <= 1; i++){
 			for(int j = -1; j <= 1; j++){
 				vec4 tex = texture(depthTexture, vec2((xIndex + float(i)) / canvasWidth, (yIndex + float(j)) / canvasHeight));
 				sumX += tex * 1.0 * GX[i + 1][j + 1];
 				sumY += tex * 1.0 * GY[i + 1][j + 1];
+
+                vec4 texColor = texture(colorTexture, vec2((xIndex + float(i)) / canvasWidth, (yIndex + float(j)) / canvasHeight));
+                sumColorX += texColor * 0.5 * GX[i + 1][j + 1];
+                sumColorY += texColor * 0.5 * GY[i + 1][j + 1];
 			}
 		}
 	}
 
 	//Multiply depth factor by 5.0 to make it more visible
-	sumX.a *= 10.0;
-	sumY.a *= 10.0;
+	
 
-	float G = dot(sqrt(sumX * sumX + sumY * sumY), vec4(1.0, 1.0, 1.0, 1.0));
+	float G = max(
+        dot(sqrt(sumX * sumX + sumY * sumY), vec4(1.0, 1.0, 1.0, 1.0)),
+        dot(sqrt(sumColorX * sumColorX + sumColorY * sumColorY), vec4(1.0, 1.0, 1.0, 1.0))
+    );
 
-	if(G > 1.5 ){
+	if(G > 1.0 ){
 		fragColor = vec4(0.0, 0.0, 0.0, 1.0);
 	}
 }
