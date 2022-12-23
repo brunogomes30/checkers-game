@@ -6,6 +6,7 @@ import { MyInterface } from './MyInterface.js';
 import { switchLight } from './controllers/lights.js'
 import { switchCamera } from './controllers/cameras.js'
 import { TextureScaleFactors } from './textures/TextureScaleFactors.js';
+import { ToonShader } from './toonShade/toonShader.js';
 
 
 let FRAME_RATE = 60;
@@ -60,6 +61,8 @@ export class XMLscene extends CGFscene {
         this.defaultShader = new CGFshader(this.gl, "shaders/outlineVert.glsl", "shaders/outlineFrag.glsl");
         this.depthShader = new CGFshader(this.gl, "shaders/depthVert.glsl", "shaders/depthFrag.glsl");
         this.colorPassShader = new CGFshader(this.gl, "shaders/toon.glsl", "shaders/toonFrag.glsl");
+        this.toonShader = new ToonShader(this);
+
         this.axis = new CGFaxis(this);
         this.isLooping = false;
         this.setUpdatePeriod(1000 / FRAME_RATE);
@@ -172,126 +175,6 @@ export class XMLscene extends CGFscene {
         }
     }
 
-    prepareDepthRenderPass() {
-        this.depthTargetTexture = this.gl.createTexture();
-        const gl = this.gl;
-        const [width, height] = [gl.canvas.width, gl.canvas.height];
-        //this.setActiveShader(this.defaultShader, {}, undefined);
-        this.gl.bindTexture(this.gl.TEXTURE_2D, this.depthTargetTexture);
-        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, width, height, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, null);
-        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
-        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
-        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
-        
-        
-
-        this.depthFrameBuffer = this.gl.createFramebuffer();
-        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.depthFrameBuffer);
-        // attach texture as the first color attachment
-        const attachmentPoint = this.gl.COLOR_ATTACHMENT0;
-        this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, attachmentPoint, this.gl.TEXTURE_2D, this.depthTargetTexture, 0);
-        if (this.gl.checkFramebufferStatus(this.gl.FRAMEBUFFER) !== this.gl.FRAMEBUFFER_COMPLETE) {
-            console.log("Framebuffer not complete");
-        }
-
-        // create a depth renderbuffer
-        const depthBuffer = gl.createRenderbuffer();
-        gl.bindRenderbuffer(gl.RENDERBUFFER, depthBuffer);
-        
-        // make a depth buffer and the same size as the targetTexture
-        gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, this.gl.canvas.width, this.gl.canvas.height);
-        gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, depthBuffer);
-
-        this.gl.bindTexture(this.gl.TEXTURE_2D, null);
-    }
-
-    depthRenderPass(list){
-        this.gl.bindTexture(this.gl.TEXTURE_2D, null);
-        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.depthFrameBuffer);
-        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
-        this.gl.enable(this.gl.DEPTH_TEST);
-        this.setActiveShader(this.depthShader, {}, undefined);
-        this.pushMatrix();
-        
-        for (const value of list) {
-            this.pushMatrix();
-            this.loadIdentity();
-            this.multMatrix(value.matrix);
-            value.element.display();
-            this.popMatrix();
-        }
-        this.popMatrix();
-        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
-    }
-
-    prepareColorRenderPass() {
-        this.colorTargetTexture = this.gl.createTexture();
-        const gl = this.gl;
-        const [width, height] = [gl.canvas.width, gl.canvas.height];
-        //this.setActiveShader(this.defaultShader, {}, undefined);
-        gl.bindTexture(gl.TEXTURE_2D, this.colorTargetTexture);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-        
-        
-
-        this.colorFrameBuffer = gl.createFramebuffer();
-        gl.bindFramebuffer(gl.FRAMEBUFFER, this.colorFrameBuffer);
-        // attach texture as the first color attachment
-        const attachmentPoint = gl.COLOR_ATTACHMENT0;
-        gl.framebufferTexture2D(gl.FRAMEBUFFER, attachmentPoint, gl.TEXTURE_2D, this.colorTargetTexture, 0);
-        if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) !== gl.FRAMEBUFFER_COMPLETE) {
-            console.log("Framebuffer not complete");
-        }
-
-        // create a depth renderbuffer
-        const colorBuffer = gl.createRenderbuffer();
-        gl.bindRenderbuffer(gl.RENDERBUFFER, colorBuffer);
-        
-        // make a depth buffer and the same size as the targetTexture
-        gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, gl.canvas.width, gl.canvas.height);
-        gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, colorBuffer);
-
-        gl.bindTexture(gl.TEXTURE_2D, null);
-    }
-
-    colorRenderPass(list){
-        const gl = this.gl;
-        gl.bindTexture(gl.TEXTURE_2D, null);
-        gl.bindFramebuffer(gl.FRAMEBUFFER, this.colorFrameBuffer);
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-        gl.enable(gl.DEPTH_TEST);
-        this.setActiveShader(this.colorPassShader, {}, undefined);
-        this.pushMatrix();
-        for (let i = 0; i < 8; i++) {
-            this.lights[i].update();
-        }
-        for (const value of list) {
-            this.pushMatrix();
-
-            this.loadIdentity();
-            this.multMatrix(value.matrix);
-            if (value.texture == null) {
-                value.apperance.setTexture(null);
-            }
-            else {
-                value.apperance.setTexture(value.texture.texture);
-                const textureScalling = value.textureScalling;
-                value.element.updateTexCoords(textureScalling.length_s, textureScalling.length_t);
-            }
-            this.setValuesToShader(value.shader.shader, value.shader.values, value.shader.texture);
-            value.apperance.apply();
-            //this.gl.activeTexture(this.gl.TEXTURE0);
-            //this.gl.bindTexture(this.gl.TEXTURE_2D, this.outlineTargetTexture);
-            value.element.display();
-            this.popMatrix();
-        }
-        this.popMatrix();
-        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-    }
-
     /**
      * Displays the scene.
      */
@@ -312,9 +195,7 @@ export class XMLscene extends CGFscene {
         this.applyViewMatrix();
 
         this.pushMatrix();
-        if (this.displayAxis) {
-            this.axis.display();
-        }
+        
 
         if (this.sceneInited) {
             // Draw axis
@@ -326,24 +207,16 @@ export class XMLscene extends CGFscene {
             for (const [key, list] of Object.entries(this.shaderMap)) {
                 const shader = JSON.parse(key);
                 if (shader.fragmentURL === this.defaultShader.fragmentURL) {
-                    this.depthRenderPass(list);
-                    this.colorRenderPass(list);
+                    this.toonShader.render(list);
+                    continue;
                 }
                 this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
+                if (this.displayAxis) {
+                    this.axis.display();
+                }
                 this.gl.clearColor(this.graph.background[0], this.graph.background[1], this.graph.background[2], this.graph.background[3]);
                 
-                this.setActiveShader(shader, {
-                    depthTexture: {
-                        type: 'webglTexture',
-                        bind: 1,
-                        value: this.depthTargetTexture,
-                    },
-                    colorTexture:{
-                        type: 'webglTexture',
-                        bind: 2,
-                        value: this.colorTargetTexture,
-                    },
-                }, undefined);
+                this.setActiveShader(shader, {}, undefined);
                 for (const value of list) {
                     this.pushMatrix();
                     this.loadIdentity();
