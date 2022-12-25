@@ -17,7 +17,7 @@ export function parseModels(modelsNode, graph){
         if (file === null) {
             return `No file defined for model with ID = ${id}`;
         };
-        const model = parseObjFile(graph.scene, file);
+        const model = parseObjFile(graph.scene, file, graph.textures);
         if(model instanceof String){
             return model;
         }
