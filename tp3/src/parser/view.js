@@ -5,42 +5,41 @@ import { parseCoordinates3D } from "./utils.js";
 /**
  * Parses the <views> block.
  * @param {XMLNode} viewsNode - The views block element.
- * @param {MySceneGraph} graph - The scene graph.
+ * 
  */
-export function parseView(viewsNode, graph) {
-    graph.scene.cameras = {};
-    let cameras = graph.scene.cameras;
+export function parseView(viewsNode, sxsReader) {
+    let cameras = {};
 
-    graph.scene.defaultCameraId = graph.reader.getString(viewsNode, 'default', false);
-    if (graph.scene.defaultCameraId == null) {
-        return `Default camera not set`;
+    let defaultCameraId = sxsReader.reader.getString(viewsNode, 'default', false);
+    if (defaultCameraId == null && this.mainFile === true) {
+        return `Default camera not set on file ${sxsReader.filename}`;
     }
 
     for (let viewNode of viewsNode.children) {
         let viewType = viewNode.nodeName
         if (viewType != 'perspective' && viewType != 'ortho') {
-            graph.onXMLMinorError(`Unknown camera tag < ${viewType} >`);
+            sxsReader.graph.onXMLMinorError(`Unknown camera tag < ${viewType} >`);
             continue;
         }
 
-        let viewId = graph.reader.getString(viewNode, 'id', false);
+        let viewId = sxsReader.reader.getString(viewNode, 'id', false);
         if (viewId == null || viewId == '') {
             return `No ID defined for a ${viewType} block`;
         }
         if (viewId in cameras) {
-            graph.onXMLMinorError(`ID must be unique for each camera (conflict: ID = '${viewId}')`);
+            sxsReader.graph.onXMLMinorError(`ID must be unique for each camera (conflict: ID = '${viewId}')`);
             continue;
         }
 
         let res
 
-        let near = graph.reader.getFloat(viewNode, 'near', false);
+        let near = sxsReader.reader.getFloat(viewNode, 'near', false);
         res = testFloat(near, 'near', viewType, viewId)
         if (res != null) {
             return res;
         }
 
-        let far = graph.reader.getFloat(viewNode, 'far', false);
+        let far = sxsReader.reader.getFloat(viewNode, 'far', false);
         res = testFloat(far, 'far', viewType, viewId)
         if (res != null) {
             return res;
@@ -55,7 +54,7 @@ export function parseView(viewsNode, graph) {
         if (fromNode == undefined) {
             return `'from' block not defined in ${viewType} ${viewId}`
         }
-        let from = parseCoordinates3D(fromNode, `'from' tag of ${viewType} ${viewId}`, graph)
+        let from = parseCoordinates3D(fromNode, `'from' tag of ${viewType} ${viewId}`, sxsReader)
         if (!Array.isArray(from)) {
             return from;
         }
@@ -65,7 +64,7 @@ export function parseView(viewsNode, graph) {
         if (toNode == undefined) {
             return `'to' block not defined in view ${viewId}`
         }
-        let to = parseCoordinates3D(toNode, `'to' tag of ${viewType} ${viewId}`, graph)
+        let to = parseCoordinates3D(toNode, `'to' tag of ${viewType} ${viewId}`, sxsReader)
         if (!Array.isArray(to)) {
             return to;
         }
@@ -73,7 +72,7 @@ export function parseView(viewsNode, graph) {
 
 
         if (viewType == 'perspective') {
-            let fov = graph.reader.getFloat(viewNode, 'angle', false);
+            let fov = sxsReader.reader.getFloat(viewNode, 'angle', false);
             res = testFloat(fov, 'angle', 'view', viewId)
             if (res != null) {
                 return res;
@@ -82,25 +81,25 @@ export function parseView(viewsNode, graph) {
             cameras[viewId] = new CGFcamera(fov * Math.PI / 180, near, far, vec3.fromValues(...from), vec3.fromValues(...to));
         }
         else {
-            const left = graph.reader.getFloat(viewNode, 'left', false);
+            const left = sxsReader.reader.getFloat(viewNode, 'left', false);
             res = testFloat(left, 'left', viewType, viewId)
             if (res != null) {
                 return res;
             }
 
-            const right = graph.reader.getFloat(viewNode, 'right', false);
+            const right = sxsReader.reader.getFloat(viewNode, 'right', false);
             res = testFloat(right, 'right', viewType, viewId)
             if (res != null) {
                 return res;
             }
 
-            const top = graph.reader.getFloat(viewNode, 'top', false);
+            const top = sxsReader.reader.getFloat(viewNode, 'top', false);
             res = testFloat(top, 'top', viewType, viewId)
             if (res != null) {
                 return res;
             }
 
-            const bottom = graph.reader.getFloat(viewNode, 'bottom', false);
+            const bottom = sxsReader.reader.getFloat(viewNode, 'bottom', false);
             res = testFloat(bottom, 'bottom', viewType, viewId)
             if (res != null) {
                 return res;
@@ -112,14 +111,14 @@ export function parseView(viewsNode, graph) {
                 up = [0, 1, 0];
             }
             else {
-                up = parseCoordinates3D(upNode, `'up' tag of ${viewType} ${viewId}`, graph)
+                up = parseCoordinates3D(upNode, `'up' tag of ${viewType} ${viewId}`, sxsReader)
                 if (!Array.isArray(up)) {
                     return up;
                 }
                 
                 // Only one element is allowed, and must be 1
                 if(up[0] + up[1] + up[2] !== 1 || ((up[0] != 0 && up[0] != 1) || (up[1] != 0 && up[1] != 1) || (up[2] != 0 && up[2] != 1))){
-                    graph.onXMLMinorError(`Invalid 'up' tag of ${viewType} ${viewId}. Only one coordinate can be 1, assuming x=0 y=1 z=0`);
+                    sxsReader.graph.onXMLMinorError(`Invalid 'up' tag of ${viewType} ${viewId}. Only one coordinate can be 1, assuming x=0 y=1 z=0`);
                     up = [0, 1, 0];
                 }
             }
@@ -128,9 +127,12 @@ export function parseView(viewsNode, graph) {
             cameras[viewId] = new CGFcameraOrtho(left, right, bottom, top, near, far, vec3.fromValues(...from), vec3.fromValues(...to), vec3.fromValues(...up))
         }
     }
-    if (cameras[graph.scene.defaultCameraId] == undefined) {
-        return "Couldn't find default camera with id " + graph.scene.defaultCameraId;
+    if (cameras[defaultCameraId] == undefined && this.mainFile === true) {
+        return "Couldn't find default camera with id " + defaultCameraId;
     }
+
+    sxsReader.attributes.set('cameras', cameras)
+    sxsReader.attributes.set('defaultCameraId', defaultCameraId)
     return;
 }
 

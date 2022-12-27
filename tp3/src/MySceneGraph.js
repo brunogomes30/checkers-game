@@ -1,17 +1,7 @@
-import { CGFXMLreader } from '../../lib/CGF.js';
 import { PrimitiveFactory } from './factory/PrimitiveFactory.js';
-import { parseScene } from './parser/scene.js';
-import { parseView } from './parser/view.js';
-import { parseAmbient } from './parser/ambient.js';
-import { parseLights } from './parser/lights.js';
-import { parseTextures } from './parser/textures.js';
-import { parseMaterials } from './parser/materials.js';
-import { parseTransformations } from './parser/transformations.js';
-import { parsePrimitives } from './parser/primitives.js';
-import { parseAnimations } from './parser/animations.js';
-import { parseComponents } from './parser/components.js';
 import { renderElement } from './components/renderElement.js';
-import { parseModels } from './parser/models.js';
+import { SXSReader } from './parser/SXSReader.js';
+
 
 // Order of the groups in the XML document.
 const XML_SEQUENCE_POSITION = {
@@ -26,20 +16,6 @@ const XML_SEQUENCE_POSITION = {
     'animations': 8,
     'models': 9,
     'components': 10,
-}
-
-const PARSE_FUNCTION = {
-    'scene': parseScene,
-    'views': parseView,
-    'ambient': parseAmbient,
-    'lights': parseLights,
-    'textures': parseTextures,
-    'materials': parseMaterials,
-    'transformations': parseTransformations,
-    'primitives': parsePrimitives,
-    'animations': parseAnimations,
-    'models': parseModels,
-    'components': parseComponents
 }
 
 /**
@@ -68,15 +44,16 @@ export class MySceneGraph {
         this.axisCoords['y'] = [0, 1, 0];
         this.axisCoords['z'] = [0, 0, 1];
 
-        // File reading 
-        this.reader = new CGFXMLreader();
+        // File reading
+        this.helperReaders = [];
+        this.reader = new SXSReader(this, filename, true);
         this.factory = new PrimitiveFactory(this.reader);
         /*
          * Read the contents of the xml file, and refer to this class for loading and error handlers.
          * After the file is read, the reader calls onXMLReady on this object.
          * If any error occurs, the reader calls onXMLError on this object, with an error message
          */
-        this.reader.open('scenes/' + filename, this);
+        this.reader.open();
         this.piPrecision = 100;
         this.piInteger = Math.round(Math.PI * this.piPrecision);
     }
@@ -88,55 +65,92 @@ export class MySceneGraph {
         this.log("XML Loading finished.");
 
         // Here should go the calls for different functions to parse the various blocks
-        this.parseXMLFile();
+        this.parseSceneGraph();
     }
 
     /**
-     * Parses the XML file, processing each block.
-     * @param {XML root element} rootElement
+     * Parses the XML scene file, processing each block and included XML files.
      */
-    parseXMLFile() {
-        let rootElement = this.reader.xmlDoc.documentElement;
-        if (rootElement.nodeName != "sxs")
-            return "root tag <sxs> missing";
-
-        let nodes = rootElement.children;
-
+    parseSceneGraph() {
+        // TODO: Unite all the parsed files into a single graph
         // Processes each node, verifying errors.
-        let parsable_blocks = Object.keys(PARSE_FUNCTION);
-        let blocks_missing = Object.keys(XML_SEQUENCE_POSITION);
-        for (let i = 0; i < nodes.length; i++) {
-            let nodeName = nodes[i].nodeName;
 
-            if (!(parsable_blocks.includes(nodeName))) {
-                if ((nodeName in PARSE_FUNCTION)) {
-                    this.onXMLMinorError(`More than one <${nodeName}> block was detected, only the first one declared is considered`);
-                }
-                continue;
+        const blocks_missing = Object.keys(XML_SEQUENCE_POSITION);
+        for (const attribute of this.reader.attributes) {
+            switch (attribute[0]) {
+                case 'idRoot':
+                    blocks_missing.splice(blocks_missing.indexOf('scene'), 1);
+                    this.idRoot = attribute[1];
+                    break;
+                case 'referenceLength':
+                    this.referenceLength = attribute[1];
+                    break;
+                case 'cameras':
+                    blocks_missing.splice(blocks_missing.indexOf('views'), 1);
+                    this.scene.cameras = attribute[1];
+                    break;
+                case 'defaultCameraId':
+                    this.scene.defaultCameraId = attribute[1];
+                    break;
+                case 'ambient':
+                    blocks_missing.splice(blocks_missing.indexOf('ambient'), 1);
+                    this.ambient = attribute[1];
+                    break;
+                case 'background':
+                    this.background = attribute[1];
+                    break;
+                case 'lights':
+                    blocks_missing.splice(blocks_missing.indexOf('lights'), 1);
+                    this.lights = attribute[1];
+                    break;
+                case 'enabledLights':
+                    this.scene.enabledLights = attribute[1];
+                    break;
+                case 'textures':
+                    blocks_missing.splice(blocks_missing.indexOf('textures'), 1);
+                    this.textures = attribute[1];
+                    for (let i = 0; i < this.textures.length; i++) {
+                        const texture = this.textures[i];
+                        this.scene.textures[texture.id] = texture.texture;
+                    }
+                    break;
+                case 'materials':
+                    blocks_missing.splice(blocks_missing.indexOf('materials'), 1);
+                    this.materials = attribute[1];
+                    break;
+                case 'transformations':
+                    blocks_missing.splice(blocks_missing.indexOf('transformations'), 1);
+                    this.transformations = attribute[1];
+                    break;
+                case 'primitives':
+                    blocks_missing.splice(blocks_missing.indexOf('primitives'), 1);
+                    this.primitives = attribute[1];
+                    break;
+                case 'animations':
+                    blocks_missing.splice(blocks_missing.indexOf('animations'), 1);
+                    this.animations = attribute[1];
+                    break;
+                case 'models':
+                    blocks_missing.splice(blocks_missing.indexOf('models'), 1);
+                    this.models = attribute[1];
+                    break;
+                case 'components':
+                    blocks_missing.splice(blocks_missing.indexOf('components'), 1);
+                    this.components = attribute[1];
+                    break;
+                
+
+                default:
+                    break;
             }
 
-            if (nodeName in XML_SEQUENCE_POSITION && (XML_SEQUENCE_POSITION[nodeName] != i)) {
-                this.onXMLMinorError(`Block <${nodeName}> out of order`);
-            }
-
-            let error;
-            if (nodeName in PARSE_FUNCTION && ((error = PARSE_FUNCTION[nodeName](nodes[i], this)) != null)) {
-                this.onXMLError(error);
-                return;
-            }
-
-            blocks_missing = blocks_missing.filter(b => b !== nodeName);
-            parsable_blocks = parsable_blocks.filter(b => b !== nodeName);
         }
-
         if (blocks_missing.length > 0) {
             this.onXMLError(`Blocks missing: ${blocks_missing.toString()}`);
             return;
         }
 
-        if (nodes.length > Object.keys(PARSE_FUNCTION).length) {
-            this.onXMLMinorError("Extra blocks on the document were't parsed");
-        }
+        
 
         this.loadedOk = true;
         this.log("Scene graph parsing complete");
@@ -229,5 +243,3 @@ export class MySceneGraph {
     }
 
 }
-
-
