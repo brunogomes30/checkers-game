@@ -7,5 +7,5 @@ export function parseSXSInclude(node, sxsReader) {
 
     let helperReader = new SXSReader(sxsReader.graph, filename, false);
     sxsReader.graph.helperReaders.push(helperReader);
-    helperReader.reader.open();
+    helperReader.open();
 }

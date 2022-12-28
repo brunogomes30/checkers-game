@@ -77,13 +77,7 @@ export function parseTransformation(transformationNode, sxsReader, errorMsg, isI
                 if (transformationID == '')
                     return "no ID defined for transformation for" + errorMsg;
                 
-                let transformations = sxsReader.attributes.get('transformations')
-                if (!(transformationID in transformations)) {
-                    sxsReader.graph.onXMLMinorError(`Unable to find transformation with ID '${transformationID}' in component '${errorMsg}'`);
-                    return mat4.create();
-                }
-
-                return transformations[transformationID];
+                return {transformationID};
         }
 
     }

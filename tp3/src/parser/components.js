@@ -79,7 +79,6 @@ export function parseComponents(componentsNode, sxsReader) {
             }
             highlight.isActive = true;
             highlight.hasHighlight = true;
-            sxsReader.graph.scene.highlightedComponents[componentID] = true;
         }
 
         // Children
@@ -88,79 +87,52 @@ export function parseComponents(componentsNode, sxsReader) {
         }
         const childrenNodes = grandChildren[childrenIndex].children;
         const componentChildren = [];
-        const readPrimitives = sxsReader.attributes.get('primitives');
-        const readModels = sxsReader.attributes.get('models');
+        const primitiveChildren = [];
+        const modelChildren = [];
         for (let i = 0; i < childrenNodes.length; i++) {
             const child = childrenNodes[i];
             const id = sxsReader.reader.getString(child, "id");
             if (child.nodeName === 'primitiveref') {
-                if (readPrimitives[id] === undefined) {
-                    sxsReader.onXMLMinorError(`Primitive "${id}" not found in component "${componentID}"`);
-                    continue;
-                }
-                componentChildren.push(readPrimitives[id]);
+                primitiveChildren.push(id);
             } else if (child.nodeName === 'componentref') {
                 componentChildren.push(id);
             } else if (child.nodeName === 'modelref') {
-                const model = readModels[id];
-                if (model instanceof String) {
-                    return `Error parsing model "${id}" in component "${componentID}"`;
-                }
-                componentChildren.push(model);
+                modelChildren.push(id);
             } else {
                 sxsReader.graph.onXMLMinorError(`unknown tag <${componentNodes[i].nodeName}>`);
             }
 
         }
+        
         // Animation
         // <animation id="ss" />
         let animationId = null;
         let animation = undefined;
-        const readAnimations = sxsReader.attributes.get('animations');
+        
         if (animationIndex !== -1) {
             animationId = sxsReader.reader.getString(grandChildren[animationIndex], "id", false);
 
             if (animationId !== null && animationId !== 'none' && animationId !== '') {
-                if (animationId in readAnimations) {
-                    animation = readAnimations[animationId];
-                } else {
-                    sxsReader.graph.onXMLMinorError(`Animation with ID '${animationId}' not found, continuing without animation.`);
-                }
+                animation = animationId;
             }
         }
 
 
         const component = new Component(sxsReader.graph.scene, {
+            id: componentID,
             transformation: transfMatrix,
             materials: materials,
             texture: texture,
             textureScaleFactor: textureScaleFactor,
-            children: componentChildren,
+            primitiveChildren: primitiveChildren,
+            componentChildren: componentChildren,
+            modelChildren: modelChildren,
             animation: animation,
             highlight: highlight
         }
         );
 
         components[componentID] = component;
-    }
-
-    
-
-
-    // Change all component reference strings to the component reference
-    for (const key in components) {
-        const component = components[key];
-        for (const childKey in component.children) {
-            const child = component.children[childKey];
-            if (typeof child === 'string') {
-                if (components[child] != undefined) {
-                    component.children[childKey] = components[child];
-                }
-                else {
-                    return `Unable to find referenced component '${child}' in component '${key}'`
-                }
-            }
-        }
     }
 
     sxsReader.attributes.set('components', components);

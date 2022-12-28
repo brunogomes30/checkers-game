@@ -41,21 +41,6 @@ export function parseTexture(sxsReader, textureNode, id, type) {
     }
     const textureScaleFactor = new TextureScaleFactors(length_s, length_t);
 
-    if (texture === 'inherit') {
-        return {
-            texture: texture,
-            textureScaleFactor: textureScaleFactor
-        };
-
-    }
-
-    const textures = sxsReader.attributes.get('textures');
-    if (!texture in textures) {
-        texture = sxsReader.scene.defaultTexture;
-    } else {
-        texture = textures.filter(tex => tex.id == texture)[0];
-    }
-
     return {
         texture: texture,
         textureScaleFactor: textureScaleFactor

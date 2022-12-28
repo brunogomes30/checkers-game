@@ -27,6 +27,21 @@ const PARSE_FUNCTION = {
     'includeSXS': parseSXSInclude
 }
 
+// Order of the groups in the XML document.
+const XML_SEQUENCE_POSITION = {
+    'scene': 0,
+    'views': 1,
+    'ambient': 2,
+    'lights': 3,
+    'textures': 4,
+    'materials': 5,
+    'transformations': 6,
+    'primitives': 7,
+    'animations': 8,
+    'models': 9,
+    'components': 10,
+}
+
 export class SXSReader {
     constructor(graph, filename, mainFile = false) {
         this.graph = graph;
@@ -37,7 +52,7 @@ export class SXSReader {
         this.attributes = new Map();
     }
 
-    open(){
+    open() {
         this.reader.open('scenes/' + this.filename, this);
     }
 
@@ -73,8 +88,8 @@ export class SXSReader {
                 continue;
             }
 
-            if (this.mainFile === false){
-                if (nodeName === 'scene' || nodeName === 'ambient' || nodeName === 'includeSXS' ) {
+            if (this.mainFile === false) {
+                if (nodeName === 'scene' || nodeName === 'ambient' || nodeName === 'includeSXS') {
                     this.graph.onXMLMinorError(`The <${nodeName}> block is not allowed in an included file ${this.filename}; Ignoring it`);
                     continue;
                 }
@@ -91,6 +106,107 @@ export class SXSReader {
 
         if (this.mainFile === true) {
             this.graph.onXMLReady();
+        }
+    }
+
+    updateGraph() {
+        const blocks_missing = Object.keys(XML_SEQUENCE_POSITION);
+        for (const attribute of this.attributes) {
+            switch (attribute[0]) {
+                case 'idRoot':
+                    blocks_missing.splice(blocks_missing.indexOf('scene'), 1);
+                    if (this.graph.idRoot != null) {
+                        this.graph.onXMLMinorError(`Root already defined as ${this.graph.idRoot}, ignoring ${attribute[1]}`);
+                        break;
+                    }
+                    this.graph.idRoot = attribute[1];
+                    break;
+
+                case 'ambient':
+                    blocks_missing.splice(blocks_missing.indexOf('ambient'), 1);
+                    this.graph.ambient = attribute[1];
+                    break;
+
+                case 'defaultCameraId':
+                    if (this.graph.defaultCameraId != null) {
+                        this.graph.onXMLMinorError(`Default camera already defined as ${this.graph.defaultCameraId}, ignoring ${attribute[1]}`);
+                        break;
+                    }
+
+                    this.graph[attribute[0]] = attribute[1];
+                    break;
+
+                case 'background':
+                case 'referenceLength':
+                    this.graph[attribute[0]] = attribute[1];
+                    break;
+
+                case 'cameras':
+                    blocks_missing.splice(blocks_missing.indexOf('views'), 1);
+                    for (const camera in attribute[1]) {
+                        if (camera in this.graph.cameras) {
+                            this.graph.onXMLMinorError(`Camera with ID ${camera} already defined`)
+                            continue;
+                        }
+
+                        this.graph.cameras[camera] = attribute[1][camera]
+                    }
+                    break;
+
+                case 'lights':
+                case 'textures':
+                case 'materials':
+                case 'transformations':
+                case 'primitives':
+                case 'animations':
+                case 'models':
+                case 'components':
+                    blocks_missing.splice(blocks_missing.indexOf(attribute[0]), 1);
+                    for (const value of Object.keys(attribute[1])) {
+                        if (value in this.graph[attribute[0]]) {
+                            this.graph.onXMLMinorError(`${attribute[0]} with ID ${value} already defined`)
+                            continue;
+                        }
+                        this.graph[attribute[0]][value] = attribute[1][value];
+                    }
+                    break;
+                case 'enabledLights':
+                    for (const light of Object.keys(attribute[1])) {
+                        if (light in this.graph.enabledLights) {
+                            continue;
+                        }
+                        this.graph.enabledLights[light] = attribute[1][light];
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+
+        }
+
+        if (this.mainFile) {
+            if (blocks_missing.length > 0) {
+                this.graph.onXMLError(`Blocks missing: ${blocks_missing.toString()}`);
+                return;
+            }
+
+            for (; ;) {
+                let ready = true;
+                for (const reader of this.graph.helperReaders) {
+                    if (reader.parsed === false) {
+                        ready = false;
+                        break;
+                    }
+                }
+                if (ready === true) {
+                    break;
+                }
+            }
+
+            for (const reader of this.graph.helperReaders) {
+                reader.updateGraph();
+            }
         }
     }
 
