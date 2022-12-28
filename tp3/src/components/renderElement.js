@@ -2,7 +2,7 @@ import { CGFappearance, CGFobject } from '../../../lib/CGF.js'
 import { Texture } from '../textures/Texture.js'
 import { MyModel } from '../primitives/MyModel.js'
 import { Component } from './Component.js'
-
+import { TextElement } from '../text/TextElement.js'
 
 /**
  * Renders a component or primitive.
@@ -16,6 +16,8 @@ export function renderElement(element, parents = [], appearance = undefined) {
         renderComponent(element, parents);
     } else if(element instanceof MyModel) {
         displayPrimitive(element, parents, appearance);
+    } else if(element instanceof TextElement){
+        displayText(element, parents, appearance);
     } else {
         displayPrimitive(element, parents, appearance);
     }
@@ -43,11 +45,31 @@ function renderComponent(element, parents) {
 
     // Apply textures
     element.children.forEach(function (child) {
-        const apperance = applyAppearance(element, parents);
-        renderElement(child, parents, apperance);
+        const appearance = applyAppearance(element, parents);
+        renderElement(child, parents, appearance);
     });
     element.scene.popMatrix();
     parents.pop();
+}
+
+function displayText(element, parents, appearance) {
+    const parent = parents[parents.length - 1];
+    const currentMatrix = parent.scene.getMatrix();
+    const shaderValues = {};
+    element.scene.addElementToDisplay(
+        {
+            element: element,
+            shader: {
+                shader: element.scene.textRenderer.shader,
+                values: shaderValues,
+            },
+            matrix: currentMatrix,
+            texture: null,
+            apperance: appearance,
+            textureScalling: [1, 1],
+        }
+    );
+    
 }
 
 

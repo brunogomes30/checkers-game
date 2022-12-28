@@ -4,6 +4,7 @@ import { parseMaterials } from './common/materials.js';
 import { parseTexture } from './common/texture.js';
 import { parseColor } from './utils.js';
 import { Highlight } from '../components/Highlight.js';
+import { TextElement } from '../text/TextElement.js';
 /**
    * Parses the <components> block.
    * @param {XMLNode} componentsNode - The components block element.
@@ -89,7 +90,7 @@ export function parseComponents(componentsNode, graph) {
         const componentChildren = [];
         for (let i = 0; i < childrenNodes.length; i++) {
             const child = childrenNodes[i];
-            const id = graph.reader.getString(child, "id");
+            const id = graph.reader.getString(child, "id", false);
             if (child.nodeName === 'primitiveref') {
                 if (graph.primitives[id] === undefined) {
                     graph.onXMLMinorError(`Primitive "${id}" not found in component "${componentID}"`);
@@ -104,8 +105,14 @@ export function parseComponents(componentsNode, graph) {
                     return `Error parsing model "${id}" in component "${componentID}"`;
                 }
                 componentChildren.push(model);
+            } else if(child.nodeName === 'text'){
+                const text = graph.reader.getString(child, "value");
+                if(text === null){
+                    return `Error parsing text in component "${componentID}"`;
+                }
+                componentChildren.push(new TextElement(graph.scene, text));
             } else {
-                graph.onXMLMinorError(`unknown tag <${componentNodes[i].nodeName}>`);
+                graph.onXMLMinorError(`unknown tag <${child.nodeName}>`);
             }
 
         }
