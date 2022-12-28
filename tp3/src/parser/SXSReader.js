@@ -57,8 +57,6 @@ export class SXSReader {
     }
 
     onXMLReady() {
-        console.log(this);
-
         this.parseSXSFile();
     }
 
@@ -170,8 +168,6 @@ export class SXSReader {
 
                 case 'textures':
                     blocks_missing.splice(blocks_missing.indexOf('textures'), 1);
-                    console.log(attribute[1])
-                    console.log(this.graph['textures'])
                     for (const texture of attribute[1]) {
                         const textures = this.graph.textures.filter(tex => tex.id == texture.id);
                         if (textures.length != 0) {
