@@ -74,9 +74,6 @@ export class SXSReader {
         let nodes = rootElement.children;
         let parsable_blocks = Object.keys(PARSE_FUNCTION);
 
-        if (nodes.length > Object.keys(PARSE_FUNCTION).length) {
-            this.onXMLMinorError("Extra blocks on the document were't parsed");
-        }
 
         for (let i = 0; i < nodes.length; i++) {
             let nodeName = nodes[i].nodeName;
@@ -154,7 +151,6 @@ export class SXSReader {
                     break;
 
                 case 'lights':
-                case 'textures':
                 case 'materials':
                 case 'transformations':
                 case 'primitives':
@@ -170,6 +166,21 @@ export class SXSReader {
                         this.graph[attribute[0]][value] = attribute[1][value];
                     }
                     break;
+
+                case 'textures':
+                    blocks_missing.splice(blocks_missing.indexOf('textures'), 1);
+                    console.log(attribute[1])
+                    console.log(this.graph['textures'])
+                    for (const texture of attribute[1]) {
+                        const textures = this.graph.textures.filter(tex => tex.id == texture.id);
+                        if (textures.length != 0) {
+                            this.graph.onXMLMinorError(`texture with ID ${texture.id} already defined`)
+                            continue;
+                        }
+                        this.graph['textures'].push(texture);
+                    }
+                    break;
+                    
                 case 'enabledLights':
                     for (const light of Object.keys(attribute[1])) {
                         if (light in this.graph.enabledLights) {

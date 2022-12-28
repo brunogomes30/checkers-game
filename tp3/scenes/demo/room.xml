@@ -1,0 +1,214 @@
+<sxs>
+    <views>
+        <perspective id="Overview" near="0.1" far="500" angle="40">
+            <from x="-40" y="30" z="40" />
+            <to x="0" y="1" z="0" />
+        </perspective>
+
+        <perspective id="Center Camera" near="0.1" far="500" angle="70">
+            <from x="10" y="8" z="10" />
+            <to x="0" y="4" z="0" />
+        </perspective>
+
+        <ortho id="Top view Ortho" near="5" far="40" left="-30" right="30" bottom="-30" top="30">
+            <from x="0" y="30" z="0" />
+            <to x="-0.1" y="-20" z="0" />
+        </ortho>
+
+        <ortho id="Reversed Top view Ortho" near="5" far="40" left="-30" right="30" bottom="-30"
+            top="30">
+            <from x="0" y="30" z="0" />
+            <to x="-0.1" y="-20" z="0" />
+            <up x="1" y="0" z="0" />
+        </ortho>
+
+        <ortho id="Side view Ortho" near="-30" far="90" left="-30" right="30" bottom="-10" top="20">
+            <from x="-50" y="5" z="0" />
+            <to x="40" y="5" z="0" />
+        </ortho>
+
+        <ortho id="Angled view Ortho" near="-500" far="500" left="-40" right="40" bottom="-24"
+            top="40">
+            <from x="50" y="50" z="50" />
+            <to x="0" y="0" z="0" />
+        </ortho>
+    </views>
+
+    <lights>
+        <omni id="Room light" enabled="0">
+            <location x="5" y="20" z="5" w="1.0" />
+            <ambient r="0.7" g="0.7" b="0.7" a="1.0" />
+            <diffuse r="0.8" g="0.8" b="0.8" a="1.0" />
+            <specular r="0.4" g="0.4" b="0.4" a="1.0" />
+            <attenuation constant="0.0" linear="0.025" quadratic="0.0" />
+        </omni>
+
+        <omni id="Center spotlight" enabled="0" angle="45" exponent="128.0">
+            <location x="2" y="10" z="2" w="1.0" />
+            <target x="0" y="0" z="0" />
+            <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="0.2" g="0.2" b="0.2" a="1.0" />
+            <attenuation constant="0.0" linear="0.1" quadratic="0.0" />
+        </omni>
+    </lights>
+
+    <textures>
+        <texture id="floorTexture" file="scenes/images/floor2.jpg" />
+        <texture id="walltexture" file="scenes/images/wall.jpg" />
+        <texture id="ceilingtexture" file="scenes/images/ceil.jpg" />
+    </textures>
+
+    <materials>
+        <material id="roomMaterial" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.7" g="0.7" b="0.7" a="1.0" />
+            <diffuse r="0.3" g="0.3" b="0.3" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
+        </material>
+
+        <material id="roomMaterial_wall_zneg" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.14901960784313725" g="0.27450980392156865" b="0.3254901960784314" a="1.0" />
+            <diffuse r="0.14901960784313725" g="0.27450980392156865" b="0.3254901960784314" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
+        </material>
+        <material id="roomMaterial_wall_zpos" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.32470588235294117" g="0.615686274509804" b="0.5607843137254902" a="1.0" />
+            <diffuse r="0.32470588235294117" g="0.615686274509804" b="0.5607843137254902" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
+        </material>
+        <material id="roomMaterial_wall_xneg" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.9568627450980393" g="0.6352941176470588" b="0.3803921568627451" a="1.0" />
+            <diffuse r="0.9568627450980393" g="0.6352941176470588" b="0.3803921568627451" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
+        </material>
+        <material id="roomMaterial_wall_xpos" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.9058823529411765" g="0.43529411764705883" b="0.3176470588235294" a="1.0" />
+            <diffuse r="0.9058823529411765" g="0.43529411764705883" b="0.3176470588235294" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
+        </material>
+    </materials>
+
+    <primitives>
+        <primitive id="detailedSquare">
+            <patch degree_u="1" parts_u="200" degree_v="1" parts_v="200">
+                <controlpoint x="0.5" y="0.5" z="0" />
+                <controlpoint x="0.5" y="-0.5" z="0" />
+                <controlpoint x="-0.5" y="0.5" z="0" />
+                <controlpoint x="-0.5" y="-0.5" z="0" />
+
+            </patch>
+        </primitive>
+    </primitives>
+
+    <components>
+        <!--Room-->
+        <component id="room">
+            <transformation>
+                <translate x="0" y="10" z="0" />
+                <scale x="50" y="25" z="50" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="wall_zneg" />
+                <componentref id="wall_zpos" />
+                <componentref id="wall_xneg" />
+                <componentref id="wall_xpos" />
+                <componentref id="floor" />
+                <componentref id="ceiling" />
+            </children>
+        </component>
+
+        <component id="wall_zneg">
+            <transformation>
+                <translate x="0" y="0" z="-0.5" />
+            </transformation>
+            <materials>
+                <material id="roomMaterial_wall_zneg" />
+            </materials>
+            <texture id="walltexture" length_s="0.4" length_t="0.4" />
+            <children>
+                <primitiveref id="detailedSquare" />
+            </children>
+        </component>
+
+        <component id="wall_zpos">
+            <transformation>
+                <translate x="0" y="0" z="0.5" />
+                <rotate axis="y" angle="180" />
+            </transformation>
+            <materials>
+                <material id="roomMaterial_wall_zpos" />
+            </materials>
+            <texture id="walltexture" length_s="0.4" length_t="0.4" />
+            <children>
+                <primitiveref id="detailedSquare" />
+            </children>
+        </component>
+
+        <component id="wall_xneg">
+            <transformation>
+                <translate x="-0.5" y="0" z="0" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="roomMaterial_wall_xneg" />
+            </materials>
+            <texture id="walltexture" length_s="0.4" length_t="0.4" />
+            <children>
+                <primitiveref id="detailedSquare" />
+            </children>
+        </component>
+
+        <component id="wall_xpos">
+            <transformation>
+                <translate x="0.5" y="0" z="0" />
+                <rotate axis="y" angle="270" />
+            </transformation>
+            <materials>
+                <material id="roomMaterial_wall_xpos" />
+            </materials>
+            <texture id="walltexture" length_s="0.4" length_t="0.4" />
+            <children>
+                <primitiveref id="detailedSquare" />
+            </children>
+        </component>
+
+
+        <component id="floor">
+            <transformation>
+                <translate x="0" y="-0.5" z="0" />
+                <rotate axis="x" angle="270" />
+            </transformation>
+            <materials>
+                <material id="imageMaterial" />
+            </materials>
+            <texture id="floorTexture" length_s="0.1" length_t="0.1" />
+            <children>
+                <primitiveref id="detailedSquare" />
+            </children>
+        </component>
+
+
+        <component id="ceiling">
+            <transformation>
+                <translate x="0" y="0.5" z="0" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="detailedSquare" />
+            </children>
+        </component>
+    </components>
+</sxs>

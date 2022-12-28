@@ -1,7 +1,6 @@
 import { PrimitiveFactory } from './factory/PrimitiveFactory.js';
 import { renderElement } from './components/renderElement.js';
 import { SXSReader } from './parser/SXSReader.js';
-import { Texture } from './textures/Texture.js';
 
 /**
  * MySceneGraph class, representing the scene graph.
@@ -68,9 +67,6 @@ export class MySceneGraph {
      * Parses the XML scene file, processing each block and included XML files.
      */
     parseSceneGraph() {
-        // TODO: Unite all the parsed files into a single graph
-        // Processes each node, verifying errors.
-
         this.reader.updateGraph();
 
         this.rootElement = this.components[this.idRoot];
@@ -112,6 +108,7 @@ export class MySceneGraph {
 
             // Replace texture ids with texture objects
             if (component.texture != 'inherit' && component.texture != 'none') {
+                //console.log(component.texture, this.textures)
                 const textures = this.textures.filter(tex => tex.id == component.texture);
                 if (textures.length < 1) {
                     this.onXMLMinorError(`Texture with ID '${component.texture}' not found, Using default texture.`);
