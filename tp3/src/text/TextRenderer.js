@@ -29,7 +29,6 @@ export class TextRenderer{
                 continue;
             }
             const charCoords = this.characterMappping[text[i]];
-            console.log('char coords: ', charCoords, text[i]);
             this.shader.setUniformsValues({charCoords: charCoords});
             scene.pushMatrix();
             scene.scale(scale, scale, scale);

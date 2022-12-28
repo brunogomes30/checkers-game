@@ -4,22 +4,22 @@ import { MyKeyframeAnimation } from "../animations/MyKeyframeAnimation.js"
 /**
  * Parses a keyframe animations from a animations block.
  * 
- * @param {MySceneGraph} graph Scene graph
+ * @param {MySceneGraph} sxsReader Scene graph
  * @param {XMLNode} animationNode Node with the animations to be parsed
  */
-export function parseAnimations(animationsNode, graph) {
-    graph.animations = [];
+export function parseAnimations(animationsNode, sxsReader) {
+    let animations = [];
 
     // Any number of animations.
     for (let animation of animationsNode.children) {
 
         if (animation.nodeName != "keyframeanim") {
-            graph.onXMLMinorError("unknown tag <" + animation.nodeName + ">");
+            sxsReader.graph.onXMLMinorError("unknown tag <" + animation.nodeName + ">");
             continue;
         }
 
         // Get id of the current transformation.
-        let animationID = graph.reader.getString(animation, 'id');
+        let animationID = sxsReader.reader.getString(animation, 'id');
         if (animationID == '')
             return "no ID defined for animation";
 
@@ -27,21 +27,22 @@ export function parseAnimations(animationsNode, graph) {
             return "'none' is not a valid ID for an animation";
 
         // Checks for repeated IDs.
-        if (animationID in graph.animations)
+        if (animationID in animations)
             return "ID must be unique for each animation (conflict: ID = " + animationID + ")";
 
 
         // Specifications for the current transformation.
-        const keyframes = parseKeyframeAnimation(animation, graph, "ID " + animationID, true);
+        const keyframes = parseKeyframeAnimation(animation, sxsReader, "ID " + animationID, true);
 
         if (typeof (keyframes) == 'string') {
             return keyframes;
         }
-        graph.animations[animationID] = new MyKeyframeAnimation(graph.scene, animationID, keyframes);
+        animations[animationID] = new MyKeyframeAnimation(sxsReader.graph.scene, animationID, keyframes);
 
     }
 
-    graph.log("Parsed animations");
+    sxsReader.graph.log("Parsed animations");
+    sxsReader.attributes.set('animations', animations);
     return null;
 }
 
@@ -59,10 +60,10 @@ const rotationOperationsOrder = ['z', 'y', 'x'];
  * Parses a keyframe keyframeanim from a animations block.
  * 
  * @param {XMLNode} Node with the animation to be parsed
- * @param {MySceneGraph} graph Scene graph
+ * @param {MySceneGraph} sxsReader Scene graph
  * @param {string} errorMsg Error message to be displayed in case of error
  */
-export function parseKeyframeAnimation(animationNode, graph, errorMsg) {
+export function parseKeyframeAnimation(animationNode, sxsReader, errorMsg) {
     // Chck if animation has any keyframes defined
     if (animationNode.children.length < 1) {
         return "no keyframes defined for animation " + errorMsg;
@@ -76,7 +77,7 @@ export function parseKeyframeAnimation(animationNode, graph, errorMsg) {
             return "unknown tag <" + animationNode.children[keyframe].nodeName + ">; error in animation with " + errorMsg;
         }
 
-        let instant = graph.reader.getFloat(animationNode.children[keyframe], 'instant', false);
+        let instant = sxsReader.reader.getFloat(animationNode.children[keyframe], 'instant', false);
         if (!(instant != null && !isNaN(instant))) {
             return "unable to parse keyframe instant of animation with " + errorMsg;
         }
@@ -103,13 +104,13 @@ export function parseKeyframeAnimation(animationNode, graph, errorMsg) {
             }
 
             if (operation.nodeName == 'rotation') {
-                let axis = graph.reader.getString(operation, 'axis', false);
+                let axis = sxsReader.reader.getString(operation, 'axis', false);
                 if (axis != rotationOperationsOrder[operationIndex - 1]) {
                     return "invalid rotation axis order for rotation tag in animation with " + errorMsg + "; expected " + rotationOperationsOrder[operationIndex - 1] + " but got " + axis;
                 }
             }
 
-            let matrix = parseTransformationOperations(graph, operation, "component of keyframe animation with " + errorMsg, true);
+            let matrix = parseTransformationOperations(sxsReader, operation, "component of keyframe animation with " + errorMsg, true);
             if (typeof matrix == 'string')
                 return matrix;
             

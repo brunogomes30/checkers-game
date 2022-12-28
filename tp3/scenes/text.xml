@@ -96,7 +96,7 @@
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="demoTexture" />
+            <texture id="camoTexture" />
             <children>
                 <componentref id="tent" />
                 <componentref id="dummy"/>

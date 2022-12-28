@@ -1,46 +1,6 @@
-import { CGFXMLreader } from '../../lib/CGF.js';
 import { PrimitiveFactory } from './factory/PrimitiveFactory.js';
-import { parseScene } from './parser/scene.js';
-import { parseView } from './parser/view.js';
-import { parseAmbient } from './parser/ambient.js';
-import { parseLights } from './parser/lights.js';
-import { parseTextures } from './parser/textures.js';
-import { parseMaterials } from './parser/materials.js';
-import { parseTransformations } from './parser/transformations.js';
-import { parsePrimitives } from './parser/primitives.js';
-import { parseAnimations } from './parser/animations.js';
-import { parseComponents } from './parser/components.js';
 import { renderElement } from './components/renderElement.js';
-import { parseModels } from './parser/models.js';
-
-// Order of the groups in the XML document.
-const XML_SEQUENCE_POSITION = {
-    'scene': 0,
-    'views': 1,
-    'ambient': 2,
-    'lights': 3,
-    'textures': 4,
-    'materials': 5,
-    'transformations': 6,
-    'primitives': 7,
-    'animations': 8,
-    'models': 9,
-    'components': 10,
-}
-
-const PARSE_FUNCTION = {
-    'scene': parseScene,
-    'views': parseView,
-    'ambient': parseAmbient,
-    'lights': parseLights,
-    'textures': parseTextures,
-    'materials': parseMaterials,
-    'transformations': parseTransformations,
-    'primitives': parsePrimitives,
-    'animations': parseAnimations,
-    'models': parseModels,
-    'components': parseComponents
-}
+import { SXSReader } from './parser/SXSReader.js';
 
 /**
  * MySceneGraph class, representing the scene graph.
@@ -68,17 +28,29 @@ export class MySceneGraph {
         this.axisCoords['y'] = [0, 1, 0];
         this.axisCoords['z'] = [0, 0, 1];
 
-        // File reading 
-        this.reader = new CGFXMLreader();
+        // File reading
+        this.helperReaders = [];
+        this.reader = new SXSReader(this, filename, true);
         this.factory = new PrimitiveFactory(this.reader);
+
         /*
          * Read the contents of the xml file, and refer to this class for loading and error handlers.
          * After the file is read, the reader calls onXMLReady on this object.
          * If any error occurs, the reader calls onXMLError on this object, with an error message
          */
-        this.reader.open('scenes/' + filename, this);
+        this.reader.open();
         this.piPrecision = 100;
         this.piInteger = Math.round(Math.PI * this.piPrecision);
+        this.cameras = {};
+        this.lights = [];
+        this.enabledLights = []
+        this.textures = [];
+        this.materials = [];
+        this.transformations = [];
+        this.primitives = [];
+        this.animations = [];
+        this.models = [];
+        this.components = [];
     }
 
     /*
@@ -88,58 +60,15 @@ export class MySceneGraph {
         this.log("XML Loading finished.");
 
         // Here should go the calls for different functions to parse the various blocks
-        this.parseXMLFile();
+        this.parseSceneGraph();
     }
 
     /**
-     * Parses the XML file, processing each block.
-     * @param {XML root element} rootElement
+     * Parses the XML scene file, processing each block and included XML files.
      */
-    parseXMLFile() {
-        let rootElement = this.reader.xmlDoc.documentElement;
-        if (rootElement.nodeName != "sxs")
-            return "root tag <sxs> missing";
+    parseSceneGraph() {
+        this.reader.updateGraph();
 
-        let nodes = rootElement.children;
-
-        // Processes each node, verifying errors.
-        let parsable_blocks = Object.keys(PARSE_FUNCTION);
-        let blocks_missing = Object.keys(XML_SEQUENCE_POSITION);
-        for (let i = 0; i < nodes.length; i++) {
-            let nodeName = nodes[i].nodeName;
-
-            if (!(parsable_blocks.includes(nodeName))) {
-                if ((nodeName in PARSE_FUNCTION)) {
-                    this.onXMLMinorError(`More than one <${nodeName}> block was detected, only the first one declared is considered`);
-                }
-                continue;
-            }
-
-            if (nodeName in XML_SEQUENCE_POSITION && (XML_SEQUENCE_POSITION[nodeName] != i)) {
-                this.onXMLMinorError(`Block <${nodeName}> out of order`);
-            }
-
-            let error;
-            if (nodeName in PARSE_FUNCTION && ((error = PARSE_FUNCTION[nodeName](nodes[i], this)) != null)) {
-                this.onXMLError(error);
-                return;
-            }
-
-            blocks_missing = blocks_missing.filter(b => b !== nodeName);
-            parsable_blocks = parsable_blocks.filter(b => b !== nodeName);
-        }
-
-        if (blocks_missing.length > 0) {
-            this.onXMLError(`Blocks missing: ${blocks_missing.toString()}`);
-            return;
-        }
-
-        if (nodes.length > Object.keys(PARSE_FUNCTION).length) {
-            this.onXMLMinorError("Extra blocks on the document were't parsed");
-        }
-
-        this.loadedOk = true;
-        this.log("Scene graph parsing complete");
         this.rootElement = this.components[this.idRoot];
         if (this.rootElement === undefined) {
             this.onXMLError("Can't find root component");
@@ -150,8 +79,108 @@ export class MySceneGraph {
             return;
         }
 
-        console.log('Scene graph loaded', this);
+
+        // Replace references in components
+        for (let component of Object.values(this.components)) {
+            // Replace transformation ID's with transformation object
+            if (component.transformation.transformationID !== undefined) {
+                if (!(component.transformation.transformationID in this.transformations)) {
+                    this.onXMLMinorError(`Unable to find transformation with ID '${transformationID}' in component '${errorMsg}'`);
+                    component.transformation = mat4.create();
+                }
+                component.transformation = this.transformations[component.transformation.transformationID];
+            }
+
+            // Replace material ID's with material objects
+            for (let i = 0; i < component.materials.length; i++) {
+                if (component.materials[i] === 'inherit') {
+                    continue;
+                }
+
+                if (component.materials[i] in this.materials) {
+                    component.materials[i] = this.materials[component.materials[i]];
+                }
+                else {
+                    this.onXMLMinorError(`Matrial with ID '${component.materials[i]}' not found, Using default material.`);
+                    component.materials[i] = this.scene.defaultAppearance;
+                }
+            }
+
+            // Replace texture ids with texture objects
+            if (component.texture != 'inherit' && component.texture != 'none') {
+                //console.log(component.texture, this.textures)
+                const textures = this.textures.filter(tex => tex.id == component.texture);
+                if (textures.length < 1) {
+                    this.onXMLMinorError(`Texture with ID '${component.texture}' not found, Using default texture.`);
+                    component.texture = this.scene.defaultTexture;
+                } else {
+                    component.texture = textures[0];
+                }
+            }
+
+            // Replace children with primitive/component/model objects
+            for (let i = 0; i < component.primitiveChildren.length; i++) {
+                const primitive = this.primitives[component.primitiveChildren[i]]
+                if (primitive === undefined) {
+                    this.onXMLError(`Primitive "${component.primitiveChildren[i]}" not found in component "${component.id}"`);
+                    return;
+                }
+
+                component.children.push(primitive);
+            }
+
+            for (let i = 0; i < component.modelChildren.length; i++) {
+                const model = this.models[component.modelChildren[i]];
+                if (model instanceof String) {
+                    this.onXMLError(`Error parsing model "${component.modelChildren[i]}" in component "${component.id}"`);
+                    return;
+                }
+                component.children.push(model);
+            }
+
+            for (let i = 0; i < component.textChildren.length; i++) {
+                component.children.push(component.textChildren[i]);
+            }
+
+            // Change all component reference strings to the component reference
+            for (let i = 0; i < component.componentChildren.length; i++) {
+                const childComponent = this.components[component.componentChildren[i]];
+                if (childComponent == undefined) {
+                    this.onXMLError(`Unable to find referenced component '${component.componentChildren[i]}' in component '${component.id}'`);
+                    return;
+                }
+
+                component.children.push(childComponent);
+            }
+
+
+            // Replace animation ID's with animation objects
+            if (component.animation !== undefined && component.animation !== 'none') {
+                if (component.animation in this.animations) {
+                    component.animation = this.animations[component.animation];
+                } else {
+                    this.onXMLMinorError(`Animation with ID '${component.animation}' not found, continuing without animation.`);
+                }
+            }
+        }
+
+
+        for (let i = 0; i < this.textures.length; i++) {
+            const texture = this.textures[i];
+            this.scene.textures[texture.id] = texture.texture;
+        }
+
+        for (const component of Object.values(this.components)) {
+            if (component.highlight.hasHighlight)
+                this.scene.highlightedComponents[component.id] = true;
+        }
+
+        this.scene.cameras = this.cameras;
+        this.scene.defaultCameraId = this.defaultCameraId;
+        this.scene.enabledLights = this.enabledLights;
         // As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
+        this.loadedOk = true;
+        this.log("Scene graph parsing complete");
         this.scene.onGraphLoaded();
     }
 
@@ -229,5 +258,3 @@ export class MySceneGraph {
     }
 
 }
-
-

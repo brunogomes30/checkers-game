@@ -3,14 +3,14 @@ import { parseColor } from "./utils.js"
 /**
  * Parses the <ambient> node.
  * @param {ambient block element} ambientsNode - The ambient block element.
- * @param {MySceneGraph} graph - The scene graph.
+ * @param {MySceneGraph} sxsReader - The scene graph.
  */
-export function parseAmbient(ambientsNode, graph) {
+export function parseAmbient(ambientsNode, sxsReader) {
 
     const children = ambientsNode.children;
 
-    graph.ambient = [];
-    graph.background = [];
+    let ambient = [];
+    let background = [];
 
     let nodeNames = [];
 
@@ -23,22 +23,25 @@ export function parseAmbient(ambientsNode, graph) {
     if(ambientIndex === -1){
         return "ambient block inside ambient not defined";
     }
-    let color = parseColor(children[ambientIndex], "ambient", graph);
+    let color = parseColor(children[ambientIndex], "ambient", sxsReader);
     if (!Array.isArray(color))
         return color;
     else
-        graph.ambient = color;
+        ambient = color;
 
     if(backgroundIndex === -1){
         return "background block inside ambient not defined";
     }
-    color = parseColor(children[backgroundIndex], "background", graph);
+    color = parseColor(children[backgroundIndex], "background", sxsReader);
     if (!Array.isArray(color))
         return color;
     else
-        graph.background = color;
+        background = color;
 
-    graph.log("Parsed ambient");
+    sxsReader.graph.log("Parsed ambient");
+
+    sxsReader.attributes.set('ambient', ambient);
+    sxsReader.attributes.set('background', background);
 
     return null;
 }

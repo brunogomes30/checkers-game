@@ -87,19 +87,7 @@
     </primitives>
 
     <models>
-        <model id="testModel" file="cube/cubeTex.obj">
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit" />
-
-            <object id="Torus">
-                <materials>
-                    <material id="inherit" />
-                </materials>
-                <texture id="inherit" />
-            </object>
-        </model>
+        <model id="testModel" file="cube/cubeTex.obj" />
     </models>   
 
     <components>
@@ -108,7 +96,7 @@
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="demoTexture" />
+            <texture id="camoTexture" />
             <children>
                 <componentref id="tent" />
             </children>
@@ -118,10 +106,9 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="camoTexture" />
             <children>
                 <modelref id="testModel" />
-
             </children>
         </component>
     </components>

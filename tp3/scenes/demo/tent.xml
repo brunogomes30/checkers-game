@@ -1,0 +1,45 @@
+<sxs>
+    <textures>
+        <texture id="camoTexture" file="scenes/images/camo.jpg" />
+    </textures>
+
+    <primitives>
+        <!-- Tent -->
+        <primitive id="tentOuter">
+            <patch degree_u="1" parts_u="10" degree_v="2" parts_v="10">
+                <controlpoint x="2" y="0" z="-2" />
+                <controlpoint x="2" y="5" z="0" />
+                <controlpoint x="2" y="0" z="2" />
+
+                <controlpoint x="-2" y="0" z="-2" />
+                <controlpoint x="-2" y="5" z="0" />
+                <controlpoint x="-2" y="0" z="2" />
+            </patch>
+        </primitive>
+        <primitive id="tentInner">
+            <patch degree_u="1" parts_u="10" degree_v="2" parts_v="10">
+                <controlpoint x="-2" y="0" z="-2" />
+                <controlpoint x="-2" y="5" z="0" />
+                <controlpoint x="-2" y="0" z="2" />
+
+                <controlpoint x="2" y="0" z="-2" />
+                <controlpoint x="2" y="5" z="0" />
+                <controlpoint x="2" y="0" z="2" />
+            </patch>
+        </primitive>
+    </primitives>
+
+    <components>
+        <component id="tent">
+            <transformation></transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="tentOuter" />
+                <primitiveref id="tentInner" />
+            </children>
+        </component>
+    </components>
+</sxs>
