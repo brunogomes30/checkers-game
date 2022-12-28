@@ -36,7 +36,7 @@
     </lights>
 
     <textures>
-        <texture id="demoTexture" file="scenes/images/rickboy.jpg" />
+        <texture id="camoTexture" file="scenes/images/camo.jpg" />
     </textures>
 
     <materials>
@@ -87,7 +87,7 @@
     </primitives>
 
     <models>
-        <model id="testModel" file="trueno.obj">
+        <model id="testModel" file="cube/cubeTex.obj">
             <materials>
                 <material id="inherit" />
             </materials>

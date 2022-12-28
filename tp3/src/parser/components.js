@@ -4,7 +4,6 @@ import { parseMaterials } from './common/materials.js';
 import { parseTexture } from './common/texture.js';
 import { parseColor } from './utils.js';
 import { Highlight } from '../components/Highlight.js';
-import { parseObjFile } from './objFile.js';
 /**
    * Parses the <components> block.
    * @param {XMLNode} componentsNode - The components block element.

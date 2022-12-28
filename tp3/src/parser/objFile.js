@@ -3,15 +3,21 @@ import { MyObject } from "../primitives/MyObject.js";
 import { MyFragment } from "../primitives/MyFragment.js";
 import { parseMaterialFile } from "./mtlFile.js";
 
-export function parseObjFile(scene, modelname) {
+function getRelativePath(modelName){
+    const splitted = modelName.split('/');
+    return splitted.slice(0, splitted.length - 1).join("/");
+}
+
+export function parseObjFile(scene, modelName, textures) {
     const PATH = 'scenes/models/';
-    const filepath = PATH + modelname;
+    const filepath = PATH + modelName;
+    const relativePath = getRelativePath(modelName);
     const objFile = new XMLHttpRequest();
     objFile.open('GET', filepath, false);
     objFile.send(null);
     if (objFile.status === 200) {
         const allTextLines = objFile.responseText;
-        const model = parseModel(scene, allTextLines);
+        const model = parseModel(scene, allTextLines, textures, relativePath);
         return model;
     }
     else {
@@ -22,7 +28,7 @@ export function parseObjFile(scene, modelname) {
 
 
 
-function parseModel(scene, data) {
+function parseModel(scene, data, textures, relativePath) {
     let lines = data.split("\n");
     let objectId = undefined;
     let materials = [];
@@ -81,8 +87,8 @@ function parseModel(scene, data) {
     }
 
     const parseMaterialLib = (line) => {
-        const materialLib = line[1];
-        materials = parseMaterialFile(scene, materialLib);
+        const materialFilePath = relativePath + '/' + line[1];
+        materials = parseMaterialFile(scene, materialFilePath, textures);
     }
 
     const useMaterial = (line) => {
