@@ -5,6 +5,7 @@ import { parseTexture } from './common/texture.js';
 
 export function parseModels(modelsNode, sxsReader) {
     const children = modelsNode.children;
+
     const models = [];
     for (let i = 0; i < children.length; i++) {
         const modelNode = children[i];

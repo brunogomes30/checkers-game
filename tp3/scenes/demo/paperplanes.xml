@@ -48,6 +48,10 @@
             <triangle x1="0" y1="0" z1="0" x2="3" y2="0" z2="0" x3="0" y3="3" z3="0" />
         </primitive>
     </primitives>
+    
+    <models>
+        <model id="car" file="trueno.obj" />
+    </models>
 
     <animations>
         <keyframeanim id="paperplaneAnim">
@@ -363,20 +367,7 @@
             </children>
         </component>
 
-        <component id="paperplanePos2">
-            <materials>
-                <material id="paperMaterial" />
-            </materials>
-            <transformation>
-                <translate x="-20" y="-0.8" z="23" />
-                <rotate axis="x" angle="30" />
-            </transformation>
-            <texture id="camoTexture" length_s="2.0" length_t="1.0" />
-            <animation id="planeCrashAnimation" />
-            <children>
-                <componentref id="paperplane" />
-            </children>
-        </component>
+        
 
         <component id="jetplaneFlying">
             <materials>

@@ -1,0 +1,312 @@
+<sxs>
+    <materials>
+        <material id="skinMaterial" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
+            <specular r="0.00" g="0.00" b="0.00" a="1.0" />
+        </material>
+        <material id="faceMaterial" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="0.05" g="0.05" b="0.05" a="1.0" />
+        </material>
+    </materials>
+
+    <primitives>
+        <primitive id="spherePerson">
+            <sphere radius="1" stacks="12" slices="12" />
+        </primitive>
+
+        <primitive id="sphere">
+            <sphere radius="1" stacks="12" slices="12" />
+        </primitive>
+
+        <primitive id="cylinderPerson">
+            <cylinder base="1.0" top="1.0" height="2" slices="16" stacks="16" />
+        </primitive>
+    </primitives>
+
+    <components>
+        <component id="person">
+            <transformation>
+                <translate x="0" y="3.2" z="0" />
+                <rotate axis="x" angle="90" />
+                <scale x="1.7" y="1.7" z="1.7" />
+            </transformation>
+            <materials>
+                <material id="skinMaterial" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="head_pos" />
+                <componentref id="torso_pos" />
+                <componentref id="arms" />
+                <componentref id="legs" />
+
+            </children>
+        </component>
+
+        <component id="legs">
+            <transformation></transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="leg_left" />
+                <componentref id="leg_right" />
+            </children>
+        </component>
+
+        <component id="leg_left">
+            <transformation></transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="leg_left_1" />
+                <componentref id="leg_left_2" />
+            </children>
+        </component>
+        <component id="leg_right">
+            <transformation></transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="leg_right_1" />
+                <componentref id="leg_right_2" />
+            </children>
+        </component>
+        <component id="leg_left_1">
+            <transformation>
+
+                <translate x="0" y="0" z="3.0" />
+                <rotate axis="z" angle="30" />
+                <rotate axis="x" angle="-90" />
+                <scale x="1" y="1" z="0.5" />
+
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="stick" />
+                <componentref id="knee" />
+            </children>
+        </component>
+        <component id="leg_left_2">
+            <transformation>
+                <rotate axis="y" angle="-10" />
+                <translate x="0" y="1.0" z="3.0" />
+                <scale x="1" y="1" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="stick" />
+                <componentref id="knee" />
+            </children>
+        </component>
+
+        <component id="leg_right_1">
+            <transformation>
+
+                <translate x="0" y="0" z="3.0" />
+                <rotate axis="z" angle="-30" />
+                <rotate axis="x" angle="-90" />
+                <scale x="1" y="1" z="0.5" />
+
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="stick" />
+                <componentref id="knee" />
+            </children>
+        </component>
+        <component id="leg_right_2">
+            <transformation>
+                <rotate axis="y" angle="10" />
+                <translate x="0" y="1.0" z="3.0" />
+                <scale x="1" y="1" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="stick" />
+                <componentref id="knee" />
+            </children>
+        </component>
+
+        <component id="arms">
+            <transformation></transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="arm_right" />
+                <componentref id="arm_left" />
+            </children>
+        </component>
+        <component id="arm_right">
+            <transformation></transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="arm_1" />
+            </children>
+        </component>
+        <component id="arm_left">
+            <transformation></transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="arm_2" />
+            </children>
+        </component>
+
+        <component id="arm_1">
+            <transformation>
+                <translate x="0" y="0" z="1.0" />
+                <rotate axis="z" angle="90" />
+                <rotate axis="x" angle="45" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="stick" />
+                <componentref id="hand" />
+            </children>
+        </component>
+
+        <component id="arm_2">
+            <transformation>
+                <translate x="0" y="0" z="1.0" />
+                <rotate axis="z" angle="90" />
+                <rotate axis="x" angle="-45" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="stick" />
+                <componentref id="hand" />
+            </children>
+        </component>
+        <component id="hand">
+            <transformation>
+                <translate x="0" y="0" z="2.2" />
+                <scale x="0.3" y="0.3" z="0.3" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+
+            <children>
+                <primitiveref id="spherePerson" />
+            </children>
+        </component>
+
+        <component id="knee">
+            <transformation>
+                <translate x="0" y="0" z="2.2" />
+                <scale x="0.25" y="0.25" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+
+            <children>
+                <primitiveref id="spherePerson" />
+            </children>
+        </component>
+        <component id="head_pos">
+            <transformation>
+                <scale x="0.8" y="0.8" z="0.8" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="head" />
+            </children>
+        </component>
+
+        <component id="head">
+            <transformation>
+                <scale x="1.0" y="1.0" z="1.0" />
+                <rotate axis="z" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="faceMaterial" />
+            </materials>
+            <texture id="rickface" length_s="1" length_t="1" />
+            <animation id="rotatingAnim" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+
+        </component>
+
+
+        <component id="torso_pos">
+            <transformation></transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="torso" />
+            </children>
+        </component>
+
+        <component id="torso">
+            <transformation>
+                <scale x="1.0" y="1.0" z="1.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="stick" />
+            </children>
+        </component>
+
+        <component id="stick">
+            <transformation>
+                <scale x="0.2" y="0.2" z="1.0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="cylinderPerson" />
+            </children>
+        </component>
+    </components>
+</sxs>

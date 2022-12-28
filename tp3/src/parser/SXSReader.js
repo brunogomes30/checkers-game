@@ -63,6 +63,7 @@ export class SXSReader {
     }
 
     onXMLError(message) {
+        this.error = true;
         this.graph.onXMLError(message);
     }
 
@@ -180,7 +181,7 @@ export class SXSReader {
                         this.graph['textures'].push(texture);
                     }
                     break;
-                    
+
                 case 'enabledLights':
                     for (const light of Object.keys(attribute[1])) {
                         if (light in this.graph.enabledLights) {
@@ -205,6 +206,11 @@ export class SXSReader {
             for (; ;) {
                 let ready = true;
                 for (const reader of this.graph.helperReaders) {
+                    if (reader.error) {
+                        this.graph.onXMLError(`Error in included file ${reader.filename}`);
+                        return;
+                    }
+
                     if (reader.parsed === false) {
                         ready = false;
                         break;

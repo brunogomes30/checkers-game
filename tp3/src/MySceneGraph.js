@@ -122,8 +122,8 @@ export class MySceneGraph {
             for (let i = 0; i < component.primitiveChildren.length; i++) {
                 const primitive = this.primitives[component.primitiveChildren[i]]
                 if (primitive === undefined) {
-                    this.onXMLMinorError(`Primitive "${component.primitiveChildren[i]}" not found in component "${component.id}"`);
-                    continue;
+                    this.onXMLError(`Primitive "${component.primitiveChildren[i]}" not found in component "${component.id}"`);
+                    return;
                 }
 
                 component.children.push(primitive);
@@ -133,6 +133,7 @@ export class MySceneGraph {
                 const model = this.models[component.modelChildren[i]];
                 if (model instanceof String) {
                     this.onXMLError(`Error parsing model "${component.modelChildren[i]}" in component "${component.id}"`);
+                    return;
                 }
                 component.children.push(model);
             }
@@ -141,7 +142,8 @@ export class MySceneGraph {
             for (let i = 0; i < component.componentChildren.length; i++) {
                 const childComponent = this.components[component.componentChildren[i]];
                 if (childComponent == undefined) {
-                    this.onXMLMinorError(`Unable to find referenced component '${component.componentChildren[i]}' in component '${component.id}'`);
+                    this.onXMLError(`Unable to find referenced component '${component.componentChildren[i]}' in component '${component.id}'`);
+                    return;
                 }
 
                 component.children.push(childComponent);
