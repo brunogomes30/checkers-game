@@ -18,8 +18,8 @@ export function parseModels(modelsNode, sxsReader) {
         if (file === null) {
             return `No file defined for model with ID = ${id}`;
         };
-        const model = parseObjFile(sxsReader.graph.scene, file);
-        if (model instanceof String) {
+        const model = parseObjFile(sxsReader.graph.scene, file, sxsReader.graph.textures);
+        if(model instanceof String){
             return model;
         }
 

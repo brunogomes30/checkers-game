@@ -7,6 +7,7 @@ import { switchLight } from './controllers/lights.js'
 import { switchCamera } from './controllers/cameras.js'
 import { TextureScaleFactors } from './textures/TextureScaleFactors.js';
 import { ToonShader } from './toonShade/toonShader.js';
+import { TextRenderer } from './text/TextRenderer.js';
 
 
 let FRAME_RATE = 60;
@@ -57,9 +58,9 @@ export class XMLscene extends CGFscene {
         this.defaultTextureScaling = new TextureScaleFactors(1, 1);
         this.highlightShader = new CGFshader(this.gl, "shaders/highlight.vert", "shaders/highlight.frag");
 
-        //Shaders order : depth -> toon -> outline
         this.defaultShader = new CGFshader(this.gl, "shaders/outlineVert.glsl", "shaders/outlineFrag.glsl");
         this.toonShader = new ToonShader(this);
+        this.textRenderer = new TextRenderer(this);
 
         this.axis = new CGFaxis(this);
         this.isLooping = false;
@@ -203,6 +204,9 @@ export class XMLscene extends CGFscene {
                 if (shader.fragmentURL === this.defaultShader.fragmentURL) {
                     this.toonShader.render(list);
                     continue;
+                } else if(shader.fragmentURL === this.textRenderer.shader.fragmentURL) {
+                    this.textRenderer.render(list);
+                    continue;
                 }
                 this.setActiveShader(shader, {}, undefined);
                 for (const value of list) {
@@ -243,7 +247,9 @@ export class XMLscene extends CGFscene {
 
     setValuesToShader(shader, values, texture, findShader) {
         const valuesToShader = {};
-
+        if (values === undefined){
+            values = {};
+        }
         for (const [key, value] of Object.entries(values)) {
             switch (value.type) {
                 case 'texture':

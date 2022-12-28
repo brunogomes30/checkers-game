@@ -138,6 +138,10 @@ export class MySceneGraph {
                 component.children.push(model);
             }
 
+            for (let i = 0; i < component.textChildren.length; i++) {
+                component.children.push(component.textChildren[i]);
+            }
+
             // Change all component reference strings to the component reference
             for (let i = 0; i < component.componentChildren.length; i++) {
                 const childComponent = this.components[component.componentChildren[i]];

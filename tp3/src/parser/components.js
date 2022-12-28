@@ -4,7 +4,7 @@ import { parseMaterials } from './common/materials.js';
 import { parseTexture } from './common/texture.js';
 import { parseColor } from './utils.js';
 import { Highlight } from '../components/Highlight.js';
-import { parseObjFile } from './objFile.js';
+import { TextElement } from '../text/TextElement.js';
 /**
    * Parses the <components> block.
    * @param {XMLNode} componentsNode - The components block element.
@@ -89,15 +89,22 @@ export function parseComponents(componentsNode, sxsReader) {
         const componentChildren = [];
         const primitiveChildren = [];
         const modelChildren = [];
+        const textChildren = [];
         for (let i = 0; i < childrenNodes.length; i++) {
             const child = childrenNodes[i];
-            const id = sxsReader.reader.getString(child, "id");
+            const id = sxsReader.reader.getString(child, "id", false);
             if (child.nodeName === 'primitiveref') {
                 primitiveChildren.push(id);
             } else if (child.nodeName === 'componentref') {
                 componentChildren.push(id);
             } else if (child.nodeName === 'modelref') {
                 modelChildren.push(id);
+            } else if(child.nodeName === 'text'){
+                const text = sxsReader.reader.getString(child, "value");
+                if(text === null){
+                    return `Error parsing text in component "${componentID}"`;
+                }
+                textChildren.push(new TextElement(sxsReader.graph.scene, text));
             } else {
                 sxsReader.graph.onXMLMinorError(`unknown tag <${componentNodes[i].nodeName}>`);
             }
@@ -127,6 +134,7 @@ export function parseComponents(componentsNode, sxsReader) {
             primitiveChildren: primitiveChildren,
             componentChildren: componentChildren,
             modelChildren: modelChildren,
+            textChildren: textChildren,
             animation: animation,
             highlight: highlight
         }

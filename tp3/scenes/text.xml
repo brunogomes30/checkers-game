@@ -13,8 +13,8 @@
     </views>
 
     <ambient>
-        <ambient r="0.1" g="0.1" b="0.1" a="1.0" />
-        <background r="0.3" g="0.3" b="0.3" a="1.0" />
+        <ambient r="0.1" g="0.0" b="0.1" a="1.0" />
+        <background r="1.0" g="0.0" b="0.0" a="1.0" />
     </ambient>
 
     <lights>
@@ -56,8 +56,6 @@
         </transformation>
     </transformations>
 
-    <animations></animations>
-
     <primitives>
         <primitive id="rectangle">
             <rectangle x1="-0.5" y1="-1" x2="0.5" y2="1" />
@@ -86,8 +84,10 @@
         </primitive>
     </primitives>
 
+    <animations></animations>
+
     <models>
-        <model id="testModel" file="cube/cubeTex.obj" />
+        
     </models>   
 
     <components>
@@ -99,6 +99,7 @@
             <texture id="camoTexture" />
             <children>
                 <componentref id="tent" />
+                <componentref id="dummy"/>
             </children>
         </component>
         <component id="tent">
@@ -106,9 +107,24 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="camoTexture" />
+            <texture id="none" />
             <children>
-                <modelref id="testModel" />
+                
+                <text value="Hello world" />
+            </children>
+        </component>
+
+        <component id="dummy">
+            <transformation>
+                <translate x="0" y="5" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                
+                <primitiveref id="rectangle" />
             </children>
         </component>
     </components>

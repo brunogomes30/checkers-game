@@ -16,7 +16,7 @@ import { XMLscene } from "../XMLscene.js";
  * @class Component
  */
 export class Component{
-    constructor(scene, {id, transformation, materials, texture, textureScaleFactor, primitiveChildren, componentChildren, modelChildren, highlight, animation}){
+    constructor(scene, {id, transformation, materials, texture, textureScaleFactor, primitiveChildren, componentChildren, modelChildren, textChildren, highlight, animation}){
         this.id = id;
         this.scene = scene;
         this.transformation = transformation;
@@ -25,6 +25,7 @@ export class Component{
         this.textureScaleFactor = textureScaleFactor;
         this.primitiveChildren = primitiveChildren;
         this.componentChildren = componentChildren;
+        this.textChildren = textChildren;
         this.modelChildren = modelChildren;
         this.highlight = highlight;
         this.animation = animation
