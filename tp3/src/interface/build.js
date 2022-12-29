@@ -1,3 +1,4 @@
+import { dat } from '../../../lib/CGF.js'
 import { switchLight } from '../controllers/lights.js'
 import { switchCamera } from '../controllers/cameras.js'
 
@@ -6,11 +7,13 @@ import { switchCamera } from '../controllers/cameras.js'
  * @typedef {dat.UI} ui
  * @typedef {MySceneGraph} scene
  */
-export function buildInterface(ui, scene) {
-    buildCameraSelector(ui, scene);
-    buildLightsFolder(ui, scene);
-    buildHighligthsFolder(ui, scene);
-    buildDebugFolder(ui, scene);
+export function buildInterface(appUI, graph) {
+    let graphUI = appUI.gui.addFolder(graph.name);
+    buildCameraSelector(graphUI, appUI, graph);
+    buildLightsFolder(graphUI, graph);
+    buildHighligthsFolder(graphUI, graph);
+    graphUI.hide();
+    graph.ui = graphUI;
 }
 
 /**
@@ -19,13 +22,13 @@ export function buildInterface(ui, scene) {
  * @param {dat.GUI} gui
  * @param {MySceneGraph} scene
  */
-function buildLightsFolder(ui, scene) {
-    const lights = scene.graph.lights;
-    const lightsFolder = ui.gui.addFolder("Lights");
+function buildLightsFolder(ui, graph) {
+    const lights = graph.lights;
+    const lightsFolder = ui.addFolder("Lights");
     Object.keys(lights).forEach(function (key, index) {
-        lightsFolder.add(scene.enabledLights, key).name(key).onChange(
+        lightsFolder.add(graph.enabledLights, key).name(key).onChange(
             function () {
-                switchLight(scene, key, index);
+                switchLight(graph.scene, key, index);
             }
         );
     });
@@ -37,17 +40,17 @@ function buildLightsFolder(ui, scene) {
 * @param {dat.GUI} gui
 * @param {MySceneGraph} scene
 */
-function buildHighligthsFolder(ui, scene) {
-    const folder = ui.gui.addFolder("Highlights");
-    Object.keys( scene.highlightedComponents).forEach(function (key, value) {
-        folder.add(scene.highlightedComponents, key).name(key).onChange(
+function buildHighligthsFolder(ui, graph) {
+    const folder = ui.addFolder("Highlights");
+    Object.keys(graph.highlightedComponents).forEach(function (key, value) {
+        folder.add(graph.highlightedComponents, key).name(key).onChange(
             function () {
-                const component = scene.graph.components[key];
-                component.highlight.isActive = scene.highlightedComponents[key];
+                const component = graph.components[key];
+                component.highlight.isActive = graph.scene.highlightedComponents[key];
             }
         );
     });
-    
+
 }
 
 /**
@@ -55,8 +58,8 @@ function buildHighligthsFolder(ui, scene) {
  * @param {dat.GUI} gui
  * @param {MySceneGraph} scene
  */
-function buildCameraSelector(ui, scene) {
-    ui.gui.add(ui, 'activeCameraId', Object.keys(scene.cameras)).name('Cameras').onChange(() => switchCamera(ui, scene, ui.activeCameraId))
+function buildCameraSelector(ui, appUI, graph) {
+    ui.add(graph, 'activeCameraId', Object.keys(graph.cameras)).name('Cameras').onChange(() => switchCamera(appUI, graph.scene, graph.activeCameraId))
 }
 
 /**
@@ -64,7 +67,7 @@ function buildCameraSelector(ui, scene) {
  * @param {dat.GUI} gui
  * @param {MySceneGraph} scene
  */
-function buildDebugFolder(ui, scene) {
+export function buildDebugFolder(ui, scene) {
     let folder = ui.gui.addFolder("Debug");
     folder.add(scene, 'displayAxis').name("Display axis");
 

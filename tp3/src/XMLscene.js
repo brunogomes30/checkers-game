@@ -1,7 +1,6 @@
 import { Texture } from './textures/Texture.js'
 import { CGFappearance, CGFscene, CGFtexture, CGFshader, CGFobject, CGFlight } from '../../lib/CGF.js';
 import { CGFaxis, CGFcamera } from '../../lib/CGF.js';
-import { buildInterface } from './interface/build.js';
 import { MyInterface } from './MyInterface.js';
 import { switchLight } from './controllers/lights.js'
 import { switchCamera } from './controllers/cameras.js'
@@ -137,6 +136,17 @@ export class XMLscene extends CGFscene {
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
     onGraphLoaded() {
+        for (let i = 0; i < this.graph.textures.length; i++) {
+            const texture = this.graph.textures[i];
+            this.textures[texture.id] = texture.texture;
+        }
+
+
+        this.cameras = this.graph.cameras;
+        this.defaultCameraId = this.graph.defaultCameraId;
+        this.enabledLights = this.graph.enabledLights;
+        this.highlightedComponents = this.graph.highlightedComponents;
+
         this.axis = new CGFaxis(this, this.graph.referenceLength);
 
         this.gl.clearColor(this.graph.background[0], this.graph.background[1], this.graph.background[2], this.graph.background[3]);
@@ -148,11 +158,14 @@ export class XMLscene extends CGFscene {
         this.sceneInited = true;
 
 
-        this.interface.activeCameraId = this.defaultCameraId
+        this.graph.activeCameraId = this.defaultCameraId
         switchCamera(this.interface, this, this.defaultCameraId)
 
-        buildInterface(this.interface, this);
+        this.materialIndex = 0;
 
+        this.graph.ui.open();
+        this.graph.ui.show();
+        
         this.setPickEnabled(true);
 
         this.materialIndex = 0;
