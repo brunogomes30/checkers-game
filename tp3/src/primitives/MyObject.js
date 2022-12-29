@@ -20,7 +20,32 @@ export class MyObject{
 		}
 	}
 
+
+	/**
+	 * Sets pickable
+	 * @memberof MyModel
+	 * @param {Boolean} pickable - If the model is pickable
+	 * @param {Function} conditionFunction - Function that returns true if the model should be pickable. Accepts the fragment id as a parameter
+	 */
+	setPickable(pickable, conditionFunction){
+		console.log('então entra aqui ', this.id);
+		if(pickable && conditionFunction(this.id)){
+			this.pickable = true;
+		}
+	}
+
+	setClass(className, conditionFunction){
+		if(conditionFunction(this.id)){
+			this.className = className;
+		}
+	}
+
+
+
 	display(){
+		if(this.pickable){
+			this.scene.registerForPick(this);
+		}
 		for(let i=0; i<this.fragments.length; i++){
 			const material = this.fragments[i].material;
 			if(material != undefined) {

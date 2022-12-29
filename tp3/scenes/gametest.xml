@@ -103,7 +103,7 @@
                 <componentref id="board" />
             </children>
         </component>
-        <component id="board" class="board">
+        <component id="board" class="board" pickable="true">
             <transformation></transformation>
             <materials>
                 <material id="inherit" />

@@ -15,6 +15,26 @@ export class MyModel{
         });
     }
 
+    setPickable(pickable, conditionFunction){
+        if (conditionFunction == undefined) {
+            conditionFunction = () => { return true; };
+        }
+        if(pickable){
+            Object.keys(this.objects).forEach((key) => {
+                this.objects[key].setPickable(pickable, conditionFunction);
+            });
+        }
+    }
+
+    setClass(className, conditionFunction){
+        if (conditionFunction == undefined) {
+            conditionFunction = () => { return true; };
+        }
+        Object.keys(this.objects).forEach((key) => {
+            this.objects[key].setClass(className, conditionFunction);
+        });
+    }
+
     display() {
         
         Object.keys(this.objects).forEach((key) => {
