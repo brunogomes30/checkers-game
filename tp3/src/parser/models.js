@@ -14,11 +14,18 @@ export function parseModels(modelsNode, sxsReader) {
             return `No ID defined for model`;
         };
 
+        //Check if is pickable
+        let pickable = sxsReader.reader.getBoolean(modelNode, 'pickable', false);
+        if(pickable === null){
+            pickable = false;
+        }
+        
         const file = sxsReader.reader.getString(modelNode, 'file', false);
         if (file === null) {
             return `No file defined for model with ID = ${id}`;
         };
         const model = parseObjFile(sxsReader.graph.scene, file, sxsReader.graph.textures);
+        model.setPickable(pickable);
         if(model instanceof String){
             return model;
         }

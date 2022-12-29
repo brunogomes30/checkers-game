@@ -13,9 +13,9 @@ export class MyFragment extends CGFobject {
 		this.material = buffers.material;
 		this.initBuffers();
 	}
-	
+
 	/**
-	 * Initializes the buffers of the rectangle
+	 * Initializes the buffers of the model fragment
 	 * @memberof MyModel
 	 * @private
 	 */

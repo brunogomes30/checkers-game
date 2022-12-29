@@ -14,7 +14,7 @@ export function parseComponents(componentsNode, sxsReader) {
     const componentNodes = componentsNode.children;
 
     let components = [];
-
+    let class_components = {};
     let grandChildren = [];
     if (componentNodes.length === 0) {
         return 'There is no components in the xml file.';
@@ -30,6 +30,15 @@ export function parseComponents(componentsNode, sxsReader) {
         const componentID = sxsReader.reader.getString(componentNodes[i], 'id');
         if (componentID === null)
             return "no ID defined for componentID";
+
+        // Get class of the current component.
+        const componentClass = sxsReader.reader.getString(componentNodes[i], 'class', false);
+        
+        //Check if is pickable
+        let pickable = sxsReader.reader.getBoolean(componentNodes[i], 'pickable', false);
+        if(pickable === null){
+            pickable = false;
+        }
 
         // Checks for repeated IDs.
         if (components[componentID] !== undefined)
@@ -136,13 +145,40 @@ export function parseComponents(componentsNode, sxsReader) {
             modelChildren: modelChildren,
             textChildren: textChildren,
             animation: animation,
-            highlight: highlight
+            highlight: highlight,
+            pickable: pickable,
         }
         );
 
         components[componentID] = component;
+        if (componentClass != null) {
+            const list = class_components[componentClass];
+            if (list == undefined) {
+                class_components[componentClass] = [component];
+            } else {
+                list.push(component);
+            }
+        }
+    }
+
+
+    // Change all component reference strings to the component reference
+    for (const key in components) {
+        const component = components[key];
+        for (const childKey in component.children) {
+            const child = component.children[childKey];
+            if (typeof child === 'string') {
+                if (graph.components[child] != undefined) {
+                    component.children[childKey] = components[child];
+                }
+                else {
+                    return `Unable to find referenced component '${child}' in component '${key}'`
+                }
+            }
+        }
     }
 
     sxsReader.attributes.set('components', components);
+    sxsReader.attributes.set('class_components', class_components);
     return null;
 }

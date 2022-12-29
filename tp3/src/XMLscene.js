@@ -7,6 +7,8 @@ import { switchCamera } from './controllers/cameras.js'
 import { TextureScaleFactors } from './textures/TextureScaleFactors.js';
 import { ToonShader } from './toonShade/toonShader.js';
 import { TextRenderer } from './text/TextRenderer.js';
+import { BoardController } from './checkers/controller/BoardController.js';
+import { pickHandler } from './picking/pickHandler.js';
 
 
 let FRAME_RATE = 60;
@@ -163,6 +165,12 @@ export class XMLscene extends CGFscene {
 
         this.graph.ui.open();
         this.graph.ui.show();
+        
+        this.setPickEnabled(true);
+
+        this.materialIndex = 0;
+        this.boardController = new BoardController(this, 8);
+        this.boardController.init();
     }
 
     /**
@@ -182,10 +190,42 @@ export class XMLscene extends CGFscene {
         }
     }
 
+
+    displayWithPick() {
+        var request = this.getNextPickRequest();
+        if (request != null) {
+            var x_in_canvas = request[0][0];
+            var y_in_canvas = request[0][1];
+            super.setActiveShader(this.pickShader);
+            var pixels = new Uint8Array(4);
+            this.pickMode = true;
+            var temp = this.texturesEnabled;
+            this.texturesEnabled = false;
+            this.display(true);
+            this.texturesEnabled = temp;
+            this.pickMode = false;
+            this.gl.readPixels(x_in_canvas, y_in_canvas, 1, 1, this.gl.RGBA, this.gl.UNSIGNED_BYTE, pixels);
+            if (pixels != null && pixels != undefined) {
+                this.pickResults.splice(0, this.pickResults.length);
+                var data = this.getPickData(pixels);
+                if (data != null) {
+                    this.pickResults.push([data[0], data[1]])
+                } else {
+                    this.pickResults.push([undefined, undefined])
+                }
+            }
+        }
+        this.display();
+    }
+
     /**
      * Displays the scene.
      */
-    display() {
+    display(inPickMode = false) {
+        this.logPicking();
+        // this resets the picking buffer (association between objects and ids)
+		this.clearPickRegistration();
+        this.pickId = 1;
         //this.setDefaultShader();
         this.shaderMap = new Map();
         // ---- BEGIN Background, camera and axis setup
@@ -210,32 +250,46 @@ export class XMLscene extends CGFscene {
             // Displays the scene (MySceneGraph function).
             
             this.graph.displayScene();
-            for (const [key, list] of Object.entries(this.shaderMap)) {
-                const shader = JSON.parse(key);
-                if (shader.fragmentURL === this.defaultShader.fragmentURL) {
-                    this.toonShader.render(list);
-                    continue;
-                } else if(shader.fragmentURL === this.textRenderer.shader.fragmentURL) {
-                    this.textRenderer.render(list);
-                    continue;
+
+            if(inPickMode) {
+                for(const [key, list] of Object.entries(this.shaderMap)){
+                    for (const value of list) {
+                        this.pushMatrix();
+                        this.loadIdentity();
+                        this.multMatrix(value.matrix);
+                        //value.apperance.apply();
+                        value.element.display();
+                        this.popMatrix();
+                    }
                 }
-                this.setActiveShader(shader, {}, undefined);
-                for (const value of list) {
-                    this.pushMatrix();
-                    this.loadIdentity();
-                    this.multMatrix(value.matrix);
-                    if (value.texture == null) {
-                        value.apperance.setTexture(null);
+            } else {
+                for (const [key, list] of Object.entries(this.shaderMap)) {
+                    const shader = JSON.parse(key);
+                    if (shader.fragmentURL === this.defaultShader.fragmentURL) {
+                        this.toonShader.render(list);
+                        continue;
+                    } else if(shader.fragmentURL === this.textRenderer.shader.fragmentURL) {
+                        this.textRenderer.render(list);
+                        continue;
                     }
-                    else {
-                        value.apperance.setTexture(value.texture.texture);
-                        const textureScalling = value.textureScalling;
-                        value.element.updateTexCoords(textureScalling.length_s, textureScalling.length_t);
+                    this.setActiveShader(shader, {}, undefined);
+                    for (const value of list) {
+                        this.pushMatrix();
+                        this.loadIdentity();
+                        this.multMatrix(value.matrix);
+                        if (value.texture == null) {
+                            value.apperance.setTexture(null);
+                        }
+                        else {
+                            value.apperance.setTexture(value.texture.texture);
+                            const textureScalling = value.textureScalling;
+                            value.element.updateTexCoords(textureScalling.length_s, textureScalling.length_t);
+                        }
+                        this.setValuesToShader(value.shader.shader, value.shader.values, value.shader.texture);
+                        value.apperance.apply();
+                        value.element.display();
+                        this.popMatrix();
                     }
-                    this.setValuesToShader(value.shader.shader, value.shader.values, value.shader.texture);
-                    value.apperance.apply();
-                    value.element.display();
-                    this.popMatrix();
                 }
             }
 
@@ -343,6 +397,33 @@ export class XMLscene extends CGFscene {
     setDefaultShader() {
         super.setActiveShader(this.defaultShader);
     }
+
+
+    logPicking() {
+		if (this.pickMode == false) {
+			// results can only be retrieved when picking mode is false
+			if (this.pickResults != null && this.pickResults.length > 0) {
+				for (var i=0; i< this.pickResults.length; i++) {
+					const obj = this.pickResults[i][0];
+                    if(obj == null){
+                        continue;
+                    }
+                    const component = this.pickResults[i][0];
+                    pickHandler(component, this.graph);
+				}
+				this.pickResults.splice(0,this.pickResults.length);
+			}		
+		}
+	}
+
+
+    registerForPick(obj){
+        var colorId = this.intToRGB(this.pickId);
+        this.pickShader.setUniformsValues({ uPickColor: colorId });
+        super.registerForPick(this.pickId++, obj);
+        
+    }
+
 }
 
 /**
