@@ -51,6 +51,7 @@ export class MySceneGraph {
         this.animations = [];
         this.models = [];
         this.components = [];
+        this.class_components = {};
     }
 
     /*
@@ -257,4 +258,18 @@ export class MySceneGraph {
         Object.values(this.animations).forEach(animation => animation.update(timeDelta));
     }
 
+    addComponent(parent, component) {
+        this.components[component.id] = component;
+        parent.children.push(component);
+    }
+
+    getComponent(className) {
+        const list = this.class_components[className];
+        if (list == undefined) {
+            console.error("Component with class name " + className + " not found.");
+            return null;
+        }
+        const component = list[0];
+        return component;
+    }
 }

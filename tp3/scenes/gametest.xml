@@ -87,13 +87,9 @@
     </primitives>
 
     <models>
-<<<<<<< HEAD
         <model id="boardModel" file="board/board.obj" />
-        <model id="whiteModel" file="piece/white_promoted.obj" />
+        <model id="whiteModel" file="piece/white.obj" />
         <model id="blackModel" file="piece/black.obj" />
-=======
-        <model id="testModel" file="cube/cubeTex.obj" />
->>>>>>> origin
     </models>   
 
     <components>
@@ -102,11 +98,9 @@
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="camoTexture" />
+            <texture id="demoTexture" />
             <children>
                 <componentref id="board" />
-                <componentref id="white" />
-                <componentref id="black" />
             </children>
         </component>
         <component id="board" class="board">
@@ -114,16 +108,15 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="camoTexture" />
+            <texture id="inherit" />
             <children>
-<<<<<<< HEAD
                 <modelref id="boardModel" />
 
             </children>
         </component>
-        <component id="white" class="white_piece">
+        <component id="white" class="white-piece">
             <transformation>
-                <translate x="-0.625" y="0.15" z="0.875" />
+                <translate x="-0.0" y="0.15" z="0.0" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -135,9 +128,9 @@
             </children>
         </component>
 
-        <component id="black" class="black_piece">
+        <component id="black" class="black-piece">
             <transformation>
-                <translate x="0.875" y="0.15" z="0.875" />
+                <translate x="0.0" y="0.15" z="0.0" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -146,9 +139,6 @@
             <children>
                 <modelref id="blackModel" />
 
-=======
-                <modelref id="testModel" />
->>>>>>> origin
             </children>
         </component>
     </components>

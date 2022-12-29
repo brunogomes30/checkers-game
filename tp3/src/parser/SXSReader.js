@@ -165,7 +165,15 @@ export class SXSReader {
                         this.graph[attribute[0]][value] = attribute[1][value];
                     }
                     break;
-
+                case 'class_components':
+                    for(const value of Object.keys(attribute[1])) {
+                        if(value in this.graph.class_components) {
+                            this.graph.class_components[value].push(...attribute[1][value]);
+                        } else {
+                            this.graph.class_components[value] = attribute[1][value];
+                        }
+                    }
+                    break;
                 case 'textures':
                     blocks_missing.splice(blocks_missing.indexOf('textures'), 1);
                     for (const texture of attribute[1]) {
