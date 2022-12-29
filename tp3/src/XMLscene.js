@@ -1,7 +1,6 @@
 import { Texture } from './textures/Texture.js'
 import { CGFappearance, CGFscene, CGFtexture, CGFshader, CGFobject, CGFlight } from '../../lib/CGF.js';
 import { CGFaxis, CGFcamera } from '../../lib/CGF.js';
-import { buildInterface } from './interface/build.js';
 import { MyInterface } from './MyInterface.js';
 import { switchLight } from './controllers/lights.js'
 import { switchCamera } from './controllers/cameras.js'
@@ -140,14 +139,11 @@ export class XMLscene extends CGFscene {
             this.textures[texture.id] = texture.texture;
         }
 
-        for (const component of Object.values(this.graph.components)) {
-            if (component.highlight.hasHighlight)
-                this.highlightedComponents[component.id] = true;
-        }
 
         this.cameras = this.graph.cameras;
         this.defaultCameraId = this.graph.defaultCameraId;
         this.enabledLights = this.graph.enabledLights;
+        this.highlightedComponents = this.graph.highlightedComponents;
 
         this.axis = new CGFaxis(this, this.graph.referenceLength);
 
@@ -160,12 +156,13 @@ export class XMLscene extends CGFscene {
         this.sceneInited = true;
 
 
-        this.interface.activeCameraId = this.defaultCameraId
+        this.graph.activeCameraId = this.defaultCameraId
         switchCamera(this.interface, this, this.defaultCameraId)
 
-        buildInterface(this.interface, this);
-
         this.materialIndex = 0;
+
+        this.graph.ui.open();
+        this.graph.ui.show();
     }
 
     /**

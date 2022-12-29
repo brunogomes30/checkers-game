@@ -1,6 +1,7 @@
 import { PrimitiveFactory } from './factory/PrimitiveFactory.js';
 import { renderElement } from './components/renderElement.js';
 import { SXSReader } from './parser/SXSReader.js';
+import { buildInterface } from './interface/build.js';
 
 /**
  * MySceneGraph class, representing the scene graph.
@@ -12,7 +13,13 @@ export class MySceneGraph {
     /**
      * @constructor
      */
-    constructor(filename, scene) {
+    constructor(filename, scene, name) {
+        if (name !== undefined) {
+            this.name = name;
+        } else {
+            this.name = filename;
+        }
+
         this.loadedOk = null;
 
         // Establish bidirectional references between scene and graph.
@@ -80,7 +87,8 @@ export class MySceneGraph {
         }
 
 
-        // Replace references in components
+        // Replace references in components and add highlited components
+        this.highlightedComponents = [];
         for (let component of Object.values(this.components)) {
             // Replace transformation ID's with transformation object
             if (component.transformation.transformationID !== undefined) {
@@ -162,11 +170,18 @@ export class MySceneGraph {
                     this.onXMLMinorError(`Animation with ID '${component.animation}' not found, continuing without animation.`);
                 }
             }
+
+            if (component.highlight.hasHighlight)
+            this.highlightedComponents[component.id] = true;
         }
 
         // As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
         this.loadedOk = true;
         this.log("Scene graph parsing complete");
+
+        this.activeCameraId = this.defaultCameraId
+        buildInterface(this.scene.interface, this);
+
         if (this.selected) {
             this.scene.onGraphLoaded()
         }
