@@ -36,32 +36,38 @@ export class BoardController {
                     }
                 }
                 if(createPiece){
-                    
                     const component = this.pieceController.generatePieceComponent(this.checkersBoard, color, y, x);
                     this.board[y][x].piece = new CheckersPiece(this.scene, color, component);
                 }
             }
         }
+
+        this.addEventsToGraph();
     }
 
-    onClick(element){
-        switch(element.class){
-            case 'board':
-                handleBoardClick(element);
-                break;
-            case 'piece':
-                handlePieceClick(element);
-                break;
-        }
+    addEventsToGraph(){
+        this.scene.graph.addEvent('tile-click', (component) => {
+            this.handleBoardClick(component);
+        });
+
+        this.scene.graph.addEvent('white-piece-click', (component) => {
+            this.handlePieceClick(component);
+        });
+
+        this.scene.graph.addEvent('black-piece-click', (component) => {
+            this.handlePieceClick(component);
+        });
     }
 
     handleBoardClick(element){
+        console.log('Board click: ' + element.id);
         if(this.pieceController.hasPieceSelected()){
             //this.pieceController.movePiece(this.selectedPiece, y, x);
         }
     }
 
     handlePieceClick(element){
+        console.log('Piece click: ' + element.pieceComponent.id);
         if(this.selectedPiece != null){
             //this.pieceController.stopIdleAnimation(this.selectedPiece);
         }

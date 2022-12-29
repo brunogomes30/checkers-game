@@ -33,6 +33,12 @@ export function parseComponents(componentsNode, sxsReader) {
 
         // Get class of the current component.
         const componentClass = sxsReader.reader.getString(componentNodes[i], 'class', false);
+        
+        //Check if is pickable
+        let pickable = sxsReader.reader.getBoolean(componentNodes[i], 'pickable', false);
+        if(pickable === null){
+            pickable = false;
+        }
 
         // Checks for repeated IDs.
         if (components[componentID] !== undefined)
@@ -139,7 +145,8 @@ export function parseComponents(componentsNode, sxsReader) {
             modelChildren: modelChildren,
             textChildren: textChildren,
             animation: animation,
-            highlight: highlight
+            highlight: highlight,
+            pickable: pickable,
         }
         );
 

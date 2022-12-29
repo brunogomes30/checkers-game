@@ -1,6 +1,7 @@
 import { PrimitiveFactory } from './factory/PrimitiveFactory.js';
 import { renderElement } from './components/renderElement.js';
 import { SXSReader } from './parser/SXSReader.js';
+import { processClass } from './parser/components/processClass.js';
 
 /**
  * MySceneGraph class, representing the scene graph.
@@ -52,6 +53,7 @@ export class MySceneGraph {
         this.models = [];
         this.components = [];
         this.class_components = {};
+        this.events = {};
     }
 
     /*
@@ -109,7 +111,6 @@ export class MySceneGraph {
 
             // Replace texture ids with texture objects
             if (component.texture != 'inherit' && component.texture != 'none') {
-                //console.log(component.texture, this.textures)
                 const textures = this.textures.filter(tex => tex.id == component.texture);
                 if (textures.length < 1) {
                     this.onXMLMinorError(`Texture with ID '${component.texture}' not found, Using default texture.`);
@@ -152,6 +153,11 @@ export class MySceneGraph {
                 }
 
                 component.children.push(childComponent);
+            }
+
+            
+            for(const [key, list] of Object.entries(this.class_components)) {
+                list.forEach(component => processClass(key, component));
             }
 
 
@@ -271,5 +277,16 @@ export class MySceneGraph {
         }
         const component = list[0];
         return component;
+    }
+
+    addEvent(eventName, callback){
+        this.events[eventName] = callback;
+    }
+
+    triggerEvent(eventName, args) {
+        const event = this.events[eventName];
+        if(event != undefined){
+            event(args);
+        }
     }
 }

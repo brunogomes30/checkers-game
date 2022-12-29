@@ -36,7 +36,6 @@ export class PieceController{
         component.transformation = translation;
 
         component.id = 'piece-' + y + '-' + x;
-        console.log('component = ', component);
         // Add the component to the scene graph
         this.scene.graph.addComponent(board.component, component);
 

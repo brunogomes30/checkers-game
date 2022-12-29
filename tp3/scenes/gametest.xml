@@ -103,7 +103,7 @@
                 <componentref id="board" />
             </children>
         </component>
-        <component id="board" class="board">
+        <component id="board" class="board" pickable="true">
             <transformation></transformation>
             <materials>
                 <material id="inherit" />
@@ -114,7 +114,7 @@
 
             </children>
         </component>
-        <component id="white" class="white-piece">
+        <component id="white" class="white-piece" pickable="true">
             <transformation>
                 <translate x="-0.0" y="0.15" z="0.0" />
             </transformation>
@@ -128,7 +128,7 @@
             </children>
         </component>
 
-        <component id="black" class="black-piece">
+        <component id="black" class="black-piece" pickable="true">
             <transformation>
                 <translate x="0.0" y="0.15" z="0.0" />
             </transformation>
