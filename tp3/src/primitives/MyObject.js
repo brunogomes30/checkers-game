@@ -93,6 +93,9 @@ export class MyObject{
 			fragments: this.fragments
 		});
         for(let key in this){
+			if(key === 'scene'){
+				continue;
+			}
             object[key] = this[key];
         }
 		for(let i=0; i<this.fragments.length; i++){

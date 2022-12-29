@@ -188,6 +188,7 @@ export class MySceneGraph {
         // As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
         this.loadedOk = true;
         this.log("Scene graph parsing complete");
+        console.log(this.components);
         this.scene.onGraphLoaded();
     }
 

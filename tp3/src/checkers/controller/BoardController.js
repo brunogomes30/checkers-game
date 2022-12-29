@@ -41,6 +41,7 @@ export class BoardController {
                 }
             }
         }
+        console.log(this.board);
 
         this.addEventsToGraph();
     }

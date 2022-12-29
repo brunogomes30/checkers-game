@@ -387,6 +387,7 @@ export class XMLscene extends CGFscene {
 
 
     logPicking() {
+        //console.log(this.pickData);
 		if (this.pickMode == false) {
 			// results can only be retrieved when picking mode is false
 			if (this.pickResults != null && this.pickResults.length > 0) {

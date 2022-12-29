@@ -75,8 +75,11 @@ export class MyModel{
     }
 
     clone(){
-        const model = new MyModel(this.scene, this.objects);
+        const model = new MyModel(this.scene, []);
         for(let key in this){
+            if(key === "objects" || key === "scene"){
+                continue;
+            }
             model[key] = this[key];
         }
         for(let key in this.objects){
