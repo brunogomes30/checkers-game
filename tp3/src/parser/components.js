@@ -14,7 +14,7 @@ export function parseComponents(componentsNode, graph) {
     const componentNodes = componentsNode.children;
 
     graph.components = [];
-
+    graph.class_components = {};
     let grandChildren = [];
     if (componentNodes.length === 0) {
         return 'There is no components in the xml file.';
@@ -30,6 +30,9 @@ export function parseComponents(componentsNode, graph) {
         const componentID = graph.reader.getString(componentNodes[i], 'id');
         if (componentID === null)
             return "no ID defined for componentID";
+
+        // Get class of the current component.
+        const componentClass = graph.reader.getString(componentNodes[i], 'class', false);
 
         // Checks for repeated IDs.
         if (graph.components[componentID] !== undefined)
@@ -145,6 +148,14 @@ export function parseComponents(componentsNode, graph) {
         );
 
         graph.components[componentID] = component;
+        if (componentClass != null) {
+            const list = graph.class_components[componentClass];
+            if (list == undefined) {
+                graph.class_components[componentClass] = [component];
+            } else {
+                list.push(component);
+            }
+        }
     }
 
 

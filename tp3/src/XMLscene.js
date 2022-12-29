@@ -8,6 +8,7 @@ import { switchCamera } from './controllers/cameras.js'
 import { TextureScaleFactors } from './textures/TextureScaleFactors.js';
 import { ToonShader } from './toonShade/toonShader.js';
 import { TextRenderer } from './text/TextRenderer.js';
+import { BoardController } from './checkers/controller/BoardController.js';
 
 
 let FRAME_RATE = 60;
@@ -152,6 +153,8 @@ export class XMLscene extends CGFscene {
         buildInterface(this.interface, this);
 
         this.materialIndex = 0;
+        this.boardController = new BoardController(this, 8);
+        this.boardController.init();
     }
 
     /**
