@@ -90,7 +90,7 @@
         <model id="boardModel" file="board/board.obj" />
         <model id="whiteModel" file="piece/white.obj" />
         <model id="blackModel" file="piece/black.obj" />
-    </models>   
+    </models>
 
     <components>
         <component id="demoRoot">
@@ -143,5 +143,5 @@
         </component>
     </components>
 
-    
+
 </sxs>
