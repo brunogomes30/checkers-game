@@ -33,5 +33,11 @@ export class MyFragment extends CGFobject {
 	updateTexCoords(length_s, length_t){
 	
     }
+
+	clone(){
+		const clone = new MyFragment(this.scene, this.id, this);
+		clone.material = this.material;
+		return clone;
+	}
     
 }

@@ -51,4 +51,10 @@ export class Component{
     isDisplayed(){
         return this.animation === undefined ? true : this.animation.started;
     }
+
+    clone(){
+        const component = new Component(this.scene, this);
+        component.children = this.children.map(child => child.clone());
+        return component;
+    }
 }

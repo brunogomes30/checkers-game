@@ -87,4 +87,17 @@ export class MyObject{
 			this.fragments[i].disableNormalViz();
 		}
     }
+
+	clone(){
+		const object = new MyObject(this.scene, this.id, {
+			fragments: this.fragments
+		});
+        for(let key in this){
+            object[key] = this[key];
+        }
+		for(let i=0; i<this.fragments.length; i++){
+			object.fragments[i] = this.fragments[i].clone();
+		}
+		return object;
+	}
 }
