@@ -1,3 +1,4 @@
+import { dat } from '../../../lib/CGF.js'
 import { switchLight } from '../controllers/lights.js'
 import { switchCamera } from '../controllers/cameras.js'
 
@@ -39,7 +40,7 @@ function buildLightsFolder(ui, scene) {
 */
 function buildHighligthsFolder(ui, scene) {
     const folder = ui.gui.addFolder("Highlights");
-    Object.keys( scene.highlightedComponents).forEach(function (key, value) {
+    Object.keys(scene.highlightedComponents).forEach(function (key, value) {
         folder.add(scene.highlightedComponents, key).name(key).onChange(
             function () {
                 const component = scene.graph.components[key];
@@ -47,7 +48,7 @@ function buildHighligthsFolder(ui, scene) {
             }
         );
     });
-    
+
 }
 
 /**

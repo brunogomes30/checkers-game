@@ -17,7 +17,7 @@ export class MySceneGraph {
 
         // Establish bidirectional references between scene and graph.
         this.scene = scene;
-        scene.graph = this;
+
 
         this.nodes = [];
 
@@ -164,24 +164,12 @@ export class MySceneGraph {
             }
         }
 
-
-        for (let i = 0; i < this.textures.length; i++) {
-            const texture = this.textures[i];
-            this.scene.textures[texture.id] = texture.texture;
-        }
-
-        for (const component of Object.values(this.components)) {
-            if (component.highlight.hasHighlight)
-                this.scene.highlightedComponents[component.id] = true;
-        }
-
-        this.scene.cameras = this.cameras;
-        this.scene.defaultCameraId = this.defaultCameraId;
-        this.scene.enabledLights = this.enabledLights;
         // As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
         this.loadedOk = true;
         this.log("Scene graph parsing complete");
-        this.scene.onGraphLoaded();
+        if (this.selected) {
+            this.scene.onGraphLoaded()
+        }
     }
 
     /*
