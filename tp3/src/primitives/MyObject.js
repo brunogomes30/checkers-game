@@ -28,7 +28,6 @@ export class MyObject{
 	 * @param {Function} conditionFunction - Function that returns true if the model should be pickable. Accepts the fragment id as a parameter
 	 */
 	setPickable(pickable, conditionFunction){
-		console.log('então entra aqui ', this.id);
 		if(pickable && conditionFunction(this.id)){
 			this.pickable = true;
 		}

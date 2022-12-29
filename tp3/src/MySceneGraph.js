@@ -111,7 +111,6 @@ export class MySceneGraph {
 
             // Replace texture ids with texture objects
             if (component.texture != 'inherit' && component.texture != 'none') {
-                //console.log(component.texture, this.textures)
                 const textures = this.textures.filter(tex => tex.id == component.texture);
                 if (textures.length < 1) {
                     this.onXMLMinorError(`Texture with ID '${component.texture}' not found, Using default texture.`);
