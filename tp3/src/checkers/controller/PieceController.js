@@ -23,7 +23,6 @@ export class PieceController{
             component = this.scene.graph.getComponent('black-piece');
             break;
         }
-        console.log('component = ', component);
         component = Object.assign(Object.create(Object.getPrototypeOf(component)), component);
         const TILE_SIZE = 2 / 8;
         const START_X = -1 + TILE_SIZE / 2;
@@ -31,10 +30,6 @@ export class PieceController{
         //Offset the piece to the center of the tile
         const translationX = START_X + x * TILE_SIZE;
         const translationZ = START_Z + y * TILE_SIZE;
-        console.log('-----------------');
-        console.log('translationX = ', translationX);
-        console.log('translationZ = ', translationZ);
-        console.log('-----------------');
         const translation = mat4.create();
         mat4.translate(translation, translation, [translationX, 0, translationZ]);
         mat4.multiply(translation, translation, component.transformation);

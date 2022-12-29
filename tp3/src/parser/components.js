@@ -8,13 +8,13 @@ import { TextElement } from '../text/TextElement.js';
 /**
    * Parses the <components> block.
    * @param {XMLNode} componentsNode - The components block element.
-   * @param {SceneGraph} graph - The scene graph.
+   * @param {SceneGraph} sxsReader - The scene graph.
    */
-export function parseComponents(componentsNode, graph) {
+export function parseComponents(componentsNode, sxsReader) {
     const componentNodes = componentsNode.children;
 
-    graph.components = [];
-    graph.class_components = {};
+    let components = [];
+    let class_components = {};
     let grandChildren = [];
     if (componentNodes.length === 0) {
         return 'There is no components in the xml file.';
@@ -22,20 +22,20 @@ export function parseComponents(componentsNode, graph) {
     // Any number of components.
     for (let i = 0; i < componentNodes.length; i++) {
         if (componentNodes[i].nodeName !== "component") {
-            graph.onXMLMinorError("unknown tag <" + componentNodes[i].nodeName + ">");
+            sxsReader.graph.onXMLMinorError("unknown tag <" + componentNodes[i].nodeName + ">");
             continue;
         }
 
         // Get id of the current component.
-        const componentID = graph.reader.getString(componentNodes[i], 'id');
+        const componentID = sxsReader.reader.getString(componentNodes[i], 'id');
         if (componentID === null)
             return "no ID defined for componentID";
 
         // Get class of the current component.
-        const componentClass = graph.reader.getString(componentNodes[i], 'class', false);
+        const componentClass = sxsReader.reader.getString(componentNodes[i], 'class', false);
 
         // Checks for repeated IDs.
-        if (graph.components[componentID] !== undefined)
+        if (components[componentID] !== undefined)
             return "ID must be unique for each component (conflict: ID = " + componentID + ")";
 
         grandChildren = componentNodes[i].children;
@@ -56,33 +56,32 @@ export function parseComponents(componentsNode, graph) {
         if (transformationIndex == -1) {
             return `No transformations tag in component with ID = ${componentID}`
         }
-        const transfMatrix = parseTransformation(grandChildren[transformationIndex], graph, "component ID " + componentID, false)
+        const transfMatrix = parseTransformation(grandChildren[transformationIndex], sxsReader, "component ID " + componentID, false)
         if (typeof (transfMatrix) == 'string') {
             return transfMatrix;
         }
         // Materials
         const materialsNode = grandChildren[materialsIndex];
-        const materials = parseMaterials(graph, materialsNode, componentID, 'component');
+        const materials = parseMaterials(sxsReader, materialsNode, componentID, 'component');
         // Texture
         // <texture id="ss" length_s="ff" length_t="ff"/>        
         let textureNode = grandChildren[textureIndex]
-        let { texture, textureScaleFactor } = parseTexture(graph, textureNode, componentID, 'component');
+        let { texture, textureScaleFactor } = parseTexture(sxsReader, textureNode, componentID, 'component');
 
         let highlight = new Highlight();
         // Hightlight
         if (highlightIndex != -1) {
             const highlightNode = grandChildren[highlightIndex];
-            highlight.color = parseColor(highlightNode, ` highlight node in component "${componentID}"`, graph, false);
+            highlight.color = parseColor(highlightNode, ` highlight node in component "${componentID}"`, sxsReader, false);
             if (highlight.color instanceof String) {
                 return highlight.color;
             }
-            highlight.scale = graph.reader.getFloat(highlightNode, 'scale_h', false);
+            highlight.scale = sxsReader.reader.getFloat(highlightNode, 'scale_h', false);
             if (!(highlight.scale != null && !isNaN(highlight.scale))) {
                 return `unable to set scale_h of the hightlight node in component "${componentID}"`;
             }
             highlight.isActive = true;
             highlight.hasHighlight = true;
-            graph.scene.highlightedComponents[componentID] = true;
         }
 
         // Children
@@ -91,67 +90,64 @@ export function parseComponents(componentsNode, graph) {
         }
         const childrenNodes = grandChildren[childrenIndex].children;
         const componentChildren = [];
+        const primitiveChildren = [];
+        const modelChildren = [];
+        const textChildren = [];
         for (let i = 0; i < childrenNodes.length; i++) {
             const child = childrenNodes[i];
-            const id = graph.reader.getString(child, "id", false);
+            const id = sxsReader.reader.getString(child, "id", false);
             if (child.nodeName === 'primitiveref') {
-                if (graph.primitives[id] === undefined) {
-                    graph.onXMLMinorError(`Primitive "${id}" not found in component "${componentID}"`);
-                    continue;
-                }
-                componentChildren.push(graph.primitives[id]);
+                primitiveChildren.push(id);
             } else if (child.nodeName === 'componentref') {
                 componentChildren.push(id);
             } else if (child.nodeName === 'modelref') {
-                const model = graph.models[id];
-                if (model instanceof String) {
-                    return `Error parsing model "${id}" in component "${componentID}"`;
-                }
-                componentChildren.push(model);
+                modelChildren.push(id);
             } else if(child.nodeName === 'text'){
-                const text = graph.reader.getString(child, "value");
+                const text = sxsReader.reader.getString(child, "value");
                 if(text === null){
                     return `Error parsing text in component "${componentID}"`;
                 }
-                componentChildren.push(new TextElement(graph.scene, text));
+                textChildren.push(new TextElement(sxsReader.graph.scene, text));
             } else {
-                graph.onXMLMinorError(`unknown tag <${child.nodeName}>`);
+                sxsReader.graph.onXMLMinorError(`unknown tag <${componentNodes[i].nodeName}>`);
             }
 
         }
+        
         // Animation
         // <animation id="ss" />
         let animationId = null;
         let animation = undefined;
+        
         if (animationIndex !== -1) {
-            animationId = graph.reader.getString(grandChildren[animationIndex], "id", false);
+            animationId = sxsReader.reader.getString(grandChildren[animationIndex], "id", false);
 
             if (animationId !== null && animationId !== 'none' && animationId !== '') {
-                if (animationId in graph.animations) {
-                    animation = graph.animations[animationId];
-                } else {
-                    graph.onXMLMinorError(`Animation with ID '${animationId}' not found, continuing without animation.`);
-                }
+                animation = animationId;
             }
         }
 
 
-        const component = new Component(graph.scene, {
+        const component = new Component(sxsReader.graph.scene, {
+            id: componentID,
             transformation: transfMatrix,
             materials: materials,
             texture: texture,
             textureScaleFactor: textureScaleFactor,
-            children: componentChildren,
+            primitiveChildren: primitiveChildren,
+            componentChildren: componentChildren,
+            modelChildren: modelChildren,
+            textChildren: textChildren,
             animation: animation,
             highlight: highlight
         }
         );
 
-        graph.components[componentID] = component;
+        components[componentID] = component;
         if (componentClass != null) {
-            const list = graph.class_components[componentClass];
+            const list = class_components[componentClass];
             if (list == undefined) {
-                graph.class_components[componentClass] = [component];
+                class_components[componentClass] = [component];
             } else {
                 list.push(component);
             }
@@ -160,13 +156,13 @@ export function parseComponents(componentsNode, graph) {
 
 
     // Change all component reference strings to the component reference
-    for (const key in graph.components) {
-        const component = graph.components[key];
+    for (const key in components) {
+        const component = components[key];
         for (const childKey in component.children) {
             const child = component.children[childKey];
             if (typeof child === 'string') {
                 if (graph.components[child] != undefined) {
-                    component.children[childKey] = graph.components[child];
+                    component.children[childKey] = components[child];
                 }
                 else {
                     return `Unable to find referenced component '${child}' in component '${key}'`
@@ -175,5 +171,7 @@ export function parseComponents(componentsNode, graph) {
         }
     }
 
+    sxsReader.attributes.set('components', components);
+    sxsReader.attributes.set('class_components', class_components);
     return null;
 }

@@ -1,43 +1,44 @@
 /**
  * Parses the <primitives> block.
  * @param {XMLNode} primitivesNode - The primitives block element.
- * @param {MySceneGraph} graph - The scene graph.
+ * @param {MySceneGraph} sxsReader - The scene graph.
  */
-export function parsePrimitives(primitivesNode, graph) {
+export function parsePrimitives(primitivesNode, sxsReader) {
     const children = primitivesNode.children;
     if (children.length == 0) {
         return 'No primitives defined'
     }
 
-    graph.primitives = [];
+    let primitives = [];
 
     // Any number of primitives.
     for (let i = 0; i < children.length; i++) {
 
         if (children[i].nodeName != "primitive") {
-            graph.onXMLMinorError(`unknown tag <${children[i].nodeName}>`);
+            sxsReader.graph.onXMLMinorError(`unknown tag <${children[i].nodeName}>`);
             continue;
         }
 
         // Get id of the current primitive.
-        const primitiveId = graph.reader.getString(children[i], 'id');
+        const primitiveId = sxsReader.reader.getString(children[i], 'id');
         if (primitiveId == null || primitiveId == '') {
             return "no ID defined for primitive in <primitives> block";
         }
 
         // Checks for repeated IDs.
-        if (graph.primitives[primitiveId] != null) {
+        if (primitives[primitiveId] != null) {
             return `ID must be unique for each primitive (conflict: ID = ${primitiveId})`;
         }
         // Specifications for the current primitive.
 
-        const primitive = graph.factory.build(children[i], graph.reader, graph.scene);
+        const primitive = sxsReader.graph.factory.build(children[i], sxsReader.reader, sxsReader.graph.scene);
         if (typeof primitive === 'string') {
             return primitive;
         }
-        graph.primitives[primitiveId] = primitive;
+        primitives[primitiveId] = primitive;
     }
 
-    graph.log("Parsed primitives");
+    sxsReader.graph.log("Parsed primitives");
+    sxsReader.attributes.set('primitives', primitives);
     return;
 }

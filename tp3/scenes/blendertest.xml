@@ -87,9 +87,13 @@
     </primitives>
 
     <models>
+<<<<<<< HEAD
         <model id="boardModel" file="board/board.obj" />
         <model id="whiteModel" file="piece/white_promoted.obj" />
         <model id="blackModel" file="piece/black.obj" />
+=======
+        <model id="testModel" file="cube/cubeTex.obj" />
+>>>>>>> origin
     </models>   
 
     <components>
@@ -98,7 +102,7 @@
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="demoTexture" />
+            <texture id="camoTexture" />
             <children>
                 <componentref id="board" />
                 <componentref id="white" />
@@ -110,8 +114,9 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="camoTexture" />
             <children>
+<<<<<<< HEAD
                 <modelref id="boardModel" />
 
             </children>
@@ -141,6 +146,9 @@
             <children>
                 <modelref id="blackModel" />
 
+=======
+                <modelref id="testModel" />
+>>>>>>> origin
             </children>
         </component>
     </components>
