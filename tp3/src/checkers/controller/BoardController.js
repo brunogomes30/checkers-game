@@ -41,6 +41,7 @@ export class BoardController {
                 }
             }
         }
+        console.log(this.board);
 
         this.addEventsToGraph();
     }
@@ -60,6 +61,7 @@ export class BoardController {
     }
 
     handleBoardClick(element){
+        
         console.log('Board click: ' + element.id);
         if(this.pieceController.hasPieceSelected()){
             //this.pieceController.movePiece(this.selectedPiece, y, x);
@@ -67,7 +69,9 @@ export class BoardController {
     }
 
     handlePieceClick(element){
-        console.log('Piece click: ' + element.pieceComponent.id);
+        const className = element.className;
+        const component = element.pieceComponent;
+        console.log('Piece click: ' + className + ' ' + component.id);
         if(this.selectedPiece != null){
             //this.pieceController.stopIdleAnimation(this.selectedPiece);
         }

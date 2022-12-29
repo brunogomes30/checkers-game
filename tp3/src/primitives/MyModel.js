@@ -45,7 +45,6 @@ export class MyModel{
     }
 
     display() {
-        
         Object.keys(this.objects).forEach((key) => {
             const object = this.objects[key];
             const material = object.material;
@@ -73,6 +72,23 @@ export class MyModel{
         Object.keys(this.objects).forEach((key) => {
             this.objects[key].disableNormalViz();
         });
+    }
+
+    clone(){
+        const model = new MyModel(this.scene, []);
+        for(let key in this){
+            if(key === "objects" || key === "scene"){
+                continue;
+            }
+            model[key] = this[key];
+        }
+        for(let key in this.objects){
+            model.objects[key] = this.objects[key].clone();
+        }
+        model.materials = this.materials;
+        model.texture = this.texture;
+        model.textureScaleFactor = this.textureScaleFactor;
+        return model;
     }
 
 
