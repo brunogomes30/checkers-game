@@ -50,7 +50,11 @@ export class BoardController {
             this.handleBoardClick(component);
         });
 
-        this.scene.graph.addEvent('piece-click', (component) => {
+        this.scene.graph.addEvent('white-piece-click', (component) => {
+            this.handlePieceClick(component);
+        });
+
+        this.scene.graph.addEvent('black-piece-click', (component) => {
             this.handlePieceClick(component);
         });
     }
@@ -63,6 +67,7 @@ export class BoardController {
     }
 
     handlePieceClick(element){
+        console.log('Piece click: ' + element.pieceComponent.id);
         if(this.selectedPiece != null){
             //this.pieceController.stopIdleAnimation(this.selectedPiece);
         }

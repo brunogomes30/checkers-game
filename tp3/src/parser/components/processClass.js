@@ -5,6 +5,12 @@ export function processClass(className, component){
         case 'board':
             processBoard(component);
             break;
+        case 'white-piece':
+            processPiece(component, className);
+            break;
+        case 'black-piece':
+            processPiece(component, className);
+            break;
         default:
             return;
     }
@@ -21,4 +27,17 @@ function processBoard(component){
             }
         });
     }
+}
+
+function processPiece(component, className){
+    //Bloat the piece
+    console.log('Bloating piece: ' + component);
+    component.children.forEach(child => {
+        if(child instanceof MyModel){
+            //set all tiles to pickable
+            child.setPickable(true);
+            child.setClass(className);
+            child.genericSet('pieceComponent', component);
+        }
+    });
 }

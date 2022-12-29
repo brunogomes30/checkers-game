@@ -35,6 +35,15 @@ export class MyModel{
         });
     }
 
+    genericSet(attributeName, value, conditionFunction){
+        if (conditionFunction == undefined) {
+            conditionFunction = () => { return true; };
+        }
+        Object.keys(this.objects).forEach((key) => {
+            this.objects[key].genericSet(attributeName, value, conditionFunction);
+        });
+    }
+
     display() {
         
         Object.keys(this.objects).forEach((key) => {

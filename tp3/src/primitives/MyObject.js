@@ -39,6 +39,12 @@ export class MyObject{
 		}
 	}
 
+	genericSet(attributeName, value, conditionFunction){
+		if(conditionFunction(this.id)){
+			this[attributeName] = value;
+		}
+	}
+
 
 
 	display(){
