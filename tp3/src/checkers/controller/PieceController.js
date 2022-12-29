@@ -40,8 +40,6 @@ export class PieceController{
         component.id = 'piece-' + y + '-' + x;
         processClass(className, component);
         // Add the component to the scene graph
-        console.log("Original component: " , originalComponent);
-        console.log("Cloned component: " , component);
         this.scene.graph.addComponent(board.component, component);
         console.log(board.component);
 

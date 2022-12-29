@@ -188,10 +188,15 @@ export class MySceneGraph {
 
         this.activeCameraId = this.defaultCameraId
         buildInterface(this.scene.interface, this);
-
+        
+        
+        
         if (this.selected) {
-            this.scene.onGraphLoaded()
+            console.log('Entrou aqui');
+            this.scene.onGraphLoaded() 
         }
+        
+        
     }
 
     /*
@@ -268,6 +273,8 @@ export class MySceneGraph {
     }
 
     addComponent(parent, component) {
+        console.log("Adding component " + component.id + " to parent " + parent.id);
+        console.log("is selected" + component.isSelected);
         this.components[component.id] = component;
         parent.children.push(component);
     }
@@ -282,14 +289,4 @@ export class MySceneGraph {
         return component;
     }
 
-    addEvent(eventName, callback){
-        this.events[eventName] = callback;
-    }
-
-    triggerEvent(eventName, args) {
-        const event = this.events[eventName];
-        if(event != undefined){
-            event(args);
-        }
-    }
 }

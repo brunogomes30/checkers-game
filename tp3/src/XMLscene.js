@@ -69,6 +69,7 @@ export class XMLscene extends CGFscene {
         this.startTime = null;
         this.textures = {};
         this.highlightedComponents = [];
+        this.eventHandlers = {};
     }
 
     /**
@@ -169,8 +170,9 @@ export class XMLscene extends CGFscene {
         this.setPickEnabled(true);
 
         this.materialIndex = 0;
-        this.boardController = new BoardController(this, 8);
-        this.boardController.init();
+        console.log('Scene loaded');
+        this.triggerEvent('graphLoaded', null);    
+        
     }
 
     /**
@@ -410,7 +412,7 @@ export class XMLscene extends CGFscene {
                         continue;
                     }
                     const component = this.pickResults[i][0];
-                    pickHandler(component, this.graph);
+                    pickHandler(component, this);
 				}
 				this.pickResults.splice(0,this.pickResults.length);
 			}		
@@ -423,6 +425,18 @@ export class XMLscene extends CGFscene {
         this.pickShader.setUniformsValues({ uPickColor: colorId });
         super.registerForPick(this.pickId++, obj);
         
+    }
+
+    addEvent(eventName, callback){
+        this.eventHandlers[eventName] = callback;
+    }
+
+    triggerEvent(eventName, args) {
+        console.log('Triggering event ' + eventName + ' with args ' + args + '.');
+        const eventHandler = this.eventHandlers[eventName];
+        if(eventHandler != undefined){
+            eventHandler(args);
+        }
     }
 
 }

@@ -12,7 +12,25 @@ export class BoardController {
         this.checkersBoard = new CheckersBoard(scene, size, boardComponent);
     }
 
-    init() {
+    loadNewBoard(board){
+        if(board != undefined){
+            this.board = board;
+        }
+        const boardComponent = this.scene.graph.getComponent('board');
+        this.checkersBoard.component = boardComponent;
+        console.log(this);
+        for(let y=0; y<this.ysize; y++){
+            for(let x=0; x<this.xsize; x++){
+                const tile = this.board[y][x];
+                if(tile.piece != null){
+                    const component = this.pieceController.generatePieceComponent(this.checkersBoard, tile.piece.color, y, x);
+                    tile.piece = new CheckersPiece(this.scene, tile.piece.color, component);
+                }
+            }
+        }
+    }
+
+    createBoard() {
         this.board = [];
 
         for (let y = 0; y < this.ysize; y++) {
@@ -36,26 +54,23 @@ export class BoardController {
                     }
                 }
                 if(createPiece){
-                    const component = this.pieceController.generatePieceComponent(this.checkersBoard, color, y, x);
-                    this.board[y][x].piece = new CheckersPiece(this.scene, color, component);
+                    this.board[y][x].piece = new CheckersPiece(this.scene, color, null);
                 }
             }
         }
-        console.log(this.board);
-
         this.addEventsToGraph();
     }
 
     addEventsToGraph(){
-        this.scene.graph.addEvent('tile-click', (component) => {
+        this.scene.addEvent('tile-click', (component) => {
             this.handleBoardClick(component);
         });
 
-        this.scene.graph.addEvent('white-piece-click', (component) => {
+        this.scene.addEvent('white-piece-click', (component) => {
             this.handlePieceClick(component);
         });
 
-        this.scene.graph.addEvent('black-piece-click', (component) => {
+        this.scene.addEvent('black-piece-click', (component) => {
             this.handlePieceClick(component);
         });
     }

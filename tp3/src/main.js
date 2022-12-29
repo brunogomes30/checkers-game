@@ -3,6 +3,7 @@ import { XMLscene } from './XMLscene.js';
 import { MyInterface } from './MyInterface.js';
 import { MySceneGraph } from './MySceneGraph.js';
 import { buildDebugFolder } from './interface/build.js';
+import { GameController } from './checkers/controller/GameController.js';
 
 function getUrlVars() {
     var vars = {};
@@ -24,6 +25,7 @@ function main() {
     const app = new CGFapplication(document.body);
     const myInterface = new MyInterface();
     const myScene = new XMLscene(myInterface);
+    
 
     app.init();
 
@@ -35,10 +37,10 @@ function main() {
 
     const sceneGraphs = [];
     sceneGraphs[filename] = new MySceneGraph(filename, myScene);
-    sceneGraphs['room'] = new MySceneGraph('demo.xml', myScene, 'room');
+    sceneGraphs['room'] = new MySceneGraph('gametest.xml', myScene, 'room');
     
     
-    sceneGraphs['blendertest'] = new MySceneGraph('blendertest.xml', myScene, 'blendertest');
+    //sceneGraphs['blendertest'] = new MySceneGraph('blendertest.xml', myScene, 'blendertest');
 
 
     const currentGraph = { value: Object.keys(sceneGraphs)[0] };
@@ -51,7 +53,7 @@ function main() {
         myScene.onGraphLoaded();
     });
 
-    // start
+    const gameController = new GameController(myScene);
     app.run();
 }
 
