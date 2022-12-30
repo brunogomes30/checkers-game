@@ -3,7 +3,7 @@ import { renderElement } from './components/renderElement.js';
 import { SXSReader } from './parser/SXSReader.js';
 import { buildInterface } from './interface/build.js';
 import { processClass } from './parser/components/processClass.js';
-
+import { MyKeyframeAnimation } from './animations/MyKeyframeAnimation.js';
 /**
  * MySceneGraph class, representing the scene graph.
  * @constructor
@@ -287,6 +287,22 @@ export class MySceneGraph {
         }
         const component = list[0];
         return component;
+    }
+
+
+    cloneAnimation(animationId, newId){
+        const animation = this.animations[animationId];
+        const newAnimation = new MyKeyframeAnimation(this.scene, newId, animation.keyframes, animation.speed, animation.isLooping);
+        this.animations[newId] = newAnimation;
+        return newAnimation;
+    }
+
+    stopAnimation(animation){
+        this.animations[animation.id].isLooping = false;
+    }
+
+    removeAnimation(animation){
+        delete this.animations[animation.id];
     }
 
 }

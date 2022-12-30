@@ -1,3 +1,5 @@
+import { MyAnimation } from "../../animations/MyAnimation.js";
+import { MyKeyframeAnimation } from "../../animations/MyKeyframeAnimation.js";
 import { processClass } from "../../parser/components/processClass.js";
 
 export class PieceController{
@@ -44,5 +46,19 @@ export class PieceController{
         console.log(board.component);
 
         return component;
+    }
+
+
+    stopIdleAnimation(piece){
+        const animation = piece.pieceComponent.animation;
+        if(animation != undefined){
+            this.scene.graph.stopAnimation(animation);
+        }
+    }
+
+    startIdleAnimation(piece){
+        //const animation = new MyKeyframeAnimation(this.scene, 'idle-animation', keyframes);
+        const animation = this.scene.graph.cloneAnimation('piece-selected', 'piece-selected-' + piece.pieceComponent.id);
+        piece.pieceComponent.animation = animation;
     }
 }

@@ -26,6 +26,16 @@ export function parseAnimations(animationsNode, sxsReader) {
         if (animationID == 'none')
             return "'none' is not a valid ID for an animation";
 
+        let speed = sxsReader.reader.getFloat(animation, 'animation-speed', false);
+        if (!(speed != null && !isNaN(speed))) {
+            speed = 1;
+        }
+
+        let isLooping = sxsReader.reader.getBoolean(animation, 'loop', false);
+        if (!(isLooping != null && !isNaN(speed))) {
+            isLooping = false;
+        }
+
         // Checks for repeated IDs.
         if (animationID in animations)
             return "ID must be unique for each animation (conflict: ID = " + animationID + ")";
@@ -37,7 +47,7 @@ export function parseAnimations(animationsNode, sxsReader) {
         if (typeof (keyframes) == 'string') {
             return keyframes;
         }
-        animations[animationID] = new MyKeyframeAnimation(sxsReader.graph.scene, animationID, keyframes);
+        animations[animationID] = new MyKeyframeAnimation(sxsReader.graph.scene, animationID, keyframes, speed, isLooping);
 
     }
 
@@ -82,6 +92,11 @@ export function parseKeyframeAnimation(animationNode, sxsReader, errorMsg) {
             return "unable to parse keyframe instant of animation with " + errorMsg;
         }
 
+        let functionName = sxsReader.reader.getString(animationNode.children[keyframe], 'function', false);
+        if (functionName == undefined) {
+            functionName = 'linear';
+        }
+
         if (lastInstant != null && instant <= lastInstant) {
             return "keyframe instant must be greater than the previous one; error in animation with " + errorMsg;
         }
@@ -117,7 +132,10 @@ export function parseKeyframeAnimation(animationNode, sxsReader, errorMsg) {
             keyframe_description.push(matrix);
         }
 
-        keyframes[instant] = keyframe_description;
+        keyframes[instant] = {
+            values: keyframe_description,
+            functionName: functionName
+        };
     }
 
     return keyframes;
