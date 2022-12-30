@@ -2,6 +2,7 @@ import { CheckersBoard } from "../model/CheckersBoard.js";
 import { PieceController } from "./PieceController.js";
 import { CheckersPiece } from "../model/CheckersPiece.js";
 import { CheckersTile } from "../model/CheckersTile.js";
+import { LogicController } from "./LogicController.js";
 export class BoardController {
     constructor(scene, size) {
         this.scene = scene;
@@ -10,24 +11,27 @@ export class BoardController {
         this.pieceController = new PieceController(scene);
         const boardComponent = this.scene.graph.getComponent('board');
         this.checkersBoard = new CheckersBoard(scene, size, boardComponent);
+        this.logicController = new LogicController();
     }
 
-    loadNewBoard(board){
-        if(board != undefined){
+    loadNewBoard(board) {
+        if (board != undefined) {
             this.board = board;
         }
+
         const boardComponent = this.scene.graph.getComponent('board');
         this.checkersBoard.component = boardComponent;
-        console.log(this);
-        for(let y=0; y<this.ysize; y++){
-            for(let x=0; x<this.xsize; x++){
+        for (let y = 0; y < this.ysize; y++) {
+            for (let x = 0; x < this.xsize; x++) {
                 const tile = this.board[y][x];
-                if(tile.piece != null){
+                if (tile.piece != null) {
                     const component = this.pieceController.generatePieceComponent(this.checkersBoard, tile.piece.color, y, x);
                     tile.piece = new CheckersPiece(this.scene, tile.piece.color, component);
                 }
             }
         }
+
+        this.logicController.start()
     }
 
     createBoard() {
@@ -53,15 +57,15 @@ export class BoardController {
                         color = 'black';
                     }
                 }
-                if(createPiece){
+                if (createPiece) {
                     this.board[y][x].piece = new CheckersPiece(this.scene, color, null);
                 }
             }
         }
-        this.addEventsToGraph();
+        this.addEventsToScene();
     }
 
-    addEventsToGraph(){
+    addEventsToScene() {
         this.scene.addEvent('tile-click', (component) => {
             this.handleBoardClick(component);
         });
@@ -75,24 +79,43 @@ export class BoardController {
         });
     }
 
-    handleBoardClick(element){
-        
+    handleBoardClick(element) {
+
         console.log('Board click: ' + element.id);
-        if(this.pieceController.hasPieceSelected()){
+        if (this.logicController.state != 'tileSelection') {
+            console.log('Invalid state: ' + this.logicController.state + ' -> process move');
+            return;
+        }
+
+        this.selectedTile = element;
+
+        if (this.logicController.processMove(this.selectedTile)) {
+            console.log('Valid move');
             //this.pieceController.movePiece(this.selectedPiece, y, x);
+        } else {
+            console.log('Invalid move');
         }
     }
 
-    handlePieceClick(element){
+    handlePieceClick(element) {
         const className = element.className;
         const component = element.pieceComponent;
         console.log('Piece click: ' + className + ' ' + component.id);
-        if(this.selectedPiece != null){
+
+        if (this.selectedPiece != null) {
             //this.pieceController.stopIdleAnimation(this.selectedPiece);
         }
+        
+        if(!this.logicController.selectTile(this.board, element)){
+            console.log('Invalid selection');
+            return;
+        }
+        
         this.selectedPiece = element;
         //this.pieceController.startIdleAnimation(this.selectedPiece);
-
+        
+        // Stop highlighting previous valid moves
+        this.validMoves = this.logicController.getValidMoves();
+        // Display new valid moves 
     }
-
 }

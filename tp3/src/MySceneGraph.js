@@ -273,8 +273,6 @@ export class MySceneGraph {
     }
 
     addComponent(parent, component) {
-        console.log("Adding component " + component.id + " to parent " + parent.id);
-        console.log("is selected" + component.isSelected);
         this.components[component.id] = component;
         parent.children.push(component);
     }

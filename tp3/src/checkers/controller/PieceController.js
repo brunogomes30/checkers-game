@@ -7,14 +7,6 @@ export class PieceController{
         this.selectedPiece = null;
     }
 
-    hasPieceSelected(){
-        return this.selectedPiece != null;
-    }
-
-    handlePieceClick(piece){
-        this.selectedPiece = piece;
-    }
-
     generatePieceComponent(board, color, y, x){
         let className;
         switch(color){
@@ -41,7 +33,6 @@ export class PieceController{
         processClass(className, component);
         // Add the component to the scene graph
         this.scene.graph.addComponent(board.component, component);
-        console.log(board.component);
 
         return component;
     }
