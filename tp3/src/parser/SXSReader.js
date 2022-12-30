@@ -194,6 +194,14 @@ export class SXSReader {
                         this.graph.enabledLights[light] = attribute[1][light];
                     }
                     break;
+                case 'class_lights':
+                    for(const value of Object.keys(attribute[1])) {
+                        if(value in this.graph.class_components) {
+                            this.graph.class_lights[value].push(...attribute[1][value]);
+                        } else {
+                            this.graph.class_lights[value] = attribute[1][value];
+                        }
+                    }
 
                 default:
                     break;

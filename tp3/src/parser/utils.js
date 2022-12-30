@@ -3,24 +3,45 @@
  * @param {XMLNode} node - the node to parse
  * @param {String} messageError - message to be displayed in case of error
  */
-export function parseCoordinates3D(node, messageError, graph) {
+export function parseCoordinates3D(node, messageError, graph, params) {
     const position = [];
-
+    const acceptsParams = params != undefined;
+    console.log('acceptsParams: ' + acceptsParams);
     // x
-    const x = graph.reader.getFloat(node, 'x', false);
+    let x = graph.reader.getFloat(node, 'x', false);
     if (!(x != null && !isNaN(x)))
-        return "unable to parse x-coordinate of the " + messageError;
+        if(acceptsParams){
+            x = graph.reader.getString(node, 'x', false);
+            if(x == null || !Object.keys(params).includes(x))
+                return "unable to parse x-coordinate of the " + messageError;
+        } else {
+            return "unable to parse x-coordinate of the " + messageError;
+        }
 
     // y
-    const y = graph.reader.getFloat(node, 'y', false);
-    if (!(y != null && !isNaN(y)))
-        return "unable to parse y-coordinate of the " + messageError;
+    let y = graph.reader.getFloat(node, 'y', false);
+    if (!(y != null && !isNaN(y))){
+        if(acceptsParams){
+            y = graph.reader.getString(node, 'y', false);
+            if(y == null || !Object.keys(params).includes(y))
+                return "unable to parse y-coordinate of the " + messageError;
+        } else {
+            return "unable to parse y-coordinate of the " + messageError;
+        }
+    }
+        
 
     // z
-    const z = graph.reader.getFloat(node, 'z', false);
-    if (!(z != null && !isNaN(z)))
-        return "unable to parse z-coordinate of the " + messageError;
-
+    let z = graph.reader.getFloat(node, 'z', false);
+    if (!(z != null && !isNaN(z))){
+        if(acceptsParams){
+            z = graph.reader.getString(node, 'z', false);
+            if(z == null || !Object.keys(params).includes(z))
+                return "unable to parse z-coordinate of the " + messageError;
+        } else {
+            return "unable to parse z-coordinate of the " + messageError;
+        }
+    }
     position.push(...[x, y, z]);
 
     return position;

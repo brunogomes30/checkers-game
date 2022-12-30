@@ -9,12 +9,24 @@ export class PieceController{
         this.selectedPiece = null;
     }
 
-    hasPieceSelected(){
-        return this.selectedPiece != null;
-    }
 
     handlePieceClick(piece){
         this.selectedPiece = piece;
+    }
+
+    movePiece(piece, y, x){
+        console.log('ola');
+        this.stopIdleAnimation(piece, () => {
+            const animation = this.scene.graph.cloneAnimation('piece-move', 'piece-move-' + piece.pieceComponent.id, {
+                'posx': x,
+                'posz': y
+            });
+            piece.pieceComponent.animation = animation;
+            this.scene.graph.stopAnimation(animation, () => {
+                animation.applyToComponent(piece.pieceComponent);
+            });
+        });
+        
     }
 
     generatePieceComponent(board, color, y, x){
@@ -49,18 +61,20 @@ export class PieceController{
     }
 
 
-    stopIdleAnimation(piece){
+    stopIdleAnimation(piece, callback = undefined){
         const animation = piece.pieceComponent.animation;
         if(animation != undefined){
             this.scene.graph.stopAnimation(animation, () => {
                 //Function called after the animation is finished
                 piece.pieceComponent.animation = undefined;
+                if(callback != undefined){
+                    callback();
+                }
             });
         }
     }
 
     startIdleAnimation(piece){
-        //const animation = new MyKeyframeAnimation(this.scene, 'idle-animation', keyframes);
         const animation = this.scene.graph.cloneAnimation('piece-selected', 'piece-selected-' + piece.pieceComponent.id);
         piece.pieceComponent.animation = animation;
     }

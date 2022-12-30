@@ -15,6 +15,8 @@ export function parseLights(lightsNode, sxsReader) {
     let grandChildren = [];
     let nodeNames = [];
 
+    const class_lights = {};
+
     // Any number of lights.
     for (let i = 0; i < children.length; i++) {
 
@@ -37,6 +39,11 @@ export function parseLights(lightsNode, sxsReader) {
         const lightId = sxsReader.reader.getString(children[i], 'id', false);
         if (lightId == null)
             return "no ID defined for light";
+
+        const className = sxsReader.reader.getString(children[i], 'piece-spotlight', false);
+        
+
+
 
         // Checks for repeated IDs.
         if (lights[lightId] != null)
@@ -138,6 +145,13 @@ export function parseLights(lightsNode, sxsReader) {
         lights[lightId] = global;
         enabledLights[lightId] = enableLight;
         numLights++;
+
+        if (className != null) {
+            if (class_lights[className] == null) {
+                class_lights[className] = [global];
+            }
+            class_lights[className].push(global);
+        }
     }
 
     if (numLights == 0)
@@ -148,5 +162,6 @@ export function parseLights(lightsNode, sxsReader) {
     sxsReader.graph.log("Parsed lights");
     sxsReader.attributes.set("lights", lights);
     sxsReader.attributes.set("enabledLights", enabledLights);
+    sxsReader.attributes.set("class_lights", class_lights);
     return null;
 }

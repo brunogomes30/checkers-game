@@ -11,31 +11,70 @@ import { MyAnimation } from "./MyAnimation.js";
  * @extends MyAnimation
  * */
 export class MyKeyframeAnimation extends MyAnimation {
-    constructor(scene, id, keyframes, speed, isLooping) {
+    constructor(scene, id, keyframes, speed, isLooping, params) {
         const keys = Object.keys(keyframes);
         super(scene, id, keys[0], keys[keys.length - 1])
-        this.keyframes = keyframes;
-        this.lastKeyFrameTime = this.startTime;
-        this.previousTransformations = this.keyframes[this.startTime]['values'];
-
-        if (keys.length > 1) {
-            this.nextKeyFrameTime = keys[keys.indexOf(this.startTime) + 1];
-        } else {
-            this.nextKeyFrameTime = null;
+        this.keyframeTimes = [];
+        for(let i=0; i<keys.length; i++){
+            const obj = {
+                time: parseFloat(keys[i]),
+                keyframe: keyframes[keys[i]]
+            }
+            this.keyframeTimes.push(obj);
         }
-        this.nextTransformations = this.keyframes[this.nextKeyFrameTime]['values'];
-        this.currentFunction = this.keyframes[this.nextKeyFrameTime]['functionName'];
+        this.keyframeTimes.sort((a,b) => a.time-b.time);
+        
+        this.keyframes = keyframes;
+
+        this.index = 0;
+        this.advanceKeyframe();
+        
         this.nloops = 0;
         this.animationTime = 0;
         this.speed = speed;
         this.isLooping = isLooping;
         this.willRemove = false;
+        this.params = params;
+    }
+
+    clone(id) {
+        return new MyKeyframeAnimation(this.scene, id, this.keyframes, this.speed, this.isLooping, this.params);
+    }
+
+    setParameter(name, value){
+        this.params[name] = value;
+    }
+
+    applyParameters(){
+        for(const key in this.params){
+            const keys = Object.keys(this.keyframes);
+            for(let j=0;j<keys.length; j++){
+                const keyFrameKey = keys[j];
+                if(keyFrameKey === 'length'){
+                    continue;
+                }
+                const keyFrame = this.keyframes[keyFrameKey];
+                for(let i=0; i<keyFrame.values.length; i++){
+                    const array = keyFrame.values[i];
+                    for(let k=0; k<array.length; k++){
+                        if(array[k] === key){
+                            array[k] = this.params[key];
+                        }
+                    }
+                }
+            }
+        }
     }
 
     stopAnimation(callback){
         this.willRemove = true;
         this.isLooping = false;
         this.removeCallBack = callback;
+    }
+
+    applyToComponent(component){
+        mat4.multiply(component.transformation, this.currentMatrix, component.transformation);
+        component.animation = undefined;
     }
 
     /**
@@ -48,29 +87,28 @@ export class MyKeyframeAnimation extends MyAnimation {
         this.animationTime += timeDelta * this.speed;
         timeDelta = this.animationTime;
         const keyFramesKeys = Object.keys(this.keyframes);
-        const lastKeyFramesKey = keyFramesKeys[keyFramesKeys.length - 1];
-        if (timeDelta > lastKeyFramesKey) {
+        const animationEnd = this.keyframeTimes[this.keyframeTimes.length - 1].time;
+        if (timeDelta > animationEnd) {
             this.animationTime = 0;
+            this.currentMatrix = this.calculateMatrix(this.previousTransformations, this.nextTransformations, 1);
             //Made new loop
             this.nloops++;
             if(this.isLooping){
-                this.lastKeyFrameTime = keyFramesKeys[0];
-                this.previousTransformations = this.keyframes[this.lastKeyFrameTime]['values'];
+                this.lastKeyFrameTime = this.keyframeTimes[0];
+                this.previousTransformations = this.keyframeTimes[0].keyframe.values;
                 if (keyFramesKeys.length > 1) {
-                    this.nextKeyFrameTime = keyFramesKeys[1];
-                    this.nextTransformations = this.keyframes[this.nextKeyFrameTime]['values'];
-                    this.currentFunction = this.keyframes[this.nextKeyFrameTime]['functionName'];
+                    this.advanceKeyframe();
                 }
             } else if(this.willRemove){
                 this.removeCallBack(this);
             }
         }
         if (this.scene.isLooping) {
-            timeDelta %= lastKeyFramesKey;
+            timeDelta %= animationEnd;
         } else {
-            if (timeDelta > lastKeyFramesKey) {
+            if (timeDelta > animationEnd) {
                 //Stay at last keyframe when animation is over and isn't looping
-                timeDelta = lastKeyFramesKey;
+                timeDelta = animationEnd;
                 return;
             }
 
@@ -98,34 +136,47 @@ export class MyKeyframeAnimation extends MyAnimation {
         
         if (t > 1) {
             //Last frame in current keyframe
-            let newIndex = keyFramesKeys.indexOf(this.nextKeyFrameTime) + 1;
-            this.previousTransformations = this.nextTransformations;
-            this.lastKeyFrameTime = this.nextKeyFrameTime;
-            this.nextKeyFrameTime = keyFramesKeys[newIndex];
-            this.nextTransformations = this.keyframes[this.nextKeyFrameTime]['values'];
-            this.currentFunction = this.keyframes[this.nextKeyFrameTime]['functionName'];
+            this.advanceKeyframe();
             t = 0;
         }
         t = getFunction(this.currentFunction)(t, duration);
+        if(t > 1){
+            t = 1;
+        }
 
-        // calculate matrix
-        let matrix = mat4.create();
-        let translation = vec3.create();
-        vec3.lerp(translation, this.previousTransformations[0], this.nextTransformations[0], t);
+        this.currentMatrix = this.calculateMatrix(this.previousTransformations, this.nextTransformations, t);
+    }
+    
+    calculateMatrix(previousMatrix, nextMatrix, t) {
+        const matrix = mat4.create();
+        const translation = vec3.create();
+        vec3.lerp(translation, previousMatrix[0], nextMatrix[0], t);
         mat4.translate(matrix, matrix, translation);
 
-        let nextRotationVec = [this.nextTransformations[1][1], this.nextTransformations[2][1], this.nextTransformations[3][1]];
-        let previousRotationVec = [this.previousTransformations[1][1], this.previousTransformations[2][1], this.previousTransformations[3][1]]
-        let rotationVec = vec3.create();
+        const nextRotationVec = [nextMatrix[1][1], nextMatrix[2][1], nextMatrix[3][1]];
+        const previousRotationVec = [previousMatrix[1][1], previousMatrix[2][1], previousMatrix[3][1]]
+        const rotationVec = vec3.create();
         vec3.lerp(rotationVec, previousRotationVec, nextRotationVec, t);
         mat4.rotateZ(matrix, matrix, rotationVec[0]);
         mat4.rotateY(matrix, matrix, rotationVec[1]);
         mat4.rotateX(matrix, matrix, rotationVec[2]);
 
         let nextScale = vec3.create();
-        vec3.lerp(nextScale, this.previousTransformations[4], this.nextTransformations[4], t);
+        vec3.lerp(nextScale, previousMatrix[4], nextMatrix[4], t);
         mat4.scale(matrix, matrix, nextScale);
-        this.currentMatrix = matrix;
+        return matrix;
+    }
+
+    advanceKeyframe() {
+        this.index = this.index + 1;
+        if(this.index >= this.keyframeTimes.length){
+            this.index = 1;
+        }
+        this.previousTransformations = this.keyframeTimes[this.index - 1].keyframe.values;
+        this.lastKeyFrameTime = this.keyframeTimes[this.index - 1].time;
+        this.nextKeyFrameTime = this.keyframeTimes[this.index].time;
+        this.nextTransformations = this.keyframeTimes[this.index].keyframe.values;
+        this.currentFunction = this.keyframeTimes[this.index].keyframe.functionName;
     }
 }
 
@@ -135,6 +186,7 @@ function getFunction(name, duration) {
     for(let i=1; i<values.length; i++){
         values[i] = parseFloat(values[i]);
     }
+    let f;
     switch(name){
         case 'linear':
             return function(t) { return t; };
@@ -143,9 +195,17 @@ function getFunction(name, duration) {
             // values[2] = b
             // values[3] = c
             // values[4] = t offset
-            const f = (t) => (values[1] + values[2]*t - 0.5*values[3]*t*t);
+            f = (t) => (values[1] + values[2]*t - 0.5*values[3]*t*t);
             let maxValue = f(values[2] / values[3]);
             return  (t) =>  f(t - values[4]) * 2; ;
+        case 'cubic-bezier':
+            const u0 = values[1];
+            const u1 = values[2];
+            const u2 = values[3];
+            const u3 = values[4];
+            f = (t) => (1-t)*(1-t)*(1-t)*u0 + 3*(1-t)*(1-t)*t*u1 + 3*(1-t)*t*t*u2 + t*t*t*u3;
+            return (t) => f(t);
+
         
     }
 }

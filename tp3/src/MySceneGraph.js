@@ -61,6 +61,7 @@ export class MySceneGraph {
         this.components = [];
         this.class_components = {};
         this.events = {};
+        this.class_lights = {};
     }
 
     /*
@@ -290,9 +291,15 @@ export class MySceneGraph {
     }
 
 
-    cloneAnimation(animationId, newId){
+    cloneAnimation(animationId, newId, params = undefined){
         const animation = this.animations[animationId];
-        const newAnimation = new MyKeyframeAnimation(this.scene, newId, animation.keyframes, animation.speed, animation.isLooping);
+        const newAnimation = animation.clone(newId);
+        if(params != undefined){
+            for(let key in params){
+                newAnimation.setParameter(key, params[key]);
+            }
+            newAnimation.applyParameters();
+        }
         this.animations[newId] = newAnimation;
         return newAnimation;
     }
@@ -307,8 +314,10 @@ export class MySceneGraph {
     stopAnimation(animation, callback){
         console.log('Stopping animation ' + animation.id);
         animation.stopAnimation((a)=> {
+            if(callback != undefined){
+                callback();
+            }
             delete this.animations[animation.id];
-            callback();
         });
     }
 

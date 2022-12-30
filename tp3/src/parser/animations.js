@@ -9,14 +9,9 @@ import { MyKeyframeAnimation } from "../animations/MyKeyframeAnimation.js"
  */
 export function parseAnimations(animationsNode, sxsReader) {
     let animations = [];
-
     // Any number of animations.
     for (let animation of animationsNode.children) {
-
-        if (animation.nodeName != "keyframeanim") {
-            sxsReader.graph.onXMLMinorError("unknown tag <" + animation.nodeName + ">");
-            continue;
-        }
+        const params = {};
 
         // Get id of the current transformation.
         let animationID = sxsReader.reader.getString(animation, 'id');
@@ -40,14 +35,22 @@ export function parseAnimations(animationsNode, sxsReader) {
         if (animationID in animations)
             return "ID must be unique for each animation (conflict: ID = " + animationID + ")";
 
+        //Parse parameters
+        for (let param of animation.children) {
+            if (param.nodeName == "param") {
+                const paramName = sxsReader.reader.getString(param, 'name');
+                params[paramName] = undefined;
+            }
+        }
+                
 
         // Specifications for the current transformation.
-        const keyframes = parseKeyframeAnimation(animation, sxsReader, "ID " + animationID, true);
+        const keyframes = parseKeyframeAnimation(animation, sxsReader, "ID " + animationID, params);
 
         if (typeof (keyframes) == 'string') {
             return keyframes;
         }
-        animations[animationID] = new MyKeyframeAnimation(sxsReader.graph.scene, animationID, keyframes, speed, isLooping);
+        animations[animationID] = new MyKeyframeAnimation(sxsReader.graph.scene, animationID, keyframes, speed, isLooping, params);
 
     }
 
@@ -73,7 +76,7 @@ const rotationOperationsOrder = ['z', 'y', 'x'];
  * @param {MySceneGraph} sxsReader Scene graph
  * @param {string} errorMsg Error message to be displayed in case of error
  */
-export function parseKeyframeAnimation(animationNode, sxsReader, errorMsg) {
+export function parseKeyframeAnimation(animationNode, sxsReader, errorMsg, params) {
     // Chck if animation has any keyframes defined
     if (animationNode.children.length < 1) {
         return "no keyframes defined for animation " + errorMsg;
@@ -83,6 +86,9 @@ export function parseKeyframeAnimation(animationNode, sxsReader, errorMsg) {
     let lastInstant = null;
     // Iterate over the keyframes and parse them
     for (let keyframe = 0; keyframe < animationNode.children.length; keyframe++) {
+        if(animationNode.children[keyframe].nodeName == "param"){
+            continue;
+        }
         if (animationNode.children[keyframe].nodeName != "keyframe") {
             return "unknown tag <" + animationNode.children[keyframe].nodeName + ">; error in animation with " + errorMsg;
         }
@@ -124,8 +130,8 @@ export function parseKeyframeAnimation(animationNode, sxsReader, errorMsg) {
                     return "invalid rotation axis order for rotation tag in animation with " + errorMsg + "; expected " + rotationOperationsOrder[operationIndex - 1] + " but got " + axis;
                 }
             }
-
-            let matrix = parseTransformationOperations(sxsReader, operation, "component of keyframe animation with " + errorMsg, true);
+            console.log('params = ', params);
+            let matrix = parseTransformationOperations(sxsReader, operation, "component of keyframe animation with " + errorMsg, true, params);
             if (typeof matrix == 'string')
                 return matrix;
             
