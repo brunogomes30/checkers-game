@@ -29,6 +29,13 @@ export class MyKeyframeAnimation extends MyAnimation {
         this.animationTime = 0;
         this.speed = speed;
         this.isLooping = isLooping;
+        this.willRemove = false;
+    }
+
+    stopAnimation(callback){
+        this.willRemove = true;
+        this.isLooping = false;
+        this.removeCallBack = callback;
     }
 
     /**
@@ -54,8 +61,8 @@ export class MyKeyframeAnimation extends MyAnimation {
                     this.nextTransformations = this.keyframes[this.nextKeyFrameTime]['values'];
                     this.currentFunction = this.keyframes[this.nextKeyFrameTime]['functionName'];
                 }
-            } else {
-                this.scene.graph.removeAnimation(this.id);
+            } else if(this.willRemove){
+                this.removeCallBack(this);
             }
         }
         if (this.scene.isLooping) {
@@ -92,7 +99,6 @@ export class MyKeyframeAnimation extends MyAnimation {
         if (t > 1) {
             //Last frame in current keyframe
             let newIndex = keyFramesKeys.indexOf(this.nextKeyFrameTime) + 1;
-            console.log("next keyframe");
             this.previousTransformations = this.nextTransformations;
             this.lastKeyFrameTime = this.nextKeyFrameTime;
             this.nextKeyFrameTime = keyFramesKeys[newIndex];
@@ -137,7 +143,6 @@ function getFunction(name, duration) {
             // values[2] = b
             // values[3] = c
             // values[4] = t offset
-            console.log(values[4] + 0.1);
             const f = (t) => (values[1] + values[2]*t - 0.5*values[3]*t*t);
             let maxValue = f(values[2] / values[3]);
             return  (t) =>  f(t - values[4]) * 2; ;

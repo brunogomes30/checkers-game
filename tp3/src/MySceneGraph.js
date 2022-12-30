@@ -297,12 +297,26 @@ export class MySceneGraph {
         return newAnimation;
     }
 
-    stopAnimation(animation){
-        this.animations[animation.id].isLooping = false;
+    /**
+     * Stops animation and removes it from the animations list. Waits for the animation to stop before removing it.
+     * @param {MyKeyframeAnimation} animation
+     * @param {function} callback
+     * @returns
+     * @memberof MySceneGraph
+     */
+    stopAnimation(animation, callback){
+        console.log('Stopping animation ' + animation.id);
+        animation.stopAnimation((a)=> {
+            delete this.animations[animation.id];
+            callback();
+        });
     }
 
     removeAnimation(animation){
+        console.log('removing animation ' + animation.id);
+        console.log('Before' , this.animations);
         delete this.animations[animation.id];
+        console.log('After' , this.animations);
     }
 
 }

@@ -52,7 +52,10 @@ export class PieceController{
     stopIdleAnimation(piece){
         const animation = piece.pieceComponent.animation;
         if(animation != undefined){
-            this.scene.graph.stopAnimation(animation);
+            this.scene.graph.stopAnimation(animation, () => {
+                //Function called after the animation is finished
+                piece.pieceComponent.animation = undefined;
+            });
         }
     }
 
