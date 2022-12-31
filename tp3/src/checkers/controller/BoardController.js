@@ -123,7 +123,7 @@ export class BoardController {
 
         // Move captured piece to the corresponding graveyard
         if (moveResult.capturedPiece != null) {
-            this.pieceController.moveToStorage(moveResult.capturedPiece);
+            this.pieceController.moveToStorage(moveResult.capturedPiece, this.checkersBoard.storages[moveResult.capturedPiece.color]);
         }
 
         

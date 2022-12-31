@@ -5,5 +5,9 @@ export class CheckersBoard {
         this.xsize = size;
         this.component = component;
         this.pieceMap = [];
+        this.storages = {
+            'white': [[],[],[],[]],
+            'black': [[],[],[],[]],
+        }
     }
 }
