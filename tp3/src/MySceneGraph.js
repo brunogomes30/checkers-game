@@ -274,8 +274,6 @@ export class MySceneGraph {
     }
 
     addComponent(parent, component) {
-        console.log("Adding component " + component.id + " to parent " + parent.id);
-        console.log("is selected" + component.isSelected);
         this.components[component.id] = component;
         parent.children.push(component);
     }
@@ -288,6 +286,16 @@ export class MySceneGraph {
         }
         const component = list[0];
         return component;
+    }
+
+    getLight(className){
+        const list = this.class_lights[className];
+        if (list == undefined) {
+            console.error("Light with class name " + className + " not found.");
+            return null;
+        }
+        const light = list[0];
+        return light;
     }
 
 

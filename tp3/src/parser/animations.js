@@ -130,11 +130,11 @@ export function parseKeyframeAnimation(animationNode, sxsReader, errorMsg, param
                     return "invalid rotation axis order for rotation tag in animation with " + errorMsg + "; expected " + rotationOperationsOrder[operationIndex - 1] + " but got " + axis;
                 }
             }
-            console.log('params = ', params);
-            let matrix = parseTransformationOperations(sxsReader, operation, "component of keyframe animation with " + errorMsg, true, params);
-            if (typeof matrix == 'string')
-                return matrix;
-            
+            const results = parseTransformationOperations(sxsReader, operation, "component of keyframe animation with " + errorMsg, true, params);
+            if (typeof results == 'string')
+                return results;
+            const matrix = results.matrix;
+
             keyframe_description.push(matrix);
         }
 

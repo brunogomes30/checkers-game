@@ -49,7 +49,7 @@ export function parseTransformations(transformationsNode, sxsReader) {
  */
 export function parseTransformation(transformationNode, sxsReader, errorMsg, isInsideTransformationsBlock) {
     let transfMatrix = mat4.create();
-
+    const position = [0, 0, 0];
     for (let operationId = 0; operationId < transformationNode.children.length; operationId++) {
 
         const operation = transformationNode.children[operationId];
@@ -57,9 +57,14 @@ export function parseTransformation(transformationNode, sxsReader, errorMsg, isI
             case 'translate':
             case 'scale':
             case 'rotate':
-                let matrix = parseTransformationOperations(sxsReader, operation, "transformation for " + errorMsg);
-                if (typeof matrix == 'string')
-                    return matrix;
+                let results = parseTransformationOperations(sxsReader, operation, "transformation for " + errorMsg); 
+                if (typeof results == 'string')
+                    return results;
+                let matrix = results.matrix;
+                position[0] += results.position[0];
+                position[1] += results.position[1];
+                position[2] += results.position[2];
+                
 
                 transfMatrix = mat4.multiply(transfMatrix, transfMatrix, matrix);
                 break;
@@ -82,5 +87,8 @@ export function parseTransformation(transformationNode, sxsReader, errorMsg, isI
 
     }
 
-    return transfMatrix;
+    return {
+        matrix: transfMatrix,
+        position: position
+    };
 }

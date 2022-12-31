@@ -6,7 +6,6 @@
 export function parseCoordinates3D(node, messageError, graph, params) {
     const position = [];
     const acceptsParams = params != undefined;
-    console.log('acceptsParams: ' + acceptsParams);
     // x
     let x = graph.reader.getFloat(node, 'x', false);
     if (!(x != null && !isNaN(x)))

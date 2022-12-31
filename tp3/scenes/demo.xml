@@ -1,5 +1,5 @@
 <sxs>
-    <scene root="demoRoot" axis_length="5" />
+    <scene root="roomRoot" axis_length="5" />
 
     <includeSXS filename="demo/paperplanes.xml" />
     <includeSXS filename="demo/room.xml" />
@@ -457,7 +457,7 @@
     </models>
 
     <components>
-        <component id="demoRoot">
+        <component id="roomRoot">
             <transformation>
                 <translate x="0" y="0" z="0" />
                 <scale x="1" y="1" z="1" />

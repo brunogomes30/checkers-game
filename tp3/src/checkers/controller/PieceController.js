@@ -4,9 +4,10 @@ import { processClass } from "../../parser/components/processClass.js";
 
 export class PieceController{
 
-    constructor(scene){
+    constructor(scene, lightController){
         this.scene = scene;
         this.selectedPiece = null;
+        this.lightController = lightController;
     }
 
 
@@ -15,14 +16,19 @@ export class PieceController{
     }
 
     movePiece(piece, y, x){
-        console.log('ola');
+
         this.stopIdleAnimation(piece, () => {
             const animation = this.scene.graph.cloneAnimation('piece-move', 'piece-move-' + piece.pieceComponent.id, {
                 'posx': x,
                 'posz': y
             });
             piece.pieceComponent.animation = animation;
+            this.lightController.turnSpotlightOn(piece.pieceComponent);
+            animation.hookFunction(() => {
+                this.lightController.followComponent(piece.pieceComponent);
+            });
             this.scene.graph.stopAnimation(animation, () => {
+                this.lightController.turnSpotlightOff();
                 animation.applyToComponent(piece.pieceComponent);
             });
         });
@@ -47,15 +53,11 @@ export class PieceController{
         //Offset the piece to the center of the tile
         const translationX = START_X + x * TILE_SIZE;
         const translationZ = START_Z + (7-y) * TILE_SIZE;
-        const translation = mat4.create();
-        mat4.translate(translation, translation, [translationX, 0, translationZ]);
-        mat4.multiply(translation, translation, component.transformation);
-        component.transformation = translation;
+        component.translate(translationX, 0, translationZ);
         component.id = 'piece-' + y + '-' + x;
         processClass(className, component);
         // Add the component to the scene graph
         this.scene.graph.addComponent(board.component, component);
-        console.log(board.component);
 
         return component;
     }

@@ -16,7 +16,7 @@ import { XMLscene } from "../XMLscene.js";
  * @class Component
  */
 export class Component{
-    constructor(scene, {id, transformation, materials, texture, textureScaleFactor, primitiveChildren, componentChildren, modelChildren, textChildren, highlight, animation, pickable}){
+    constructor(scene, {id, transformation, materials, texture, textureScaleFactor, primitiveChildren, componentChildren, modelChildren, textChildren, highlight, animation, pickable, position}){
         this.id = id;
         this.scene = scene;
         this.transformation = transformation;
@@ -31,6 +31,32 @@ export class Component{
         this.animation = animation;
         this.children = [];
         this.pickable = pickable;
+        this.position = position;
+        if(position === undefined){
+            this.position = [0, 0, 0];
+        }
+    }
+
+    getPosition(){
+        const position = [...this.position];
+        if(this.animation !== undefined){
+            position[0] += this.animation.position[0];
+            position[1] += this.animation.position[1];
+            position[2] += this.animation.position[2];
+        }
+        return position;
+    }
+
+    translate(x, y, z){
+        this.position[0] += x;
+        this.position[1] += y;
+        this.position[2] += z;
+        const translation = mat4.create();
+        mat4.translate(translation, translation, [x, y, z]);
+        mat4.multiply(translation, translation, this.transformation);
+        console.log('new position ', this.position);
+        this.transformation = translation;
+
     }
 
     /**
@@ -55,6 +81,7 @@ export class Component{
     clone(){
         const component = new Component(this.scene, this);
         component.children = this.children.map(child => child.clone());
+        component.position = [...this.position];
         return component;
     }
 }

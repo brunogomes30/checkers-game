@@ -2,14 +2,17 @@ import { CheckersBoard } from "../model/CheckersBoard.js";
 import { PieceController } from "./PieceController.js";
 import { CheckersPiece } from "../model/CheckersPiece.js";
 import { CheckersTile } from "../model/CheckersTile.js";
+import { LightController } from "./LightController.js";
 export class BoardController {
     constructor(scene, size) {
         this.scene = scene;
         this.ysize = size;
         this.xsize = size;
-        this.pieceController = new PieceController(scene);
+        this.lightController = new LightController(scene)
+        this.pieceController = new PieceController(scene, this.lightController);
         const boardComponent = this.scene.graph.getComponent('board');
         this.checkersBoard = new CheckersBoard(scene, size, boardComponent);
+        this.lightController = this.scene.lightController;
     }
 
     loadNewBoard(board){

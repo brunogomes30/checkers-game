@@ -62,10 +62,14 @@ export function parseComponents(componentsNode, sxsReader) {
         if (transformationIndex == -1) {
             return `No transformations tag in component with ID = ${componentID}`
         }
-        const transfMatrix = parseTransformation(grandChildren[transformationIndex], sxsReader, "component ID " + componentID, false)
-        if (typeof (transfMatrix) == 'string') {
-            return transfMatrix;
+        const results = parseTransformation(grandChildren[transformationIndex], sxsReader, "component ID " + componentID, false);
+        if (typeof (results) == 'string') {
+            return results;
         }
+        const transfMatrix = results.matrix;
+        const position = results.position;
+
+        
         // Materials
         const materialsNode = grandChildren[materialsIndex];
         const materials = parseMaterials(sxsReader, materialsNode, componentID, 'component');
@@ -147,6 +151,7 @@ export function parseComponents(componentsNode, sxsReader) {
             animation: animation,
             highlight: highlight,
             pickable: pickable,
+            position: position
         }
         );
 

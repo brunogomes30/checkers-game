@@ -40,7 +40,7 @@ export function parseLights(lightsNode, sxsReader) {
         if (lightId == null)
             return "no ID defined for light";
 
-        const className = sxsReader.reader.getString(children[i], 'piece-spotlight', false);
+        const className = sxsReader.reader.getString(children[i], 'class', false);
         
 
 
@@ -145,12 +145,15 @@ export function parseLights(lightsNode, sxsReader) {
         lights[lightId] = global;
         enabledLights[lightId] = enableLight;
         numLights++;
-
         if (className != null) {
-            if (class_lights[className] == null) {
-                class_lights[className] = [global];
+            const toAdd = {
+                id: lightId,
+                index: numLights - 1
             }
-            class_lights[className].push(global);
+            if (class_lights[className] == null) {
+                class_lights[className] = [lightId];
+            }
+            class_lights[className].push(lightId);
         }
     }
 

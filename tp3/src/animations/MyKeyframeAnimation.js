@@ -35,6 +35,12 @@ export class MyKeyframeAnimation extends MyAnimation {
         this.isLooping = isLooping;
         this.willRemove = false;
         this.params = params;
+        this.hooks = [];
+        this.position = [0, 0, 0];
+    }
+
+    hookFunction(f){
+        this.hooks.push(f);
     }
 
     clone(id) {
@@ -74,6 +80,9 @@ export class MyKeyframeAnimation extends MyAnimation {
 
     applyToComponent(component){
         mat4.multiply(component.transformation, this.currentMatrix, component.transformation);
+        component.position[0] += this.position[0];
+        component.position[1] += this.position[1];
+        component.position[2] += this.position[2];
         component.animation = undefined;
     }
 
@@ -143,8 +152,13 @@ export class MyKeyframeAnimation extends MyAnimation {
         if(t > 1){
             t = 1;
         }
-
         this.currentMatrix = this.calculateMatrix(this.previousTransformations, this.nextTransformations, t);
+
+        //Call hooks
+        for(let i=0; i<this.hooks.length; i++){
+            this.hooks[i](this);
+        }
+        
     }
     
     calculateMatrix(previousMatrix, nextMatrix, t) {
@@ -152,6 +166,7 @@ export class MyKeyframeAnimation extends MyAnimation {
         const translation = vec3.create();
         vec3.lerp(translation, previousMatrix[0], nextMatrix[0], t);
         mat4.translate(matrix, matrix, translation);
+        this.position = translation;
 
         const nextRotationVec = [nextMatrix[1][1], nextMatrix[2][1], nextMatrix[3][1]];
         const previousRotationVec = [previousMatrix[1][1], previousMatrix[2][1], previousMatrix[3][1]]

@@ -14,6 +14,7 @@ import { MySceneGraph } from "../MySceneGraph.js";
 export function parseTransformationOperations(graph, operationNode, errorMsg, isKeyframe, params) {
     let parsedOp = mat4.create();
     const acceptsParams = params != undefined;
+    let position = [0, 0, 0];
     let coordinates;
     switch (operationNode.nodeName) {
         case 'translate':
@@ -21,7 +22,9 @@ export function parseTransformationOperations(graph, operationNode, errorMsg, is
             coordinates = parseCoordinates3D(operationNode, "translate " + errorMsg, graph, params);
             if (!Array.isArray(coordinates) && (!acceptsParams && !Object.keys(params).includes(coordinates)))
                 return coordinates;
-
+            position[0] += coordinates[0];
+            position[1] += coordinates[1];
+            position[2] += coordinates[2];
             if (isKeyframe) {
                 parsedOp = coordinates;
             } else {
@@ -81,5 +84,8 @@ export function parseTransformationOperations(graph, operationNode, errorMsg, is
             break;
     }
 
-    return parsedOp;
+    return {
+        matrix: parsedOp,
+        position: position // Position is the sum of all translates in current component
+    };
 }
