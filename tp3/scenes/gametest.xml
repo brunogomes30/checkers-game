@@ -18,26 +18,33 @@
     </ambient>
 
     <lights>
-        <omni id="demoLight" enabled="1" >
-            <location x="5.8" y="7.9" z="-1.0" w="1.0" />
+        <omni id="demoLight" enabled="1" exponent="127">
+            <location x="0" y="2" z="5" w="1.0" />
             <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <attenuation constant="1.0" linear="0.0" quadratic="0.0" />
+            <diffuse r="0.3" g="0.3" b="0.3" a="1.0" />
+            <specular r="0.2" g="0.2" b="0.2" a="1.0" />
+            <attenuation constant="0.0" linear="0.01" quadratic="0.0" />
+        </omni>
+        <omni id="demoLight2" enabled="1" exponent="127">
+            <location x="0" y="2" z="5" w="1.0" />
+            <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="0.4" g="0.4" b="0.4" a="1.0" />
+            <specular r="0.2" g="0.2" b="0.2" a="1.0" />
+            <attenuation constant="0.0" linear="0.01" quadratic="0.0" />
         </omni>
 
         <spot id="pieceSpotlight" angle="30" exponent="127" enabled="0" class="piece-spotlight">
             <location x="0.0" y="1.5" z="0" w="1.0" />
             <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="0.5" g="0.0" b="0.0" a="1.0" />
             <attenuation constant="0.0" linear="0.75" quadratic="0.0" />
             <target x="0" y="0" z="0" />
         </spot>
 
         <omni id="ambient" enabled="1">
             <location x="9.8" y="11.9" z="10" w="1.0" />
-            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <ambient r="0.25" g="0.25" b="0.25" a="1.0" />
             <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
             <attenuation constant="0.0" linear="0.0" quadratic="0.0" />
@@ -220,8 +227,8 @@
         <model id="boardModel" file="board/board.obj" class="board-model" />
         <model id="whiteModel" file="piece/white.obj" class="white-piece"/>
         <model id="blackModel" file="piece/black.obj" class="black-piece"/>
-        <model id="blackStorage" file="trueno.obj" class="black-storage"/>
-        <model id="whiteStorage" file="nissan.obj" class="white-storage"/>
+        <model id="blackStorage" file="storage/black_storage.obj" class="black-storage"/>
+        <model id="whiteStorage" file="storage/white_storage.obj" class="white-storage"/>
     </models>
 
     <components>
@@ -280,22 +287,8 @@
 
         <component id="black_storage" class="black-storage">
             <transformation>
-                <translate x="0.0" y="0.0" z="-3.0" />
-                <rotate axis="y" angle="90" />
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit" />
-            <children>
-                <modelref id="whiteStorage" />
-            </children>
-        </component>
-
-        <component id="white_storage" class="white-storage">
-            <transformation>
-                <translate x="0.0" y="0.0" z="3.0" />
-                <rotate axis="y" angle="90" />
+                <translate x="0.0" y="0.0" z="-2.0" />
+                <rotate axis="y" angle="180" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -303,6 +296,19 @@
             <texture id="inherit" />
             <children>
                 <modelref id="blackStorage" />
+            </children>
+        </component>
+
+        <component id="white_storage" class="white-storage">
+            <transformation>
+                <translate x="0.0" y="0.0" z="2.0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <modelref id="whiteStorage" />
             </children>
         </component>
     </components>

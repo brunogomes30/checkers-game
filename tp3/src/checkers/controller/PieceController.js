@@ -41,7 +41,7 @@ export class PieceController{
     }
 
     moveToStorage(piece){
-        const STORAGE_OFFSET = [0, 1.0, 0];
+        const STORAGE_OFFSET = [0, 0.1, 0];
         const color = piece.color;
         const component = piece.component;
         const storage = this.scene.graph.getComponent(color+'-storage');
@@ -50,7 +50,6 @@ export class PieceController{
             storage.getPosition()[1] - component.getPosition()[1] + STORAGE_OFFSET[1],
             storage.getPosition()[2] - component.getPosition()[2] + STORAGE_OFFSET[2]
         ]
-        console.log(movement);
 
         const height = movement[1] + 1;
         const peak = [movement[0] / 2, height, movement[2] / 2];
