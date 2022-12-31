@@ -9,6 +9,7 @@ import { ToonShader } from './toonShade/toonShader.js';
 import { TextRenderer } from './text/TextRenderer.js';
 import { BoardController } from './checkers/controller/BoardController.js';
 import { pickHandler } from './picking/pickHandler.js';
+import { MyKeyframeAnimation } from './animations/MyKeyframeAnimation.js';
 
 
 let FRAME_RATE = 60;
@@ -64,7 +65,7 @@ export class XMLscene extends CGFscene {
         this.textRenderer = new TextRenderer(this);
 
         this.axis = new CGFaxis(this);
-        this.isLooping = false;
+        this.isLooping = true;
         this.setUpdatePeriod(1000 / FRAME_RATE);
         this.startTime = null;
         this.textures = {};
@@ -83,7 +84,7 @@ export class XMLscene extends CGFscene {
      */
     initLights() {
         let lightsIndex = 0;
-
+        this.light_id_index = {};
         // Update webCGF lights with graph lights
         for (let key in this.graph.lights) {
             if (lightsIndex >= 8) {
@@ -91,6 +92,7 @@ export class XMLscene extends CGFscene {
             }
             const sceneLight = this.lights[lightsIndex];
             const light = this.graph.lights[key];
+            this.light_id_index[key] = lightsIndex;
 
             sceneLight.setPosition(light[2][0], light[2][1], light[2][2], light[2][3]);
             sceneLight.setAmbient(light[3][0], light[3][1], light[3][2], light[3][3]);
@@ -183,12 +185,15 @@ export class XMLscene extends CGFscene {
      */
     update(currTime) {
         if (this.sceneInited) {
-            if (this.startTime === null)
+            if (this.startTime === null){
                 this.startTime = currTime;
+                this.lastFrameTime = currTime;
+            }
 
-            let timeDelta = currTime - this.startTime;
-            this.graph.computeAnimations(timeDelta / 1000)
-            this.graph.updateHighLightShader(timeDelta);
+            let timeDelta = currTime - this.lastFrameTime;
+            this.lastFrameTime = currTime;
+            this.graph.computeAnimations(timeDelta / 1000);
+            //this.graph.updateHighLightShader(timeDelta);
         }
     }
 
@@ -402,7 +407,6 @@ export class XMLscene extends CGFscene {
 
 
     logPicking() {
-        //console.log(this.pickData);
 		if (this.pickMode == false) {
 			// results can only be retrieved when picking mode is false
 			if (this.pickResults != null && this.pickResults.length > 0) {

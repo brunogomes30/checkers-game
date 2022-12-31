@@ -3,14 +3,16 @@ import { PieceController } from "./PieceController.js";
 import { CheckersPiece } from "../model/CheckersPiece.js";
 import { CheckersTile } from "../model/CheckersTile.js";
 import { LogicController } from "./CheckersController.js";
+import { LightController } from "./LightController.js";
 export class BoardController {
     constructor(scene, size) {
         this.scene = scene;
         this.ysize = size;
         this.xsize = size;
-        this.pieceController = new PieceController(scene);
         this.checkersBoard = new CheckersBoard(scene, size, null);
         this.logicController = new LogicController(this.checkersBoard);
+        this.lightController = new LightController(scene)
+        this.pieceController = new PieceController(scene, this.lightController);
     }
 
     loadNewBoard(graph, board) {
@@ -81,35 +83,44 @@ export class BoardController {
     }
 
     handleBoardClick(element) {
-
-        console.log('Board click: ' + element.id);
+        const TILE_SIZE = 2 / 8;
         let y = element.id.split('x')[0];
         y = Number(y.substring(y.search(/[0-9]/)));
         let x = Number(element.id.split('_')[0].split('x')[1]);
-
-        if (!this.logicController.selectTile({x, y})) {
+        console.log('Board click: ' + y + ' ' + x);
+        
+        if (!this.logicController.selectTile({ x, y })) {
             console.log('Invalid tile selection');
             return;
         }
 
         // Stop highlighting previous valid moves (Maybe highligh only the selected tile)
         this.selectedTile = element;
-        
-        
+
+        const piece = this.checkersBoard.pieceMap[this.selectedPiece.pieceComponent.id]
+        const piecePos = {y:piece.position.y, x: piece.position.x};
         const moveResult = this.logicController.processMove();
-        
+
         // Animate piece movement
+       
+        const movey = y - piecePos.y;
+        const movex = x - piecePos.x;
+        console.log(movey, movex, 'ssss')
+        this.pieceController.movePiece(this.selectedPiece, - movey * TILE_SIZE, movex * TILE_SIZE);
+        
         if (moveResult.capturedPiece != null) {
             // Move captured piece to the corresponding graveyard
         }
 
-        if (moveResult.gameOver){
-            // Deselct piece
-            
-            if ( moveResult.winner == null){
+        // Deselct piece
+        
+        if (moveResult.gameOver) {
+            this.selectedPiece = undefined;
+
+            if (moveResult.winner == null) {
                 // Change to draw camera
-            }else {
-                if (moveResult.changeTurn){
+            } else {
+                if (moveResult.changeTurn) {
                     // Change to winner camera
                 }
             }
@@ -118,15 +129,14 @@ export class BoardController {
             console.log('Game over! Winner: ' + moveResult.winner)
         }
 
-        if (moveResult.changeTurn){
+        if (moveResult.changeTurn) {
+            this.selectedPiece = undefined;
             // Change view and stuff
-            // Deselct piece
-            this.selectedPiece = null;
         } else {
             // Highlight new valid moves
         }
 
-        
+
     }
 
     handlePieceClick(element) {
@@ -135,25 +145,19 @@ export class BoardController {
         console.log('Piece click: ' + className + ' ' + component.id);
         const checkerPiece = this.checkersBoard.pieceMap[element.pieceComponent.id];
 
-        if (this.selectedPiece != null) {
-            //this.pieceController.stopIdleAnimation(this.selectedPiece);
+        if (this.selectedPiece != undefined) {
+            this.pieceController.stopIdleAnimation(this.selectedPiece);
         }
 
         const selectionResult = this.logicController.selectPiece(checkerPiece);
-        if (selectionResult === 'changeTurn'){
-            // Stop highlighting previous valid moves
-            // Change view and stuff
-            this.selectedPiece = null;
-            return;
-        }
-
         if (!selectionResult) {
             console.log('Invalid piece selection');
             return;
         }
 
-        this.selectedPiece = checkerPiece;
-        //this.pieceController.startIdleAnimation(this.selectedPiece);
+        this.selectedPiece = element;
+        this.pieceController.startIdleAnimation(this.selectedPiece);
+        
 
         // Stop highlighting previous valid moves
         // Animate piece selection

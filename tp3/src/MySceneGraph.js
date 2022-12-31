@@ -3,7 +3,7 @@ import { renderElement } from './components/renderElement.js';
 import { SXSReader } from './parser/SXSReader.js';
 import { buildInterface } from './interface/build.js';
 import { processClass } from './parser/components/processClass.js';
-
+import { MyKeyframeAnimation } from './animations/MyKeyframeAnimation.js';
 /**
  * MySceneGraph class, representing the scene graph.
  * @constructor
@@ -61,6 +61,7 @@ export class MySceneGraph {
         this.components = [];
         this.class_components = {};
         this.events = {};
+        this.class_lights = {};
     }
 
     /*
@@ -284,6 +285,51 @@ export class MySceneGraph {
         }
         const component = list[0];
         return component;
+    }
+
+    getLight(className){
+        const list = this.class_lights[className];
+        if (list == undefined) {
+            console.error("Light with class name " + className + " not found.");
+            return null;
+        }
+        const light = list[0];
+        return light;
+    }
+
+
+    cloneAnimation(animationId, newId, params = undefined){
+        const animation = this.animations[animationId];
+        const newAnimation = animation.clone(newId);
+        if(params != undefined){
+            for(let key in params){
+                newAnimation.setParameter(key, params[key]);
+            }
+            newAnimation.applyParameters();
+        }
+        this.animations[newId] = newAnimation;
+        return newAnimation;
+    }
+
+    /**
+     * Stops animation and removes it from the animations list. Waits for the animation to stop before removing it.
+     * @param {MyKeyframeAnimation} animation
+     * @param {function} callback
+     * @returns
+     * @memberof MySceneGraph
+     */
+    stopAnimation(animation, callback){
+        console.log('Stopping animation ' + animation.id);
+        animation.stopAnimation((a)=> {
+            if(callback != undefined){
+                callback();
+            }
+            delete this.animations[animation.id];
+        });
+    }
+
+    removeAnimation(animation){
+        delete this.animations[animation.id];
     }
 
 }

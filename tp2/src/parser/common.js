@@ -20,7 +20,6 @@ export function parseTransformationOperations(graph, operationNode, errorMsg, is
             coordinates = parseCoordinates3D(operationNode, "translate " + errorMsg, graph);
             if (!Array.isArray(coordinates))
                 return coordinates;
-
             if (isKeyframe) {
                 parsedOp = coordinates;
             } else {

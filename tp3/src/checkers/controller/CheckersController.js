@@ -7,7 +7,7 @@ export class LogicController {
 
     start() {
         this.state = 'pieceSelection';
-        this.turn = 'black';
+        this.turn = 'white';
     }
 
     selectTile(tile) {

@@ -30,7 +30,6 @@ function processBoard(component){
 }
 
 function processPiece(component, className){
-    //Bloat the piece
     component.children.forEach(child => {
         if(child instanceof MyModel){
             //set all tiles to pickable
