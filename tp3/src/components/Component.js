@@ -40,9 +40,17 @@ export class Component{
     getPosition(){
         const position = [...this.position];
         if(this.animation !== undefined){
-            position[0] += this.animation.position[0];
-            position[1] += this.animation.position[1];
-            position[2] += this.animation.position[2];
+            if(!Array.isArray(this.animation)){
+                position[0] += this.animation.position[0];
+                position[1] += this.animation.position[1];
+                position[2] += this.animation.position[2];
+            } else {
+                this.animation.forEach(anim => {
+                    position[0] += anim.position[0];
+                    position[1] += anim.position[1];
+                    position[2] += anim.position[2];
+                });
+            }
         }
         return position;
     }
@@ -74,6 +82,9 @@ export class Component{
      * @returns {boolean} True if object is to be displayed, false otherwise
      */
     isDisplayed(){
+        if(Array.isArray(this.animation)){
+            return true;
+        }
         return this.animation === undefined ? true : this.animation.started;
     }
 
@@ -83,4 +94,30 @@ export class Component{
         component.position = [...this.position];
         return component;
     }
+
+    removeAnimation(animation){
+        if(Array.isArray(this.animation)){
+            this.animation = this.animation.filter(a => a !== animation);
+        } else {
+            this.animation = [];
+        }
+    }
+
+    addAnimation(animation){
+        if(this.animation === undefined){
+            this.animation = [animation];
+        }else if(Array.isArray(this.animation)){
+            this.animation.push(animation);
+        }else{
+            this.animation = [this.animation, animation];
+        }
+    }
+
+    getAnimation(conditionFunction){
+        if(Array.isArray(this.animation)){
+            return this.animation.find(conditionFunction);
+        }
+        return conditionFunction(this.animation) ? this.animation : undefined;
+    }
+    
 }

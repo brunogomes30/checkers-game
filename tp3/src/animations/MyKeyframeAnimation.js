@@ -89,7 +89,7 @@ export class MyKeyframeAnimation extends MyAnimation {
         component.position[0] += this.position[0];
         component.position[1] += this.position[1];
         component.position[2] += this.position[2];
-        component.animation = undefined;
+        component.removeAnimation(this);
     }
 
     /**

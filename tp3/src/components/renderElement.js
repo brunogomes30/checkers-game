@@ -38,8 +38,14 @@ function renderComponent(element, parents) {
 
     element.scene.multMatrix(element.transformation);
     // Apply transformations and animations
-    if (element.animation !== undefined) {
-        element.animation.apply();
+    if(Array.isArray(element.animation)){
+        for(let i = 0; i < element.animation.length; i++){
+            element.animation[i].apply();
+        }
+    } else {
+        if(element.animation !== undefined){
+            element.animation.apply();
+        }
     }
 
 
