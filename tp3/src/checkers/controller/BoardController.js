@@ -165,8 +165,9 @@ export class BoardController {
 
         // Stop highlighting previous valid moves
         // Animate piece selection
-        this.validMoves = this.logicController.getValidMoves();
+        this.validMoves = this.logicController.getPieceValidMoves();
         this.tileController.unhiglightTiles();
+        
         console.log(this.validMoves);
         for(let i = 0; i < this.validMoves.length; i++){
             const move = this.validMoves[i].move;
