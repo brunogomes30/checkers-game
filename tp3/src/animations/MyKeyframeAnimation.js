@@ -44,7 +44,6 @@ export class MyKeyframeAnimation extends MyAnimation {
     }
 
     clone(id) {
-        console.log(this.keyframes)
         const newKeyframes = [];
         for (const key in this.keyframes) {
             newKeyframes[key] = JSON.parse(JSON.stringify(this.keyframes[key]));
