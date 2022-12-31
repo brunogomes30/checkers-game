@@ -280,8 +280,7 @@
 
         <component id="black_storage" class="black-storage">
             <transformation>
-                <translate x="0.0" y="0.0" z="-3.0" />
-                <rotate axis="y" angle="90" />
+                <translate x="-2.0" y="0.0" z="0.0" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -294,8 +293,7 @@
 
         <component id="white_storage" class="white-storage">
             <transformation>
-                <translate x="0.0" y="0.0" z="3.0" />
-                <rotate axis="y" angle="90" />
+                <translate x="2.0" y="0.0" z="0.0" />
             </transformation>
             <materials>
                 <material id="inherit" />

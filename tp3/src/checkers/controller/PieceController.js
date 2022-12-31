@@ -45,7 +45,6 @@ export class PieceController{
             storage.getPosition()[1] - component.getPosition()[1] + STORAGE_OFFSET[1],
             storage.getPosition()[2] - component.getPosition()[2] + STORAGE_OFFSET[2]
         ]
-        console.log(movement);
 
         const height = movement[1] + 1;
         const peak = [movement[0] / 2, height, movement[2] / 2];
