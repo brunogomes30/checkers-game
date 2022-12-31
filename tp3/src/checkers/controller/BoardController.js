@@ -87,11 +87,11 @@ export class BoardController {
         const className = element.className;
         const component = element.pieceComponent;
         console.log('Piece click: ' + className + ' ' + component.id);
-        if(this.selectedPiece != null){
-            //this.pieceController.stopIdleAnimation(this.selectedPiece);
+        if(this.selectedPiece != undefined){
+            this.pieceController.stopIdleAnimation(this.selectedPiece);
         }
         this.selectedPiece = element;
-        //this.pieceController.startIdleAnimation(this.selectedPiece);
+        this.pieceController.startIdleAnimation(this.selectedPiece);
 
     }
 

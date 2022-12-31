@@ -3,7 +3,7 @@ import { renderElement } from './components/renderElement.js';
 import { SXSReader } from './parser/SXSReader.js';
 import { buildInterface } from './interface/build.js';
 import { processClass } from './parser/components/processClass.js';
-
+import { MyKeyframeAnimation } from './animations/MyKeyframeAnimation.js';
 /**
  * MySceneGraph class, representing the scene graph.
  * @constructor
@@ -287,6 +287,36 @@ export class MySceneGraph {
         }
         const component = list[0];
         return component;
+    }
+
+
+    cloneAnimation(animationId, newId){
+        const animation = this.animations[animationId];
+        const newAnimation = new MyKeyframeAnimation(this.scene, newId, animation.keyframes, animation.speed, animation.isLooping);
+        this.animations[newId] = newAnimation;
+        return newAnimation;
+    }
+
+    /**
+     * Stops animation and removes it from the animations list. Waits for the animation to stop before removing it.
+     * @param {MyKeyframeAnimation} animation
+     * @param {function} callback
+     * @returns
+     * @memberof MySceneGraph
+     */
+    stopAnimation(animation, callback){
+        console.log('Stopping animation ' + animation.id);
+        animation.stopAnimation((a)=> {
+            delete this.animations[animation.id];
+            callback();
+        });
+    }
+
+    removeAnimation(animation){
+        console.log('removing animation ' + animation.id);
+        console.log('Before' , this.animations);
+        delete this.animations[animation.id];
+        console.log('After' , this.animations);
     }
 
 }

@@ -12,6 +12,7 @@ import { MyAnimation } from "./MyAnimation.js";
  * */
 export class MyKeyframeAnimation extends MyAnimation {
     constructor(scene, id, keyframes) {
+        console.log(keyframes);
         super(scene, id, Object.keys(keyframes)[0], Object.keys(keyframes)[Object.keys(keyframes).length - 1])
         this.keyframes = keyframes;
         this.lastKeyFrameTime = this.startTime;
