@@ -95,10 +95,15 @@ export class MyKeyframeAnimation extends MyAnimation {
     /**
      * Update the animation according to the time elapsed since the scene started
      * 
-     * @param {number} timeDelta Elapsed time since the scene first started
+     * @param {number} timeDelta Elapsed time since last scene display
      * @returns 
      */
     update(timeDelta) {
+        console.log(timeDelta);
+        if(timeDelta > 0.20){
+            //Value is too high for the animation to be smooth
+            return;
+        }
         this.animationTime += timeDelta * this.speed;
         timeDelta = this.animationTime;
         const keyFramesKeys = Object.keys(this.keyframes);
