@@ -283,6 +283,6 @@ function checkGameOver(board, states, turn) {
     return { finished: false, winner: null };
 }
 
-function clone(items) { items.map(item => Array.isArray(item) ? clone(item) : { ...item }); }
+function clone(items) { return items.map(item => Array.isArray(item) ? clone(item) : { ...item }); }
 
 

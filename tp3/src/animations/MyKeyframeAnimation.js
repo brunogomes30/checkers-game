@@ -44,7 +44,13 @@ export class MyKeyframeAnimation extends MyAnimation {
     }
 
     clone(id) {
-        return new MyKeyframeAnimation(this.scene, id, this.keyframes, this.speed, this.isLooping, this.params);
+        console.log(this.keyframes)
+        const newKeyframes = [];
+        for (const key in this.keyframes) {
+            newKeyframes[key] = JSON.parse(JSON.stringify(this.keyframes[key]));
+        }
+
+        return new MyKeyframeAnimation(this.scene, id, newKeyframes, this.speed, this.isLooping, this.params);
     }
 
     setParameter(name, value){
