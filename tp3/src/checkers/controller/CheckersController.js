@@ -16,7 +16,7 @@ export class LogicController {
             return false;
         }
 
-        const move = this.validMoves.filter((destination) => destination.move.x === tile.x && destination.move.y === tile.y)[0];
+        const move = this.getPieceValidMoves().filter((move) => move.move.x === tile.x && move.move.y === tile.y)[0];
         if (move === undefined) {
             this.state = 'pieceSelection';
             console.log('Invalid tile selected');
@@ -41,7 +41,7 @@ export class LogicController {
 
         this.selectedPiece = piece;
         this.state = 'tileSelection';
-        this.validMoves = validMoves(this.board, this.selectedPiece)
+        this.validMoves = validMoves(this.board)
         return true;
     }
 
@@ -68,9 +68,10 @@ export class LogicController {
             this.board.board[this.selectedMove.capture.y][this.selectedMove.capture.x].piece = null;
 
             // Re-run valid moves for the new position
-            this.validMoves = validMoves(this.board, this.selectedPiece);
-            if (this.validMoves.filter((move) => move.capture != undefined).length !== 0) {
-                console.log('New valid moves: ', this.validMoves);
+            this.validMoves = validMoves(this.board);
+
+            if (this.getPieceValidMoves().filter((move) => move.capture != undefined).length !== 0) {
+                console.log('New multicapture moves: ', this.validMoves);
                 this.state = 'multiCapture';
                 return { changeTurn: false, capturedPiece };
             }
@@ -93,81 +94,98 @@ export class LogicController {
         return { changeTurn: true, capturedPiece };
     }
 
-    getValidMoves() {
-        return this.validMoves;
+    getPieceValidMoves() {
+        return this.validMoves.filter((move) => move.from.x === this.selectedPiece.position.x && move.from.y === this.selectedPiece.position.y);
     }
 }
 
-function validMoves(board, piece) {
+function validMoves(board) {
     let validMoves = [];
 
-    const position = piece.position;
-    const directions = [-1, 1];
+    for (let y = 0; y < board.ysize; y++) {
+        for (let x = 0; x < board.xsize; x++) {
+            if (board.board[y][x].piece != null) {
+                validMoves.push(pieceMoves(board, board.board[y][x].piece));
+            }
+        }
+    }
 
-    if (!piece.isKing) {
-        // Moves for pawns
-        const direction = piece.color === 'white' ? 1 : -1;
-        const y = position.y + direction;
-
-        for (let i = 0; i < directions.length; i++) {
-            const x = position.x + directions[i];
-            if (y >= 0 && y < board.ysize && x >= 0 && x < board.xsize) {
-                if (board.board[y][x].piece == null) {
-                    validMoves.push({ move: { y, x } });
-                } else {
-                    checkPawnCapture(y, x, direction);
-                }
+    let finalValidMoves = [];
+    for (const moves of validMoves) {
+        let capturing = false;
+        for (const move of moves) {
+            if (move.capture != undefined) {
+                capturing = true;
+                break;
             }
         }
 
-    } else {
-        // Moves for kings
-        for (let i = 0; i < directions.length; i++) {
-            const directionY = directions[i];
-            for (let j = 0; j < directions.length; j++) {
-                const directionX = directions[j];
-                let capturing = undefined;
-                for (let y = position.y + directionY, x = position.x + directionX; y >= 0 && y < board.ysize && x >= 0 && x < board.xsize; y += directionY, x += directionX) {
+        finalValidMoves.push(...moves.filter((move) => move.capture != undefined || !capturing));
+    }
+
+    return finalValidMoves;
+
+
+    function pieceMoves(board, piece) {
+        let pieceMoves = [];
+        const position = piece.position;
+        const directions = [-1, 1];
+
+        if (!piece.isKing) {
+            // Moves for pawns
+            const direction = piece.color === 'white' ? 1 : -1;
+            const y = position.y + direction;
+
+            for (let i = 0; i < directions.length; i++) {
+                const x = position.x + directions[i];
+                if (y >= 0 && y < board.ysize && x >= 0 && x < board.xsize) {
                     if (board.board[y][x].piece == null) {
-                        if (capturing !== undefined) {
-                            // Found empty tile after capturing, add it to valid moves
-                            validMoves.push({ move: { y, x }, capture: capturing });
-                        } else {
-                            validMoves.push({ move: { y, x } });
-                        }
+                        pieceMoves.push({ move: { y, x }, from: position });
                     } else {
-                        // Found piece, check if it can be captured and setting capturing to next tiles
-                        // If capturing is already set, break the loop so no more pieces can be captured in this move
-                        if (board.board[y][x].piece.color != piece.color && capturing === undefined) {
-                            capturing = { x, y };
-                        }
-                        else {
-                            break;
+                        checkPawnCapture(board, piece, y, x, direction, directions[i], pieceMoves);
+                    }
+                }
+            }
+
+        } else {
+            // Moves for kings
+            for (let i = 0; i < directions.length; i++) {
+                const directionY = directions[i];
+                for (let j = 0; j < directions.length; j++) {
+                    const directionX = directions[j];
+                    let capturing = undefined;
+                    for (let y = position.y + directionY, x = position.x + directionX; y >= 0 && y < board.ysize && x >= 0 && x < board.xsize; y += directionY, x += directionX) {
+                        if (board.board[y][x].piece == null) {
+                            if (capturing !== undefined) {
+                                // Found empty tile after capturing, add it to valid moves
+                                pieceMoves.push({ move: { y, x }, capture: capturing });
+                            } else {
+                                pieceMoves.push({ move: { y, x } });
+                            }
+                        } else {
+                            // Found piece, check if it can be captured and setting capturing to next tiles
+                            // If capturing is already set, break the loop so no more pieces can be captured in this move
+                            if (board.board[y][x].piece.color != piece.color && capturing === undefined) {
+                                capturing = { x, y };
+                            }
+                            else {
+                                break;
+                            }
                         }
                     }
                 }
             }
         }
+
+        return pieceMoves;
     }
 
-    let capturing = false;
-    for (const move of validMoves) {
-        if (move.capture != undefined) {
-            capturing = true;
-            break;
-        }
-    }
-
-    validMoves = validMoves.filter((move) => move.capture != undefined || !capturing);
-
-    return validMoves;
-
-    function checkPawnCapture(y, x, direction) {
+    function checkPawnCapture(board, piece, y, x, directionY, directionX, pieceMoves) {
         if (board.board[y][x].piece.color != piece.color) {
-            const y2 = y + direction;
-            const x2 = x - 1;
-            if (y2 >= 0 && y2 < board.ysize && x2 >= 0 && x2 < board.xsize && board.board[y2][x2] == null) {
-                validMoves.push({ move: { y2, x2 }, capture: { y, x } });
+            const y2 = y + directionY;
+            const x2 = x + directionX;
+            if (y2 >= 0 && y2 < board.ysize && x2 >= 0 && x2 < board.xsize && board.board[y2][x2].piece == null) {
+                pieceMoves.push({ move: { y: y2, x: x2 }, capture: { y, x }, from: piece.position });
             }
         }
     }
@@ -284,5 +302,3 @@ function checkGameOver(board, states, turn) {
 }
 
 function clone(items) { return items.map(item => Array.isArray(item) ? clone(item) : { ...item }); }
-
-
