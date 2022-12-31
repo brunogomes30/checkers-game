@@ -95,8 +95,21 @@ export class LogicController {
     }
 
     getPieceValidMoves() {
-        return this.validMoves.filter((move) => move.from.x === this.selectedPiece.position.x && move.from.y === this.selectedPiece.position.y);
+        let validMoves = this.validMoves.filter((move) => move.color == this.selectedPiece.color);
+        let capturing = false;
+        let finalValidMoves = [];
+        for (const move of validMoves) {
+            if (move.capture != undefined) {
+                capturing = true;
+                break;
+            }
+        }
+
+        finalValidMoves.push(...validMoves.filter((move) => (move.capture != undefined || !capturing) && move.from.x == this.selectedPiece.position.x && move.from.y == this.selectedPiece.position.y));
+
+        return finalValidMoves;
     }
+
 }
 
 function validMoves(board) {
@@ -105,26 +118,26 @@ function validMoves(board) {
     for (let y = 0; y < board.ysize; y++) {
         for (let x = 0; x < board.xsize; x++) {
             if (board.board[y][x].piece != null) {
-                validMoves.push(pieceMoves(board, board.board[y][x].piece));
+                validMoves.push(...pieceMoves(board, board.board[y][x].piece));
             }
         }
     }
 
-    let finalValidMoves = [];
-    for (const moves of validMoves) {
-        let capturing = false;
-        for (const move of moves) {
-            if (move.capture != undefined) {
-                capturing = true;
-                break;
-            }
-        }
+    // let finalValidMoves = [];
+    // for (const moves of validMoves) {
+    //     let capturing = false;
+    //     for (const move of moves) {
+    //         if (move.capture != undefined) {
+    //             capturing = true;
+    //             break;
+    //         }
+    //     }
 
-        finalValidMoves.push(...moves.filter((move) => move.capture != undefined || !capturing));
-    }
+    //     finalValidMoves.push(...moves.filter((move) => move.capture != undefined || !capturing));
+    // }
 
-    return finalValidMoves;
-
+    //return finalValidMoves;
+    return validMoves;
 
     function pieceMoves(board, piece) {
         let pieceMoves = [];
@@ -140,7 +153,7 @@ function validMoves(board) {
                 const x = position.x + directions[i];
                 if (y >= 0 && y < board.ysize && x >= 0 && x < board.xsize) {
                     if (board.board[y][x].piece == null) {
-                        pieceMoves.push({ move: { y, x }, from: position });
+                        pieceMoves.push({ move: { y, x }, from: position, color: piece.color });
                     } else {
                         checkPawnCapture(board, piece, y, x, direction, directions[i], pieceMoves);
                     }
@@ -185,7 +198,7 @@ function validMoves(board) {
             const y2 = y + directionY;
             const x2 = x + directionX;
             if (y2 >= 0 && y2 < board.ysize && x2 >= 0 && x2 < board.xsize && board.board[y2][x2].piece == null) {
-                pieceMoves.push({ move: { y: y2, x: x2 }, capture: { y, x }, from: piece.position });
+                pieceMoves.push({ move: { y: y2, x: x2 }, capture: { y, x }, from: piece.position, color: piece.color });
             }
         }
     }
