@@ -115,7 +115,7 @@ export class BoardController {
         if (moveResult.capturedPiece != null) {
             // Move captured piece to the corresponding graveyard
             console.log(moveResult);
-            this.pieceController.moveToStorage(moveResult.capturedPiece);
+            this.pieceController.moveToStorage(moveResult.capturedPiece, this.checkersBoard.storages[moveResult.capturedPiece.color]);
         }
 
         // Deselct piece

@@ -12,8 +12,10 @@ export function processClass(className, component){
             processPiece(component, className);
             break;
         case 'black-storage':
+            processStorage(component);
             break;
         case 'white-storage':
+            processStorage(component);
             break;
         default:
             return;
@@ -42,4 +44,8 @@ function processPiece(component, className){
             child.genericSet('pieceComponent', component);
         }
     });
+}
+
+function processStorage(component){
+    //Nothing to do here
 }

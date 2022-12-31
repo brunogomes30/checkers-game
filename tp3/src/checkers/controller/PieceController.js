@@ -35,15 +35,34 @@ export class PieceController{
         
     }
 
-    moveToStorage(piece){
+    moveToStorage(piece, checkersStorage){
         const STORAGE_OFFSET = [0, 0.1, 0];
         const color = piece.color;
         const component = piece.component;
         const storage = this.scene.graph.getComponent(color+'-storage');
+        const storagePieces = checkersStorage;
+        //Get the next available storage space
+        let spaceChosen;
+        for(let i = storagePieces.length - 1; i >= 0; i--){
+            spaceChosen = i;
+            if(i === 0){
+                storagePieces[i].push(component);
+                break;
+            }
+            if(storagePieces[i-1].length > storagePieces[i].length){
+                storagePieces[i].push(component);
+                break;
+            }
+        }
+        const offset = [
+            STORAGE_OFFSET[0] + (spaceChosen % 2) * (0.250 ) + Math.random() * 0.025,
+            STORAGE_OFFSET[1] + storagePieces[spaceChosen].length * 0.055,
+            STORAGE_OFFSET[2] + Math.floor(spaceChosen / 2) * 0.250 + Math.random() * 0.025,
+        ]
         const movement = [
-            storage.getPosition()[0] - component.getPosition()[0] + STORAGE_OFFSET[0],
-            storage.getPosition()[1] - component.getPosition()[1] + STORAGE_OFFSET[1],
-            storage.getPosition()[2] - component.getPosition()[2] + STORAGE_OFFSET[2]
+            storage.getPosition()[0] - component.getPosition()[0] + offset[0],
+            storage.getPosition()[1] - component.getPosition()[1] + offset[1],
+            storage.getPosition()[2] - component.getPosition()[2] + offset[2]
         ]
 
         const height = movement[1] + 1;
