@@ -35,6 +35,31 @@ export class PieceController{
         
     }
 
+    moveToStorage(piece){
+        const STORAGE_OFFSET = [0, 1.0, 0];
+        const color = piece.color;
+        const component = piece.component;
+        const storage = this.scene.graph.getComponent(color+'-storage');
+        const movement = [
+            storage.getPosition()[0] - component.getPosition()[0] + STORAGE_OFFSET[0],
+            storage.getPosition()[1] - component.getPosition()[1] + STORAGE_OFFSET[1],
+            storage.getPosition()[2] - component.getPosition()[2] + STORAGE_OFFSET[2]
+        ]
+        console.log(movement);
+
+        
+        const animation = this.scene.graph.cloneAnimation('piece-storage', 'piece-storage' + component.id, {
+            'posx': movement[0],
+            'posy': movement[1],
+            'posz': movement[2],
+            'posx_half': movement[0] / 2 ,
+            'posy_half': movement[1] * 2,
+            'posz_half': movement[2] / 2,
+        });
+        component.animation = animation;
+        this.scene.graph.stopAnimation(animation);
+    }
+
     generatePieceComponent(board, color, y, x){
         let className;
         switch(color){

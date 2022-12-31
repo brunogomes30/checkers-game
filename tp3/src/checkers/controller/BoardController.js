@@ -114,6 +114,8 @@ export class BoardController {
         this.tileController.unhiglightTiles();
         if (moveResult.capturedPiece != null) {
             // Move captured piece to the corresponding graveyard
+            console.log(moveResult);
+            this.pieceController.moveToStorage(moveResult.capturedPiece);
         }
 
         // Deselct piece

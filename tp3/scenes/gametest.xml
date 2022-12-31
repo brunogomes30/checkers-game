@@ -92,6 +92,50 @@
                 <scale x="1.0" y="1.0" z="1.0" />
             </keyframe>
         </keyframeanim>
+
+        <keyframeanim id="piece-storage" animation-speed="0.2" loop="false">
+            <param name="posx" />
+            <param name="posy" />
+            <param name="posz" />
+            <param name="posx_half" />
+            <param name="posy_half" />
+            <param name="posz_half" />
+            <keyframe instant="0.0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="0.2">
+                <translation x="0.250" y="-0.015" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1.25" y="0.5" z="1.25" />
+            </keyframe>
+            <keyframe instant="0.4" >
+                <translation x="0" y="0.03" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="0.75" y="1.5" z="0.75" />
+            </keyframe>
+            <keyframe instant="1.0" function="quadratic_0_1_1_0">
+                <translation x="posx_half" y="posy_half" z="posz_half" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1.0" y="1.0" z="1.0" />
+            </keyframe>
+            <keyframe instant="1.6" function="quadratic_0_0_-1_0">
+                <translation x="posx" y="posy" z="posz" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1.0" y="1.0" z="1.0" />
+            </keyframe>
+        </keyframeanim>
         
         <keyframeanim id="piece-selected" animation-speed="2" loop="true">
             <keyframe instant="0.0">
@@ -175,6 +219,8 @@
         <model id="boardModel" file="board/board.obj" class="board-model" />
         <model id="whiteModel" file="piece/white.obj" class="white-piece"/>
         <model id="blackModel" file="piece/black.obj" class="black-piece"/>
+        <model id="blackStorage" file="trueno.obj" class="black-storage"/>
+        <model id="whiteStorage" file="nissan.obj" class="white-storage"/>
     </models>
 
     <components>
@@ -186,6 +232,8 @@
             <texture id="demoTexture" />
             <children>
                 <componentref id="board" />
+                <componentref id="white_storage"/>
+                <componentref id="black_storage"/>
             </children>
         </component>
         <component id="board" class="board" pickable="true">
@@ -226,6 +274,34 @@
             <children>
                 <modelref id="blackModel" />
 
+            </children>
+        </component>
+
+        <component id="black_storage" class="black-storage">
+            <transformation>
+                <translate x="0.0" y="0.0" z="-3.0" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <modelref id="whiteStorage" />
+            </children>
+        </component>
+
+        <component id="white_storage" class="white-storage">
+            <transformation>
+                <translate x="0.0" y="0.0" z="3.0" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <modelref id="blackStorage" />
             </children>
         </component>
     </components>

@@ -11,6 +11,10 @@ export function processClass(className, component){
         case 'black-piece':
             processPiece(component, className);
             break;
+        case 'black-storage':
+            break;
+        case 'white-storage':
+            break;
         default:
             return;
     }
