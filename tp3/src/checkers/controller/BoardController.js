@@ -92,34 +92,44 @@ export class BoardController {
         y = Number(y.substring(y.search(/[0-9]/)));
         let x = Number(element.id.split('_')[0].split('x')[1]);
         console.log('Board click: ' + y + ' ' + x);
-        
+
         if (!this.logicController.selectTile({ x, y })) {
+            this.tileController.unhiglightTiles();
+            if (this.selectedPiece != undefined) {
+                this.pieceController.stopIdleAnimation(this.selectedPiece);
+            }
+            this.selectedPiece = undefined;
+
             console.log('Invalid tile selection');
             return;
         }
 
         // Stop highlighting previous valid moves (Maybe highligh only the selected tile)
-        this.selectedTile = element;
+        this.tileController.unhiglightTiles();
 
         const piece = this.checkersBoard.pieceMap[this.selectedPiece.pieceComponent.id]
-        const piecePos = {y:piece.position.y, x: piece.position.x};
+        const piecePos = { y: piece.position.y, x: piece.position.x };
         const moveResult = this.logicController.processMove();
 
-        // Animate piece movement
-       
+        // Animate selected piece movement
+
         const movey = y - piecePos.y;
         const movex = x - piecePos.x;
         console.log(movey, movex, 'ssss')
-        this.pieceController.movePiece(this.selectedPiece, - movey * TILE_SIZE, movex * TILE_SIZE);
-        this.tileController.unhiglightTiles();
+        if(!moveResult.changeTurn && !moveResult.gameOver) {
+            this.pieceController.movePiece(this.selectedPiece, - movey * TILE_SIZE, movex * TILE_SIZE, true);
+        } else {
+            this.pieceController.movePiece(this.selectedPiece, - movey * TILE_SIZE, movex * TILE_SIZE);
+        }
+
+        // Move captured piece to the corresponding graveyard
         if (moveResult.capturedPiece != null) {
-            // Move captured piece to the corresponding graveyard
             console.log(moveResult);
             this.pieceController.moveToStorage(moveResult.capturedPiece);
         }
 
-        // Deselct piece
         
+        // Check if game is over
         if (moveResult.gameOver) {
             this.selectedPiece = undefined;
 
@@ -135,11 +145,21 @@ export class BoardController {
             console.log('Game over! Winner: ' + moveResult.winner)
         }
 
+
+        // Setup next move
         if (moveResult.changeTurn) {
             this.selectedPiece = undefined;
             // Change view and stuff
-        } else {
-            // Highlight new valid moves
+        } else {            
+            this.validMoves = this.logicController.getPieceValidMoves();
+
+            for (let i = 0; i < this.validMoves.length; i++) {
+                const move = this.validMoves[i].move;
+                const board = this.checkersBoard.board;
+                const fragment = board[move.y][move.x].fragment;
+                console.log(fragment);
+                this.tileController.highlightTile(fragment);
+            }
         }
 
 
@@ -163,15 +183,15 @@ export class BoardController {
 
         this.selectedPiece = element;
         this.pieceController.startIdleAnimation(this.selectedPiece);
-        
+
 
         // Stop highlighting previous valid moves
         // Animate piece selection
         this.validMoves = this.logicController.getPieceValidMoves();
         this.tileController.unhiglightTiles();
-        
+
         console.log(this.validMoves);
-        for(let i = 0; i < this.validMoves.length; i++){
+        for (let i = 0; i < this.validMoves.length; i++) {
             const move = this.validMoves[i].move;
             const board = this.checkersBoard.board;
             const fragment = board[move.y][move.x].fragment;

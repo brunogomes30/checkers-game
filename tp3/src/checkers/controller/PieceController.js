@@ -15,7 +15,7 @@ export class PieceController{
         this.selectedPiece = piece;
     }
 
-    movePiece(piece, y, x){
+    movePiece(piece, y, x, startIdleAnimation = false){
 
         this.stopIdleAnimation(piece, () => {
             const animation = this.scene.graph.cloneAnimation('piece-move', 'piece-move-' + piece.pieceComponent.id, {
@@ -30,6 +30,11 @@ export class PieceController{
             this.scene.graph.stopAnimation(animation, () => {
                 this.lightController.turnSpotlightOff();
                 animation.applyToComponent(piece.pieceComponent);
+
+                if(startIdleAnimation){
+                    this.startIdleAnimation(piece);
+                }
+
             });
         });
         

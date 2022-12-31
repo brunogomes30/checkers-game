@@ -19,6 +19,7 @@ export class LogicController {
         const move = this.getPieceValidMoves().filter((move) => move.move.x === tile.x && move.move.y === tile.y)[0];
         if (move === undefined) {
             this.state = 'pieceSelection';
+            this.selectedPiece = null;
             console.log('Invalid tile selected');
             return false;
         }
@@ -123,20 +124,6 @@ function validMoves(board) {
         }
     }
 
-    // let finalValidMoves = [];
-    // for (const moves of validMoves) {
-    //     let capturing = false;
-    //     for (const move of moves) {
-    //         if (move.capture != undefined) {
-    //             capturing = true;
-    //             break;
-    //         }
-    //     }
-
-    //     finalValidMoves.push(...moves.filter((move) => move.capture != undefined || !capturing));
-    // }
-
-    //return finalValidMoves;
     return validMoves;
 
     function pieceMoves(board, piece) {
