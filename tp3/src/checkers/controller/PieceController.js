@@ -73,16 +73,26 @@ export class PieceController{
         const height = movement[1] + 1;
         const peak = [movement[0] / 2, height, movement[2] / 2];
         
-        const animation = this.scene.graph.cloneAnimation('piece-storage', 'piece-storage' + component.id, {
+        const animationxz = this.scene.graph.cloneAnimation('piece-storage_xz', 'piece-storage_xz' + component.id, {
             'posx': movement[0],
-            'posy': movement[1],
             'posz': movement[2],
             'posx_half': peak[0],
-            'posy_half': peak[1],
             'posz_half': peak[2],
         });
-        component.addAnimation(animation);
-        this.scene.graph.stopAnimation(animation);
+        const animationy = this.scene.graph.cloneAnimation('piece-storage_y', 'piece-storage_y' + component.id, {
+            'posy': movement[1],
+            'posy_half': peak[1],
+        });
+        component.addAnimation(animationxz);
+        component.addAnimation(animationy);
+        this.scene.graph.stopAnimation(animationxz, () => {
+            animationxz.applyToComponent(component);
+            component.removeAnimation(animationxz);
+            animationy.applyToComponent(component);
+            component.removeAnimation(animationy);
+
+        });
+        this.scene.graph.stopAnimation(animationy);
     }
 
     generatePieceComponent(board, color, y, x){
