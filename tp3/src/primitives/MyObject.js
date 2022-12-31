@@ -39,6 +39,18 @@ export class MyObject{
 		}
 	}
 
+	changeMaterial(material){
+		for(let i=0; i<this.fragments.length; i++){
+			this.fragments[i].changeMaterial(material);
+		}
+	}
+
+	resetMaterial(){
+		for(let i=0; i<this.fragments.length; i++){
+			this.fragments[i].resetMaterial();
+		}
+	}
+
 	genericSet(attributeName, value, conditionFunction){
 		if(conditionFunction(this.id)){
 			this[attributeName] = value;

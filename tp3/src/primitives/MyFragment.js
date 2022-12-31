@@ -11,7 +11,16 @@ export class MyFragment extends CGFobject {
         this.normals = buffers.normals;
         this.texCoords = buffers.texCoords;
 		this.material = buffers.material;
+		this.originalMaterial = buffers.material;
 		this.initBuffers();
+	}
+
+	changeMaterial(material){
+		this.material = material;
+	}
+
+	resetMaterial(){
+		this.material = this.originalMaterial;
 	}
 
 	/**

@@ -35,6 +35,10 @@ export class MyModel{
         });
     }
 
+    setModelClass(className){
+        this.className = className;
+    }
+    
     genericSet(attributeName, value, conditionFunction){
         if (conditionFunction == undefined) {
             conditionFunction = () => { return true; };

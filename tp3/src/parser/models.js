@@ -24,7 +24,12 @@ export function parseModels(modelsNode, sxsReader) {
         if (file === null) {
             return `No file defined for model with ID = ${id}`;
         };
+
+        const className = sxsReader.reader.getString(modelNode, 'class', false);
+
         const model = parseObjFile(sxsReader.graph.scene, file, sxsReader.graph.textures);
+
+        model.setModelClass(className);
         model.setPickable(pickable);
         if(model instanceof String){
             return model;

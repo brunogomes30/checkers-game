@@ -4,6 +4,7 @@ import { CheckersPiece } from "../model/CheckersPiece.js";
 import { CheckersTile } from "../model/CheckersTile.js";
 import { LogicController } from "./CheckersController.js";
 import { LightController } from "./LightController.js";
+import { TileController } from "./TileController.js";
 export class BoardController {
     constructor(scene, size) {
         this.scene = scene;
@@ -13,6 +14,7 @@ export class BoardController {
         this.logicController = new LogicController(this.checkersBoard);
         this.lightController = new LightController(scene)
         this.pieceController = new PieceController(scene, this.lightController);
+        this.tileController = new TileController(scene);
     }
 
     loadNewBoard(graph, board) {
@@ -26,6 +28,8 @@ export class BoardController {
         for (let y = 0; y < this.ysize; y++) {
             for (let x = 0; x < this.xsize; x++) {
                 const tile = board[y][x];
+                const tileFragment = this.tileController.getTileFragment(this.checkersBoard.component, y, x);
+                tile.fragment = tileFragment;
                 if (tile.piece != null) {
                     const component = this.pieceController.generatePieceComponent(this.checkersBoard, tile.piece.color, y, x);
                     tile.piece.component = component;
@@ -107,7 +111,7 @@ export class BoardController {
         const movex = x - piecePos.x;
         console.log(movey, movex, 'ssss')
         this.pieceController.movePiece(this.selectedPiece, - movey * TILE_SIZE, movex * TILE_SIZE);
-        
+        this.tileController.unhiglightTiles();
         if (moveResult.capturedPiece != null) {
             // Move captured piece to the corresponding graveyard
         }
@@ -162,7 +166,15 @@ export class BoardController {
         // Stop highlighting previous valid moves
         // Animate piece selection
         this.validMoves = this.logicController.getValidMoves();
+        this.tileController.unhiglightTiles();
         console.log(this.validMoves);
+        for(let i = 0; i < this.validMoves.length; i++){
+            const move = this.validMoves[i].move;
+            const board = this.checkersBoard.board;
+            const fragment = board[move.y][move.x].fragment;
+            console.log(fragment);
+            this.tileController.highlightTile(fragment);
+        }
         // Display new valid moves 
     }
 }
