@@ -12,7 +12,7 @@ export class LightController{
         const lights = this.scene.lights;
         this.lightsEnabled = [...this.scene.enabledLights];
         for(let i=0; i<lights.length; i++){
-            lights[i].disable();
+            //lights[i].disable();
         }
 
         const pieceSpotlightId = this.scene.graph.getLight('piece-spotlight');
@@ -32,7 +32,7 @@ export class LightController{
             }
             const index = this.scene.light_id_index[key];
             if(this.scene.enabledLights[key]){
-                this.scene.lights[index].enable();
+                //this.scene.lights[index].enable();
             }
         }
         const pieceSpotlightId = this.scene.graph.getLight('piece-spotlight');
