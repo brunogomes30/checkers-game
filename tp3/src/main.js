@@ -37,7 +37,7 @@ function main() {
 
     const sceneGraphs = [];
     sceneGraphs[filename] = new MySceneGraph(filename, myScene);
-    sceneGraphs['room'] = new MySceneGraph('gametest.xml', myScene, 'room');
+    //sceneGraphs['room'] = new MySceneGraph('demo.xml', myScene, 'room');
     
     
     //sceneGraphs['blendertest'] = new MySceneGraph('blendertest.xml', myScene, 'blendertest');
