@@ -99,7 +99,6 @@ export class MyKeyframeAnimation extends MyAnimation {
      * @returns 
      */
     update(timeDelta) {
-        console.log(timeDelta);
         if(timeDelta > 0.20){
             //Value is too high for the animation to be smooth
             return;
