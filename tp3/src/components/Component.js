@@ -117,6 +117,10 @@ export class Component{
         if(Array.isArray(this.animation)){
             return this.animation.find(conditionFunction);
         }
+        if(this.animation === undefined){
+            return undefined;
+        }
+
         return conditionFunction(this.animation) ? this.animation : undefined;
     }
     
