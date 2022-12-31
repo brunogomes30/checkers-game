@@ -8,6 +8,8 @@ export class PieceController{
         this.scene = scene;
         this.selectedPiece = null;
         this.lightController = lightController;
+        this.animatingMove = false;
+        this.animatingCapture = false;
     }
 
 
@@ -16,7 +18,7 @@ export class PieceController{
     }
 
     movePiece(piece, y, x, startIdleAnimation = false){
-
+        this.animatingMove = true;
         this.stopIdleAnimation(piece, () => {
             const animation = this.scene.graph.cloneAnimation('piece-move', 'piece-move-' + piece.pieceComponent.id, {
                 'posx': x,
@@ -30,6 +32,8 @@ export class PieceController{
             this.scene.graph.stopAnimation(animation, () => {
                 this.lightController.turnSpotlightOff();
                 animation.applyToComponent(piece.pieceComponent);
+
+                this.animatingMove = false;
 
                 if(startIdleAnimation){
                     this.startIdleAnimation(piece);
@@ -83,6 +87,7 @@ export class PieceController{
             'posy': movement[1],
             'posy_half': peak[1],
         });
+        this.animatingCapture = true;
         component.addAnimation(animationxz);
         component.addAnimation(animationy);
         this.scene.graph.stopAnimation(animationxz, () => {
@@ -90,7 +95,7 @@ export class PieceController{
             component.removeAnimation(animationxz);
             animationy.applyToComponent(component);
             component.removeAnimation(animationy);
-
+            this.animatingCapture = false;
         });
         this.scene.graph.stopAnimation(animationy);
     }
