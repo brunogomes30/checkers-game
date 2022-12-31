@@ -11,16 +11,20 @@ import { MySceneGraph } from "../MySceneGraph.js";
  * @param {boolean} isKeyframe If the operation is part of a keyframe animation description
  * @returns 
  */
-export function parseTransformationOperations(graph, operationNode, errorMsg, isKeyframe) {
+export function parseTransformationOperations(graph, operationNode, errorMsg, isKeyframe, params) {
     let parsedOp = mat4.create();
+    const acceptsParams = params != undefined;
+    let position = [0, 0, 0];
     let coordinates;
     switch (operationNode.nodeName) {
         case 'translate':
         case 'translation':
-            coordinates = parseCoordinates3D(operationNode, "translate " + errorMsg, graph);
-            if (!Array.isArray(coordinates))
+            coordinates = parseCoordinates3D(operationNode, "translate " + errorMsg, graph, params);
+            if (!Array.isArray(coordinates) && (!acceptsParams && !Object.keys(params).includes(coordinates)))
                 return coordinates;
-
+            position[0] += coordinates[0];
+            position[1] += coordinates[1];
+            position[2] += coordinates[2];
             if (isKeyframe) {
                 parsedOp = coordinates;
             } else {
@@ -29,8 +33,8 @@ export function parseTransformationOperations(graph, operationNode, errorMsg, is
             break;
 
         case 'scale':
-            coordinates = parseCoordinates3D(operationNode, "scale " + errorMsg, graph);
-            if (!Array.isArray(coordinates))
+            coordinates = parseCoordinates3D(operationNode, "scale " + errorMsg, graph, params);
+            if (!Array.isArray(coordinates) && (!acceptsParams && !Object.keys(params).includes(coordinates)))
                 return coordinates;
             if (isKeyframe) {
                 parsedOp = coordinates;
@@ -43,9 +47,17 @@ export function parseTransformationOperations(graph, operationNode, errorMsg, is
         case 'rotation':
             let angle = graph.reader.getFloat(operationNode, "angle");
             if (!(angle != null && !isNaN(angle))) {
-                return "unable to parse angle of the rotation " + errorMsg;
+                if(acceptsParams){
+                    angle = graph.reader.getString(operationNode, 'angle', false);
+                    if (angle == undefined || !Object.keys(params).includes(angle)) {
+                        return "unable to parse angle of the rotation " + errorMsg;
+                    }
+                } else {
+                    return "unable to parse angle of the rotation " + errorMsg;
+                }
+            } else {
+                angle = degToRad(angle);
             }
-            angle = degToRad(angle);
 
             const axis = graph.reader.getItem(operationNode, "axis", ["x", "y", "z"], true);
             if (axis == null) {
@@ -72,5 +84,8 @@ export function parseTransformationOperations(graph, operationNode, errorMsg, is
             break;
     }
 
-    return parsedOp;
+    return {
+        matrix: parsedOp,
+        position: position // Position is the sum of all translates in current component
+    };
 }

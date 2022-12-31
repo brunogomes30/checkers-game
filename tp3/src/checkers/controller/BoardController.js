@@ -2,14 +2,17 @@ import { CheckersBoard } from "../model/CheckersBoard.js";
 import { PieceController } from "./PieceController.js";
 import { CheckersPiece } from "../model/CheckersPiece.js";
 import { CheckersTile } from "../model/CheckersTile.js";
+import { LightController } from "./LightController.js";
 export class BoardController {
     constructor(scene, size) {
         this.scene = scene;
         this.ysize = size;
         this.xsize = size;
-        this.pieceController = new PieceController(scene);
+        this.lightController = new LightController(scene)
+        this.pieceController = new PieceController(scene, this.lightController);
         const boardComponent = this.scene.graph.getComponent('board');
         this.checkersBoard = new CheckersBoard(scene, size, boardComponent);
+        this.lightController = this.scene.lightController;
     }
 
     loadNewBoard(board){
@@ -18,7 +21,6 @@ export class BoardController {
         }
         const boardComponent = this.scene.graph.getComponent('board');
         this.checkersBoard.component = boardComponent;
-        console.log(this);
         for(let y=0; y<this.ysize; y++){
             for(let x=0; x<this.xsize; x++){
                 const tile = this.board[y][x];
@@ -76,10 +78,19 @@ export class BoardController {
     }
 
     handleBoardClick(element){
-        
-        console.log('Board click: ' + element.id);
-        if(this.pieceController.hasPieceSelected()){
-            //this.pieceController.movePiece(this.selectedPiece, y, x);
+        const TILE_SIZE = 2 / 8;
+        let y = element.id.split('x')[0];
+        y = Number(y.substring(y.search(/[0-9]/)));
+        let x = Number(element.id.split('_')[0].split('x')[1]);
+        console.log('Board click: ' + y + ' ' + x);
+        if(this.hasPieceSelected()){
+            //const movey = y - this.selectedPiece.position.y;
+            //const movex = x - this.selectedPiece.position.x;
+            const movey = y - 2;
+            const movex = x - 0;
+            console.log('Move piece: ' + movey + ' ' + movex);
+            this.pieceController.movePiece(this.selectedPiece, - movey * TILE_SIZE, movex * TILE_SIZE);
+            this.selectedPiece = undefined;
         }
     }
 
@@ -95,4 +106,7 @@ export class BoardController {
 
     }
 
+    hasPieceSelected(){
+        return this.selectedPiece != undefined;
+    }
 }

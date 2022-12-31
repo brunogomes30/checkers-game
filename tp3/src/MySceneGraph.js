@@ -61,6 +61,7 @@ export class MySceneGraph {
         this.components = [];
         this.class_components = {};
         this.events = {};
+        this.class_lights = {};
     }
 
     /*
@@ -192,7 +193,6 @@ export class MySceneGraph {
         
         
         if (this.selected) {
-            console.log('Entrou aqui');
             this.scene.onGraphLoaded() 
         }
         
@@ -273,8 +273,6 @@ export class MySceneGraph {
     }
 
     addComponent(parent, component) {
-        console.log("Adding component " + component.id + " to parent " + parent.id);
-        console.log("is selected" + component.isSelected);
         this.components[component.id] = component;
         parent.children.push(component);
     }
@@ -289,10 +287,26 @@ export class MySceneGraph {
         return component;
     }
 
+    getLight(className){
+        const list = this.class_lights[className];
+        if (list == undefined) {
+            console.error("Light with class name " + className + " not found.");
+            return null;
+        }
+        const light = list[0];
+        return light;
+    }
 
-    cloneAnimation(animationId, newId){
+
+    cloneAnimation(animationId, newId, params = undefined){
         const animation = this.animations[animationId];
-        const newAnimation = new MyKeyframeAnimation(this.scene, newId, animation.keyframes, animation.speed, animation.isLooping);
+        const newAnimation = animation.clone(newId);
+        if(params != undefined){
+            for(let key in params){
+                newAnimation.setParameter(key, params[key]);
+            }
+            newAnimation.applyParameters();
+        }
         this.animations[newId] = newAnimation;
         return newAnimation;
     }
@@ -307,16 +321,15 @@ export class MySceneGraph {
     stopAnimation(animation, callback){
         console.log('Stopping animation ' + animation.id);
         animation.stopAnimation((a)=> {
+            if(callback != undefined){
+                callback();
+            }
             delete this.animations[animation.id];
-            callback();
         });
     }
 
     removeAnimation(animation){
-        console.log('removing animation ' + animation.id);
-        console.log('Before' , this.animations);
         delete this.animations[animation.id];
-        console.log('After' , this.animations);
     }
 
 }

@@ -1,7 +1,6 @@
 import {MyModel} from '../../primitives/MyModel.js';
 
 export function processClass(className, component){
-    console.log('Processing component: ' , component);
     switch(className){
         case 'board':
             processBoard(component);
@@ -31,8 +30,6 @@ function processBoard(component){
 }
 
 function processPiece(component, className){
-    //Bloat the piece
-    console.log('Bloating piece: ' , component);
     component.children.forEach(child => {
         if(child instanceof MyModel){
             //set all tiles to pickable
