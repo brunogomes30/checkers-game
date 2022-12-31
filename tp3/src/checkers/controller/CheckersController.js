@@ -40,6 +40,11 @@ export class LogicController {
             return false;
         }
 
+        if(piece.position == null){
+            console.log('Piece is dead')
+            return false;
+        }
+
         this.selectedPiece = piece;
         this.state = 'tileSelection';
         this.validMoves = validMoves(this.board)
@@ -59,10 +64,13 @@ export class LogicController {
         this.board.board[piecePos.y][piecePos.x].piece = null;
 
         // Update the piece position and update if it's a king
+        let promoted = false;
         this.selectedPiece.position = { y: this.selectedMove.move.y, x: this.selectedMove.move.x }
         if (this.selectedPiece.color === 'white' && this.selectedPiece.position.y === this.board.board.length - 1) {
+            promoted = !this.selectedPiece.isKing;
             this.selectedPiece.isKing = true;
         } else if (this.selectedPiece.color === 'black' && this.selectedPiece.position.y === 0) {
+            promoted = !this.selectedPiece.isKing;
             this.selectedPiece.isKing = true;
         }
 
@@ -98,7 +106,7 @@ export class LogicController {
 
         this.state = 'pieceSelection';
 
-        return { changeTurn: true, capturedPiece };
+        return { changeTurn: true, capturedPiece, promoted };
     }
 
     getPieceValidMoves() {

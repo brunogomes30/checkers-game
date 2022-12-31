@@ -31,11 +31,36 @@ export class BoardController {
                 const tileFragment = this.tileController.getTileFragment(this.checkersBoard.component, y, x);
                 tile.fragment = tileFragment;
                 if (tile.piece != null) {
-                    const component = this.pieceController.generatePieceComponent(this.checkersBoard, tile.piece.color, y, x);
+                    const component = this.pieceController.generatePieceComponentInBoard(this.checkersBoard.component, tile.piece.color, y, x);
                     tile.piece.component = component;
                     this.checkersBoard.pieceMap[component.id] = tile.piece;
                 }
             }
+        }
+
+        // Generate storage components
+        const whiteStorage = graph.getComponent('white-storage');
+        const blackStorage = graph.getComponent('black-storage');
+        const whiteStoragePieces = this.checkersBoard.storages['white'];
+        const blackStoragePieces = this.checkersBoard.storages['black'];
+
+        for(let i=0; i<4; i++) {
+            let position = whiteStorage.getPosition();
+            position = [
+                position[0] - 1.0,
+                position[1] + 0.055 * i,
+                position[2],
+            ];
+            const whitePiece = this.pieceController.generatePieceComponent(this.checkersBoard.component, 'white', position, 'piece-storage-white-' + i);
+            position = blackStorage.getPosition();
+            position = [
+                position[0] - 1.0,
+                position[1] + 0.055 * i,
+                position[2],
+            ];
+            const blackPiece = this.pieceController.generatePieceComponent(this.checkersBoard.component, 'black', position, 'piece-storage-black-' + i);
+            whiteStoragePieces[i].push(whitePiece);
+            blackStoragePieces[i].push(blackPiece);
         }
 
         this.logicController.start()
@@ -116,18 +141,28 @@ export class BoardController {
         const moveResult = this.logicController.processMove();
 
         // Animate selected piece movement
-
         const movey = y - piecePos.y;
         const movex = x - piecePos.x;
+        const pieceMoved = this.selectedPiece;
+        const moveCallback = () => {
+            if(moveResult.promoted) {
+                console.log(this.checkersBoard);
+                console.log(pieceMoved);
+                this.pieceController.makeKing(pieceMoved, this.checkersBoard);
+                if(!moveResult.changeTurn && !moveResult.gameOver){
+                    this.pieceController.startIdleAnimation(pieceMoved);
+                }
+            }
+        }
         if(!moveResult.changeTurn && !moveResult.gameOver) {
-            this.pieceController.movePiece(this.selectedPiece, - movey * TILE_SIZE, movex * TILE_SIZE, true);
+            this.pieceController.movePiece(this.selectedPiece, - movey * TILE_SIZE, movex * TILE_SIZE, moveCallback);
         } else {
-            this.pieceController.movePiece(this.selectedPiece, - movey * TILE_SIZE, movex * TILE_SIZE);
+            this.pieceController.movePiece(this.selectedPiece, - movey * TILE_SIZE, movex * TILE_SIZE, moveCallback);
         }
 
         // Move captured piece to the corresponding graveyard
         if (moveResult.capturedPiece != null) {
-            this.pieceController.moveToStorage(moveResult.capturedPiece, this.checkersBoard.storages[moveResult.capturedPiece.color]);
+            this.pieceController.moveToStorage(moveResult.capturedPiece, this.checkersBoard.storages[moveResult.capturedPiece.color], this.checkersBoard);
         }
 
         
@@ -146,7 +181,6 @@ export class BoardController {
             // Show game over screen and options
             console.log('Game over! Winner: ' + moveResult.winner)
         }
-
 
         // Setup next move
         if (moveResult.changeTurn) {
@@ -176,7 +210,9 @@ export class BoardController {
         const component = element.pieceComponent;
         console.log('Piece click: ' + className + ' ' + component.id);
         const checkerPiece = this.checkersBoard.pieceMap[element.pieceComponent.id];
-
+        if(checkerPiece == undefined){
+            return;
+        }
         if (this.selectedPiece != undefined) {
             this.pieceController.stopIdleAnimation(this.selectedPiece);
         }
