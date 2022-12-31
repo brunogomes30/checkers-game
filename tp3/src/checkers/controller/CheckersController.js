@@ -51,7 +51,7 @@ export class LogicController {
             return false;;
         }
 
-        this.states.push({ turn: this.turn, board: clone(this.board.board), move: this.selectedMove.move, piece: { ...this.selectedPiece }, capture: { ...this.selectedMove.capture } });
+        this.states.push({ turn: this.turn, board: clone(this.board.board), move: this.selectedMove.move, position: {...this.selectedPiece.position}, piece: { ...this.selectedPiece }, capture: { ...this.selectedMove.capture } });
         console.log(this.states[this.states.length - 1]);
         // Move the piece
         let piecePos = this.selectedPiece.position
@@ -99,6 +99,22 @@ export class LogicController {
         this.state = 'pieceSelection';
 
         return { changeTurn: true, capturedPiece };
+    }
+
+    undo() {
+        console.log('Undoing');
+        const previousState = this.states.pop();
+        if (previousState === undefined) {
+            return;
+        }
+
+        this.board.board = previousState.board;
+        this.board.board[previousState.position.y][previousState.position.x].piece.position = previousState.position;
+        this.board.board[previousState.capture.y][previousState.capture.x].piece.position = previousState.capture;
+        this.turn = previousState.turn;
+
+
+        return {piece: {...previousState.piece}, move: previousState.move, position: previousState.position, capture: previousState.capture};
     }
 
     getPieceValidMoves() {

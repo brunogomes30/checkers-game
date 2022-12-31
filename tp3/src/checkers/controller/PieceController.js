@@ -18,26 +18,31 @@ export class PieceController{
     movePiece(piece, y, x, startIdleAnimation = false){
 
         this.stopIdleAnimation(piece, () => {
-            const animation = this.scene.graph.cloneAnimation('piece-move', 'piece-move-' + piece.pieceComponent.id, {
-                'posx': x,
-                'posz': y
-            });
-            piece.pieceComponent.addAnimation(animation);
-            this.lightController.turnSpotlightOn(piece.pieceComponent);
-            animation.hookFunction(() => {
-                this.lightController.followComponent(piece.pieceComponent);
-            });
-            this.scene.graph.stopAnimation(animation, () => {
-                this.lightController.turnSpotlightOff();
-                animation.applyToComponent(piece.pieceComponent);
-
-                if(startIdleAnimation){
-                    this.startIdleAnimation(piece);
-                }
-
-            });
+            this.translate(piece, y, x, startIdleAnimation);
         });
         
+    }
+
+    translate(piece, y, x, startIdleAnimation) {
+        const animation = this.scene.graph.cloneAnimation('piece-move', 'piece-move-' + piece.id, {
+            'posx': x,
+            'posz': y
+        });
+        console.log(animation)
+        piece.addAnimation(animation);
+        this.lightController.turnSpotlightOn(piece);
+        animation.hookFunction(() => {
+            this.lightController.followComponent(piece);
+        });
+        this.scene.graph.stopAnimation(animation, () => {
+            this.lightController.turnSpotlightOff();
+            animation.applyToComponent(piece);
+
+            if (startIdleAnimation) {
+                this.startIdleAnimation(piece);
+            }
+
+        });
     }
 
     moveToStorage(piece, checkersStorage){
@@ -124,13 +129,13 @@ export class PieceController{
 
 
     stopIdleAnimation(piece, callback = undefined){
-        const animation = piece.pieceComponent.getAnimation(
-            (animation) => animation.id == 'piece-selected-' + piece.pieceComponent.id
+        const animation = piece.getAnimation(
+            (animation) => animation.id == 'piece-selected-' + piece.id
         );
         if(animation != undefined){
             this.scene.graph.stopAnimation(animation, () => {
                 //Function called after the animation is finished
-                piece.pieceComponent.animation = undefined;
+                piece.animation = undefined;
                 if(callback != undefined){
                     callback();
                 }
@@ -139,7 +144,7 @@ export class PieceController{
     }
 
     startIdleAnimation(piece){
-        const animation = this.scene.graph.cloneAnimation('piece-selected', 'piece-selected-' + piece.pieceComponent.id);
-        piece.pieceComponent.animation = animation;
+        const animation = this.scene.graph.cloneAnimation('piece-selected', 'piece-selected-' + piece.id);
+        piece.animation = animation;
     }
 }
