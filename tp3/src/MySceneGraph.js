@@ -173,7 +173,7 @@ export class MySceneGraph {
             // Replace animation ID's with animation objects
             if (component.animation !== undefined && component.animation !== 'none') {
                 if (component.animation in this.animations) {
-                    component.animation = this.animations[component.animation];
+                    component.animation = [this.animations[component.animation]];
                 } else {
                     this.onXMLMinorError(`Animation with ID '${component.animation}' not found, continuing without animation.`);
                 }

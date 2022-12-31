@@ -22,7 +22,7 @@ export class PieceController{
                 'posx': x,
                 'posz': y
             });
-            piece.pieceComponent.animation = animation;
+            piece.pieceComponent.addAnimation(animation);
             this.lightController.turnSpotlightOn(piece.pieceComponent);
             animation.hookFunction(() => {
                 this.lightController.followComponent(piece.pieceComponent);
@@ -81,7 +81,7 @@ export class PieceController{
             'posy_half': peak[1],
             'posz_half': peak[2],
         });
-        component.animation = animation;
+        component.addAnimation(animation);
         this.scene.graph.stopAnimation(animation);
     }
 
@@ -114,7 +114,9 @@ export class PieceController{
 
 
     stopIdleAnimation(piece, callback = undefined){
-        const animation = piece.pieceComponent.animation;
+        const animation = piece.pieceComponent.getAnimation(
+            (animation) => animation.id == 'piece-selected-' + piece.pieceComponent.id
+        );
         if(animation != undefined){
             this.scene.graph.stopAnimation(animation, () => {
                 //Function called after the animation is finished
