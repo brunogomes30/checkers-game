@@ -9,6 +9,8 @@ export class PieceController {
         this.scene = scene;
         this.selectedPiece = null;
         this.lightController = lightController;
+        this.animatingMove = false;
+        this.animatingCapture = false;
     }
 
 
@@ -30,7 +32,7 @@ export class PieceController {
             this.scene.graph.stopAnimation(animation, () => {
                 this.lightController.turnSpotlightOff();
                 animation.applyToComponent(piece.pieceComponent);
-
+                this.animatingMove = false;
                 if (callback != null) {
                     callback();
                 }
@@ -65,7 +67,10 @@ export class PieceController {
             STORAGE_OFFSET[2] + Math.floor(spaceChosen / 2) * 0.250 + Math.random() * 0.025,
         ]
 
-        jumpPiece(this.scene, component, storage.getPosition(), offset);
+        this.animatingCapture = true;
+        jumpPiece(this.scene, component, storage.getPosition(), offset, () => {
+            this.animatingCapture = false;
+        });
 
         if (piece.isKing) {
             const kingComponent = piece.component;

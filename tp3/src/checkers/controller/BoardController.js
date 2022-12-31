@@ -112,6 +112,10 @@ export class BoardController {
     }
 
     handleBoardClick(element) {
+        if (this.pieceController.animatingCapture || this.pieceController.animatingMove) {
+            console.log('Board click: Animation in progress');
+            return;
+        }
         const TILE_SIZE = 2 / 8;
         let y = element.id.split('x')[0];
         y = Number(y.substring(y.search(/[0-9]/)));
@@ -198,6 +202,10 @@ export class BoardController {
     }
 
     handlePieceClick(element) {
+        if (this.pieceController.animatingCapture || this.pieceController.animatingMove) {
+            console.log('Piece click: Animation in progress');
+            return;
+        }
         const className = element.className;
         const component = element.pieceComponent;
         console.log('Piece click: ' + className + ' ' + component.id);
