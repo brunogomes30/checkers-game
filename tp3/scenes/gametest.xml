@@ -237,7 +237,7 @@
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="demoTexture" />
+            <texture id="none" />
             <children>
                 <componentref id="board" />
                 <componentref id="white_storage"/>
