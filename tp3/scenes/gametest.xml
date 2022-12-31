@@ -33,7 +33,7 @@
             <attenuation constant="0.0" linear="0.01" quadratic="0.0" />
         </omni>
 
-        <spot id="pieceSpotlight" angle="30" exponent="127" enabled="1" class="piece-spotlight">
+        <spot id="pieceSpotlight" angle="30" exponent="127" enabled="0" class="piece-spotlight">
             <location x="0.0" y="1.5" z="0" w="1.0" />
             <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
