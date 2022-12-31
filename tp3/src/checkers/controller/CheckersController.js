@@ -58,8 +58,13 @@ export class LogicController {
         this.board.board[this.selectedMove.move.y][this.selectedMove.move.x].piece = this.selectedPiece;
         this.board.board[piecePos.y][piecePos.x].piece = null;
 
-        // Update the piece position
+        // Update the piece position and update if it's a king
         this.selectedPiece.position = { y: this.selectedMove.move.y, x: this.selectedMove.move.x }
+        if (this.selectedPiece.color === 'white' && this.selectedPiece.position.y === this.board.board.length - 1) {
+            this.selectedPiece.isKing = true;
+        } else if (this.selectedPiece.color === 'black' && this.selectedPiece.position.y === 0) {
+            this.selectedPiece.isKing = true;
+        }
 
         // Handle captures
         let capturedPiece = null;
@@ -92,6 +97,7 @@ export class LogicController {
 
 
         this.state = 'pieceSelection';
+
         return { changeTurn: true, capturedPiece };
     }
 
@@ -131,56 +137,32 @@ function validMoves(board) {
         const position = piece.position;
         const directions = [-1, 1];
 
-        if (!piece.isKing) {
-            // Moves for pawns
-            const direction = piece.color === 'white' ? 1 : -1;
-            const y = position.y + direction;
 
-            for (let i = 0; i < directions.length; i++) {
-                const x = position.x + directions[i];
+        // Moves for pawns
+        const direction = piece.color === 'white' ? 1 : -1;
+        const y = position.y + direction;
+
+        for (let i = piece.isKing ? 0 : directions.indexOf(direction); piece.isKing ? i < directions.length : i == directions.indexOf(direction); i++) {
+            const directionY = directions[i];
+            for (let j = 0; j < directions.length; j++) {
+                const directionX = directions[j];
+                let y = position.y + directionY;
+                let x = position.x + directionX;
                 if (y >= 0 && y < board.ysize && x >= 0 && x < board.xsize) {
                     if (board.board[y][x].piece == null) {
                         pieceMoves.push({ move: { y, x }, from: position, color: piece.color });
                     } else {
-                        checkPawnCapture(board, piece, y, x, direction, directions[i], pieceMoves);
-                    }
-                }
-            }
-
-        } else {
-            // Moves for kings
-            for (let i = 0; i < directions.length; i++) {
-                const directionY = directions[i];
-                for (let j = 0; j < directions.length; j++) {
-                    const directionX = directions[j];
-                    let capturing = undefined;
-                    for (let y = position.y + directionY, x = position.x + directionX; y >= 0 && y < board.ysize && x >= 0 && x < board.xsize; y += directionY, x += directionX) {
-                        if (board.board[y][x].piece == null) {
-                            if (capturing !== undefined) {
-                                // Found empty tile after capturing, add it to valid moves
-                                pieceMoves.push({ move: { y, x }, capture: capturing });
-                            } else {
-                                pieceMoves.push({ move: { y, x } });
-                            }
-                        } else {
-                            // Found piece, check if it can be captured and setting capturing to next tiles
-                            // If capturing is already set, break the loop so no more pieces can be captured in this move
-                            if (board.board[y][x].piece.color != piece.color && capturing === undefined) {
-                                capturing = { x, y };
-                            }
-                            else {
-                                break;
-                            }
-                        }
+                        checkCapture(board, piece, y, x, directionY, directionX, pieceMoves);
                     }
                 }
             }
         }
 
+
         return pieceMoves;
     }
 
-    function checkPawnCapture(board, piece, y, x, directionY, directionX, pieceMoves) {
+    function checkCapture(board, piece, y, x, directionY, directionX, pieceMoves) {
         if (board.board[y][x].piece.color != piece.color) {
             const y2 = y + directionY;
             const x2 = x + directionX;

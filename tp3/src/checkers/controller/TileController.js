@@ -25,7 +25,6 @@ export class TileController{
 
     getTileFragment(boardComponent, tiley, tilex){
         //Find the board model
-        console.log(boardComponent);
         const boardModel = boardComponent.children.filter(child => child.className == 'board-model')[0];
 
         //Find the tile fragment

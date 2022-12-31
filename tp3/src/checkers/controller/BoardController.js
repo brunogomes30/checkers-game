@@ -115,7 +115,6 @@ export class BoardController {
 
         const movey = y - piecePos.y;
         const movex = x - piecePos.x;
-        console.log(movey, movex, 'ssss')
         if(!moveResult.changeTurn && !moveResult.gameOver) {
             this.pieceController.movePiece(this.selectedPiece, - movey * TILE_SIZE, movex * TILE_SIZE, true);
         } else {
@@ -124,7 +123,6 @@ export class BoardController {
 
         // Move captured piece to the corresponding graveyard
         if (moveResult.capturedPiece != null) {
-            console.log(moveResult);
             this.pieceController.moveToStorage(moveResult.capturedPiece);
         }
 
@@ -157,7 +155,7 @@ export class BoardController {
                 const move = this.validMoves[i].move;
                 const board = this.checkersBoard.board;
                 const fragment = board[move.y][move.x].fragment;
-                console.log(fragment);
+  
                 this.tileController.highlightTile(fragment);
             }
         }
@@ -195,7 +193,6 @@ export class BoardController {
             const move = this.validMoves[i].move;
             const board = this.checkersBoard.board;
             const fragment = board[move.y][move.x].fragment;
-            console.log(fragment);
             this.tileController.highlightTile(fragment);
         }
         // Display new valid moves 
