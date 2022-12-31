@@ -171,7 +171,7 @@ export class XMLscene extends CGFscene {
 
         this.materialIndex = 0;
         console.log('Scene loaded');
-        this.triggerEvent('graphLoaded', null);    
+        this.triggerEvent('graphLoaded', {graph: this.graph, board: undefined});    
         
     }
 

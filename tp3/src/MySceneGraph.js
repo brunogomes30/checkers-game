@@ -192,7 +192,6 @@ export class MySceneGraph {
         
         
         if (this.selected) {
-            console.log('Entrou aqui');
             this.scene.onGraphLoaded() 
         }
         
