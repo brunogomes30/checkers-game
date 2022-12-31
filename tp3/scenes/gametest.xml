@@ -220,8 +220,8 @@
         <model id="boardModel" file="board/board.obj" class="board-model" />
         <model id="whiteModel" file="piece/white.obj" class="white-piece"/>
         <model id="blackModel" file="piece/black.obj" class="black-piece"/>
-        <model id="blackStorage" file="trueno.obj" class="black-storage"/>
-        <model id="whiteStorage" file="nissan.obj" class="white-storage"/>
+        <model id="blackStorage" file="storage/black_storage.obj" class="black-storage"/>
+        <model id="whiteStorage" file="storage/white_storage.obj" class="white-storage"/>
     </models>
 
     <components>
@@ -280,20 +280,8 @@
 
         <component id="black_storage" class="black-storage">
             <transformation>
-                <translate x="-2.0" y="0.0" z="0.0" />
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit" />
-            <children>
-                <modelref id="whiteStorage" />
-            </children>
-        </component>
-
-        <component id="white_storage" class="white-storage">
-            <transformation>
-                <translate x="2.0" y="0.0" z="0.0" />
+                <translate x="0.0" y="0.0" z="-2.0" />
+                <rotate axis="y" angle="180" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -301,6 +289,19 @@
             <texture id="inherit" />
             <children>
                 <modelref id="blackStorage" />
+            </children>
+        </component>
+
+        <component id="white_storage" class="white-storage">
+            <transformation>
+                <translate x="0.0" y="0.0" z="2.0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <modelref id="whiteStorage" />
             </children>
         </component>
     </components>

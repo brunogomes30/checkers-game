@@ -36,7 +36,7 @@ export class PieceController{
     }
 
     moveToStorage(piece){
-        const STORAGE_OFFSET = [0, 1.0, 0];
+        const STORAGE_OFFSET = [0, 0.1, 0];
         const color = piece.color;
         const component = piece.component;
         const storage = this.scene.graph.getComponent(color+'-storage');
