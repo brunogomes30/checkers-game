@@ -102,6 +102,11 @@ export function parseKeyframeAnimation(animationNode, sxsReader, errorMsg, param
         if (functionName == undefined) {
             functionName = 'linear';
         }
+        
+        let allowOverflow = sxsReader.reader.getBoolean(animationNode.children[keyframe], 'allowOverflow', false);
+        if (allowOverflow == undefined) {
+            allowOverflow = false;
+        }
 
         if (lastInstant != null && instant <= lastInstant) {
             return "keyframe instant must be greater than the previous one; error in animation with " + errorMsg;
@@ -140,7 +145,8 @@ export function parseKeyframeAnimation(animationNode, sxsReader, errorMsg, param
 
         keyframes[instant] = {
             values: keyframe_description,
-            functionName: functionName
+            functionName: functionName,
+            allowOverflow: allowOverflow
         };
     }
 

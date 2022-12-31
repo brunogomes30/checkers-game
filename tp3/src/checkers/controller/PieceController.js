@@ -47,14 +47,16 @@ export class PieceController{
         ]
         console.log(movement);
 
+        const height = movement[1] + 1;
+        const peak = [movement[0] / 2, height, movement[2] / 2];
         
         const animation = this.scene.graph.cloneAnimation('piece-storage', 'piece-storage' + component.id, {
             'posx': movement[0],
             'posy': movement[1],
             'posz': movement[2],
-            'posx_half': movement[0] / 2 ,
-            'posy_half': movement[1] * 2,
-            'posz_half': movement[2] / 2,
+            'posx_half': peak[0],
+            'posy_half': peak[1],
+            'posz_half': peak[2],
         });
         component.animation = animation;
         this.scene.graph.stopAnimation(animation);

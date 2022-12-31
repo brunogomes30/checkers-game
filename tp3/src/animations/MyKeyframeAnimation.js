@@ -159,7 +159,7 @@ export class MyKeyframeAnimation extends MyAnimation {
             t = 0;
         }
         t = getFunction(this.currentFunction)(t, duration);
-        if(t > 1){
+        if(t > 1 && !this.allowOverflow){
             t = 1;
         }
         this.currentMatrix = this.calculateMatrix(this.previousTransformations, this.nextTransformations, t);
@@ -202,6 +202,7 @@ export class MyKeyframeAnimation extends MyAnimation {
         this.nextKeyFrameTime = this.keyframeTimes[this.index].time;
         this.nextTransformations = this.keyframeTimes[this.index].keyframe.values;
         this.currentFunction = this.keyframeTimes[this.index].keyframe.functionName;
+        this.allowOverflow = this.keyframeTimes[this.index].keyframe.allowOverflow;
     }
 }
 
