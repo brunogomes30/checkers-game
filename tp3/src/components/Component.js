@@ -54,7 +54,6 @@ export class Component{
         const translation = mat4.create();
         mat4.translate(translation, translation, [x, y, z]);
         mat4.multiply(translation, translation, this.transformation);
-        console.log('new position ', this.position);
         this.transformation = translation;
 
     }

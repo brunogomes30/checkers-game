@@ -11,8 +11,6 @@ export class LightController{
 
         const lights = this.scene.lights;
         this.lightsEnabled = [...this.scene.enabledLights];
-        console.log(lights);
-        console.log(this.scene.enabledLights);
         for(let i=0; i<lights.length; i++){
             lights[i].disable();
         }
@@ -20,7 +18,6 @@ export class LightController{
         const pieceSpotlightId = this.scene.graph.getLight('piece-spotlight');
         const index = this.scene.light_id_index[pieceSpotlightId];
         const pieceSpotlight = lights[index];
-        console.log('Position = ', piece.position);
         let position = piece.getPosition();
         pieceSpotlight.setPosition(position[0], position[1] + this.SPOT_LIGHT_OFFSET, position[2], 1.0);
         //pieceSpotlight.setSpotDirection(0, -1, 0);

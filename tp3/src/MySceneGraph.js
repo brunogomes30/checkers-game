@@ -193,7 +193,6 @@ export class MySceneGraph {
         
         
         if (this.selected) {
-            console.log('Entrou aqui');
             this.scene.onGraphLoaded() 
         }
         
@@ -330,10 +329,7 @@ export class MySceneGraph {
     }
 
     removeAnimation(animation){
-        console.log('removing animation ' + animation.id);
-        console.log('Before' , this.animations);
         delete this.animations[animation.id];
-        console.log('After' , this.animations);
     }
 
 }
