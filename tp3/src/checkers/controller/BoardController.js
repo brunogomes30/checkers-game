@@ -149,7 +149,7 @@ export class BoardController {
             if (moveResult.promoted) {
                 console.log(this.checkersBoard);
                 console.log(pieceMoved);
-                this.pieceController.makeKing(pieceMoved, this.checkersBoard);
+                this.pieceController.makeKing(piece, this.checkersBoard);
                 /*
                 if (!moveResult.changeTurn && !moveResult.gameOver) {
                     this.pieceController.startIdleAnimation(pieceMoved);
@@ -205,7 +205,7 @@ export class BoardController {
 
     }
 
-    changeTurn(color){
+    changeTurn(color) {
         console.log('change turn', color);
         this.clockController.setTimeCounting(color);
     }
@@ -250,6 +250,7 @@ export class BoardController {
             this.tileController.highlightTile(fragment);
         }
         // Display new valid moves 
+        
     }
 
 
@@ -279,7 +280,12 @@ export class BoardController {
             const capturedPiece = this.checkersBoard.board[undoResult.capture.y][undoResult.capture.x].piece
             console.log(capturedPiece);
             const { translationX, translationZ } = calculateBoardPosition(capturedPiece.position.y, capturedPiece.position.x)
-            this.pieceController.jumpPiece(capturedPiece.component, [translationX, 0, translationZ], [0, 0.15, 0]);
+            this.pieceController.jumpPiece(capturedPiece.component, [translationX, 0, translationZ], [0, 0.15, 0], () => {
+                if (capturedPiece.isKing) {
+                    this.pieceController.makeKing(capturedPiece, this.checkersBoard);
+                }
+            });
+            this.pieceController.removeFromStorage(capturedPiece.component, this.checkersBoard.storages[capturedPiece.color]);
         }
 
         // Relocate promoted piece

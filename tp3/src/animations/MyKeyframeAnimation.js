@@ -84,12 +84,13 @@ export class MyKeyframeAnimation extends MyAnimation {
     }
 
     applyToComponent(component) {
-        mat4.multiply(component.transformation, this.currentMatrix, component.transformation);
+        const matrix = this.calculateMatrix(this.keyframeTimes[0].keyframe.values, this.keyframeTimes[this.keyframeTimes.length - 1].keyframe.values, 1);
+        mat4.multiply(component.transformation, matrix, component.transformation);
         component.position[0] += this.position[0];
         component.position[1] += this.position[1];
         component.position[2] += this.position[2];
         component.removeAnimation(this);
-        
+
     }
 
     /**

@@ -47,39 +47,27 @@ export class PieceController {
     }
 
     moveToStorage(piece, checkersStorage, board) {
-        const STORAGE_OFFSET = [0, 0.0, 0];
+        const STORAGE_OFFSET = [0, 0.15, 0];
         const color = piece.color;
         const component = piece.component;
         const storage = this.scene.graph.getComponent(color + '-storage');
         const storagePieces = checkersStorage;
         //Get the next available storage space
         let spaceChosen;
-        for (let i = storagePieces.length - 1; i >= 0; i--) {
-            spaceChosen = i;
-            if (i === 0) {
-                storagePieces[i].push(component);
-                break;
-            }
-            if (storagePieces[i - 1].length > storagePieces[i].length) {
-                storagePieces[i].push(component);
-                break;
-            }
-        }
+        spaceChosen = storagePieces.findIndex(pieces => pieces.length == Math.min(...storagePieces.map(pieces => pieces.length)));
         let offset = [
-            STORAGE_OFFSET[0] + (spaceChosen % 2) * (0.250) + Math.random() * 0.025,
+            STORAGE_OFFSET[0] + (spaceChosen % 2) * (0.250) + Math.random() * 0.012,
             STORAGE_OFFSET[1] + storagePieces[spaceChosen].length * 0.055,
-            STORAGE_OFFSET[2] + Math.floor(spaceChosen / 2) * 0.250 + Math.random() * 0.025,
+            STORAGE_OFFSET[2] + Math.floor(spaceChosen / 2) * 0.250 + Math.random() * 0.012,
         ]
-
         this.animatingCapture = true;
+        storagePieces[spaceChosen].push(component);
         this.jumpPiece(component, storage.getPosition(), offset, () => {
             this.animatingCapture = false;
         });
 
         if (piece.isKing) {
             const kingComponent = piece.component;
-
-
             this.splitPieces(piece, board, checkersStorage);
             
 
@@ -90,40 +78,46 @@ export class PieceController {
      * Splits king into two pieces, and sends the extra one to storage
      */
     splitPieces(kingPiece, board, storagePieces) {
-        const STORAGE_OFFSET = [0, 0.0, 0];
+        const STORAGE_OFFSET = [0, 0.15, 0];
         const kingComponent = kingPiece.component;
         const color = kingPiece.color;
         const storage = this.scene.graph.getComponent(color + '-storage');
 
         let spaceChosen;
-        for (let i = storagePieces.length - 1; i >= 0; i--) {
+        for (let i = 0; i <= storagePieces.length; i++) {
             spaceChosen = i;
-            if (i === 0) {
+            if (i === storagePieces.length - 1) {
+                //last one
                 break;
             }
-            if (storagePieces[i - 1].length > storagePieces[i].length) {
+            if (storagePieces[i].length > storagePieces[i + 1].length) {
+                spaceChosen = i + 1;
                 break;
             }
         }
+        console.log("Bloat" , spaceChosen, storagePieces);
         const deadPieces = kingComponent.children.filter(child => child.className == kingComponent.className);
-            if (deadPieces.length > 0) {
-                //Seperate pieces
-                const deadPiece = deadPieces[0];
+        if (deadPieces.length > 0) {
+            //Seperate pieces
+            const deadPieceComponent = deadPieces[0];
 
-                //Remove from king
-                kingComponent.children = kingComponent.children.filter(child => child != deadPiece);
-                deadPiece.position = [...kingComponent.position];
-                deadPiece.transformation = [...kingComponent.transformation];
+            //Remove from king
+            kingComponent.children = kingComponent.children.filter(child => child != deadPieceComponent);
+            deadPieceComponent.position = [...kingComponent.position];
+            deadPieceComponent.transformation = [...kingComponent.transformation];
 
-                //Add to board component
-                board.component.children.push(deadPiece);
-                const offset = [
-                    STORAGE_OFFSET[0] + (spaceChosen % 2) * (0.250) + Math.random() * 0.025,
-                    STORAGE_OFFSET[1] + storagePieces[spaceChosen].length * 0.055,
-                    STORAGE_OFFSET[2] + Math.floor(spaceChosen / 2) * 0.250 + Math.random() * 0.025,
-                ]
-                this.jumpPiece(deadPiece, storage.getPosition(), offset);
-            }
+            
+            //Add to board component
+            board.component.children.push(deadPieceComponent);
+            const offset = [
+                STORAGE_OFFSET[0] + (spaceChosen % 2) * (0.250) + Math.random() * 0.012,
+                STORAGE_OFFSET[1] + Math.min(storagePieces[spaceChosen].length - 1, 0) * 0.055,
+                STORAGE_OFFSET[2] + Math.floor(spaceChosen / 2) * 0.250 + Math.random() * 0.012,
+            ]
+            storagePieces[spaceChosen].push(deadPieceComponent)
+            this.jumpPiece(deadPieceComponent, storage.getPosition(), offset);
+            this.resetPieceComponent(deadPieceComponent);
+        }
     }
 
     generatePieceComponent(boardComponent, color, offset, id) {
@@ -177,18 +171,14 @@ export class PieceController {
 
     makeKing(king, checkersBoard) {
         const boardComponent = checkersBoard.component;
-        const kingComponent = king.pieceComponent;
+        const kingComponent = king.component;
 
-        const color = king.className.includes('white') ? 'white' : 'black';
+        const color = king.color;
         //Get piece from storage
         const storagePieces = checkersBoard.storages[color];
         let pieceIndex;
-        for (let i = storagePieces.length - 1; i >= 0; i--) {
-            if (storagePieces[i].length > 0) {
-                pieceIndex = i;
-                break;
-            }
-        }
+        pieceIndex = storagePieces.findIndex(pieces => pieces.length == Math.max(...storagePieces.map(pieces => pieces.length)));
+
         const deadPieceComponent = storagePieces[pieceIndex].pop();
 
         //Move piece to top of the new king
@@ -257,7 +247,35 @@ export class PieceController {
         this.animatingCapture = false;
     }
 
+    removeFromStorage(pieceComponent, storage) {
+        for (let i = 0; i < storage.length; i++) {
+            const row = storage[i];
+            for (let j = 0; j < row.length; j++) {
+                if (row[j].id === pieceComponent.id) {
+                    row.splice(j, 1);
+                    return;
+                }
+            }
+        }
+
+        //Reapply pieceComponent to model fragments
+        this.resetPieceComponent(pieceComponent);
+    }
     
+    resetPieceComponent(pieceComponent) {
+        for (let i = 0; i < pieceComponent.children.length; i++) {
+            const model = pieceComponent.children[i];
+            for (const key of Object.keys(model.objects)) {
+                if (key === 'length') {
+                    continue;
+                }
+                const obj = model.objects[key];
+                obj.pieceComponent = pieceComponent;
+                obj.genericSet('pieceComponent', pieceComponent, () => true);
+            }
+        }
+    }
+
 }
 
 
