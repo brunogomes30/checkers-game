@@ -15,20 +15,20 @@ export class MyKeyframeAnimation extends MyAnimation {
         const keys = Object.keys(keyframes);
         super(scene, id, keys[0], keys[keys.length - 1])
         this.keyframeTimes = [];
-        for(let i=0; i<keys.length; i++){
+        for (let i = 0; i < keys.length; i++) {
             const obj = {
                 time: parseFloat(keys[i]),
                 keyframe: keyframes[keys[i]]
             }
             this.keyframeTimes.push(obj);
         }
-        this.keyframeTimes.sort((a,b) => a.time-b.time);
-        
+        this.keyframeTimes.sort((a, b) => a.time - b.time);
+
         this.keyframes = keyframes;
 
         this.index = 0;
         this.advanceKeyframe();
-        
+
         this.nloops = 0;
         this.animationTime = 0;
         this.speed = speed;
@@ -39,7 +39,7 @@ export class MyKeyframeAnimation extends MyAnimation {
         this.position = [0, 0, 0];
     }
 
-    hookFunction(f){
+    hookFunction(f) {
         this.hooks.push(f);
     }
 
@@ -52,23 +52,23 @@ export class MyKeyframeAnimation extends MyAnimation {
         return new MyKeyframeAnimation(this.scene, id, newKeyframes, this.speed, this.isLooping, this.params);
     }
 
-    setParameter(name, value){
+    setParameter(name, value) {
         this.params[name] = value;
     }
 
-    applyParameters(){
-        for(const key in this.params){
+    applyParameters() {
+        for (const key in this.params) {
             const keys = Object.keys(this.keyframes);
-            for(let j=0;j<keys.length; j++){
+            for (let j = 0; j < keys.length; j++) {
                 const keyFrameKey = keys[j];
-                if(keyFrameKey === 'length'){
+                if (keyFrameKey === 'length') {
                     continue;
                 }
                 const keyFrame = this.keyframes[keyFrameKey];
-                for(let i=0; i<keyFrame.values.length; i++){
+                for (let i = 0; i < keyFrame.values.length; i++) {
                     const array = keyFrame.values[i];
-                    for(let k=0; k<array.length; k++){
-                        if(array[k] === key){
+                    for (let k = 0; k < array.length; k++) {
+                        if (array[k] === key) {
                             array[k] = this.params[key];
                         }
                     }
@@ -77,18 +77,20 @@ export class MyKeyframeAnimation extends MyAnimation {
         }
     }
 
-    stopAnimation(callback){
+    stopAnimation(callback) {
         this.willRemove = true;
         this.isLooping = false;
         this.removeCallBack = callback;
     }
 
-    applyToComponent(component){
-        mat4.multiply(component.transformation, this.currentMatrix, component.transformation);
+    applyToComponent(component) {
+        const matrix = this.calculateMatrix(this.keyframeTimes[0].keyframe.values, this.keyframeTimes[this.keyframeTimes.length - 1].keyframe.values, 1);
+        mat4.multiply(component.transformation, matrix, component.transformation);
         component.position[0] += this.position[0];
         component.position[1] += this.position[1];
         component.position[2] += this.position[2];
         component.removeAnimation(this);
+
     }
 
     /**
@@ -98,7 +100,7 @@ export class MyKeyframeAnimation extends MyAnimation {
      * @returns 
      */
     update(timeDelta) {
-        if(timeDelta > 0.20){
+        if (timeDelta > 0.20) {
             //Value is too high for the animation to be smooth
             return;
         }
@@ -111,13 +113,13 @@ export class MyKeyframeAnimation extends MyAnimation {
             this.currentMatrix = this.calculateMatrix(this.previousTransformations, this.nextTransformations, 1);
             //Made new loop
             this.nloops++;
-            if(this.isLooping){
+            if (this.isLooping) {
                 this.lastKeyFrameTime = this.keyframeTimes[0];
                 this.previousTransformations = this.keyframeTimes[0].keyframe.values;
                 if (keyFramesKeys.length > 1) {
                     this.advanceKeyframe();
                 }
-            } else if(this.willRemove){
+            } else if (this.willRemove && !this.isFinished) {
                 this.removeCallBack(this);
             }
         }
@@ -138,7 +140,7 @@ export class MyKeyframeAnimation extends MyAnimation {
             return;
         }
         this.started = true;
-        
+
         if (this.currentMatrix === null) {
             //Initialize animation
             this.currentMatrix = mat4.create();
@@ -151,25 +153,25 @@ export class MyKeyframeAnimation extends MyAnimation {
 
         const duration = this.nextKeyFrameTime - this.lastKeyFrameTime;
         let t = (timeDelta - this.lastKeyFrameTime) / duration;
-        
+
         if (t > 1) {
             //Last frame in current keyframe
             this.advanceKeyframe();
             t = 0;
         }
         t = getFunction(this.currentFunction)(t, duration);
-        if(t > 1 && !this.allowOverflow){
+        if (t > 1 && !this.allowOverflow) {
             t = 1;
         }
         this.currentMatrix = this.calculateMatrix(this.previousTransformations, this.nextTransformations, t);
 
         //Call hooks
-        for(let i=0; i<this.hooks.length; i++){
+        for (let i = 0; i < this.hooks.length; i++) {
             this.hooks[i](this);
         }
-        
+
     }
-    
+
     calculateMatrix(previousMatrix, nextMatrix, t) {
         const matrix = mat4.create();
         const translation = vec3.create();
@@ -193,7 +195,7 @@ export class MyKeyframeAnimation extends MyAnimation {
 
     advanceKeyframe() {
         this.index = this.index + 1;
-        if(this.index >= this.keyframeTimes.length){
+        if (this.index >= this.keyframeTimes.length) {
             this.index = 1;
         }
         this.previousTransformations = this.keyframeTimes[this.index - 1].keyframe.values;
@@ -208,29 +210,29 @@ export class MyKeyframeAnimation extends MyAnimation {
 function getFunction(name, duration) {
     const values = name.split('_');
     name = values[0];
-    for(let i=1; i<values.length; i++){
+    for (let i = 1; i < values.length; i++) {
         values[i] = parseFloat(values[i]);
     }
     let f;
-    switch(name){
+    switch (name) {
         case 'linear':
-            return function(t) { return t; };
+            return function (t) { return t; };
         case 'quadratic':
             // values[1] = a
             // values[2] = b
             // values[3] = c
             // values[4] = t offset
-            f = (t) => (values[1] + values[2]*t - 0.5*values[3]*t*t);
+            f = (t) => (values[1] + values[2] * t - 0.5 * values[3] * t * t);
             let maxValue = f(values[2] / values[3]);
-            return  (t) =>  f(t - values[4]) * 2; ;
+            return (t) => f(t - values[4]) * 2;;
         case 'cubic-bezier':
             const u0 = values[1];
             const u1 = values[2];
             const u2 = values[3];
             const u3 = values[4];
-            f = (t) => (1-t)*(1-t)*(1-t)*u0 + 3*(1-t)*(1-t)*t*u1 + 3*(1-t)*t*t*u2 + t*t*t*u3;
+            f = (t) => (1 - t) * (1 - t) * (1 - t) * u0 + 3 * (1 - t) * (1 - t) * t * u1 + 3 * (1 - t) * t * t * u2 + t * t * t * u3;
             return (t) => f(t);
 
-        
+
     }
 }

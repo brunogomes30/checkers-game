@@ -1,5 +1,5 @@
 import { CheckersBoard } from "../model/CheckersBoard.js";
-import { PieceController } from "./PieceController.js";
+import { calculateBoardPosition, PieceController } from "./PieceController.js";
 import { CheckersPiece } from "../model/CheckersPiece.js";
 import { CheckersTile } from "../model/CheckersTile.js";
 import { LogicController } from "./CheckersController.js";
@@ -45,7 +45,7 @@ export class BoardController {
         const whiteStoragePieces = this.checkersBoard.storages['white'];
         const blackStoragePieces = this.checkersBoard.storages['black'];
 
-        for(let i=0; i<4; i++) {
+        for (let i = 0; i < 4; i++) {
             let position = whiteStorage.getPosition();
             position = [
                 position[0] - 1.0,
@@ -65,6 +65,7 @@ export class BoardController {
         }
 
         this.logicController.start()
+        this.scene.interface.gui.add(this, 'undo').name('Undo');
     }
 
     createBoard() {
@@ -132,43 +133,41 @@ export class BoardController {
             console.log('Invalid tile selection');
             return;
         }
-        const currentColor = this.selectedPiece.className.includes('white') ? 'white' : 'black';
+        const currentColor = this.logicController.selectedPiece.color.includes('white') ? 'white' : 'black';
         // Stop highlighting previous valid moves (Maybe highligh only the selected tile)
         this.tileController.unhiglightTiles();
 
-        const piece = this.checkersBoard.pieceMap[this.selectedPiece.pieceComponent.id]
+        const piece = this.checkersBoard.pieceMap[this.selectedPiece.id]
         const piecePos = { y: piece.position.y, x: piece.position.x };
         const moveResult = this.logicController.processMove();
 
         // Animate selected piece movement
         const movey = y - piecePos.y;
         const movex = x - piecePos.x;
-        const pieceMoved = this.selectedPiece;
+        const pieceMoved = this.selectedPieceElement;
         const moveCallback = () => {
-            if(moveResult.promoted) {
+            if (moveResult.promoted) {
                 console.log(this.checkersBoard);
                 console.log(pieceMoved);
-                this.pieceController.makeKing(pieceMoved, this.checkersBoard);
-                if(!moveResult.changeTurn && !moveResult.gameOver){
+                this.pieceController.makeKing(piece, this.checkersBoard);
+                /*
+                if (!moveResult.changeTurn && !moveResult.gameOver) {
                     this.pieceController.startIdleAnimation(pieceMoved);
                 }
+                */
             }
         }
-        if(!moveResult.changeTurn && !moveResult.gameOver) {
-            this.pieceController.movePiece(this.selectedPiece, - movey * TILE_SIZE, movex * TILE_SIZE, moveCallback);
-        } else {
-            this.pieceController.movePiece(this.selectedPiece, - movey * TILE_SIZE, movex * TILE_SIZE, moveCallback);
-        }
+        this.pieceController.movePiece(this.selectedPiece, - movey * TILE_SIZE, movex * TILE_SIZE, moveCallback);
+
 
         // Move captured piece to the corresponding graveyard
         if (moveResult.capturedPiece != null) {
             this.pieceController.moveToStorage(moveResult.capturedPiece, this.checkersBoard.storages[moveResult.capturedPiece.color], this.checkersBoard);
         }
 
-        
+        this.selectedPiece = undefined;
         // Check if game is over
         if (moveResult.gameOver) {
-            this.selectedPiece = undefined;
 
             if (moveResult.winner == null) {
                 // Change to draw camera
@@ -187,22 +186,26 @@ export class BoardController {
             this.changeTurn(currentColor == 'white' ? 'black' : 'white');
             this.selectedPiece = undefined;
             // Change view and stuff
-        } else {            
+        } else {
+            /*
             this.validMoves = this.logicController.getPieceValidMoves();
 
             for (let i = 0; i < this.validMoves.length; i++) {
                 const move = this.validMoves[i].move;
                 const board = this.checkersBoard.board;
                 const fragment = board[move.y][move.x].fragment;
-  
+
                 this.tileController.highlightTile(fragment);
             }
+
+            this.pieceController.startIdleAnimation(this.selectedPiece);
+            */
         }
 
 
     }
 
-    changeTurn(color){
+    changeTurn(color) {
         console.log('change turn', color);
         this.clockController.setTimeCounting(color);
     }
@@ -216,7 +219,7 @@ export class BoardController {
         const component = element.pieceComponent;
         console.log('Piece click: ' + className + ' ' + component.id);
         const checkerPiece = this.checkersBoard.pieceMap[element.pieceComponent.id];
-        if(checkerPiece == undefined){
+        if (checkerPiece == undefined) {
             return;
         }
         if (this.selectedPiece != undefined) {
@@ -229,14 +232,15 @@ export class BoardController {
             return;
         }
 
-        this.selectedPiece = element;
+        this.selectedPiece = element.pieceComponent;
+        this.selectedPieceElement = element;
         this.pieceController.startIdleAnimation(this.selectedPiece);
 
 
         // Stop highlighting previous valid moves
         // Animate piece selection
-        this.validMoves = this.logicController.getPieceValidMoves();
         this.tileController.unhiglightTiles();
+        this.validMoves = this.logicController.getPieceValidMoves();
 
         console.log(this.validMoves);
         for (let i = 0; i < this.validMoves.length; i++) {
@@ -246,5 +250,53 @@ export class BoardController {
             this.tileController.highlightTile(fragment);
         }
         // Display new valid moves 
+        
     }
+
+
+    undo() {
+        if (this.pieceController.animatingCapture || this.pieceController.animatingMove) {
+            console.log('Undo: Animation in progress');
+            return;
+        }
+
+        const TILE_SIZE = 2 / 8;
+        let undoResult = this.logicController.undo();
+        if (undoResult == undefined) {
+            console.log('No more undos');
+            return;
+        }
+
+        console.log(undoResult);
+
+        // Relocate moved piece
+        let y = undoResult.position.y - undoResult.move.y;
+        let x = undoResult.position.x - undoResult.move.x;
+        console.log('y: ' + y + ' x: ' + x)
+        this.pieceController.translate(undoResult.piece.component, - y * TILE_SIZE, x * TILE_SIZE);
+
+        // Relocate captured piece
+        if (undoResult.capture != undefined) {
+            const capturedPiece = this.checkersBoard.board[undoResult.capture.y][undoResult.capture.x].piece
+            console.log(capturedPiece);
+            const { translationX, translationZ } = calculateBoardPosition(capturedPiece.position.y, capturedPiece.position.x)
+            this.pieceController.jumpPiece(capturedPiece.component, [translationX, 0, translationZ], [0, 0.15, 0], () => {
+                if (capturedPiece.isKing) {
+                    this.pieceController.makeKing(capturedPiece, this.checkersBoard);
+                }
+            });
+            this.pieceController.removeFromStorage(capturedPiece.component, this.checkersBoard.storages[capturedPiece.color]);
+        }
+
+        // Relocate promoted piece
+        if (undoResult.promoted != undefined) {
+            const [y, x] = [undoResult.promoted.position.y, undoResult.promoted.position.x];
+            const promotedPiece = this.checkersBoard.board[y][x].piece
+            console.log(promotedPiece);
+            this.pieceController.unmakeKing(promotedPiece, this.checkersBoard);
+        }
+
+    }
+
+
 }
