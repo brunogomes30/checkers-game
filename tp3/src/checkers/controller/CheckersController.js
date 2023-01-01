@@ -56,13 +56,7 @@ export class LogicController {
             return false;;
         }
 
-        this.states.push({ 
-            turn: this.turn, 
-            board: clone(this.board.board), 
-            move: this.selectedMove.move, 
-            position: { ...this.selectedPiece.position }, 
-            piece: { ...this.selectedPiece }, 
-            capture: this.selectedMove.capture});
+        
 
         console.log(this.states[this.states.length - 1]);
         // Move the piece
@@ -81,6 +75,16 @@ export class LogicController {
             this.selectedPiece.isKing = true;
         }
 
+        this.states.push({
+            turn: this.turn,
+            board: clone(this.board.board),
+            move: this.selectedMove.move,
+            position: { ...this.selectedPiece.position },
+            piece: { ...this.selectedPiece },
+            capture: this.selectedMove.capture,
+            promoted: this.selectedPiece
+        });
+
         // Handle captures
         let capturedPiece = null;
         if (this.selectedMove.capture != undefined) {
@@ -93,7 +97,8 @@ export class LogicController {
 
             if (this.getPieceValidMoves().filter((move) => move.capture != undefined).length !== 0) {
                 console.log('New multicapture moves: ', this.validMoves);
-                this.state = 'multiCapture';
+                //this.state = 'multiCapture';
+                this.state = 'pieceSelection';
                 return { changeTurn: false, capturedPiece };
             }
         }

@@ -144,15 +144,17 @@ export class BoardController {
         // Animate selected piece movement
         const movey = y - piecePos.y;
         const movex = x - piecePos.x;
-        const pieceMoved = this.selectedPiece;
+        const pieceMoved = this.selectedPieceElement;
         const moveCallback = () => {
             if (moveResult.promoted) {
                 console.log(this.checkersBoard);
                 console.log(pieceMoved);
                 this.pieceController.makeKing(pieceMoved, this.checkersBoard);
+                /*
                 if (!moveResult.changeTurn && !moveResult.gameOver) {
                     this.pieceController.startIdleAnimation(pieceMoved);
                 }
+                */
             }
         }
         this.pieceController.movePiece(this.selectedPiece, - movey * TILE_SIZE, movex * TILE_SIZE, moveCallback);
@@ -163,10 +165,9 @@ export class BoardController {
             this.pieceController.moveToStorage(moveResult.capturedPiece, this.checkersBoard.storages[moveResult.capturedPiece.color], this.checkersBoard);
         }
 
-
+        this.selectedPiece = undefined;
         // Check if game is over
         if (moveResult.gameOver) {
-            this.selectedPiece = undefined;
 
             if (moveResult.winner == null) {
                 // Change to draw camera
@@ -182,9 +183,9 @@ export class BoardController {
 
         // Setup next move
         if (moveResult.changeTurn) {
-            this.selectedPiece = undefined;
             // Change view and stuff
         } else {
+            /*
             this.validMoves = this.logicController.getPieceValidMoves();
 
             for (let i = 0; i < this.validMoves.length; i++) {
@@ -196,6 +197,7 @@ export class BoardController {
             }
 
             this.pieceController.startIdleAnimation(this.selectedPiece);
+            */
         }
 
 
@@ -224,6 +226,7 @@ export class BoardController {
         }
 
         this.selectedPiece = element.pieceComponent;
+        this.selectedPieceElement = element;
         this.pieceController.startIdleAnimation(this.selectedPiece);
 
 
@@ -271,6 +274,14 @@ export class BoardController {
             const { translationX, translationZ } = calculateBoardPosition(capturedPiece.position.y, capturedPiece.position.x)
             this.pieceController.jumpPiece(capturedPiece.component, [translationX, 0, translationZ], [0, 0.15, 0]);
         }
+
+        // Relocate promoted piece
+        if (undoResult.promotion != undefined) {
+            const promotedPiece = this.checkersBoard.board[undoResult.promotion.y][undoResult.promotion.x].piece
+            console.log(promotedPiece);
+            this.pieceController.unmakeKing(promotedPiece, this.checkersBoard);
+        }
+
     }
 
 

@@ -78,8 +78,34 @@ export class PieceController {
 
         if (piece.isKing) {
             const kingComponent = piece.component;
-            //Move the king's piece to storage
-            const deadPieces = kingComponent.children.filter(child => child.className == kingComponent.className);
+
+
+            this.splitPieces(piece, board, checkersStorage);
+            
+
+        }
+    }
+
+    /**
+     * Splits king into two pieces, and sends the extra one to storage
+     */
+    splitPieces(kingPiece, board, storagePieces) {
+        const STORAGE_OFFSET = [0, 0.0, 0];
+        const kingComponent = kingPiece.component;
+        const color = kingPiece.color;
+        const storage = this.scene.graph.getComponent(color + '-storage');
+
+        let spaceChosen;
+        for (let i = storagePieces.length - 1; i >= 0; i--) {
+            spaceChosen = i;
+            if (i === 0) {
+                break;
+            }
+            if (storagePieces[i - 1].length > storagePieces[i].length) {
+                break;
+            }
+        }
+        const deadPieces = kingComponent.children.filter(child => child.className == kingComponent.className);
             if (deadPieces.length > 0) {
                 //Seperate pieces
                 const deadPiece = deadPieces[0];
@@ -89,18 +115,15 @@ export class PieceController {
                 deadPiece.position = [...kingComponent.position];
                 deadPiece.transformation = [...kingComponent.transformation];
 
-                //Add to board
+                //Add to board component
                 board.component.children.push(deadPiece);
-                spaceChosen = (spaceChosen + 1) % checkersStorage.length;
-                offset = [
+                const offset = [
                     STORAGE_OFFSET[0] + (spaceChosen % 2) * (0.250) + Math.random() * 0.025,
                     STORAGE_OFFSET[1] + storagePieces[spaceChosen].length * 0.055,
                     STORAGE_OFFSET[2] + Math.floor(spaceChosen / 2) * 0.250 + Math.random() * 0.025,
                 ]
                 this.jumpPiece(deadPiece, storage.getPosition(), offset);
             }
-
-        }
     }
 
     generatePieceComponent(boardComponent, color, offset, id) {
@@ -191,8 +214,12 @@ export class PieceController {
             boardComponent.children = boardComponent.children.filter((child) => child.id !== deadPieceComponent.id);
 
         });
-
     }
+    
+    unmakeKing(kingPiece, checkersBoard) {
+        this.splitPieces(kingPiece, checkersBoard, checkersBoard.storages[king.color]);
+    }
+
 
     jumpPiece(pieceComponent, destination, offset = [0, 0, 0], callback = undefined) {
         const movement = calculateMove(pieceComponent.getPosition(), destination, offset);
@@ -216,16 +243,22 @@ export class PieceController {
         this.scene.graph.stopAnimation(animationxz, () => {
             animationxz.applyToComponent(pieceComponent);
             pieceComponent.removeAnimation(animationxz);
-            animationy.applyToComponent(pieceComponent);
-            pieceComponent.removeAnimation(animationy);
-            if (callback != undefined) {
-                callback();
-            }
+            this.scene.graph.stopAnimation(animationy, () => {
+                animationy.applyToComponent(pieceComponent);
+                pieceComponent.removeAnimation(animationy);
+                if (callback != undefined) {
+                    callback();
+                }
+            });
+            
+            
     
         });
         this.scene.graph.stopAnimation(animationy);
         this.animatingCapture = false;
     }
+
+    
 }
 
 

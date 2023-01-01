@@ -84,15 +84,12 @@ export class MyKeyframeAnimation extends MyAnimation {
     }
 
     applyToComponent(component) {
-        if (this.isFinished) {
-            mat4.multiply(component.transformation, this.currentMatrix, component.transformation);
-            component.position[0] += this.position[0];
-            component.position[1] += this.position[1];
-            component.position[2] += this.position[2];
-            component.removeAnimation(this);
-        } else {
-            this.componentToApply = component;
-        }
+        mat4.multiply(component.transformation, this.currentMatrix, component.transformation);
+        component.position[0] += this.position[0];
+        component.position[1] += this.position[1];
+        component.position[2] += this.position[2];
+        component.removeAnimation(this);
+        
     }
 
     /**
@@ -121,11 +118,7 @@ export class MyKeyframeAnimation extends MyAnimation {
                 if (keyFramesKeys.length > 1) {
                     this.advanceKeyframe();
                 }
-            } else if (this.willRemove) {
-                this.isFinished = true;
-                if (this.componentToApply !== undefined) {
-                    this.applyToComponent(this.componentToApply);
-                }
+            } else if (this.willRemove && !this.isFinished) {
                 this.removeCallBack(this);
             }
         }
