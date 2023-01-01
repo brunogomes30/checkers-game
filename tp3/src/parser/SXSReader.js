@@ -166,8 +166,8 @@ export class SXSReader {
                     }
                     break;
                 case 'class_components':
-                    for(const value of Object.keys(attribute[1])) {
-                        if(value in this.graph.class_components) {
+                    for (const value of Object.keys(attribute[1])) {
+                        if (value in this.graph.class_components) {
                             this.graph.class_components[value].push(...attribute[1][value]);
                         } else {
                             this.graph.class_components[value] = attribute[1][value];
@@ -195,13 +195,24 @@ export class SXSReader {
                     }
                     break;
                 case 'class_lights':
-                    for(const value of Object.keys(attribute[1])) {
-                        if(value in this.graph.class_components) {
+                    for (const value of Object.keys(attribute[1])) {
+                        if (value in this.graph.class_lights) {
                             this.graph.class_lights[value].push(...attribute[1][value]);
                         } else {
                             this.graph.class_lights[value] = attribute[1][value];
                         }
                     }
+                    break;
+
+                case 'class_cameras':
+                    for (const value of Object.keys(attribute[1])) {
+                        if (value in this.graph.class_cameras) {
+                            this.graph.class_cameras[value].push(...attribute[1][value]);
+                        } else {
+                            this.graph.class_cameras[value] = attribute[1][value];
+                        }
+                    }
+                    break;
 
                 default:
                     break;
