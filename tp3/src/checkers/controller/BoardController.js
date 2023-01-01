@@ -191,7 +191,6 @@ export class BoardController {
             this.changeTurn(currentColor == 'white' ? 'black' : 'white');
             this.selectedPiece = undefined;
             // Change view and stuff
-            tp3/src/checkers/controller/BoardController.js
             this.cameraController.resetCamera(0.5 , () => {this.cameraController.switchSides(1.5)})
         }  else {
             /*
