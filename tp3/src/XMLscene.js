@@ -193,6 +193,7 @@ export class XMLscene extends CGFscene {
             let timeDelta = currTime - this.lastFrameTime;
             this.lastFrameTime = currTime;
             this.graph.computeAnimations(timeDelta / 1000);
+            this.triggerEvent('update', currTime / 1000);
             //this.graph.updateHighLightShader(timeDelta);
         }
     }
@@ -436,7 +437,7 @@ export class XMLscene extends CGFscene {
     }
 
     triggerEvent(eventName, args) {
-        console.log('Triggering event ' + eventName + ' with args ' + args + '.');
+       // console.log('Triggering event ' + eventName + ' with args ' + args + '.');
         const eventHandler = this.eventHandlers[eventName];
         if(eventHandler != undefined){
             eventHandler(args);

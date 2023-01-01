@@ -9,6 +9,7 @@ import { parseCoordinates3D } from "./utils.js";
  */
 export function parseView(viewsNode, sxsReader) {
     let cameras = {};
+    let class_cameras = {};
 
     let defaultCameraId = sxsReader.reader.getString(viewsNode, 'default', false);
     if (defaultCameraId == null && this.mainFile === true) {
@@ -79,6 +80,20 @@ export function parseView(viewsNode, sxsReader) {
             }
 
             cameras[viewId] = new CGFcamera(fov * Math.PI / 180, near, far, vec3.fromValues(...from), vec3.fromValues(...to));
+        
+            let className = sxsReader.reader.getString(viewNode, 'class', false);
+            if (className != null){
+                if (className === ''){
+                    sxsReader.graph.onXMLMinorError(`Empty class name for ${viewType} camera ${viewId}`);
+                }
+
+                if (class_cameras[className] == undefined){
+                    class_cameras[className] = [];
+                }
+
+                class_cameras[className].push(cameras[viewId]);
+            }
+
         }
         else {
             const left = sxsReader.reader.getFloat(viewNode, 'left', false);
@@ -133,6 +148,7 @@ export function parseView(viewsNode, sxsReader) {
 
     sxsReader.attributes.set('cameras', cameras)
     sxsReader.attributes.set('defaultCameraId', defaultCameraId)
+    sxsReader.attributes.set("class_cameras", class_cameras);
     return;
 }
 

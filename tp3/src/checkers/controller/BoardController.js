@@ -5,6 +5,7 @@ import { CheckersTile } from "../model/CheckersTile.js";
 import { LogicController } from "./CheckersController.js";
 import { LightController } from "./LightController.js";
 import { TileController } from "./TileController.js";
+import { CameraController } from "./CameraController.js";
 export class BoardController {
     constructor(scene, size, clockController) {
         this.scene = scene;
@@ -15,6 +16,7 @@ export class BoardController {
         this.lightController = new LightController(scene)
         this.pieceController = new PieceController(scene, this.lightController);
         this.tileController = new TileController(scene);
+        this.cameraController = new CameraController(scene);
         this.clockController = clockController;
     }
 
@@ -22,8 +24,10 @@ export class BoardController {
         if (board != undefined) {
             this.checkersBoard.board = board;
         }
-
+        
+        this.cameraController.setCamera(graph);
         const boardComponent = graph.getComponent('board');
+
         this.checkersBoard.component = boardComponent;
         board = this.checkersBoard.board;
         for (let y = 0; y < this.ysize; y++) {
@@ -113,7 +117,7 @@ export class BoardController {
     }
 
     handleBoardClick(element) {
-        if (this.pieceController.animatingCapture || this.pieceController.animatingMove) {
+        if (this.isAnimating()) {
             console.log('Board click: Animation in progress');
             return;
         }
@@ -175,6 +179,7 @@ export class BoardController {
             } else {
                 if (moveResult.changeTurn) {
                     // Change to winner camera
+                    this.cameraController.resetCamera(0.5 , () => {this.cameraController.switchSides(1.5)})
                 }
             }
 
@@ -187,6 +192,7 @@ export class BoardController {
             this.changeTurn(currentColor == 'white' ? 'black' : 'white');
             this.selectedPiece = undefined;
             // Change view and stuff
+            this.cameraController.resetCamera(0.5 , () => {this.cameraController.switchSides(1.5)})
         } else {            
             this.validMoves = this.logicController.getPieceValidMoves();
 
@@ -208,7 +214,7 @@ export class BoardController {
     }
 
     handlePieceClick(element) {
-        if (this.pieceController.animatingCapture || this.pieceController.animatingMove) {
+        if (this.isAnimating()) {
             console.log('Piece click: Animation in progress');
             return;
         }
@@ -246,5 +252,9 @@ export class BoardController {
             this.tileController.highlightTile(fragment);
         }
         // Display new valid moves 
+    }
+
+    isAnimating() {
+        return this.pieceController.animatingCapture || this.pieceController.animatingMove || this.cameraController.animate != undefined;
     }
 }

@@ -62,6 +62,7 @@ export class MySceneGraph {
         this.class_components = {};
         this.events = {};
         this.class_lights = {};
+        this.class_cameras = {};
     }
 
     /*
@@ -295,6 +296,16 @@ export class MySceneGraph {
         }
         const light = list[0];
         return light;
+    }
+
+    getCamera(className){
+        const list = this.class_cameras[className];
+        if (list == undefined) {
+            console.error("Camera with class name " + className + " not found.");
+            return null;
+        }
+        const camera = list[0];
+        return camera;
     }
 
 

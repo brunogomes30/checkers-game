@@ -1,15 +1,19 @@
 <sxs>
     <scene root="demoRoot" axis_length="5" />
 
-    <views default="defaultCamera">
+    <views default="boardCamera">
         <perspective id="defaultCamera" near="0.1" far="500" angle="45">
             <from x="0" y="2.5" z="2.5" />
             <to x="0" y="0" z="0" />
         </perspective>
         <ortho id="orthoCam" near="-5" far="5" left="-5" right="5" bottom="-5" top="5">
             <from x="0" y="0" z="3" />
-            <to x="00" y="0" z="0" />
+            <to x="0" y="0" z="0" />
         </ortho>
+        <perspective id="boardCamera" near="0.1" far="500" angle="45" class="board-camera">
+            <from x="0" y="3.5" z="3.5" />
+            <to x="0" y="0" z="0" />
+        </perspective>
     </views>
 
     <ambient>
