@@ -20,82 +20,103 @@ export class PieceController {
 
     movePiece(piece, y, x, callback = null) {
         this.stopIdleAnimation(piece, () => {
-            const animation = this.scene.graph.cloneAnimation('piece-move', 'piece-move-' + piece.pieceComponent.id, {
-                'posx': x,
-                'posz': y
-            });
-            piece.pieceComponent.addAnimation(animation);
-            this.lightController.turnSpotlightOn(piece.pieceComponent);
-            animation.hookFunction(() => {
-                this.lightController.followComponent(piece.pieceComponent);
-            });
-            this.scene.graph.stopAnimation(animation, () => {
-                this.lightController.turnSpotlightOff();
-                animation.applyToComponent(piece.pieceComponent);
-                this.animatingMove = false;
-                if (callback != null) {
-                    callback();
-                }
-
-            });
+            this.translate(piece, y, x, callback);
         });
 
     }
 
+    translate(pieceComponent, y, x, callback = null) {
+        const animation = this.scene.graph.cloneAnimation('piece-move', 'piece-move-' + pieceComponent.id, {
+            'posx': x,
+            'posz': y
+        });
+        pieceComponent.addAnimation(animation);
+        this.lightController.turnSpotlightOn(pieceComponent);
+        animation.hookFunction(() => {
+            this.lightController.followComponent(pieceComponent);
+        });
+        this.scene.graph.stopAnimation(animation, () => {
+            this.lightController.turnSpotlightOff();
+            animation.applyToComponent(pieceComponent);
+            this.animatingMove = false;
+            if (callback != null) {
+                callback();
+            }
+
+        });
+    }
+
     moveToStorage(piece, checkersStorage, board) {
-        const STORAGE_OFFSET = [0, 0.0, 0];
+        const STORAGE_OFFSET = [0, 0.15, 0];
         const color = piece.color;
         const component = piece.component;
         const storage = this.scene.graph.getComponent(color + '-storage');
         const storagePieces = checkersStorage;
         //Get the next available storage space
         let spaceChosen;
-        for (let i = storagePieces.length - 1; i >= 0; i--) {
-            spaceChosen = i;
-            if (i === 0) {
-                storagePieces[i].push(component);
-                break;
-            }
-            if (storagePieces[i - 1].length > storagePieces[i].length) {
-                storagePieces[i].push(component);
-                break;
-            }
-        }
+        spaceChosen = storagePieces.findIndex(pieces => pieces.length == Math.min(...storagePieces.map(pieces => pieces.length)));
         let offset = [
-            STORAGE_OFFSET[0] + (spaceChosen % 2) * (0.250) + Math.random() * 0.025,
+            STORAGE_OFFSET[0] + (spaceChosen % 2) * (0.250) + Math.random() * 0.012,
             STORAGE_OFFSET[1] + storagePieces[spaceChosen].length * 0.055,
-            STORAGE_OFFSET[2] + Math.floor(spaceChosen / 2) * 0.250 + Math.random() * 0.025,
+            STORAGE_OFFSET[2] + Math.floor(spaceChosen / 2) * 0.250 + Math.random() * 0.012,
         ]
-
         this.animatingCapture = true;
-        jumpPiece(this.scene, component, storage.getPosition(), offset, () => {
+        storagePieces[spaceChosen].push(component);
+        this.jumpPiece(component, storage.getPosition(), offset, () => {
             this.animatingCapture = false;
         });
 
         if (piece.isKing) {
             const kingComponent = piece.component;
-            //Move the king's piece to storage
-            const deadPieces = kingComponent.children.filter(child => child.className == kingComponent.className);
-            if (deadPieces.length > 0) {
-                //Seperate pieces
-                const deadPiece = deadPieces[0];
+            this.splitPieces(piece, board, checkersStorage);
+            
 
-                //Remove from king
-                kingComponent.children = kingComponent.children.filter(child => child != deadPiece);
-                deadPiece.position = [...kingComponent.position];
-                deadPiece.transformation = [...kingComponent.transformation];
+        }
+    }
 
-                //Add to board
-                board.component.children.push(deadPiece);
-                spaceChosen = (spaceChosen + 1) % checkersStorage.length;
-                offset = [
-                    STORAGE_OFFSET[0] + (spaceChosen % 2) * (0.250) + Math.random() * 0.025,
-                    STORAGE_OFFSET[1] + storagePieces[spaceChosen].length * 0.055,
-                    STORAGE_OFFSET[2] + Math.floor(spaceChosen / 2) * 0.250 + Math.random() * 0.025,
-                ]
-                jumpPiece(this.scene, deadPiece, storage.getPosition(), offset);
+    /**
+     * Splits king into two pieces, and sends the extra one to storage
+     */
+    splitPieces(kingPiece, board, storagePieces) {
+        const STORAGE_OFFSET = [0, 0.15, 0];
+        const kingComponent = kingPiece.component;
+        const color = kingPiece.color;
+        const storage = this.scene.graph.getComponent(color + '-storage');
+
+        let spaceChosen;
+        for (let i = 0; i <= storagePieces.length; i++) {
+            spaceChosen = i;
+            if (i === storagePieces.length - 1) {
+                //last one
+                break;
             }
+            if (storagePieces[i].length > storagePieces[i + 1].length) {
+                spaceChosen = i + 1;
+                break;
+            }
+        }
+        console.log("Bloat" , spaceChosen, storagePieces);
+        const deadPieces = kingComponent.children.filter(child => child.className == kingComponent.className);
+        if (deadPieces.length > 0) {
+            //Seperate pieces
+            const deadPieceComponent = deadPieces[0];
 
+            //Remove from king
+            kingComponent.children = kingComponent.children.filter(child => child != deadPieceComponent);
+            deadPieceComponent.position = [...kingComponent.position];
+            deadPieceComponent.transformation = [...kingComponent.transformation];
+
+            
+            //Add to board component
+            board.component.children.push(deadPieceComponent);
+            const offset = [
+                STORAGE_OFFSET[0] + (spaceChosen % 2) * (0.250) + Math.random() * 0.012,
+                STORAGE_OFFSET[1] + Math.min(storagePieces[spaceChosen].length - 1, 0) * 0.055,
+                STORAGE_OFFSET[2] + Math.floor(spaceChosen / 2) * 0.250 + Math.random() * 0.012,
+            ]
+            storagePieces[spaceChosen].push(deadPieceComponent)
+            this.jumpPiece(deadPieceComponent, storage.getPosition(), offset);
+            this.resetPieceComponent(deadPieceComponent);
         }
     }
 
@@ -112,7 +133,7 @@ export class PieceController {
         const originalComponent = this.scene.graph.getComponent(className);
         const component = originalComponent.clone();
         //Offset the piece to the center of the tile
-        
+
         component.translate(...offset);
         component.id = id;
         processClass(className, component);
@@ -121,27 +142,20 @@ export class PieceController {
         return component;
     }
     generatePieceComponentInBoard(boardComponent, color, y, x) {
-        const TILE_SIZE = 2 / 8;
-        const START_X = -1 + TILE_SIZE / 2;
-        const START_Z = -1 + TILE_SIZE / 2;
-        const translationX = START_X + x * TILE_SIZE;
-        const translationZ = START_Z + (7 - y) * TILE_SIZE;
+        const { translationX, translationZ } = calculateBoardPosition(y, x);
         const id = 'piece-' + y + '-' + x;
         return this.generatePieceComponent(boardComponent, color, [translationX, 0, translationZ], id);
-        
-
-        return component;
     }
 
 
-    stopIdleAnimation(piece, callback = undefined) {
-        const animation = piece.pieceComponent.getAnimation(
-            (animation) => animation.id == 'piece-selected-' + piece.pieceComponent.id
+    stopIdleAnimation(pieceComponent, callback = undefined) {
+        const animation = pieceComponent.getAnimation(
+            (animation) => animation.id == 'piece-selected-' + pieceComponent.id
         );
         if (animation != undefined) {
             this.scene.graph.stopAnimation(animation, () => {
                 //Function called after the animation is finished
-                piece.pieceComponent.animation = undefined;
+                pieceComponent.removeAnimation(animation);
                 if (callback != undefined) {
                     callback();
                 }
@@ -149,31 +163,27 @@ export class PieceController {
         }
     }
 
-    startIdleAnimation(piece) {
-        const animation = this.scene.graph.cloneAnimation('piece-selected', 'piece-selected-' + piece.pieceComponent.id);
-        piece.pieceComponent.animation = animation;
+    startIdleAnimation(pieceComponent) {
+        const animation = this.scene.graph.cloneAnimation('piece-selected', 'piece-selected-' + pieceComponent.id);
+        pieceComponent.animation = animation;
     }
 
 
     makeKing(king, checkersBoard) {
         const boardComponent = checkersBoard.component;
-        const kingComponent = king.pieceComponent;
+        const kingComponent = king.component;
 
-        const color = king.className.includes('white') ? 'white' : 'black';
+        const color = king.color;
         //Get piece from storage
         const storagePieces = checkersBoard.storages[color];
         let pieceIndex;
-        for (let i = storagePieces.length - 1; i >= 0; i--) {
-            if (storagePieces[i].length > 0) {
-                pieceIndex = i;
-                break;
-            }
-        }
+        pieceIndex = storagePieces.findIndex(pieces => pieces.length == Math.max(...storagePieces.map(pieces => pieces.length)));
+
         const deadPieceComponent = storagePieces[pieceIndex].pop();
 
         //Move piece to top of the new king
         const offset = [0, 0.055, 0];
-        jumpPiece(this.scene, deadPieceComponent, kingComponent.getPosition(), offset, () => {
+        this.jumpPiece(deadPieceComponent, kingComponent.getPosition(), offset, () => {
             //Attach piece to king
             deadPieceComponent.position = [0, 0, 0];
             deadPieceComponent.transformation = mat4.create();
@@ -193,10 +203,90 @@ export class PieceController {
             boardComponent.children = boardComponent.children.filter((child) => child.id !== deadPieceComponent.id);
 
         });
-
     }
+    
+    unmakeKing(kingPiece, checkersBoard) {
+        this.splitPieces(kingPiece, checkersBoard, checkersBoard.storages[kingPiece.color]);
+    }
+
+
+    jumpPiece(pieceComponent, destination, offset = [0, 0, 0], callback = undefined) {
+        const movement = calculateMove(pieceComponent.getPosition(), destination, offset);
+    
+        const height = movement[1] + 1;
+        const peak = [movement[0] / 2, height, movement[2] / 2];
+    
+        const animationxz = this.scene.graph.cloneAnimation('piece-storage_xz', 'piece-storage_xz' + pieceComponent.id, {
+            'posx': movement[0],
+            'posz': movement[2],
+            'posx_half': peak[0],
+            'posz_half': peak[2],
+        });
+        const animationy = this.scene.graph.cloneAnimation('piece-storage_y', 'piece-storage_y' + pieceComponent.id, {
+            'posy': movement[1],
+            'posy_half': peak[1],
+        });
+        this.animatingCapture = true;
+        pieceComponent.addAnimation(animationxz);
+        pieceComponent.addAnimation(animationy);
+        this.scene.graph.stopAnimation(animationxz, () => {
+            animationxz.applyToComponent(pieceComponent);
+            pieceComponent.removeAnimation(animationxz);
+            this.scene.graph.stopAnimation(animationy, () => {
+                animationy.applyToComponent(pieceComponent);
+                pieceComponent.removeAnimation(animationy);
+                if (callback != undefined) {
+                    callback();
+                }
+            });
+            
+            
+    
+        });
+        this.scene.graph.stopAnimation(animationy);
+        this.animatingCapture = false;
+    }
+
+    removeFromStorage(pieceComponent, storage) {
+        for (let i = 0; i < storage.length; i++) {
+            const row = storage[i];
+            for (let j = 0; j < row.length; j++) {
+                if (row[j].id === pieceComponent.id) {
+                    row.splice(j, 1);
+                    return;
+                }
+            }
+        }
+
+        //Reapply pieceComponent to model fragments
+        this.resetPieceComponent(pieceComponent);
+    }
+    
+    resetPieceComponent(pieceComponent) {
+        for (let i = 0; i < pieceComponent.children.length; i++) {
+            const model = pieceComponent.children[i];
+            for (const key of Object.keys(model.objects)) {
+                if (key === 'length') {
+                    continue;
+                }
+                const obj = model.objects[key];
+                obj.pieceComponent = pieceComponent;
+                obj.genericSet('pieceComponent', pieceComponent, () => true);
+            }
+        }
+    }
+
 }
 
+
+export function calculateBoardPosition(y, x) {
+    const TILE_SIZE = 2 / 8;
+    const START_X = -1 + TILE_SIZE / 2;
+    const START_Z = -1 + TILE_SIZE / 2;
+    const translationX = START_X + x * TILE_SIZE;
+    const translationZ = START_Z + (7 - y) * TILE_SIZE;
+    return { translationX, translationZ };
+}
 
 function calculateMove(source, destination, offset = [0, 0, 0]) {
     const movement = [
@@ -205,35 +295,4 @@ function calculateMove(source, destination, offset = [0, 0, 0]) {
         destination[2] - source[2] + offset[2]
     ]
     return movement;
-}
-
-function jumpPiece(scene, pieceComponent, destination, offset = [0, 0, 0], callback = undefined) {
-    const movement = calculateMove(pieceComponent.getPosition(), destination, offset);
-
-    const height = movement[1] + 1;
-    const peak = [movement[0] / 2, height, movement[2] / 2];
-
-    const animationxz = scene.graph.cloneAnimation('piece-storage_xz', 'piece-storage_xz' + pieceComponent.id, {
-        'posx': movement[0],
-        'posz': movement[2],
-        'posx_half': peak[0],
-        'posz_half': peak[2],
-    });
-    const animationy = scene.graph.cloneAnimation('piece-storage_y', 'piece-storage_y' + pieceComponent.id, {
-        'posy': movement[1],
-        'posy_half': peak[1],
-    });
-    pieceComponent.addAnimation(animationxz);
-    pieceComponent.addAnimation(animationy);
-    scene.graph.stopAnimation(animationxz, () => {
-        animationxz.applyToComponent(pieceComponent);
-        pieceComponent.removeAnimation(animationxz);
-        animationy.applyToComponent(pieceComponent);
-        pieceComponent.removeAnimation(animationy);
-        if (callback != undefined) {
-            callback();
-        }
-
-    });
-    scene.graph.stopAnimation(animationy);
 }

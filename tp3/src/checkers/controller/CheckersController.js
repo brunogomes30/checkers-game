@@ -40,7 +40,7 @@ export class LogicController {
             return false;
         }
 
-        if(piece.position == null){
+        if (piece.position == null) {
             console.log('Piece is dead')
             return false;
         }
@@ -56,7 +56,9 @@ export class LogicController {
             return false;;
         }
 
-        this.states.push({ turn: this.turn, board: clone(this.board.board), move: this.selectedMove.move, piece: { ...this.selectedPiece }, capture: { ...this.selectedMove.capture } });
+        const board = clone(this.board.board);
+        const position = { ...this.selectedPiece.position };
+
         console.log(this.states[this.states.length - 1]);
         // Move the piece
         let piecePos = this.selectedPiece.position
@@ -74,6 +76,16 @@ export class LogicController {
             this.selectedPiece.isKing = true;
         }
 
+        this.states.push({
+            turn: this.turn,
+            board: board,
+            move: this.selectedMove.move,
+            position: position,
+            piece: { ...this.selectedPiece },
+            capture: this.selectedMove.capture,
+            promoted: promoted ? this.selectedPiece : undefined
+        });
+
         // Handle captures
         let capturedPiece = null;
         if (this.selectedMove.capture != undefined) {
@@ -86,7 +98,8 @@ export class LogicController {
 
             if (this.getPieceValidMoves().filter((move) => move.capture != undefined).length !== 0) {
                 console.log('New multicapture moves: ', this.validMoves);
-                this.state = 'multiCapture';
+                //this.state = 'multiCapture';
+                this.state = 'pieceSelection';
                 return { changeTurn: false, capturedPiece };
             }
         }
@@ -107,6 +120,36 @@ export class LogicController {
         this.state = 'pieceSelection';
 
         return { changeTurn: true, capturedPiece, promoted };
+    }
+
+    undo() {
+        console.log('Undoing');
+        const previousState = this.states.pop();
+        console.log('Undoing', previousState);
+        if (previousState == undefined) {
+            return;
+        }
+
+        this.board.board = previousState.board;
+        this.board.board[previousState.position.y][previousState.position.x].piece.position = previousState.position;
+        if (previousState.capture != undefined) {
+            this.board.board[previousState.capture.y][previousState.capture.x].piece.position = previousState.capture;
+        }
+        if(previousState.promoted != undefined) {
+            this.board.board[previousState.promoted.position.y][previousState.promoted.position.x].piece.isKing = false;
+        }
+        this.turn = previousState.turn;
+
+
+        return {
+            piece: {
+                ...previousState.piece
+            },
+            move: previousState.move,
+            position: previousState.position,
+            capture: previousState.capture,
+            promoted: previousState.promoted
+        };
     }
 
     getPieceValidMoves() {
