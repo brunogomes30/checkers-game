@@ -1,5 +1,5 @@
 import { CheckersBoard } from "../model/CheckersBoard.js";
-import { PieceController } from "./PieceController.js";
+import { calculateBoardPosition, PieceController } from "./PieceController.js";
 import { CheckersPiece } from "../model/CheckersPiece.js";
 import { CheckersTile } from "../model/CheckersTile.js";
 import { LogicController } from "./CheckersController.js";
@@ -31,11 +31,36 @@ export class BoardController {
                 const tileFragment = this.tileController.getTileFragment(this.checkersBoard.component, y, x);
                 tile.fragment = tileFragment;
                 if (tile.piece != null) {
-                    const component = this.pieceController.generatePieceComponent(this.checkersBoard, tile.piece.color, y, x);
+                    const component = this.pieceController.generatePieceComponentInBoard(this.checkersBoard.component, tile.piece.color, y, x);
                     tile.piece.component = component;
                     this.checkersBoard.pieceMap[component.id] = tile.piece;
                 }
             }
+        }
+
+        // Generate storage components
+        const whiteStorage = graph.getComponent('white-storage');
+        const blackStorage = graph.getComponent('black-storage');
+        const whiteStoragePieces = this.checkersBoard.storages['white'];
+        const blackStoragePieces = this.checkersBoard.storages['black'];
+
+        for (let i = 0; i < 4; i++) {
+            let position = whiteStorage.getPosition();
+            position = [
+                position[0] - 1.0,
+                position[1] + 0.055 * i,
+                position[2],
+            ];
+            const whitePiece = this.pieceController.generatePieceComponent(this.checkersBoard.component, 'white', position, 'piece-storage-white-' + i);
+            position = blackStorage.getPosition();
+            position = [
+                position[0] - 1.0,
+                position[1] + 0.055 * i,
+                position[2],
+            ];
+            const blackPiece = this.pieceController.generatePieceComponent(this.checkersBoard.component, 'black', position, 'piece-storage-black-' + i);
+            whiteStoragePieces[i].push(whitePiece);
+            blackStoragePieces[i].push(blackPiece);
         }
 
         this.logicController.start()
@@ -88,6 +113,10 @@ export class BoardController {
     }
 
     handleBoardClick(element) {
+        if (this.pieceController.animatingCapture || this.pieceController.animatingMove) {
+            console.log('Board click: Animation in progress');
+            return;
+        }
         const TILE_SIZE = 2 / 8;
         let y = element.id.split('x')[0];
         y = Number(y.substring(y.search(/[0-9]/)));
@@ -113,18 +142,25 @@ export class BoardController {
         const moveResult = this.logicController.processMove();
 
         // Animate selected piece movement
-
         const movey = y - piecePos.y;
         const movex = x - piecePos.x;
-        if (!moveResult.changeTurn && !moveResult.gameOver) {
-            this.pieceController.movePiece(this.selectedPiece, - movey * TILE_SIZE, movex * TILE_SIZE, true);
-        } else {
-            this.pieceController.movePiece(this.selectedPiece, - movey * TILE_SIZE, movex * TILE_SIZE);
+        const pieceMoved = this.selectedPiece;
+        const moveCallback = () => {
+            if (moveResult.promoted) {
+                console.log(this.checkersBoard);
+                console.log(pieceMoved);
+                this.pieceController.makeKing(pieceMoved, this.checkersBoard);
+                if (!moveResult.changeTurn && !moveResult.gameOver) {
+                    this.pieceController.startIdleAnimation(pieceMoved);
+                }
+            }
         }
+        this.pieceController.movePiece(this.selectedPiece, - movey * TILE_SIZE, movex * TILE_SIZE, moveCallback);
+
 
         // Move captured piece to the corresponding graveyard
         if (moveResult.capturedPiece != null) {
-            this.pieceController.moveToStorage(moveResult.capturedPiece, this.checkersBoard.storages[moveResult.capturedPiece.color]);
+            this.pieceController.moveToStorage(moveResult.capturedPiece, this.checkersBoard.storages[moveResult.capturedPiece.color], this.checkersBoard);
         }
 
 
@@ -144,7 +180,6 @@ export class BoardController {
             console.log('Game over! Winner: ' + moveResult.winner)
         }
 
-
         // Setup next move
         if (moveResult.changeTurn) {
             this.selectedPiece = undefined;
@@ -159,17 +194,25 @@ export class BoardController {
 
                 this.tileController.highlightTile(fragment);
             }
+
+            this.pieceController.startIdleAnimation(this.selectedPiece);
         }
 
 
     }
 
     handlePieceClick(element) {
+        if (this.pieceController.animatingCapture || this.pieceController.animatingMove) {
+            console.log('Piece click: Animation in progress');
+            return;
+        }
         const className = element.className;
         const component = element.pieceComponent;
         console.log('Piece click: ' + className + ' ' + component.id);
         const checkerPiece = this.checkersBoard.pieceMap[element.pieceComponent.id];
-
+        if (checkerPiece == undefined) {
+            return;
+        }
         if (this.selectedPiece != undefined) {
             this.pieceController.stopIdleAnimation(this.selectedPiece);
         }
@@ -201,6 +244,11 @@ export class BoardController {
 
 
     undo() {
+        if (this.pieceController.animatingCapture || this.pieceController.animatingMove) {
+            console.log('Undo: Animation in progress');
+            return;
+        }
+
         const TILE_SIZE = 2 / 8;
         let undoResult = this.logicController.undo();
         if (undoResult == undefined) {
@@ -209,7 +257,7 @@ export class BoardController {
         }
 
         console.log(undoResult);
-        
+
         // Relocate moved piece
         let y = undoResult.position.y - undoResult.move.y;
         let x = undoResult.position.x - undoResult.move.x;
@@ -217,8 +265,12 @@ export class BoardController {
         this.pieceController.translate(undoResult.piece.component, - y * TILE_SIZE, x * TILE_SIZE);
 
         // Relocate captured piece
-        
-        
+        if (undoResult.capture != undefined) {
+            const capturedPiece = this.checkersBoard.board[undoResult.capture.y][undoResult.capture.x].piece
+            console.log(capturedPiece);
+            const { translationX, translationZ } = calculateBoardPosition(capturedPiece.position.y, capturedPiece.position.x)
+            this.pieceController.jumpPiece(capturedPiece.component, [translationX, 0, translationZ], [0, 0.15, 0]);
+        }
     }
 
 
