@@ -276,8 +276,9 @@ export class BoardController {
         }
 
         // Relocate promoted piece
-        if (undoResult.promotion != undefined) {
-            const promotedPiece = this.checkersBoard.board[undoResult.promotion.y][undoResult.promotion.x].piece
+        if (undoResult.promoted != undefined) {
+            const [y, x] = [undoResult.promoted.position.y, undoResult.promoted.position.x];
+            const promotedPiece = this.checkersBoard.board[y][x].piece
             console.log(promotedPiece);
             this.pieceController.unmakeKing(promotedPiece, this.checkersBoard);
         }

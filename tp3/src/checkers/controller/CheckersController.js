@@ -56,7 +56,7 @@ export class LogicController {
             return false;;
         }
 
-        
+
 
         console.log(this.states[this.states.length - 1]);
         // Move the piece
@@ -124,6 +124,7 @@ export class LogicController {
     undo() {
         console.log('Undoing');
         const previousState = this.states.pop();
+        console.log('Undoing', previousState);
         if (previousState == undefined) {
             return;
         }
@@ -136,7 +137,15 @@ export class LogicController {
         this.turn = previousState.turn;
 
 
-        return { piece: { ...previousState.piece }, move: previousState.move, position: previousState.position, capture: previousState.capture };
+        return {
+            piece: {
+                ...previousState.piece
+            },
+            move: previousState.move,
+            position: previousState.position,
+            capture: previousState.capture,
+            promoted: previousState.promoted
+        };
     }
 
     getPieceValidMoves() {

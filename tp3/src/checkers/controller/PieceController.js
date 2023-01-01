@@ -217,7 +217,7 @@ export class PieceController {
     }
     
     unmakeKing(kingPiece, checkersBoard) {
-        this.splitPieces(kingPiece, checkersBoard, checkersBoard.storages[king.color]);
+        this.splitPieces(kingPiece, checkersBoard, checkersBoard.storages[kingPiece.color]);
     }
 
 
