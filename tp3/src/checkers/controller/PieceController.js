@@ -175,7 +175,6 @@ export class PieceController {
         const offset = [0, 0.055, 0];
         jumpPiece(this.scene, deadPieceComponent, kingComponent.getPosition(), offset, () => {
             //Attach piece to king
-            console.log('Attaching piece to king');
             deadPieceComponent.position = [0, 0, 0];
             deadPieceComponent.transformation = mat4.create();
             deadPieceComponent.translate(...offset);

@@ -17,6 +17,12 @@ export function processClass(className, component){
         case 'white-storage':
             processStorage(component);
             break;
+        case 'game-clock':
+            break;
+        case 'white-clock':
+            break;
+        case 'black-clock':
+            break;
         default:
             return;
     }

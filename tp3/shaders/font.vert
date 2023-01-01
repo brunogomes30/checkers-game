@@ -14,7 +14,6 @@ varying vec2 vTextureCoord;
 void main() {
 
 	gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-
 	// top s coordinate of the character = charCoord[0] / dims[0] (e.g. 5 / 16)
 	// char width in tex coords = 1.0 / dims[0] 
 	// this vertex's s coordinate = top s coordinate of the char + the vertex texcoord * char width in texcoords
