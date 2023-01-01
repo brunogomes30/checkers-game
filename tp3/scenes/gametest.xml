@@ -258,6 +258,7 @@
         <model id="blackModel" file="piece/black.obj" class="black-piece"/>
         <model id="blackStorage" file="storage/black_storage.obj" class="black-storage"/>
         <model id="whiteStorage" file="storage/white_storage.obj" class="white-storage"/>
+        <model id="gameClock" file="clock/game_clock.obj" class="game-clock" />
     </models>
 
     <components>
@@ -271,6 +272,9 @@
                 <componentref id="board" />
                 <componentref id="white_storage"/>
                 <componentref id="black_storage"/>
+                <componentref id="game-clock-global" />
+                <componentref id="game-clock-white" />
+                <componentref id="game-clock-black" />
             </children>
         </component>
         <component id="board" class="board" pickable="true">
@@ -335,11 +339,103 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="none" />
             <children>
                 <modelref id="whiteStorage" />
             </children>
         </component>
+
+        <component id="game-clock-global">
+            <transformation>
+                <translate x="1.05" y="0.20" z="0" />
+                <rotate axis="y" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="game-clock-text" />
+                <modelref id="gameClock" />
+            </children>
+        </component>
+        
+
+        <component id="game-clock-white">
+            <transformation>
+                <translate x="0.0" y="0.20" z="1.05" />
+                <rotate axis="y" angle="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="white-clock-text" />
+                <modelref id="gameClock" />
+            </children>
+        </component>
+
+        <component id="game-clock-black">
+            <transformation>
+                <translate x="0.0" y="0.20" z="-1.05" />
+                <rotate axis="y" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="black-clock-text" />
+                <modelref id="gameClock" />
+            </children>
+        </component>
+
+        <component id="game-clock-text" class="game-clock">
+            <transformation>
+                <translate x="0.0" y="0.035" z="0.025" />
+                <scale x="0.05" y="0.05" z="0.05" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <text value="0" />
+            </children>
+        </component>
+
+        <component id="white-clock-text" class="white-clock">
+            <transformation>
+                <translate x="0.0" y="0.035" z="0.025" />
+                <scale x="0.05" y="0.05" z="0.05" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <text value="0" />
+            </children>
+        </component>
+
+        <component id="black-clock-text" class="black-clock">
+            <transformation>
+                <translate x="0.0" y="0.035" z="0.025" />
+                <scale x="0.05" y="0.05" z="0.05" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <text value="0" />
+            </children>
+        </component>
+
+
+
+        
     </components>
 
 

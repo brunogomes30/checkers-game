@@ -37,7 +37,6 @@ export class TextRenderer{
             this.rect.display();
             scene.popMatrix();
         }
-        scene.setActiveShader(scene.defaultShader);
     }
 
     render(list){
@@ -49,7 +48,8 @@ export class TextRenderer{
             const value = list[i];
             const text = value.element;
             scene.pushMatrix();
-            
+            scene.loadIdentity();
+            scene.multMatrix(value.matrix);
             this.renderText(text);
             scene.popMatrix();
         }

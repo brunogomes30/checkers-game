@@ -3,4 +3,7 @@ export class TextElement{
         this.scene = scene;
         this.text = text;
     }
+    display(){
+
+    }
 }
