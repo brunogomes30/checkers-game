@@ -6,7 +6,7 @@ import { LogicController } from "./CheckersController.js";
 import { LightController } from "./LightController.js";
 import { TileController } from "./TileController.js";
 export class BoardController {
-    constructor(scene, size) {
+    constructor(scene, size, clockController) {
         this.scene = scene;
         this.ysize = size;
         this.xsize = size;
@@ -15,6 +15,7 @@ export class BoardController {
         this.lightController = new LightController(scene)
         this.pieceController = new PieceController(scene, this.lightController);
         this.tileController = new TileController(scene);
+        this.clockController = clockController;
     }
 
     loadNewBoard(graph, board) {
@@ -122,7 +123,6 @@ export class BoardController {
         y = Number(y.substring(y.search(/[0-9]/)));
         let x = Number(element.id.split('_')[0].split('x')[1]);
         console.log('Board click: ' + y + ' ' + x);
-
         if (!this.logicController.selectTile({ x, y })) {
             this.tileController.unhiglightTiles();
             if (this.selectedPiece != undefined) {
@@ -133,7 +133,7 @@ export class BoardController {
             console.log('Invalid tile selection');
             return;
         }
-
+        const currentColor = this.selectedPiece.className.includes('white') ? 'white' : 'black';
         // Stop highlighting previous valid moves (Maybe highligh only the selected tile)
         this.tileController.unhiglightTiles();
 
@@ -183,6 +183,8 @@ export class BoardController {
 
         // Setup next move
         if (moveResult.changeTurn) {
+            this.changeTurn(currentColor == 'white' ? 'black' : 'white');
+            this.selectedPiece = undefined;
             // Change view and stuff
         } else {
             /*
@@ -201,6 +203,11 @@ export class BoardController {
         }
 
 
+    }
+
+    changeTurn(color){
+        console.log('change turn', color);
+        this.clockController.setTimeCounting(color);
     }
 
     handlePieceClick(element) {
