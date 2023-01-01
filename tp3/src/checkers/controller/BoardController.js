@@ -6,6 +6,7 @@ import { LogicController } from "./CheckersController.js";
 import { LightController } from "./LightController.js";
 import { TileController } from "./TileController.js";
 import { CameraController } from "./CameraController.js";
+import { CounterController } from "./CounterController.js";
 export class BoardController {
     constructor(scene, size, clockController) {
         this.scene = scene;
@@ -17,6 +18,7 @@ export class BoardController {
         this.pieceController = new PieceController(scene, this.lightController);
         this.tileController = new TileController(scene);
         this.cameraController = new CameraController(scene);
+        this.counterController = new CounterController(scene);
         this.clockController = clockController;
     }
 
@@ -70,6 +72,7 @@ export class BoardController {
 
         this.logicController.start()
         this.scene.interface.gui.add(this, 'undo').name('Undo');
+        this.counterController.update();
     }
 
     createBoard() {
@@ -166,7 +169,12 @@ export class BoardController {
 
         // Move captured piece to the corresponding graveyard
         if (moveResult.capturedPiece != null) {
-            this.pieceController.moveToStorage(moveResult.capturedPiece, this.checkersBoard.storages[moveResult.capturedPiece.color], this.checkersBoard);
+            this.pieceController.moveToStorage(
+                moveResult.capturedPiece,
+                this.checkersBoard.storages[moveResult.capturedPiece.color],
+                this.checkersBoard,
+                () => this.capturePiece(moveResult.capturedPiece.color == 'white' ? 'black' : 'white')
+            );
         }
 
         this.selectedPiece = undefined;
@@ -294,8 +302,12 @@ export class BoardController {
                 if (capturedPiece.isKing) {
                     this.pieceController.makeKing(capturedPiece, this.checkersBoard);
                 }
+                this.counterController.incrementCounter(capturedPiece.color === 'white' ? 'black' : 'white', -1);
             });
-            this.pieceController.removeFromStorage(capturedPiece.component, this.checkersBoard.storages[capturedPiece.color]);
+            this.pieceController.removeFromStorage(
+                capturedPiece.component,
+                 this.checkersBoard.storages[capturedPiece.color]);
+
         }
 
         // Relocate promoted piece
@@ -305,7 +317,14 @@ export class BoardController {
             console.log(promotedPiece);
             this.pieceController.unmakeKing(promotedPiece, this.checkersBoard);
         }
+    }
 
+    capturePiece(color){
+        this.counterController.incrementCounter(color, 1);
+    }
+
+    undoCapture(color){
+        this.counterController.incrementCounter(color, -1);
     }
 
 }

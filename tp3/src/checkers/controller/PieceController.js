@@ -46,7 +46,7 @@ export class PieceController {
         });
     }
 
-    moveToStorage(piece, checkersStorage, board) {
+    moveToStorage(piece, checkersStorage, board, callback = null) {
         const STORAGE_OFFSET = [0, 0.15, 0];
         const color = piece.color;
         const component = piece.component;
@@ -64,6 +64,9 @@ export class PieceController {
         storagePieces[spaceChosen].push(component);
         this.jumpPiece(component, storage.getPosition(), offset, () => {
             this.animatingCapture = false;
+            if (callback != null) {
+                callback();
+            }
         });
 
         if (piece.isKing) {

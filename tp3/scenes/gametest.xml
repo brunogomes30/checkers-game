@@ -11,7 +11,7 @@
             <to x="0" y="0" z="0" />
         </ortho>
         <perspective id="boardCamera" near="0.1" far="500" angle="45" class="board-camera">
-            <from x="0" y="3.5" z="3.5" />
+            <from x="0" y="1.5" z="2.0" />
             <to x="0" y="0" z="0" />
         </perspective>
     </views>
@@ -263,6 +263,8 @@
         <model id="blackStorage" file="storage/black_storage.obj" class="black-storage"/>
         <model id="whiteStorage" file="storage/white_storage.obj" class="white-storage"/>
         <model id="gameClock" file="clock/game_clock.obj" class="game-clock" />
+        <model id="whiteCounter" file="clock/white_counter.obj" class="white-counter" />
+        <model id="blackCounter" file="clock/black_counter.obj" class="black-counter" />
     </models>
 
     <components>
@@ -279,6 +281,8 @@
                 <componentref id="game-clock-global" />
                 <componentref id="game-clock-white" />
                 <componentref id="game-clock-black" />
+                <componentref id="white-counter"/>
+                <componentref id="black-counter"/>
             </children>
         </component>
         <component id="board" class="board" pickable="true">
@@ -346,6 +350,37 @@
             <texture id="none" />
             <children>
                 <modelref id="whiteStorage" />
+            </children>
+        </component>
+
+
+        <component id="black-counter">
+            <transformation>
+                <translate x="-1.05" y="0.20" z="-0.25" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="black-counter-text" />
+                <modelref id="blackCounter" />
+            </children>
+        </component>
+
+        <component id="white-counter">
+            <transformation>
+                <translate x="-1.05" y="0.20" z="0.25" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="white-counter-text" />
+                <modelref id="whiteCounter" />
             </children>
         </component>
 
@@ -436,6 +471,38 @@
                 <text value="0" />
             </children>
         </component>
+
+
+        <component id="white-counter-text" class="white-counter">
+            <transformation>
+                <translate x="0.0" y="0.035" z="0.0475" />
+                <scale x="0.05" y="0.05" z="0.05" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <text value="0" />
+            </children>
+        </component>
+
+
+        <component id="black-counter-text" class="black-counter">
+            <transformation>
+                <translate x="0.0" y="0.035" z="0.0475" />
+                <scale x="0.05" y="0.05" z="0.05" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <text value="0" />
+            </children>
+        </component>
+
+
 
 
 
