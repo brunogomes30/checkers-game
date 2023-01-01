@@ -56,7 +56,8 @@ export class LogicController {
             return false;;
         }
 
-
+        const board = clone(this.board.board);
+        const position = { ...this.selectedPiece.position };
 
         console.log(this.states[this.states.length - 1]);
         // Move the piece
@@ -77,12 +78,12 @@ export class LogicController {
 
         this.states.push({
             turn: this.turn,
-            board: clone(this.board.board),
+            board: board,
             move: this.selectedMove.move,
-            position: { ...this.selectedPiece.position },
+            position: position,
             piece: { ...this.selectedPiece },
             capture: this.selectedMove.capture,
-            promoted: this.selectedPiece
+            promoted: promoted ? this.selectedPiece : undefined
         });
 
         // Handle captures
@@ -133,6 +134,9 @@ export class LogicController {
         this.board.board[previousState.position.y][previousState.position.x].piece.position = previousState.position;
         if (previousState.capture != undefined) {
             this.board.board[previousState.capture.y][previousState.capture.x].piece.position = previousState.capture;
+        }
+        if(previousState.promoted != undefined) {
+            this.board.board[previousState.promoted.position.y][previousState.promoted.position.x].piece.isKing = false;
         }
         this.turn = previousState.turn;
 

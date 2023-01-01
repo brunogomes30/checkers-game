@@ -133,7 +133,7 @@ export class BoardController {
             console.log('Invalid tile selection');
             return;
         }
-        const currentColor = this.selectedPiece.className.includes('white') ? 'white' : 'black';
+        const currentColor = this.logicController.selectedPiece.color.includes('white') ? 'white' : 'black';
         // Stop highlighting previous valid moves (Maybe highligh only the selected tile)
         this.tileController.unhiglightTiles();
 
