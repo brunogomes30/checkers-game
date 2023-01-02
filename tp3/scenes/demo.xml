@@ -1,5 +1,5 @@
 <sxs>
-    <scene root="roomRoot" axis_length="5" />
+    <scene root="environment" axis_length="5" />
 
     <includeSXS filename="demo/paperplanes.xml" />
     <includeSXS filename="demo/room.xml" />
@@ -92,14 +92,14 @@
             <diffuse r="0.8235294117647058" g="0.01568627450980392" b="0.17647058823529413" a="1.0" />
             <specular r="0.8235294117647058" g="0.01568627450980392" b="0.17647058823529413" a="1.0" />
         </material>
-        
+
         <material id="laceMaterial" shininess="1">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="0.23137254901960785" g="0.47843137254901963" b="0.3411764705882353" a="1.0" />
             <diffuse r="0.23137254901960785" g="0.47843137254901963" b="0.3411764705882353" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="0.0" />
         </material>
-        
+
         <material id="woodMaterial" shininess="10">
             <emission r="0.0" g="0.0" b="0.0" a="0.6" />
             <ambient r="0.65137254901960786" g="0.65901960784313725" b="0.654901960784313725"
@@ -214,11 +214,6 @@
     </materials>
 
     <transformations>
-        <transformation id="round_table_top_transformation">
-            <translate x="0" y="1" z="0" />
-            <rotate axis="x" angle="-90" />
-            <scale x="1.0" y="1.0" z="0.1" />
-        </transformation>
     </transformations>
 
     <primitives>
@@ -457,9 +452,9 @@
     </models>
 
     <components>
-        <component id="roomRoot">
+        <component id="environment">
             <transformation>
-                <translate x="0" y="0" z="0" />
+                <translate x="0" y="-3" z="0" />
                 <scale x="1" y="1" z="1" />
             </transformation>
             <materials>
@@ -483,7 +478,6 @@
                 <componentref id="painting_position" />
                 <componentref id="painting_position_2" />
                 <componentref id="round_table_position" />
-                <componentref id="mug_positions" />
                 <componentref id="lamp_position_1" />
                 <componentref id="lamp_position_2" />
                 <componentref id="mug_position_desk" />
@@ -827,7 +821,9 @@
 
         <component id="round_table_top">
             <transformation>
-                <transformationref id="round_table_top_transformation" />
+                <translate x="0" y="1" z="0" />
+                <rotate axis="x" angle="-90" />
+                <scale x="1.0" y="1.0" z="0.1" />
             </transformation>
             <materials>
                 <material id="inherit" />

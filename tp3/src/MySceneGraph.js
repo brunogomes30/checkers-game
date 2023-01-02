@@ -78,8 +78,8 @@ export class MySceneGraph {
     /**
      * Parses the XML scene file, processing each block and included XML files.
      */
-    parseSceneGraph() {
-        this.reader.updateGraph();
+    async parseSceneGraph() {
+        await this.reader.updateGraph();
 
         this.rootElement = this.components[this.idRoot];
         if (this.rootElement === undefined) {
@@ -271,11 +271,21 @@ export class MySceneGraph {
     computeAnimations(timeDelta) {
         // Iterates over all animations and updates them.
         Object.values(this.animations).forEach(animation => animation.update(timeDelta));
+        if(this.environment_animations != undefined){
+            Object.values(this.environment_animations).forEach(animation => animation.update(timeDelta));
+        }
     }
 
     addComponent(parent, component) {
         this.components[component.id] = component;
         parent.children.push(component);
+    }
+
+    removeComponent(parentID, componentID) {
+        if ( this.components[parentID] == undefined )
+            return;
+            
+        this.components[parentID].children = this.components[parentID].children.filter(child => child.id != componentID);
     }
 
     getComponent(className) {

@@ -13,6 +13,13 @@ export class CounterController {
         this.count[color] += amount;
         this.update();
     }
+    
+    reset() {
+        this.count = {
+            'white': 0,
+            'black': 0
+        }
+    }
 
     update(){
         const whiteCounter = this.scene.graph.getComponent('white-counter');

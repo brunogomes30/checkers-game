@@ -1,5 +1,5 @@
 <sxs>
-    <scene root="demoRoot" axis_length="5" />
+    <scene root="environment" axis_length="5" />
 
     <views default="defaultCamera">
         <perspective id="defaultCamera" near="0.1" far="500" angle="45">
@@ -77,7 +77,7 @@
     </models>
 
     <components>
-        <component id="demoRoot">
+        <component id="environment">
             <transformation></transformation>
             <materials>
                 <material id="demoMaterial" />
@@ -92,7 +92,7 @@
         <component id="room">
             <transformation>
                 <translate x="0" y="10" z="0" />
-                <scale x="50" y="25" z="50" />
+                <scale x="30" y="20" z="30" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -116,7 +116,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="negz" length_s="1" length_t="1" />
+            <texture id="posz" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="detailedSquare" />
             </children>
@@ -130,7 +130,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="posz" length_s="1" length_t="1" />
+            <texture id="negz" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="detailedSquare" />
             </children>

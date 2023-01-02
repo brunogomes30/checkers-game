@@ -1,4 +1,4 @@
-import { CGFappearance, CGFobject } from '../../../lib/CGF.js'
+import { CGFappearance, CGFobject, CGFtexture } from '../../../lib/CGF.js'
 import { Texture } from '../textures/Texture.js'
 import { MyModel } from '../primitives/MyModel.js'
 import { Component } from './Component.js'
@@ -98,7 +98,7 @@ function displayPrimitive(element, parents, appearance = undefined, pickId) {
 
     let shaderToApply;
     let shaderValues;
-    const texture = getTexture(parents[0], parents);
+    const texture = getTexture(parents[parents.length - 1], parents);
     if (parent.highlight.isActive) {
         shaderToApply = parent.scene.highlightShader;
         const [r, g, b] = parent.highlight.color;
@@ -217,7 +217,7 @@ function getTexture(element, parents) {
     if (texture === 'inherit') {
         for (let i = parents.length - 1; i >= 0; i--) {
             texture = parents[i].texture;
-            if (texture instanceof Texture || texture !== 'inherit') {
+            if (texture instanceof Texture || texture !== 'inherit' || texture instanceof CGFtexture) {
                 break;
             }
         }

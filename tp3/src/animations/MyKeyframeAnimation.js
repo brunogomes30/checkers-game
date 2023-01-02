@@ -105,6 +105,7 @@ export class MyKeyframeAnimation extends MyAnimation {
             return;
         }
         this.animationTime += timeDelta * this.speed;
+
         timeDelta = this.animationTime;
         const keyFramesKeys = Object.keys(this.keyframes);
         const animationEnd = this.keyframeTimes[this.keyframeTimes.length - 1].time;
@@ -117,7 +118,9 @@ export class MyKeyframeAnimation extends MyAnimation {
                 this.lastKeyFrameTime = this.keyframeTimes[0];
                 this.previousTransformations = this.keyframeTimes[0].keyframe.values;
                 if (keyFramesKeys.length > 1) {
+                    this.index = 0;
                     this.advanceKeyframe();
+                    console.log('animation ended');
                 }
             } else if (this.willRemove && !this.isFinished) {
                 this.removeCallBack(this);
@@ -152,10 +155,19 @@ export class MyKeyframeAnimation extends MyAnimation {
         }
 
         const duration = this.nextKeyFrameTime - this.lastKeyFrameTime;
+        if(timeDelta < this.lastKeyFrameTime){
+            this.animationTime = this.lastKeyFrameTime;
+            this.advanceKeyframe();
+        }
         let t = (timeDelta - this.lastKeyFrameTime) / duration;
+
+        if(t > 1 || t < 0){
+            
+        }
 
         if (t > 1) {
             //Last frame in current keyframe
+            
             this.advanceKeyframe();
             t = 0;
         }
@@ -163,6 +175,7 @@ export class MyKeyframeAnimation extends MyAnimation {
         if (t > 1 && !this.allowOverflow) {
             t = 1;
         }
+        
         this.currentMatrix = this.calculateMatrix(this.previousTransformations, this.nextTransformations, t);
 
         //Call hooks
@@ -194,6 +207,10 @@ export class MyKeyframeAnimation extends MyAnimation {
     }
 
     advanceKeyframe() {
+        if(this.animationTime < this.lastKeyFrameTime){
+            console.log("Error: Animation time is before last keyframe time");
+            return;
+        }
         this.index = this.index + 1;
         if (this.index >= this.keyframeTimes.length) {
             this.index = 1;
@@ -204,6 +221,7 @@ export class MyKeyframeAnimation extends MyAnimation {
         this.nextTransformations = this.keyframeTimes[this.index].keyframe.values;
         this.currentFunction = this.keyframeTimes[this.index].keyframe.functionName;
         this.allowOverflow = this.keyframeTimes[this.index].keyframe.allowOverflow;
+        this.animationTime = this.lastKeyFrameTime;
     }
 }
 

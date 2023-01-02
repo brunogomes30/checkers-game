@@ -105,7 +105,7 @@ export class SXSReader {
         }
     }
 
-    updateGraph() {
+    async updateGraph() {
         const blocks_missing = Object.keys(XML_SEQUENCE_POSITION);
         for (const attribute of this.attributes) {
             switch (attribute[0]) {
@@ -157,6 +157,7 @@ export class SXSReader {
                 case 'models':
                 case 'components':
                     blocks_missing.splice(blocks_missing.indexOf(attribute[0]), 1);
+                    
                     for (const value of Object.keys(attribute[1])) {
                         if (value in this.graph[attribute[0]]) {
                             this.graph.onXMLMinorError(`${attribute[0]} with ID ${value} already defined`)
@@ -235,6 +236,7 @@ export class SXSReader {
                     }
 
                     if (reader.parsed === false) {
+                        await new Promise((resolve) => {setTimeout(resolve, 800);});
                         ready = false;
                         break;
                     }
