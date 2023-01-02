@@ -112,7 +112,7 @@
             <keyframe instant="0.0">
                 <translation x="x" y="y" z="z" />
                 <rotation axis="z" angle="0" />
-                <rotation axis="y" angle="0" />
+                <rotation axis="y" angle="ry" />
                 <rotation axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
@@ -126,7 +126,7 @@
             <keyframe instant="1.0" function="cubic-bezier_0.28_1.17_1_1.0">
                 <translation x="x" y="y" z="z" />
                 <rotation axis="z" angle="0" />
-                <rotation axis="y" angle="0" />
+                <rotation axis="y" angle="ry" />
                 <rotation axis="x" angle="0" />
                 <scale x="1.0" y="1.0" z="1.0" />
             </keyframe>
@@ -335,6 +335,8 @@
                 <componentref id="white-counter"/>
                 <componentref id="black-counter"/>
                 <componentref id="help-text"/>
+                <componentref id="single-clock-black"/>
+                <componentref id="single-clock-white"/>
             </children>
         </component>
         <component id="board" class="board" pickable="true">
@@ -525,6 +527,66 @@
         </component>
 
 
+        <component id="single-clock-white">
+            <transformation>
+                <translate x="-0.075" y="0.30" z="1.05" />
+                <rotate axis="y" angle="0" />
+                <scale x="0.25" y="0.75" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="white-single-clock-text" />
+                <modelref id="gameClock" />
+            </children>
+        </component>
+        <component id="single-clock-black">
+            <transformation>
+                <translate x="0.075" y="0.28" z="-1.05" />
+                <rotate axis="y" angle="180" />
+                <scale x="0.25" y="0.75" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="black-single-clock-text" />
+                <modelref id="gameClock" />
+            </children>
+        </component>
+
+        <component id="white-single-clock-text" class="white-single-clock">
+            <transformation>
+                <translate x="-0.05" y="0.035" z="0.025" />
+                <scale x="0.1" y="0.05" z="0.05" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <text value="0" />
+            </children>
+        </component>
+
+        <component id="black-single-clock-text" class="black-single-clock">
+            <transformation>
+                <translate x="-0.05" y="0.035" z="0.025" />
+                <scale x="0.1" y="0.05" z="0.05" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <text value="0" />
+            </children>
+        </component>
+
+
         <component id="white-counter-text" class="white-counter">
             <transformation>
                 <translate x="0.0" y="0.035" z="0.0475" />
@@ -572,14 +634,14 @@
 
         <component id="help-text-background">
             <transformation>
-                
+                <scale x="3.0" y="3.0" z="3.0"/>
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
             <texture id="none" />
             <children>
-                <primtiveref id="rectangle" />
+                
             </children>
         </component>
         

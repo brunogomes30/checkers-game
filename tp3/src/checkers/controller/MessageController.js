@@ -8,7 +8,7 @@ export class MessageController{
         this.messageDisplaying = false;
     }
 
-    displayTopComponent(message, component, absolutePosition = undefined){
+    displayTopComponent(message, component, color,absolutePosition = undefined){
         if(this.messageDisplaying){
             return;
         }
@@ -17,22 +17,26 @@ export class MessageController{
         const text = this.getTextElement(textComponent);
         text.text = message;
         const position = [...component.getPosition()];
-        position[0] += -message.length / 4 * 0.20 ;
-        position[2] = position[2] * -1  + 1.0 ;
+        const xOffset = (color == 'white' ? -1 : 1) * message.length / 4 * 0.20;
+        position[0] += xOffset * (color == 'white' ? 1 : -0.7);
+        position[2] = position[2] * -1  + (color ?? 'white' ? 1.0 : -1) ;
         position[1] +=  0.1 ;
 
+        
         if(absolutePosition != undefined){
-            position[0] = absolutePosition[0] -message.length / 8 * 0.20 ;
+            const mult = color === 'white' ? -1 : 1
+            position[0] = absolutePosition[0] + xOffset / 2;
             position[1] = absolutePosition[1];
             position[2] = absolutePosition[2];
         }
         console.log('position: ', position);
+        const rotation = color == 'white' ? 0 : Math.PI;
         const animation = this.scene.graph.cloneAnimation('message', 'message' + this.id++, {
             'x': position[0],
             'y': position[1],
             'z': position[2],
             'y2': position[1] + 0.001,
-            'ry': 0,
+            'ry': rotation,
         });
         textAllComponent.addAnimation(animation);
         this.messageDisplaying = true;

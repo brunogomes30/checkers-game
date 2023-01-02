@@ -7,9 +7,9 @@ import { LightController } from "./LightController.js";
 import { TileController } from "./TileController.js";
 import { CameraController } from "./CameraController.js";
 import { CounterController } from "./CounterController.js";
-import { addGrowlMessage } from "../../interface/growlMessages.js";
 import { StorageController } from "./StorageController.js";
 import { MessageController } from "./MessageController.js";
+import { Component } from "../../components/Component.js";
 export class BoardController {
     constructor(scene, size, clockController) {
         this.scene = scene;
@@ -27,6 +27,12 @@ export class BoardController {
         this.messageController = new MessageController(scene);
         this.locks = {};
         this.nlock = 0;
+        this.normalPlayTime = 300;
+        this.singlePlayTime = 60;
+
+        this.scene.interface.gui.add(this, 'normalPlayTime').name('Normal play time');
+        this.scene.interface.gui.add(this, 'singlePlayTime').name('Single play time');
+
     }
 
     loadNewBoard(graph, board) {
@@ -59,14 +65,22 @@ export class BoardController {
                 }
             }
         }
+<<<<<<< HEAD
         this.logicController.start()
         this.scene.interface.gui.add(this, 'movie').name('Movie');
+=======
+        this.logicController.start();
+>>>>>>> origin
         this.scene.interface.gui.add(this, 'undo').name('Undo');
         this.scene.interface.gui.add(this, 'startGame').name('Start game');
 
 
         this.counterController.update();
+<<<<<<< HEAD
         this.highlightTiles();
+=======
+        //this.changeTurn('white');
+>>>>>>> origin
 
     }
 
@@ -111,19 +125,51 @@ export class BoardController {
         for (let i = 0; i < 12; i++) {
             const white = this.whitePieces[i];
             const black = this.blackPieces[i];
+
+            //Detach kings
+
+            this.detachKing(white);
+            this.detachKing(black);
             this.jumpToBoard(white);
             this.jumpToBoard(black);
-            this.pieceController.resetPieceComponent(white);
-            this.pieceController.resetPieceComponent(black);
+            
         }
         this.unlockInput(lockId);
+        this.clockController.startGameClock();
+        this.startingColor = 'black';
+        this.startingTurn(this.startingColor);
     }
 
+    detachKing(component){
+        for(let j =0;j<component.children.length; j++){
+            const child = component.children[j];
+            if(child instanceof Component){
+                const componentPiece  = this.checkersBoard.pieceMap[component.id];
+                //Attach child to board
+                this.checkersBoard.component.children.push(child);
+                child.transformation = [...component.transformation];
+                child.position = [...component.position];
+                const piece = this.checkersBoard.pieceMap[component.id];
+                piece.position = {...componentPiece.position};
+                //remove from component
+                component.children.splice(j, 1);
+                break;
+            }
+        }
+    }
+
+<<<<<<< HEAD
     jumpToBoard(component) {
 
+=======
+    jumpToBoard(component){
+>>>>>>> origin
         const piece = this.checkersBoard.pieceMap[component.id];
-        let y = Number(component.id.split('-')[1]);
+
+        const jumpAction = () => {
+            let y = Number(component.id.split('-')[1]);
         let x = Number(component.id.split('-')[2]);
+        piece.position = {};
         piece.position.y = y;
         piece.position.x = x;
         const translation = calculateBoardPosition(y, x, this.checkersBoard.component);
@@ -133,7 +179,20 @@ export class BoardController {
         this.checkersBoard.board[y][x].piece.component = component;
         const animId = ++this.nlock;
         this.lockInput(animId);
+<<<<<<< HEAD
         this.pieceController.jumpPiece(component, position, [0, 0, 0], () => { this.unlockInput(animId); });
+=======
+        this.pieceController.jumpPiece(component, position, [0, 0, 0], () => this.unlockInput(animId));
+        this.pieceController.resetPieceComponent(component);
+        }
+
+        //unmakeKing
+        if(piece.king){
+            this.pieceController.unmakeKing(component, jumpAction);
+        } else {
+            jumpAction();
+        }
+>>>>>>> origin
     }
 
     createBoard() {
@@ -197,7 +256,17 @@ export class BoardController {
 
     handleBoardClick(element) {
         if (!this.canReceiveInput()) {
+<<<<<<< HEAD
             addGrowlMessage('Board click: Input locked', 'error');
+=======
+            this.messageController.displayTopComponent('Wait for animations to finish', element, this.currentColor);
+            return;
+        }
+
+
+        if (this.gameOver) {
+            addGrowlMessage('Game Finished');
+>>>>>>> origin
             return;
         }
 
@@ -214,7 +283,7 @@ export class BoardController {
             }
             this.selectedPiece = undefined;
             this.highlightTiles();
-            this.messageController.displayTopComponent('Invalid tile selection', element);
+            this.messageController.displayTopComponent('Invalid tile selection', element, this.currentColor);
             return;
         }
 
@@ -241,8 +310,11 @@ export class BoardController {
         const animId = this.nlock;
         const moveCallback = () => {
             if (moveResult.promoted) {
+<<<<<<< HEAD
                 console.log(this.checkersBoard);
                 //console.log(pieceMoved);
+=======
+>>>>>>> origin
                 this.pieceController.makeKing(piece, this.checkersBoard,
                     () => this.unlockInput(animId)
                 );
@@ -276,13 +348,18 @@ export class BoardController {
         this.selectedPiece = undefined;
         // Check if game is over
         if (moveResult.gameOver) {
-
+            this.gameOver = true
+            this.clockController.endGameClock();
             if (moveResult.winner == null) {
                 // Change to draw camera
             } else {
                 if (moveResult.changeTurn) {
                     // Change to winner camera
+<<<<<<< HEAD
                     this.cameraController.resetCamera(0.5, () => { this.cameraController.switchSides(1.5); });
+=======
+                    this.cameraController.resetCamera(0.5, () => { this.cameraController.switchSides(1.5) })
+>>>>>>> origin
                 }
             }
             // Show game over screen and options
@@ -290,15 +367,20 @@ export class BoardController {
         }
 
         // Setup next move
+        this.highlightTiles();
         if (moveResult.changeTurn) {
-            this.changeTurn(currentColor == 'white' ? 'black' : 'white');
+            this.changeTurn(currentColor == 'white' ? 'black' : 'white', this.validMoves.length == 1);
             this.selectedPiece = undefined;
+<<<<<<< HEAD
             // Change view and stuff
             this.lockInput(++this.nlock);
             this.cameraController.resetCamera(0.5, () => {
                 this.cameraController.switchSides(1.5);
                 this.unlockInput(this.nlock);
             });
+=======
+
+>>>>>>> origin
         } else {
             /*
     
@@ -315,17 +397,54 @@ export class BoardController {
             this.pieceController.startIdleAnimation(this.selectedPiece);
             */
         }
+<<<<<<< HEAD
         this.highlightTiles();
+=======
+
+
+
+>>>>>>> origin
     }
 
-    changeTurn(color) {
+    changeTurn(color, singlePossibleMove = false) {
         console.log('change turn', color);
-        this.clockController.setTimeCounting(color);
+        this.currentColor = color;
+        // Change view and stuff
+        this.lockInput(++this.nlock);
+        const cameraMovementId = this.nlock;
+        this.cameraController.resetCamera(0.5, () => {
+            this.cameraController.switchSides(1.5);
+            this.unlockInput(cameraMovementId);
+        });
+        this.currentColor = this.logicController.turn;
+        this.clockController.setPlayTimer(this, singlePossibleMove ? this.singlePlayTime : this.normalPlayTime, color);
+    }
+
+    startingTurn(color) {
+        console.log('Starting turn', color);
+        this.currentColor = color;
+        // Change view and stuff
+        if (this.currentColor == 'black') {
+            this.lockInput(++this.nlock);
+            this.cameraController.resetCamera(0.5, () => {
+                this.cameraController.switchSides(1.5);
+                this.unlockInput(this.nlock);
+            });
+        }
+        this.logicController.turn = color;
+        this.currentColor = color;
+        this.clockController.setPlayTimer(this, this.normalPlayTime, color);
     }
 
     handlePieceClick(element) {
         if (!this.canReceiveInput()) {
-            this.messageController.displayTopComponent('Wait for animations to finish', element.pieceComponent);
+            this.messageController.displayTopComponent('Wait for animations to finish', element.pieceComponent, this.currentColor);
+            return;
+        }
+
+
+        if (this.gameOver) {
+            addGrowlMessage('Game Finished');
             return;
         }
 
@@ -342,7 +461,12 @@ export class BoardController {
 
         const selectionResult = this.logicController.selectPiece(checkerPiece);
         if (!selectionResult) {
-            this.messageController.displayTopComponent('Invalid piece selection', element.pieceComponent);
+            const position = [...this.checkersBoard.component.position];
+            const piecePosition = element.pieceComponent.getPosition();
+            position[0] += piecePosition[0];
+            position[1] += piecePosition[1] + 0.125;
+            position[2] += piecePosition[2];
+            this.messageController.displayTopComponent('Invalid piece selection', element.pieceComponent, this.currentColor, position);
             return;
         }
 
@@ -362,25 +486,45 @@ export class BoardController {
         this.tileController.unhiglightTiles();
         this.validMoves = this.logicController.getPieceValidMoves();
         this.highlightTiles();
+<<<<<<< HEAD
+=======
+        // Display new valid moves 
+
+>>>>>>> origin
     }
 
     isAnimating() {
         return !this.canReceiveInput();
     }
 
+    endGame() {
+        this.gameOver = true;
+        this.clockController.endGameClock();
+        this.lockInput(++this.nlock);
+        const animId = this.nlock;
+        this.cameraController.resetCamera(0.5, () => {
+            this.cameraController.switchSides(1.5);
+            this.unlockInput(animId);
+        });
+        
+        console.log(`Game over! Winner: ${this.logicController.turn == 'white' ? 'black': this.logicController.turn }: Reason: Time's up`);
+    }
+
     undo() {
         if (!this.canReceiveInput()) {
-            this.messageController.displayTopComponent('Wait for animation to finish', this.checkersBoard.component, [0, 0.5, 0]);
-            //addGrowlMessage('Undo: Animation in progress', 'error');
+            this.messageController.displayTopComponent('Wait for animation to finish', this.checkersBoard.component, this.currentColor, [0, 0.5, 0]);
             return;
         }
 
         const TILE_SIZE = 2 / 8;
         let undoResult = this.logicController.undo();
         if (undoResult == undefined) {
-            this.messageController.displayTopComponent('There are no moves to undo', this.checkersBoard.component, [0, 0.5, 0]);
+            this.messageController.displayTopComponent('There are no moves to undo', this.checkersBoard.component, this.currentColor, [0, 0.5, 0]);
             return;
         }
+
+        // Switch turn
+        this.changeTurn(undoResult.piece.color, this.logicController.currentValidMoves.length == 1);
 
         console.log(undoResult);
 
@@ -424,8 +568,11 @@ export class BoardController {
                 () => this.unlockInput(promoteAnimId)
             );
         }
+
+        
     }
 
+<<<<<<< HEAD
     movie() {
         const states = [];
         for (const state of this.logicController.states) {
@@ -465,6 +612,8 @@ export class BoardController {
         }
     }
 
+=======
+>>>>>>> origin
     capturePiece(color) {
         this.counterController.incrementCounter(color, 1);
     }
@@ -476,13 +625,11 @@ export class BoardController {
 
     lockInput(id) {
         this.locks[id] = true;
-        //addGrowlMessage('Locking input: ' + id, 'info');
         console.log('Locking input: ' + id);
     }
 
     unlockInput(id) {
         delete this.locks[id];
-        //addGrowlMessage('unlocking input: ' + id, 'info');
         console.log('unlocking input: ' + id);
         if (this.canReceiveInput()) {
             this.highlightTiles();

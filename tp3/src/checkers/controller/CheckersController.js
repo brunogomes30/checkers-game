@@ -107,9 +107,8 @@ export class LogicController {
 
             if (this.getPieceValidMoves().filter((move) => move.capture != undefined).length !== 0) {
                 console.log('New multicapture moves: ', this.validMoves);
-                //this.state = 'multiCapture';
                 this.state = 'pieceSelection';
-                return { changeTurn: false, capturedPiece };
+                return { changeTurn: false, capturedPiece , promoted};
             }
         }
 
@@ -182,13 +181,33 @@ export class LogicController {
             return this.getPieceValidMoves();
         } else if(this.state == 'pieceSelection') {
             const allMoves = validMoves(this.board);
-            const validmoves = [];
-            for(const move of allMoves) {
-                if(move.color === this.turn) {
-                    move.move = move.from;
-                    validmoves.push(move);
+            const colorMoves = [];
+            
+            for(let move of allMoves){
+                if (move.color == this.turn){
+                    colorMoves.push(move);
                 }
             }
+            
+            let capturing = false;
+            for (const move of colorMoves) {
+                if (move.capture != undefined) {
+                    capturing = true;
+                    break;
+                }
+            }
+
+           
+            const validmoves = [];
+            for (const move of colorMoves){
+                if (move.capture != undefined || !capturing){
+                    validmoves.push(move)
+                }
+            }
+
+            for (const move of validmoves){
+                move.move = move.from;
+            }           
             return validmoves;
         }
         return [];
