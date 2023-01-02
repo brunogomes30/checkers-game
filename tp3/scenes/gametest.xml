@@ -112,7 +112,7 @@
             <keyframe instant="0.0">
                 <translation x="x" y="y" z="z" />
                 <rotation axis="z" angle="0" />
-                <rotation axis="y" angle="0" />
+                <rotation axis="y" angle="ry" />
                 <rotation axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
@@ -126,7 +126,7 @@
             <keyframe instant="1.0" function="cubic-bezier_0.28_1.17_1_1.0">
                 <translation x="x" y="y" z="z" />
                 <rotation axis="z" angle="0" />
-                <rotation axis="y" angle="0" />
+                <rotation axis="y" angle="ry" />
                 <rotation axis="x" angle="0" />
                 <scale x="1.0" y="1.0" z="1.0" />
             </keyframe>
@@ -572,14 +572,14 @@
 
         <component id="help-text-background">
             <transformation>
-                
+                <scale x="3.0" y="3.0" z="3.0"/>
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
             <texture id="none" />
             <children>
-                <primtiveref id="rectangle" />
+                
             </children>
         </component>
         

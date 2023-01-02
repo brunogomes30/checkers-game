@@ -114,6 +114,7 @@ export class BoardController {
             this.pieceController.resetPieceComponent(black);
         }
         this.unlockInput(lockId);
+        this.currentColor = this.logicController.turn;
     }
 
     jumpToBoard(component){
@@ -194,7 +195,7 @@ export class BoardController {
 
     handleBoardClick(element) {
         if(!this.canReceiveInput()){
-            this.messageController.displayTopComponent('Wait for animations to finish', element);
+            this.messageController.displayTopComponent('Wait for animations to finish', element, this.currentColor);
             return;
         }
         const TILE_SIZE = 2 / 8;
@@ -211,7 +212,7 @@ export class BoardController {
             }
             this.selectedPiece = undefined;
             this.highlightTiles();
-            this.messageController.displayTopComponent('Invalid tile selection', element);
+            this.messageController.displayTopComponent('Invalid tile selection', element, this.currentColor);
             return;
         }
         const currentColor = this.logicController.selectedPiece.color.includes('white') ? 'white' : 'black';
@@ -282,12 +283,7 @@ export class BoardController {
         if (moveResult.changeTurn) {
             this.changeTurn(currentColor == 'white' ? 'black' : 'white');
             this.selectedPiece = undefined;
-            // Change view and stuff
-            this.lockInput(++this.nlock);
-            this.cameraController.resetCamera(0.5 , () => {
-                this.cameraController.switchSides(1.5);
-                this.unlockInput(this.nlock);
-            });
+            
         }  else {
             /*
 
@@ -312,11 +308,18 @@ export class BoardController {
     changeTurn(color) {
         console.log('change turn', color);
         this.clockController.setTimeCounting(color);
+        // Change view and stuff
+        this.lockInput(++this.nlock);
+        this.cameraController.resetCamera(0.5 , () => {
+            this.cameraController.switchSides(1.5);
+            this.unlockInput(this.nlock);
+        });
+        this.currentColor = this.logicController.turn;
     }
 
     handlePieceClick(element) {
         if(!this.canReceiveInput()){
-            this.messageController.displayTopComponent('Wait for animations to finish', element.pieceComponent);
+            this.messageController.displayTopComponent('Wait for animations to finish', element.pieceComponent, this.currentColor);
             return;
         }
         const className = element.className;
@@ -332,7 +335,12 @@ export class BoardController {
 
         const selectionResult = this.logicController.selectPiece(checkerPiece);
         if (!selectionResult) {
-            this.messageController.displayTopComponent('Invalid piece selection', element.pieceComponent);
+            const position = [...this.checkersBoard.component.position];
+            const piecePosition = element.pieceComponent.getPosition();
+            position[0] += piecePosition[0] ;
+            position[1] += piecePosition[1] + 0.125;
+            position[2] += piecePosition[2];
+            this.messageController.displayTopComponent('Invalid piece selection', element.pieceComponent, this.currentColor, position);
             return;
         }
 
@@ -356,7 +364,7 @@ export class BoardController {
 
     undo() {
         if (!this.canReceiveInput()) {
-            this.messageController.displayTopComponent('Wait for animation to finish', this.checkersBoard.component, [0, 0.5, 0]);
+            this.messageController.displayTopComponent('Wait for animation to finish', this.checkersBoard.component, this.currentColor,[0, 0.5, 0]);
             //addGrowlMessage('Undo: Animation in progress', 'error');
             return;
         }
@@ -364,7 +372,7 @@ export class BoardController {
         const TILE_SIZE = 2 / 8;
         let undoResult = this.logicController.undo();
         if (undoResult == undefined) {
-            this.messageController.displayTopComponent('There are no moves to undo', this.checkersBoard.component, [0, 0.5, 0]);
+            this.messageController.displayTopComponent('There are no moves to undo', this.checkersBoard.component, this.currentColor,[0, 0.5, 0]);
             return;
         }
 
