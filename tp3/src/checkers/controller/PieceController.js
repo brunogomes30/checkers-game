@@ -1,5 +1,6 @@
 import { MyAnimation } from "../../animations/MyAnimation.js";
 import { MyKeyframeAnimation } from "../../animations/MyKeyframeAnimation.js";
+import { Component } from "../../components/Component.js";
 import { processClass } from "../../parser/components/processClass.js";
 import { CheckersBoard } from "../model/CheckersBoard.js";
 
@@ -84,7 +85,7 @@ export class PieceController {
         const storage = this.scene.graph.getComponent(color + '-storage');
         //Get the next available storage space
         const spaceChosen = storagePieces.findIndex(pieces => pieces.length == Math.min(...storagePieces.map(pieces => pieces.length)));
-        const deadPieces = kingComponent.children.filter(child => child.className == kingComponent.className);
+        const deadPieces = kingComponent.children.filter(child => child.className == kingComponent.className && child instanceof Component);
         if (deadPieces.length > 0) {
             //Seperate pieces
             const deadPieceComponent = deadPieces[0];

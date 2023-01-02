@@ -501,12 +501,12 @@ export class BoardController {
         this.clockController.endGameClock();
         this.lockInput(++this.nlock);
         const animId = this.nlock;
-        this.cameraController.resetCamera(0.5, () => {
-            this.cameraController.switchSides(1.5);
-            this.unlockInput(animId);
-        });
-        
-        console.log(`Game over! Winner: ${this.logicController.turn == 'white' ? 'black': this.logicController.turn }: Reason: Time's up`);
+        const winner = this.logicController.turn == 'white' ? 'black' : 'white';
+        this.messageController.displayTopComponent('Time is up!', this.checkersBoard.component, this.currentColor, [0, 0.5, 0], true);
+        setTimeout(() => {
+            this.messageController.displayTopComponent('Winner: ' + winner, this.checkersBoard.component, this.currentColor, [0, 0.5, 0], true);
+        }, 2000);
+        //console.log(`Game over! Winner: ${this.logicController.turn == 'white' ? 'black': this.logicController.turn }: Reason: Time's up`);
     }
 
     undo() {
