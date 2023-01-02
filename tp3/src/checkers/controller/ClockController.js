@@ -61,23 +61,24 @@ export class ClockController {
             const blackClock = this.scene.graph.getComponent('black-clock');
             this.getTextElement(blackClock).text = this.times['black'].toString();
 
+            const whiteSingleClock = this.scene.graph.getComponent('white-single-clock');
+            const blackSingleClock = this.scene.graph.getComponent('black-single-clock');
 
             // //Update play clock
-            // if (this.currentPlayer) {
-            //     if (this.getRemainingTime() <= 0) {
-            //         this.currentPlayer = undefined;
-            //         this.boardController.endGame();
-            //     } else {
-            //         if (this.currentPlayer == 'white') {
-            //             // Insert play clock component here
-            //             this.getTextElement(whiteClock).text = Math.floor(this.getRemainingTime()).toString();
-            //         } else {
-            //             // Insert play clock component here
-
-            //             this.getTextElement(blackClock).text = Math.floor(this.getRemainingTime()).toString();
-            //         }
-            //     }
-            // }
+            if (this.currentPlayer) {
+                if (this.getRemainingTime() <= 0) {
+                    this.currentPlayer = undefined;
+                    this.boardController.endGame();
+                } else {
+                    if (this.currentPlayer == 'white') {
+                        // Insert play clock component here
+                        this.getTextElement(whiteSingleClock).text = Math.floor(this.getRemainingTime()).toString();
+                    } else {
+                        // Insert play clock component here
+                        this.getTextElement(blackSingleClock).text = Math.floor(this.getRemainingTime()).toString();
+                    }
+                }
+            }
         }
 
     }
