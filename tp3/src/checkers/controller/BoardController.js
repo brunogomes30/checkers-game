@@ -30,6 +30,10 @@ export class BoardController {
         this.normalPlayTime = 300;
         this.singlePlayTime = 60;
 
+        this.scene.interface.gui.add(this, 'movie').name('Movie');
+        this.scene.interface.gui.add(this, 'undo').name('Undo');
+        this.scene.interface.gui.add(this, 'startGame').name('Start game');
+
         this.scene.interface.gui.add(this, 'normalPlayTime').name('Normal play time');
         this.scene.interface.gui.add(this, 'singlePlayTime').name('Single play time');
 
@@ -65,19 +69,12 @@ export class BoardController {
                 }
             }
         }
-        this.logicController.start()
-        this.scene.interface.gui.add(this, 'movie').name('Movie');
-        this.scene.interface.gui.add(this, 'undo').name('Undo');
-        this.scene.interface.gui.add(this, 'startGame').name('Start game');
-
-
-        this.counterController.update();
-        //this.changeTurn('white');
-
     }
 
 
     startGame() {
+
+
         if (!this.canReceiveInput()) {
             return;
         }
@@ -85,6 +82,8 @@ export class BoardController {
         this.lockInput(lockId);
         this.logicController.resetGame();
         this.logicController.start();
+        this.counterController.reset();
+        this.counterController.update();
         const graph = this.scene.graph;
         // Generate storage components
         const whiteStorage = graph.getComponent('white-storage');

@@ -278,6 +278,13 @@ export class MySceneGraph {
         parent.children.push(component);
     }
 
+    removeComponent(parentID, componentID) {
+        if ( this.components[parentID] == undefined )
+            return;
+            
+        this.components[parentID].children = this.components[parentID].children.filter(child => child.id != componentID);
+    }
+
     getComponent(className) {
         const list = this.class_components[className];
         if (list == undefined) {
