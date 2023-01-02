@@ -37,7 +37,7 @@ export class XMLscene extends CGFscene {
         this.sceneInited = false;
         this.setLightsVisible = false;
         this.displayNormals = false;
-        this.displayAxis = true;
+        this.displayAxis = false;
 
         this.initCameras();
 
