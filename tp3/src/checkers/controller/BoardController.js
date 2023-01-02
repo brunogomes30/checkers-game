@@ -333,7 +333,7 @@ export class BoardController {
             this.unlockInput(animId);
         });
         
-        console.log(`Game over! Winner: ${this.curr}: Reason: Time's up`);
+        console.log(`Game over! Winner: ${this.logicController.turn == 'white' ? 'black': this.logicController.turn }: Reason: Time's up`);
     }
 
     undo() {
