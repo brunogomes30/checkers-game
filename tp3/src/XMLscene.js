@@ -268,6 +268,8 @@ export class XMLscene extends CGFscene {
                         //value.apperance.apply();
                         if(value.pickId){
                             this.registerForPick(value.pickId);
+                        } else {
+                            this.registerForUnpick(value.element);
                         }
                         value.element.display();
                         this.popMatrix();
