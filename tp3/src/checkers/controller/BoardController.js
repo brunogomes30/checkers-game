@@ -2,11 +2,12 @@ import { CheckersBoard } from "../model/CheckersBoard.js";
 import { calculateBoardPosition, PieceController } from "./PieceController.js";
 import { CheckersPiece } from "../model/CheckersPiece.js";
 import { CheckersTile } from "../model/CheckersTile.js";
-import { LogicController } from "./CheckersController.js";
+import { LogicController, validMoves } from "./CheckersController.js";
 import { LightController } from "./LightController.js";
 import { TileController } from "./TileController.js";
 import { CameraController } from "./CameraController.js";
 import { CounterController } from "./CounterController.js";
+import { addGrowlMessage } from "../../interface/growlMessages.js";
 export class BoardController {
     constructor(scene, size, clockController) {
         this.scene = scene;
@@ -20,6 +21,8 @@ export class BoardController {
         this.cameraController = new CameraController(scene);
         this.counterController = new CounterController(scene);
         this.clockController = clockController;
+        this.locks = {};
+        this.nlock = 0;
     }
 
     loadNewBoard(graph, board) {
@@ -73,6 +76,7 @@ export class BoardController {
         this.logicController.start()
         this.scene.interface.gui.add(this, 'undo').name('Undo');
         this.counterController.update();
+        this.highlightTiles();
     }
 
     createBoard() {
@@ -120,9 +124,23 @@ export class BoardController {
         });
     }
 
+    highlightTiles() {
+        this.tileController.unhiglightTiles();
+        this.validMoves = this.logicController.currentValidMoves();
+        if(this.validMoves == undefined){
+            return;
+        }
+        for (let i = 0; i < this.validMoves.length; i++) {
+            const move = this.validMoves[i].move;
+            const board = this.checkersBoard.board;
+            const fragment = board[move.y][move.x].fragment;
+            this.tileController.highlightTile(fragment);
+        }
+    }
+
     handleBoardClick(element) {
-        if (this.isAnimating()) {
-            console.log('Board click: Animation in progress');
+        if(!this.canReceiveInput()){
+            addGrowlMessage('Board click: Input locked', 'error');
             return;
         }
         const TILE_SIZE = 2 / 8;
@@ -133,10 +151,12 @@ export class BoardController {
         if (!this.logicController.selectTile({ x, y })) {
             this.tileController.unhiglightTiles();
             if (this.selectedPiece != undefined) {
-                this.pieceController.stopIdleAnimation(this.selectedPiece);
+                this.lockInput(++this.nlock);
+                this.pieceController.stopIdleAnimation(this.selectedPiece,
+                    () => this.unlockInput(this.nlock));
             }
             this.selectedPiece = undefined;
-
+            this.highlightTiles();
             console.log('Invalid tile selection');
             return;
         }
@@ -152,16 +172,22 @@ export class BoardController {
         const movey = y - piecePos.y;
         const movex = x - piecePos.x;
         const pieceMoved = this.selectedPieceElement;
+        this.lockInput(++this.nlock);
+        const animId = this.nlock;
         const moveCallback = () => {
             if (moveResult.promoted) {
                 console.log(this.checkersBoard);
                 console.log(pieceMoved);
-                this.pieceController.makeKing(piece, this.checkersBoard);
+                this.pieceController.makeKing(piece, this.checkersBoard,
+                    () => this.unlockInput(animId)
+                );
                 /*
                 if (!moveResult.changeTurn && !moveResult.gameOver) {
                     this.pieceController.startIdleAnimation(pieceMoved);
                 }
                 */
+            } else {
+                this.unlockInput(animId);
             }
         }
         this.pieceController.movePiece(this.selectedPiece, - movey * TILE_SIZE, movex * TILE_SIZE, moveCallback);
@@ -169,11 +195,17 @@ export class BoardController {
 
         // Move captured piece to the corresponding graveyard
         if (moveResult.capturedPiece != null) {
+            this.lockInput(++this.nlock);
+            const animId = this.nlock;
+            addGrowlMessage('Capture id =' + this.nlock, 'info');
             this.pieceController.moveToStorage(
                 moveResult.capturedPiece,
                 this.checkersBoard.storages[moveResult.capturedPiece.color],
                 this.checkersBoard,
-                () => this.capturePiece(moveResult.capturedPiece.color == 'white' ? 'black' : 'white')
+                () => {
+                    this.capturePiece(moveResult.capturedPiece.color == 'white' ? 'black' : 'white')
+                    this.unlockInput(animId);
+                }
             );
         }
 
@@ -189,7 +221,6 @@ export class BoardController {
                     this.cameraController.resetCamera(0.5 , () => {this.cameraController.switchSides(1.5)})
                 }
             }
-
             // Show game over screen and options
             console.log('Game over! Winner: ' + moveResult.winner)
         }
@@ -199,7 +230,11 @@ export class BoardController {
             this.changeTurn(currentColor == 'white' ? 'black' : 'white');
             this.selectedPiece = undefined;
             // Change view and stuff
-            this.cameraController.resetCamera(0.5 , () => {this.cameraController.switchSides(1.5)})
+            this.lockInput(++this.nlock);
+            this.cameraController.resetCamera(0.5 , () => {
+                this.cameraController.switchSides(1.5);
+                this.unlockInput(this.nlock);
+            });
         }  else {
             /*
 
@@ -216,6 +251,7 @@ export class BoardController {
             this.pieceController.startIdleAnimation(this.selectedPiece);
             */
         }
+        this.highlightTiles();
 
 
     }
@@ -226,8 +262,8 @@ export class BoardController {
     }
 
     handlePieceClick(element) {
-        if (this.isAnimating()) {
-            console.log('Piece click: Animation in progress');
+        if(!this.canReceiveInput()){
+            addGrowlMessage('Piece click: Animation in progress', 'error');
             return;
         }
         const className = element.className;
@@ -256,25 +292,18 @@ export class BoardController {
         // Animate piece selection
         this.tileController.unhiglightTiles();
         this.validMoves = this.logicController.getPieceValidMoves();
-
-        console.log(this.validMoves);
-        for (let i = 0; i < this.validMoves.length; i++) {
-            const move = this.validMoves[i].move;
-            const board = this.checkersBoard.board;
-            const fragment = board[move.y][move.x].fragment;
-            this.tileController.highlightTile(fragment);
-        }
+        this.highlightTiles();
         // Display new valid moves 
         
     }
 
     isAnimating() {
-        return this.pieceController.animatingCapture || this.pieceController.animatingMove || this.cameraController.animate != undefined;
+        return !this.canReceiveInput();
     }
 
     undo() {
-        if (this.pieceController.animatingCapture || this.pieceController.animatingMove) {
-            console.log('Undo: Animation in progress');
+        if (!this.canReceiveInput()) {
+            addGrowlMessage('Undo: Animation in progress', 'error');
             return;
         }
 
@@ -291,16 +320,23 @@ export class BoardController {
         let y = undoResult.position.y - undoResult.move.y;
         let x = undoResult.position.x - undoResult.move.x;
         console.log('y: ' + y + ' x: ' + x)
-        this.pieceController.translate(undoResult.piece.component, - y * TILE_SIZE, x * TILE_SIZE);
+        this.lockInput(++this.nlock);
+        const translateId = this.nlock;
+        this.pieceController.translate(undoResult.piece.component, - y * TILE_SIZE, x * TILE_SIZE,
+            () => this.unlockInput(translateId)
+        );
 
         // Relocate captured piece
         if (undoResult.capture != undefined) {
             const capturedPiece = this.checkersBoard.board[undoResult.capture.y][undoResult.capture.x].piece
-            console.log(capturedPiece);
             const { translationX, translationZ } = calculateBoardPosition(capturedPiece.position.y, capturedPiece.position.x)
+            this.lockInput(++this.nlock);
+            const captureId = this.nlock;
             this.pieceController.jumpPiece(capturedPiece.component, [translationX, 0, translationZ], [0, 0.15, 0], () => {
                 if (capturedPiece.isKing) {
-                    this.pieceController.makeKing(capturedPiece, this.checkersBoard);
+                    this.pieceController.makeKing(capturedPiece, this.checkersBoard, () => this.unlockInput(captureId));
+                } else {
+                    this.unlockInput(captureId);
                 }
                 this.counterController.incrementCounter(capturedPiece.color === 'white' ? 'black' : 'white', -1);
             });
@@ -314,8 +350,11 @@ export class BoardController {
         if (undoResult.promoted != undefined) {
             const [y, x] = [undoResult.promoted.position.y, undoResult.promoted.position.x];
             const promotedPiece = this.checkersBoard.board[y][x].piece
-            console.log(promotedPiece);
-            this.pieceController.unmakeKing(promotedPiece, this.checkersBoard);
+            this.lockInput(++this.nlock);
+            const promoteAnimId = this.nlock;
+            this.pieceController.unmakeKing(promotedPiece, this.checkersBoard,
+                () => this.unlockInput(promoteAnimId)
+            );
         }
     }
 
@@ -325,6 +364,27 @@ export class BoardController {
 
     undoCapture(color){
         this.counterController.incrementCounter(color, -1);
+    }
+
+
+    lockInput(id){
+        this.locks[id] = true;
+        //addGrowlMessage('Locking input: ' + id, 'info');
+        console.log('Locking input: ' + id);
+    }
+
+    unlockInput(id){
+        delete this.locks[id];
+        //addGrowlMessage('unlocking input: ' + id, 'info');
+        console.log('unlocking input: ' + id);
+        if(this.canReceiveInput()){
+            this.highlightTiles();
+        }
+    }
+
+    canReceiveInput(){
+        console.log('locks ', this.locks);
+        return Object.keys(this.locks).length == 0;
     }
 
 }

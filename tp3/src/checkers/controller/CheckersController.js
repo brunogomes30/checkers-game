@@ -59,7 +59,6 @@ export class LogicController {
         const board = clone(this.board.board);
         const position = { ...this.selectedPiece.position };
 
-        console.log(this.states[this.states.length - 1]);
         // Move the piece
         let piecePos = this.selectedPiece.position
         this.board.board[this.selectedMove.move.y][this.selectedMove.move.x].piece = this.selectedPiece;
@@ -168,9 +167,28 @@ export class LogicController {
         return finalValidMoves;
     }
 
+    currentValidMoves() {
+        if (this.state == 'tileSelection') {
+            return this.getPieceValidMoves();
+        } else if(this.state == 'pieceSelection') {
+            const allMoves = validMoves(this.board);
+            const validmoves = [];
+            for(const move of allMoves) {
+                if(move.color === this.turn) {
+                    move.move = move.from;
+                    validmoves.push(move);
+                }
+            }
+            return validmoves;
+        }
+        return [];
+
+        
+    }
+
 }
 
-function validMoves(board) {
+export function validMoves(board) {
     let validMoves = [];
 
     for (let y = 0; y < board.ysize; y++) {

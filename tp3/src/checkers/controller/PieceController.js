@@ -64,23 +64,20 @@ export class PieceController {
         storagePieces[spaceChosen].push(component);
         this.jumpPiece(component, storage.getPosition(), offset, () => {
             this.animatingCapture = false;
-            if (callback != null) {
+            if (!piece.isKing && callback != null) {
                 callback();
             }
         });
 
         if (piece.isKing) {
-            const kingComponent = piece.component;
-            this.splitPieces(piece, board, checkersStorage);
-            
-
+            this.splitPieces(piece, board, checkersStorage, callback);
         }
     }
 
     /**
      * Splits king into two pieces, and sends the extra one to storage
      */
-    splitPieces(kingPiece, board, storagePieces) {
+    splitPieces(kingPiece, board, storagePieces, callback) {
         const STORAGE_OFFSET = [0, 0.15, 0];
         const kingComponent = kingPiece.component;
         const color = kingPiece.color;
@@ -98,7 +95,6 @@ export class PieceController {
                 break;
             }
         }
-        console.log("Bloat" , spaceChosen, storagePieces);
         const deadPieces = kingComponent.children.filter(child => child.className == kingComponent.className);
         if (deadPieces.length > 0) {
             //Seperate pieces
@@ -118,7 +114,7 @@ export class PieceController {
                 STORAGE_OFFSET[2] + Math.floor(spaceChosen / 2) * 0.250 + Math.random() * 0.012,
             ]
             storagePieces[spaceChosen].push(deadPieceComponent)
-            this.jumpPiece(deadPieceComponent, storage.getPosition(), offset);
+            this.jumpPiece(deadPieceComponent, storage.getPosition(), offset, callback);
             this.resetPieceComponent(deadPieceComponent);
         }
     }
@@ -163,6 +159,10 @@ export class PieceController {
                     callback();
                 }
             });
+        } else {
+            if (callback != undefined) {
+                callback();
+            }
         }
     }
 
@@ -172,7 +172,7 @@ export class PieceController {
     }
 
 
-    makeKing(king, checkersBoard) {
+    makeKing(king, checkersBoard, callback = undefined) {
         const boardComponent = checkersBoard.component;
         const kingComponent = king.component;
 
@@ -205,11 +205,15 @@ export class PieceController {
             kingComponent.children.push(deadPieceComponent);
             boardComponent.children = boardComponent.children.filter((child) => child.id !== deadPieceComponent.id);
 
+            if (callback != undefined) {
+                callback();
+            }
+
         });
     }
     
-    unmakeKing(kingPiece, checkersBoard) {
-        this.splitPieces(kingPiece, checkersBoard, checkersBoard.storages[kingPiece.color]);
+    unmakeKing(kingPiece, checkersBoard, callback = undefined) {
+        this.splitPieces(kingPiece, checkersBoard, checkersBoard.storages[kingPiece.color], callback);
     }
 
 
