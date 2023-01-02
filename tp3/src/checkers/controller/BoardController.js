@@ -65,22 +65,14 @@ export class BoardController {
                 }
             }
         }
-<<<<<<< HEAD
         this.logicController.start()
         this.scene.interface.gui.add(this, 'movie').name('Movie');
-=======
-        this.logicController.start();
->>>>>>> origin
         this.scene.interface.gui.add(this, 'undo').name('Undo');
         this.scene.interface.gui.add(this, 'startGame').name('Start game');
 
 
         this.counterController.update();
-<<<<<<< HEAD
-        this.highlightTiles();
-=======
         //this.changeTurn('white');
->>>>>>> origin
 
     }
 
@@ -158,12 +150,8 @@ export class BoardController {
         }
     }
 
-<<<<<<< HEAD
     jumpToBoard(component) {
 
-=======
-    jumpToBoard(component){
->>>>>>> origin
         const piece = this.checkersBoard.pieceMap[component.id];
 
         const jumpAction = () => {
@@ -179,9 +167,6 @@ export class BoardController {
         this.checkersBoard.board[y][x].piece.component = component;
         const animId = ++this.nlock;
         this.lockInput(animId);
-<<<<<<< HEAD
-        this.pieceController.jumpPiece(component, position, [0, 0, 0], () => { this.unlockInput(animId); });
-=======
         this.pieceController.jumpPiece(component, position, [0, 0, 0], () => this.unlockInput(animId));
         this.pieceController.resetPieceComponent(component);
         }
@@ -192,7 +177,6 @@ export class BoardController {
         } else {
             jumpAction();
         }
->>>>>>> origin
     }
 
     createBoard() {
@@ -256,9 +240,6 @@ export class BoardController {
 
     handleBoardClick(element) {
         if (!this.canReceiveInput()) {
-<<<<<<< HEAD
-            addGrowlMessage('Board click: Input locked', 'error');
-=======
             this.messageController.displayTopComponent('Wait for animations to finish', element, this.currentColor);
             return;
         }
@@ -266,7 +247,6 @@ export class BoardController {
 
         if (this.gameOver) {
             addGrowlMessage('Game Finished');
->>>>>>> origin
             return;
         }
 
@@ -310,11 +290,6 @@ export class BoardController {
         const animId = this.nlock;
         const moveCallback = () => {
             if (moveResult.promoted) {
-<<<<<<< HEAD
-                console.log(this.checkersBoard);
-                //console.log(pieceMoved);
-=======
->>>>>>> origin
                 this.pieceController.makeKing(piece, this.checkersBoard,
                     () => this.unlockInput(animId)
                 );
@@ -355,11 +330,7 @@ export class BoardController {
             } else {
                 if (moveResult.changeTurn) {
                     // Change to winner camera
-<<<<<<< HEAD
-                    this.cameraController.resetCamera(0.5, () => { this.cameraController.switchSides(1.5); });
-=======
                     this.cameraController.resetCamera(0.5, () => { this.cameraController.switchSides(1.5) })
->>>>>>> origin
                 }
             }
             // Show game over screen and options
@@ -371,16 +342,6 @@ export class BoardController {
         if (moveResult.changeTurn) {
             this.changeTurn(currentColor == 'white' ? 'black' : 'white', this.validMoves.length == 1);
             this.selectedPiece = undefined;
-<<<<<<< HEAD
-            // Change view and stuff
-            this.lockInput(++this.nlock);
-            this.cameraController.resetCamera(0.5, () => {
-                this.cameraController.switchSides(1.5);
-                this.unlockInput(this.nlock);
-            });
-=======
-
->>>>>>> origin
         } else {
             /*
     
@@ -397,13 +358,9 @@ export class BoardController {
             this.pieceController.startIdleAnimation(this.selectedPiece);
             */
         }
-<<<<<<< HEAD
-        this.highlightTiles();
-=======
 
 
 
->>>>>>> origin
     }
 
     changeTurn(color, singlePossibleMove = false) {
@@ -486,11 +443,8 @@ export class BoardController {
         this.tileController.unhiglightTiles();
         this.validMoves = this.logicController.getPieceValidMoves();
         this.highlightTiles();
-<<<<<<< HEAD
-=======
         // Display new valid moves 
 
->>>>>>> origin
     }
 
     isAnimating() {
@@ -572,7 +526,6 @@ export class BoardController {
         
     }
 
-<<<<<<< HEAD
     movie() {
         const states = [];
         for (const state of this.logicController.states) {
@@ -612,8 +565,6 @@ export class BoardController {
         }
     }
 
-=======
->>>>>>> origin
     capturePiece(color) {
         this.counterController.incrementCounter(color, 1);
     }
