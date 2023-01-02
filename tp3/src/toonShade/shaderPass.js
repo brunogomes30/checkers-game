@@ -85,7 +85,6 @@ export class ShaderPass{
                     value.apperance.setTexture(null);
                 }
                 else {
-                    console.log('texture ' + value)
                     value.apperance.setTexture(value.texture.texture);
                     const textureScalling = value.textureScalling;
                     value.element.updateTexCoords(textureScalling.length_s, textureScalling.length_t);
