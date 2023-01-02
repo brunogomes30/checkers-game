@@ -57,14 +57,15 @@
 
     <textures>
         <texture id="camoTexture" file="scenes/images/camo.jpg" />
+        <texture id="viewTexture" file="scenes/images/video-camera.png" />
     </textures>
 
     <materials>
         <material id="demoMaterial" shininess="5">
-            <emission r="0.2" g="0.2" b="0.2" a="1.0" />
-            <ambient r="0.5" g="0.5" b="0.9" a="1.0" />
-            <diffuse r="0.5" g="0.5" b="0.9" a="1.0" />
-            <specular r="0.1" g="0.1" b="0.9" a="1.0" />
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
         </material>
     </materials>
 
@@ -856,6 +857,36 @@
             <texture id="none" />
             <children>
                 <modelref id="button" />
+                <componentref id="view-icon" />
+            </children>
+        </component>
+
+        <component id="view-icon">
+            <transformation>
+                <translate x="-0.11" y="0.0" z="0.022" />
+                <rotate axis="y" angle="270" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="tst" />
+            </children>
+        </component>
+
+        <component id="tst">
+            <transformation>
+                <translate x="-0.3" y="0" z="0"/>
+                <scale x="0.3" y="0.3" z="0.3"/>
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="viewTexture" />
+            <children>
+                
+                <text value="View"/>
             </children>
         </component>
 

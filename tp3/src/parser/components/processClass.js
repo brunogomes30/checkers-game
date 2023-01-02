@@ -80,12 +80,15 @@ function processStorage(component){
 
 function processButton(component){
 
+    if(component.className = 'view-button'){
+        console.log(component);
+    }
     for(let i=0; i<component.children.length; i++){
         
         for(let j=0; j<component.children[i].children.length; j++){
             let child = component.children[i].children[j];
             if(child instanceof MyModel){
-                component.children[i].children[j] = child.clone();
+                //component.children[i].children[j] = child.clone();
                 child = component.children[i].children[j];
                 child.setPickable(true);
                 child.setClass('button');
