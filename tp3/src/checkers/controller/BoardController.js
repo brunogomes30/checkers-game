@@ -143,6 +143,8 @@ export class BoardController {
                 child.position = [...component.position];
                 const piece = this.checkersBoard.pieceMap[component.id];
                 piece.position = {...componentPiece.position};
+                piece.isKing = false;
+                componentPiece.isKing = false;
                 //remove from component
                 component.children.splice(j, 1);
                 break;
@@ -246,7 +248,7 @@ export class BoardController {
 
 
         if (this.gameOver) {
-            addGrowlMessage('Game Finished');
+            console.log('Game Finished');
             return;
         }
 
@@ -290,6 +292,7 @@ export class BoardController {
         const animId = this.nlock;
         const moveCallback = () => {
             if (moveResult.promoted) {
+                console.log('Promoting piece', piece)
                 this.pieceController.makeKing(piece, this.checkersBoard,
                     () => this.unlockInput(animId)
                 );
@@ -379,13 +382,14 @@ export class BoardController {
 
     startingTurn(color) {
         console.log('Starting turn', color);
-        this.currentColor = color;
+        
         // Change view and stuff
-        if (this.currentColor == 'black') {
+        if (this.currentColor != color || (this.currentColor == undefined && color == 'black')) {
             this.lockInput(++this.nlock);
+            let cameraMovementId = this.nlock;
             this.cameraController.resetCamera(0.5, () => {
                 this.cameraController.switchSides(1.5);
-                this.unlockInput(this.nlock);
+                this.unlockInput(cameraMovementId);
             });
         }
         this.logicController.turn = color;
@@ -401,7 +405,7 @@ export class BoardController {
 
 
         if (this.gameOver) {
-            addGrowlMessage('Game Finished');
+            console.log('Game Finished');
             return;
         }
 
@@ -550,12 +554,13 @@ export class BoardController {
             // Select piece
             console.log(state)
             const piece = this.checkersBoard.board[state.position.y][state.position.x].piece;
+            this.selectedPiece = 
             this.logicController.selectPiece(piece);
             this.selectPiece(piece.component);
             this.logicController.selectTile({ x: state.move.x, y: state.move.y });
             setTimeout(() => this.playMove(state.move.y, state.move.x), 500);
 
-            setTimeout(() => nextState(stateIndex + 1), 3000);
+            setTimeout(() => nextState(stateIndex + 1), 3500);
         };
 
         if(this.selectedPiece != undefined){
