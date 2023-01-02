@@ -11,15 +11,15 @@ import { TextElement } from '../text/TextElement.js'
  * @param {Component|CGFobject} element 
  * @param {Array} parents - The parents of the element
  */
-export function renderElement(element, parents = [], appearance = undefined) {
+export function renderElement(element, parents = [], appearance = undefined, pickId = undefined) {
     if (element instanceof Component) {
-        renderComponent(element, parents);
+        renderComponent(element, parents, pickId);
     } else if(element instanceof MyModel) {
-        displayPrimitive(element, parents, appearance);
+        displayPrimitive(element, parents, appearance, pickId);
     } else if(element instanceof TextElement){
         displayText(element, parents, appearance);
     } else {
-        displayPrimitive(element, parents, appearance);
+        displayPrimitive(element, parents, appearance, pickId);
     }
 }
 
@@ -28,14 +28,16 @@ export function renderElement(element, parents = [], appearance = undefined) {
  * @param {Component|CGFobject} element 
  * @param {Array} parents - The parents of the element
  */
-function renderComponent(element, parents) {
+function renderComponent(element, parents, pickId = false) {
     if (!element.isDisplayed()) {
         return;
     }
 
     parents.push(element);
     element.scene.pushMatrix();
-
+    if(element.pickable){
+        pickId = element;
+    }
     element.scene.multMatrix(element.transformation);
     // Apply transformations and animations
     if(Array.isArray(element.animation)){
@@ -52,7 +54,7 @@ function renderComponent(element, parents) {
     // Apply textures
     element.children.forEach(function (child) {
         const appearance = applyAppearance(element, parents);
-        renderElement(child, parents, appearance);
+        renderElement(child, parents, appearance, pickId);
     });
     element.scene.popMatrix();
     parents.pop();
@@ -84,7 +86,7 @@ function displayText(element, parents, appearance) {
  * @param {CGFobject} element Primitive to be displayed
  * @param {Array} parents - The parents of the primitive
  */
-function displayPrimitive(element, parents, appearance = undefined) {
+function displayPrimitive(element, parents, appearance = undefined, pickId) {
     const textureScalling = getTextureScaling(parents);
     if (element.scene.displayNormals) {
         element.enableNormalViz();
@@ -135,7 +137,8 @@ function displayPrimitive(element, parents, appearance = undefined) {
             matrix: currentMatrix,
             texture: texture instanceof Texture ? texture : null,
             apperance: appearance,
-            textureScalling: textureScalling
+            textureScalling: textureScalling,
+            pickId: pickId
         }
     );
 }
