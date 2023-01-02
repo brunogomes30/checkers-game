@@ -1,0 +1,200 @@
+<sxs>
+    <scene root="demoRoot" axis_length="5" />
+
+    <views default="defaultCamera">
+        <perspective id="defaultCamera" near="0.1" far="500" angle="45">
+            <from x="0" y="2.5" z="2.5" />
+            <to x="0" y="0" z="0" />
+        </perspective>
+        <ortho id="orthoCam" near="-5" far="5" left="-5" right="5" bottom="-5" top="5">
+            <from x="0" y="0" z="3" />
+            <to x="0" y="0" z="0" />
+        </ortho>
+        
+    </views>
+
+    <ambient>
+        <ambient r="0.1" g="0.1" b="0.1" a="1.0" />
+        <background r="0.3" g="0.3" b="0.3" a="1.0" />
+    </ambient>
+
+    <lights>
+        <omni id="demoLight" enabled="1" exponent="127">
+            <location x="0" y="2" z="5" w="1.0" />
+            <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="0.3" g="0.3" b="0.3" a="1.0" />
+            <specular r="0.2" g="0.2" b="0.2" a="1.0" />
+            <attenuation constant="0.0" linear="0.01" quadratic="0.0" />
+        </omni>
+        <omni id="demoLight2" enabled="1" exponent="127">
+            <location x="0" y="2" z="5" w="1.0" />
+            <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="0.4" g="0.4" b="0.4" a="1.0" />
+            <specular r="0.2" g="0.2" b="0.2" a="1.0" />
+            <attenuation constant="0.0" linear="0.01" quadratic="0.0" />
+        </omni>
+
+        <omni id="ambient" enabled="1">
+            <location x="9.8" y="11.9" z="10" w="1.0" />
+            <ambient r="0.25" g="0.25" b="0.25" a="1.0" />
+            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
+            <attenuation constant="0.0" linear="0.0" quadratic="0.0" />
+        </omni>
+    </lights>
+
+    <textures>
+        <texture id="negx" file="scenes/images/jungle/negx.jpg" />
+        <texture id="negy" file="scenes/images/jungle/negy.jpg" />
+        <texture id="negz" file="scenes/images/jungle/negz.jpg" />
+        <texture id="posx" file="scenes/images/jungle/posx.jpg" />
+        <texture id="posy" file="scenes/images/jungle/posy.jpg" />
+        <texture id="posz" file="scenes/images/jungle/posz.jpg" />
+    </textures>
+
+    <materials>
+        <material id="demoMaterial" shininess="5">
+            <emission r="0.2" g="0.2" b="0.2" a="1.0" />
+            <ambient r="0.5" g="0.5" b="0.9" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.9" a="1.0" />
+            <specular r="0.1" g="0.1" b="0.9" a="1.0" />
+        </material>
+    </materials>
+
+    <transformations>
+    </transformations>
+
+    <animations>
+    </animations>
+
+    <primitives>
+        <primitive id="detailedSquare">
+            <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
+        </primitive>
+    </primitives>
+
+    <models>
+    </models>
+
+    <components>
+        <component id="demoRoot">
+            <transformation></transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="room" />
+            </children>
+        </component>
+        
+
+        <component id="room">
+            <transformation>
+                <translate x="0" y="10" z="0" />
+                <scale x="50" y="25" z="50" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="wall_zneg" />
+                <componentref id="wall_zpos" />
+                <componentref id="wall_xneg" />
+                <componentref id="wall_xpos" />
+                <componentref id="floor" />
+                <componentref id="ceiling" />
+            </children>
+        </component>
+
+
+        <component id="wall_zneg">
+            <transformation>
+                <translate x="0" y="0" z="-0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="negz" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="detailedSquare" />
+            </children>
+        </component>
+
+        <component id="wall_zpos">
+            <transformation>
+                <translate x="0" y="0" z="0.5" />
+                <rotate axis="y" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="posz" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="detailedSquare" />
+            </children>
+        </component>
+
+        <component id="wall_xneg">
+            <transformation>
+                <translate x="-0.5" y="0" z="0" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="negx" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="detailedSquare" />
+            </children>
+        </component>
+
+        <component id="wall_xpos">
+            <transformation>
+                <translate x="0.5" y="0" z="0" />
+                <rotate axis="y" angle="270" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="posx" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="detailedSquare" />
+            </children>
+        </component>
+
+
+        <component id="floor">
+            <transformation>
+                <translate x="0" y="-0.5" z="0" />
+                <rotate axis="x" angle="270" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="negy" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="detailedSquare" />
+            </children>
+        </component>
+
+
+        <component id="ceiling">
+            <transformation>
+                <translate x="0" y="0.5" z="0" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="posy" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="detailedSquare" />
+            </children>
+        </component>
+
+    </components>
+
+
+</sxs>
