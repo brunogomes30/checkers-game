@@ -214,11 +214,7 @@
     </materials>
 
     <transformations>
-        <transformation id="round_table_top_transformation">
-            <translate x="0" y="1" z="0" />
-            <rotate axis="x" angle="-90" />
-            <scale x="1.0" y="1.0" z="0.1" />
-        </transformation>
+
     </transformations>
 
     <primitives>
@@ -827,7 +823,9 @@
 
         <component id="round_table_top">
             <transformation>
-                <transformationref id="round_table_top_transformation" />
+                <translate x="0" y="1" z="0" />
+                <rotate axis="x" angle="-90" />
+                <scale x="1.0" y="1.0" z="0.1" />
             </transformation>
             <materials>
                 <material id="inherit" />

@@ -62,6 +62,8 @@ export class MyObject{
 	display(){
 		if(this.pickable){
 			this.scene.registerForPick(this);
+		} else {
+			this.scene.registerForUnpick(this);
 		}
 		for(let i=0; i<this.fragments.length; i++){
 			const material = this.fragments[i].material;
@@ -113,6 +115,7 @@ export class MyObject{
 		for(let i=0; i<this.fragments.length; i++){
 			object.fragments[i] = this.fragments[i].clone();
 		}
+		object.className = this.className;
 		return object;
 	}
 
