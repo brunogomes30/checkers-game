@@ -856,6 +856,7 @@
             <texture id="none" />
             <children>
                 <modelref id="button" />
+                <componentref id="view-text" />
             </children>
         </component>
 
@@ -885,6 +886,21 @@
             <texture id="none" />
             <children>
                 <text value="Undo move" />
+            </children>
+        </component>
+
+        <component id="view-text">
+            <transformation>
+                <translate x="-0.12" y="-0.0" z="-0.22" />
+                <scale x="0.50" y="0.25" z="0.25" />
+                <rotate axis="y" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <text value="View" />
             </children>
         </component>
 

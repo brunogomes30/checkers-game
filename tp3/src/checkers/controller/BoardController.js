@@ -229,7 +229,7 @@ export class BoardController {
         });
 
         this.scene.addEvent('view-button-click', (component) => {
-            this.handleButtonClick(component, () => undefined);
+            this.handleButtonClick(component, () => this.changeView());
         });
     }
 
