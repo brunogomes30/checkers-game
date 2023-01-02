@@ -5,22 +5,7 @@ import { MySceneGraph } from './MySceneGraph.js';
 import { buildDebugFolder } from './interface/build.js';
 import { GameController } from './checkers/controller/GameController.js';
 
-function getUrlVars() {
-    var vars = {};
-    window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,
-        function (m, key, value) {
-            vars[decodeURIComponent(key)] = decodeURIComponent(value);
-        });
-    return vars;
-}
-
-
-function main() {
-    // get file name provided in URL, e.g. http://localhost/myproj/?file=myfile.xml 
-    // or use "demo.xml" as default (assumes files in subfolder "scenes", check MySceneGraph constructor) 
-
-    const filename = getUrlVars()['file'] || 'gametest.xml';
-
+async function main() {
     // Standard application, scene and interface setup
     const app = new CGFapplication(document.body);
     const myInterface = new MyInterface();
@@ -36,15 +21,14 @@ function main() {
     buildDebugFolder(myInterface, myScene);
 
 
-    const myGraph = new MySceneGraph(filename, myScene);
+    const myGraph = new MySceneGraph('gametest.xml', myScene, 'game');
 
 
     const environments = [];
     environments['room'] = new MySceneGraph('demo.xml', myScene, 'room');
     environments['jungle'] = new MySceneGraph('jungle.xml', myScene, 'jungle');
 
-    const currentEnvironment = { value: '' };
-
+    const currentEnvironment = { value: 'room', last: 'room' };
     //sceneGraphs['blendertest'] = new MySceneGraph('blendertest.xml', myScene, 'blendertest');
 
 
@@ -52,7 +36,10 @@ function main() {
     myScene.graph = myGraph;
     myScene.graph.selected = true;
 
-    
+    await new Promise((resolve) => {setTimeout(resolve, 1000)});
+    changeEnvironment(environments, currentEnvironment, myScene.graph);
+
+
 
 
     myInterface.gui.add(currentEnvironment, 'value', Object.keys(environments)).name('Environments').onChange(() => {
@@ -65,17 +52,16 @@ function main() {
 
 function changeEnvironment(environments, currentEnvironment, graph) {
     const environment = environments[currentEnvironment.value];
-    if (environment.ui) {
-        environment.ui.open();
-        environment.ui.show();
+    if (environments[currentEnvironment.last].ui) {
+        environments[currentEnvironment.last].ui.hide();
     }
+    currentEnvironment.last = currentEnvironment.value;
     for (const key in environments.textures) {
         graph.scene.textures[key] = environments.textures[key];
     }
     graph.removeComponent(graph.idRoot, 'environment');
     graph.addComponent(graph.components[graph.idRoot], environment.components[environment.idRoot]);
-    console.log(environment)
-    graph.environment_animations = {...environment.animations};
+    graph.environment_animations = { ...environment.animations };
 }
 
 main();
