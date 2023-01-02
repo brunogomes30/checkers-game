@@ -77,7 +77,6 @@ export function parseComponents(componentsNode, sxsReader) {
         // <texture id="ss" length_s="ff" length_t="ff"/>        
         let textureNode = grandChildren[textureIndex]
         let { texture, textureScaleFactor } = parseTexture(sxsReader, textureNode, componentID, 'component');
-
         let highlight = new Highlight();
         // Hightlight
         if (highlightIndex != -1) {

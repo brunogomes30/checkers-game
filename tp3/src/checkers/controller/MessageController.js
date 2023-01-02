@@ -37,7 +37,6 @@ export class MessageController {
             position[1] = absolutePosition[1];
             position[2] = absolutePosition[2];
         }
-        console.log('position: ', position);
         const rotation = color == 'white' ? 0 : Math.PI;
         const animation = this.scene.graph.cloneAnimation('message', 'message' + this.id++, {
             'x': position[0],

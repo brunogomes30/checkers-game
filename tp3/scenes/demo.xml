@@ -454,7 +454,7 @@
     <components>
         <component id="roomRoot">
             <transformation>
-                <translate x="0" y="0" z="0" />
+                <translate x="0" y="-3" z="0" />
                 <scale x="1" y="1" z="1" />
             </transformation>
             <materials>
@@ -478,7 +478,6 @@
                 <componentref id="painting_position" />
                 <componentref id="painting_position_2" />
                 <componentref id="round_table_position" />
-                <componentref id="mug_positions" />
                 <componentref id="lamp_position_1" />
                 <componentref id="lamp_position_2" />
                 <componentref id="mug_position_desk" />

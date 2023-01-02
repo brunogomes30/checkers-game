@@ -271,6 +271,10 @@ export class MySceneGraph {
     computeAnimations(timeDelta) {
         // Iterates over all animations and updates them.
         Object.values(this.animations).forEach(animation => animation.update(timeDelta));
+        console.log(this.environment_animations);
+        if(this.environment_animations != undefined){
+            Object.values(this.environment_animations).forEach(animation => animation.update(timeDelta));
+        }
     }
 
     addComponent(parent, component) {

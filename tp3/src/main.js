@@ -74,6 +74,8 @@ function changeEnvironment(environments, currentEnvironment, graph) {
     }
     graph.removeComponent(graph.idRoot, 'environment');
     graph.addComponent(graph.components[graph.idRoot], environment.components[environment.idRoot]);
+    console.log(environment)
+    graph.environment_animations = {...environment.animations};
 }
 
 main();

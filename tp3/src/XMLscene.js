@@ -289,7 +289,6 @@ export class XMLscene extends CGFscene {
                             value.apperance.setTexture(null);
                         }
                         else {
-                            value.apperance.setTexture(value.texture.texture);
                             const textureScalling = value.textureScalling;
                             value.element.updateTexCoords(textureScalling.length_s, textureScalling.length_t);
                         }

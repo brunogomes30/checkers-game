@@ -157,6 +157,7 @@ export class SXSReader {
                 case 'models':
                 case 'components':
                     blocks_missing.splice(blocks_missing.indexOf(attribute[0]), 1);
+                    
                     for (const value of Object.keys(attribute[1])) {
                         if (value in this.graph[attribute[0]]) {
                             this.graph.onXMLMinorError(`${attribute[0]} with ID ${value} already defined`)
