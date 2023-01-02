@@ -85,6 +85,7 @@ export class ShaderPass{
                     value.apperance.setTexture(null);
                 }
                 else {
+                    console.log('texture ' + value)
                     value.apperance.setTexture(value.texture.texture);
                     const textureScalling = value.textureScalling;
                     value.element.updateTexCoords(textureScalling.length_s, textureScalling.length_t);
@@ -92,11 +93,6 @@ export class ShaderPass{
                 scene.setValuesToShader(value.shader.shader, value.shader.values, value.shader.texture);
                 value.apperance.apply();
             }
-            /*
-            if(value.pickId){
-                scene.registerForPick(value.pickId);
-            }
-            */
             value.element.display();
             scene.popMatrix();
         }

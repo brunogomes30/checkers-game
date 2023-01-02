@@ -219,6 +219,41 @@ export class BoardController {
         this.scene.addEvent('black-piece-click', (component) => {
             this.handlePieceClick(component);
         });
+
+        this.scene.addEvent('undo-button-click', (component) => {
+            this.handleButtonClick(component, () => this.undo());
+        });
+
+        this.scene.addEvent('start-button-click', (component) => {
+            this.handleButtonClick(component, () => this.startGame());
+        });
+
+        this.scene.addEvent('view-button-click', (component) => {
+            this.handleButtonClick(component, () => this.changeView());
+        });
+    }
+
+    handleButtonClick(component, callback) {
+        const animation = this.scene.graph.cloneAnimation('button-click', 'button-click-' + component.id);
+        component.addAnimation(animation);
+        console.log('button click', component.id);
+        this.scene.graph.stopAnimation(animation, () => {
+            component.removeAnimation(animation);
+            if(callback != undefined){
+                if (!this.canReceiveInput()) {
+                    this.messageController.displayTopComponent('Wait for animations to finish', component, this.currentColor);
+                    return;
+                }
+                callback();
+            }
+            
+        });
+        
+
+    }
+
+    changeView(){
+        this.cameraController.resetCamera(0.5, () => { this.cameraController.switchSides(1.5) });
     }
 
     highlightTiles() {
