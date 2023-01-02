@@ -41,7 +41,7 @@ function main() {
 
     const environments = [];
     environments['room'] = new MySceneGraph('demo.xml', myScene, 'room');
-
+    environments['jungle'] = new MySceneGraph('jungle.xml', myScene, 'jungle');
 
     const currentEnvironment = { value: '' };
 

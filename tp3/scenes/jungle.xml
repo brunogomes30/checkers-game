@@ -116,7 +116,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="negz" length_s="1" length_t="1" />
+            <texture id="posz" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="detailedSquare" />
             </children>
@@ -130,7 +130,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="posz" length_s="1" length_t="1" />
+            <texture id="negz" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="detailedSquare" />
             </children>
