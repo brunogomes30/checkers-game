@@ -229,10 +229,16 @@ export class BoardController {
         });
 
         this.scene.addEvent('view-button-click', (component) => {
-            this.handleButtonClick(component, () => undefined);
+            this.handleButtonClick(component, () => this.changeView());
         });
     }
 
+    changeView(){
+        this.cameraController.resetCamera(0.5, () => { this.cameraController.switchSides(1.5) });
+    }
+
+
+    
     handleButtonClick(component, callback) {
         const animation = this.scene.graph.cloneAnimation('button-click', 'button-click-' + component.id);
         component.addAnimation(animation);
