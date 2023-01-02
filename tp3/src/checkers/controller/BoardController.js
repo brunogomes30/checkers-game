@@ -68,7 +68,7 @@ export class BoardController {
         this.scene.interface.gui.add(this, 'undo').name('Undo');
         this.scene.interface.gui.add(this, 'startGame').name('Start game');
         this.counterController.update();
-        this.changeTurn('white');
+        //this.changeTurn('white');
         this.highlightTiles();
         
     }
@@ -120,8 +120,8 @@ export class BoardController {
             this.pieceController.resetPieceComponent(black);
         }
         this.unlockInput(lockId);
-        this.currentColor = this.logicController.turn;
         this.clockController.startGameClock();
+        this.changeTurn('white');
     }
 
     jumpToBoard(component){
@@ -320,7 +320,7 @@ export class BoardController {
 
     changeTurn(color, singlePossibleMove = false) {
         console.log('change turn', color);
-        this.clockController.setTimeCounting(color);
+        this.currentColor = color;
         // Change view and stuff
         this.lockInput(++this.nlock);
         this.cameraController.resetCamera(0.5 , () => {

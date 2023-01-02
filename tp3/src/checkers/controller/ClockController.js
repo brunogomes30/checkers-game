@@ -13,6 +13,7 @@ export class ClockController {
 
 
     setPlayTimer(boardController, playDuration, player) {
+        console.log('setPlayTimer');
         this.currentPlayer = player;
         this.playDuration = playDuration;
         this.playStart = Date.now();
