@@ -142,7 +142,7 @@ export class MySceneGraph {
             }
 
             for (let i = 0; i < component.modelChildren.length; i++) {
-                const model = this.models[component.modelChildren[i]];
+                const model = this.models[component.modelChildren[i]].clone();
                 if (model instanceof String) {
                     this.onXMLError(`Error parsing model "${component.modelChildren[i]}" in component "${component.id}"`);
                     return;

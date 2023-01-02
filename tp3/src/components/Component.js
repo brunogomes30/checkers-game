@@ -16,7 +16,7 @@ import { XMLscene } from "../XMLscene.js";
  * @class Component
  */
 export class Component{
-    constructor(scene, {id, transformation, materials, texture, textureScaleFactor, primitiveChildren, componentChildren, modelChildren, textChildren, highlight, animation, pickable, position}){
+    constructor(scene, {id, transformation, materials, texture, textureScaleFactor, primitiveChildren, componentChildren, modelChildren, textChildren, highlight, animation, pickable, position, className}){
         this.id = id;
         this.scene = scene;
         this.transformation = transformation;
@@ -35,6 +35,7 @@ export class Component{
         if(position === undefined){
             this.position = [0, 0, 0];
         }
+        this.className = className;
     }
 
     getPosition(){

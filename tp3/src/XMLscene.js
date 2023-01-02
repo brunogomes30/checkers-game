@@ -266,6 +266,9 @@ export class XMLscene extends CGFscene {
                         this.loadIdentity();
                         this.multMatrix(value.matrix);
                         //value.apperance.apply();
+                        if(value.pickId){
+                            this.registerForPick(value.pickId);
+                        }
                         value.element.display();
                         this.popMatrix();
                     }
@@ -429,7 +432,12 @@ export class XMLscene extends CGFscene {
         var colorId = this.intToRGB(this.pickId);
         this.pickShader.setUniformsValues({ uPickColor: colorId });
         super.registerForPick(this.pickId++, obj);
-        
+    }
+
+    registerForUnpick(obj){
+        var colorId = this.intToRGB(-1);
+        this.pickShader.setUniformsValues({ uPickColor: colorId });
+        super.registerForPick(-1, obj);
     }
 
     addEvent(eventName, callback){

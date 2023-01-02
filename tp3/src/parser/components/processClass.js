@@ -23,6 +23,14 @@ export function processClass(className, component){
             break;
         case 'black-clock':
             break;
+        case 'undo-button':
+            processButton(component);
+            break;
+        case 'start-button':
+            processButton(component);
+            break;
+        case 'view-button':
+            processButton(component);
         default:
             return;
     }
@@ -68,4 +76,22 @@ function processPiece(component, className){
 
 function processStorage(component){
     //Nothing to do here
+}
+
+function processButton(component){
+
+    for(let i=0; i<component.children.length; i++){
+        
+        for(let j=0; j<component.children[i].children.length; j++){
+            let child = component.children[i].children[j];
+            if(child instanceof MyModel){
+                component.children[i].children[j] = child.clone();
+                child = component.children[i].children[j];
+                child.setPickable(true);
+                child.setClass('button');
+                console.log('Generic set button component: ' + component.id);
+                child.genericSet('buttonComponent', component);
+            }
+        }
+    }
 }
