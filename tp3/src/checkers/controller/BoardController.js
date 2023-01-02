@@ -193,7 +193,6 @@ export class BoardController {
     }
 
     handleBoardClick(element) {
-        this.messageController.displayTopComponent('Wait for animations to finish', element);
         if(!this.canReceiveInput()){
             this.messageController.displayTopComponent('Wait for animations to finish', element);
             return;
@@ -213,7 +212,6 @@ export class BoardController {
             this.selectedPiece = undefined;
             this.highlightTiles();
             this.messageController.displayTopComponent('Invalid tile selection', element);
-            console.log('Invalid tile selection');
             return;
         }
         const currentColor = this.logicController.selectedPiece.color.includes('white') ? 'white' : 'black';
