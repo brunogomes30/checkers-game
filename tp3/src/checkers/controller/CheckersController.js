@@ -97,9 +97,8 @@ export class LogicController {
 
             if (this.getPieceValidMoves().filter((move) => move.capture != undefined).length !== 0) {
                 console.log('New multicapture moves: ', this.validMoves);
-                //this.state = 'multiCapture';
                 this.state = 'pieceSelection';
-                return { changeTurn: false, capturedPiece };
+                return { changeTurn: false, capturedPiece , promoted};
             }
         }
 

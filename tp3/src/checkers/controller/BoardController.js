@@ -176,8 +176,6 @@ export class BoardController {
         const animId = this.nlock;
         const moveCallback = () => {
             if (moveResult.promoted) {
-                console.log(this.checkersBoard);
-                console.log(pieceMoved);
                 this.pieceController.makeKing(piece, this.checkersBoard,
                     () => this.unlockInput(animId)
                 );
