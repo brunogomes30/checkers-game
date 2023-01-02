@@ -17,10 +17,45 @@ canvas {
     width: 100%;
     height: 100%;
 }
+
+#growls{
+    position: absolute;
+    display: flex;
+    gap: 15px;
+    flex-direction: column;
+    top: 16px;
+    left: 24px;
+}
+
+.growl{
+    position: relative;
+    min-width: 200px;
+    min-height: 50px;
+    border-radius: 5px;
+    opacity: 0.8;
+    background: #eee; 
+    padding: 10px 15px;
+    transition: 1s;
+    border: #000 solid 2px;
+    font-size: 18px;
+    z-index: 2;
+}
+
+.growl-info{
+    color: #111;
+}
+
+.growl-error{
+    color: red;
+    font-weight: bold;
+}
 </style>
 </head>
 <body>
 
+<div id="growls">
+    
+</div>
 <script type="module" src="src/main.js"></script>
 
 </body>
