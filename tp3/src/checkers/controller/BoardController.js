@@ -7,7 +7,6 @@ import { LightController } from "./LightController.js";
 import { TileController } from "./TileController.js";
 import { CameraController } from "./CameraController.js";
 import { CounterController } from "./CounterController.js";
-import { addGrowlMessage } from "../../interface/growlMessages.js";
 import { StorageController } from "./StorageController.js";
 import { MessageController } from "./MessageController.js";
 export class BoardController {
@@ -365,7 +364,6 @@ export class BoardController {
     undo() {
         if (!this.canReceiveInput()) {
             this.messageController.displayTopComponent('Wait for animation to finish', this.checkersBoard.component, this.currentColor,[0, 0.5, 0]);
-            //addGrowlMessage('Undo: Animation in progress', 'error');
             return;
         }
 
@@ -431,13 +429,11 @@ export class BoardController {
 
     lockInput(id){
         this.locks[id] = true;
-        //addGrowlMessage('Locking input: ' + id, 'info');
         console.log('Locking input: ' + id);
     }
 
     unlockInput(id){
         delete this.locks[id];
-        //addGrowlMessage('unlocking input: ' + id, 'info');
         console.log('unlocking input: ' + id);
         if(this.canReceiveInput()){
             this.highlightTiles();
