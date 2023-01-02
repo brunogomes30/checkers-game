@@ -106,8 +106,6 @@ export class PieceController {
             storagePieces[spaceChosen].push(deadPieceComponent)
             this.jumpPiece(deadPieceComponent, storage.getPosition(), offset, callback);
             this.resetPieceComponent(deadPieceComponent);
-        } else {
-            callback();
         }
     }
 
@@ -227,7 +225,7 @@ export class PieceController {
         });
         this.animatingCapture = true;
         pieceComponent.addAnimation(animationxz);
-        pieceComponent.addAnimation(animationy); 
+        pieceComponent.addAnimation(animationy);
         this.scene.graph.stopAnimation(animationxz, () => {
             animationxz.applyToComponent(pieceComponent);
             pieceComponent.removeAnimation(animationxz);
