@@ -151,7 +151,8 @@ export function parseComponents(componentsNode, sxsReader) {
             animation: animation,
             highlight: highlight,
             pickable: pickable,
-            position: position
+            position: position,
+            className: componentClass
         }
         );
 

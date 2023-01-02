@@ -92,11 +92,6 @@ export class ShaderPass{
                 scene.setValuesToShader(value.shader.shader, value.shader.values, value.shader.texture);
                 value.apperance.apply();
             }
-            /*
-            if(value.pickId){
-                scene.registerForPick(value.pickId);
-            }
-            */
             value.element.display();
             scene.popMatrix();
         }
