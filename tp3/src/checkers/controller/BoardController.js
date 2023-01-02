@@ -23,7 +23,12 @@ export class BoardController {
         this.clockController = clockController;
         this.locks = {};
         this.nlock = 0;
-        
+        this.normalPlayTime = 300;
+        this.singlePlayTime = 60;
+
+        this.scene.interface.gui.add(this, 'normalPlayTime').name('Normal play time');
+        this.scene.interface.gui.add(this, 'singlePlayTime').name('Single play time');
+
     }
 
     loadNewBoard(graph, board) {
@@ -270,7 +275,7 @@ export class BoardController {
 
     changeTurn(color, singlePossibleMove = false) {
         console.log('change turn', color);
-        this.clockController.setPlayTimer(this, singlePossibleMove ? 60 : 300, color);
+        this.clockController.setPlayTimer(this, singlePossibleMove ? this.singlePlayTime : this.normalPlayTime, color);
     }
 
     handlePieceClick(element) {

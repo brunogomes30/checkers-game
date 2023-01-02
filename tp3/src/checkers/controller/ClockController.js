@@ -20,15 +20,22 @@ export class ClockController {
     }
 
     getRemainingTime() {
-        return this.playDuration - ((Date.now() - this.playStart)/1000);
+        return this.playDuration - ((Date.now() - this.playStart) / 1000);
     }
 
     startGameClock() {
         this.startTime = Date.now();
+        this.times = {
+            'white': 0,
+            'black': 0
+        };
+
     }
 
     endGameClock() {
         this.startTime = null;
+        this.times = null;
+
     }
 
     getDuration() {
@@ -45,21 +52,32 @@ export class ClockController {
             const gameClock = this.scene.graph.getComponent('game-clock');
             this.getTextElement(gameClock).text = this.displaySeconds(this.getDuration()).toString();
 
-            //Update player clock
-            if (this.currentPlayer) {
-                if (this.getRemainingTime() <= 0) {
-                    this.currentPlayer = undefined;
-                    this.boardController.endGame();
-                } else {
-                    if (this.currentPlayer == 'white') {
-                        const whiteClock = this.scene.graph.getComponent('white-clock');
-                        this.getTextElement(whiteClock).text = Math.floor(this.getRemainingTime()).toString();
-                    } else {
-                        const blackClock = this.scene.graph.getComponent('black-clock');
-                        this.getTextElement(blackClock).text = Math.floor(this.getRemainingTime()).toString();
-                    }
-                }
-            }
+            this.times[this.currentPlayer]++;
+
+            //Update accumulated clocks
+            const whiteClock = this.scene.graph.getComponent('white-clock');
+            this.getTextElement(whiteClock).text = this.times['white'].toString();
+
+            const blackClock = this.scene.graph.getComponent('black-clock');
+            this.getTextElement(blackClock).text = this.times['black'].toString();
+
+
+            // //Update play clock
+            // if (this.currentPlayer) {
+            //     if (this.getRemainingTime() <= 0) {
+            //         this.currentPlayer = undefined;
+            //         this.boardController.endGame();
+            //     } else {
+            //         if (this.currentPlayer == 'white') {
+            //             // Insert play clock component here
+            //             this.getTextElement(whiteClock).text = Math.floor(this.getRemainingTime()).toString();
+            //         } else {
+            //             // Insert play clock component here
+
+            //             this.getTextElement(blackClock).text = Math.floor(this.getRemainingTime()).toString();
+            //         }
+            //     }
+            // }
         }
 
     }
