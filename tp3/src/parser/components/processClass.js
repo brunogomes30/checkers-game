@@ -36,6 +36,20 @@ function processBoard(component){
                 //set all tiles to pickable
                 child.setPickable(true, (id) => id.includes('tile'));
                 child.setClass('tile', (id) => id.includes('tile'));
+                console.log('tile: ' , child);
+                for(const key of Object.keys(child.objects)){
+                    const obj = child.objects[key];
+                    
+                    if(!obj.id.includes('tile')){
+                        continue;
+                    }
+                    
+                    let y = obj.id.split('x')[0];
+                    y = Number(y.substring(y.search(/[0-9]/)));
+                    let x = Number(obj.id.split('_')[0].split('x')[1]);
+                    obj.position = [x * 0.250, 0.25, y * 0.250];
+                }
+                
             }
         });
     }

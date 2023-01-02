@@ -103,6 +103,34 @@
                 <scale x="1.0" y="1.0" z="1.0" />
             </keyframe>
         </keyframeanim>
+        <keyframeanim id="message" animation-speed="1.0" loop="true">
+            <param name="x" />
+            <param name="y" />
+            <param name="y2" />
+            <param name="z" />
+            <param name="ry" />
+            <keyframe instant="0.0">
+                <translation x="x" y="y" z="z" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="0.5">
+                <translation x="x" y="y2" z="z" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="ry" />
+                <rotation axis="x" angle="0" />
+                <scale x="0.95" y="1.05" z="1.0" />
+            </keyframe>
+            <keyframe instant="1.0" function="cubic-bezier_0.28_1.17_1_1.0">
+                <translation x="x" y="y" z="z" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1.0" y="1.0" z="1.0" />
+            </keyframe>
+        </keyframeanim>
 
         <keyframeanim id="piece-storage_xz" animation-speed="0.75" loop="false">
             <param name="posx" />
@@ -175,7 +203,29 @@
                 <rotation axis="x" angle="0" />
                 <scale x="1.0" y="1.0" z="1.0" />
             </keyframe>
-            
+
+            <keyframe instant="1.4" >
+                <translation x="0" y="posy" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1.25" y="0.75" z="1.25" />
+            </keyframe>
+
+            <keyframe instant="1.5" function="quadratic_0_0_-1_0">
+                <translation x="0" y="posy" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="0.75" y="1.5" z="0.75" />
+            </keyframe>
+            <keyframe instant="1.6" function="quadratic_0_0_-1_0">
+                <translation x="0" y="posy" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1.0" y="1.0" z="1.0" />
+            </keyframe>
         </keyframeanim>
         
         <keyframeanim id="piece-selected" animation-speed="2" loop="true">
@@ -265,6 +315,7 @@
         <model id="gameClock" file="clock/game_clock.obj" class="game-clock" />
         <model id="whiteCounter" file="clock/white_counter.obj" class="white-counter" />
         <model id="blackCounter" file="clock/black_counter.obj" class="black-counter" />
+        <model id="button" file="button/button.obj" class="button" />
     </models>
 
     <components>
@@ -283,6 +334,7 @@
                 <componentref id="game-clock-black" />
                 <componentref id="white-counter"/>
                 <componentref id="black-counter"/>
+                <componentref id="help-text"/>
             </children>
         </component>
         <component id="board" class="board" pickable="true">
@@ -499,6 +551,122 @@
             <texture id="none" />
             <children>
                 <text value="0" />
+            </children>
+        </component>
+
+        
+
+        <component id="help-text" class="help-text">
+            <transformation>
+                
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="help-text-background" />
+                <componentref id="help-text-text" />
+            </children>
+        </component>
+
+        <component id="help-text-background">
+            <transformation>
+                
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primtiveref id="rectangle" />
+            </children>
+        </component>
+        
+        <component id="help-text-text" class="help-text-text">
+            <transformation>
+                <scale x="0.1" y="0.1" z="0.1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <text value="Placeholder" />
+            </children>
+        </component>
+        
+        <component id="undo-button" class="start-button" pickable="true">
+            <transformation>
+                <translate x="-0.0" y="0.275" z="1.05" />
+                <scale x="0.4" y="0.4" z="0.4"/>
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="buttonModel" />
+                <componentref id="undo-text" />
+            </children>
+        </component>
+
+        <component id="start-button" class="start-button" pickable="true">
+            <transformation>
+                <translate x="-0.6" y="0.175" z="1.05" />
+                <scale x="0.6" y="0.6" z="0.6"/>
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="buttonModel" />
+                <componentref id="start-text" />
+            </children>
+        </component>
+
+        <component id="buttonModel">
+            <transformation>
+                <translate x="0.0" y="0.0" z="0.0" />
+                <scale x="0.5" y="0.2" z="0.2" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <modelref id="button" />
+            </children>
+        </component>
+        <component id="start-text">
+            <transformation>
+                <translate x="-0.2" y="0.01" z="0.022"/>
+                <scale x="0." y="0.05" z="0.05" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <text value="Start new game" />
+            </children>
+        </component>
+
+        <component id="undo-text">
+            <transformation>
+                <translate x="-0.2" y="0.01" z="0.022"/>
+                <scale x="0.05" y="0.05" z="0.05" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <text value="Undo move" />
             </children>
         </component>
 

@@ -82,19 +82,8 @@ export class PieceController {
         const kingComponent = kingPiece.component;
         const color = kingPiece.color;
         const storage = this.scene.graph.getComponent(color + '-storage');
-
-        let spaceChosen;
-        for (let i = 0; i <= storagePieces.length; i++) {
-            spaceChosen = i;
-            if (i === storagePieces.length - 1) {
-                //last one
-                break;
-            }
-            if (storagePieces[i].length > storagePieces[i + 1].length) {
-                spaceChosen = i + 1;
-                break;
-            }
-        }
+        //Get the next available storage space
+        const spaceChosen = storagePieces.findIndex(pieces => pieces.length == Math.min(...storagePieces.map(pieces => pieces.length)));
         const deadPieces = kingComponent.children.filter(child => child.className == kingComponent.className);
         if (deadPieces.length > 0) {
             //Seperate pieces
@@ -281,6 +270,17 @@ export class PieceController {
                 obj.genericSet('pieceComponent', pieceComponent, () => true);
             }
         }
+    }
+
+    addToBoard(component, checkersBoard){
+        let y = component.id.split('x')[0];
+        y = Number(y.substring(y.search(/[0-9]/)));
+        let x = Number(component.id.split('_')[0].split('x')[1]);
+
+        const [destinationX, destinationZ] = calculateBoardPosition(y, x);
+        const destination = [destinationX, 0, destinationZ];
+
+        this.jumpPiece(component, destination, [0, 0, 0]);
     }
 
 }

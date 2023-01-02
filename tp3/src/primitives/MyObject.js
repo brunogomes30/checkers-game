@@ -115,4 +115,8 @@ export class MyObject{
 		}
 		return object;
 	}
+
+	getPosition(){
+		return this.position;
+	}
 }

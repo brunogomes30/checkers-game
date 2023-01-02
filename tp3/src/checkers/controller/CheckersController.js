@@ -5,6 +5,16 @@ export class LogicController {
         this.states = []
     }
 
+    resetGame(){
+        for(let i=0; i<8; i++) {
+            for(let j=0; j<8; j++) {
+                this.board.board[i][j].piece = undefined;
+            }
+        }
+
+        this.states = [];
+    }
+
     start() {
         this.state = 'pieceSelection';
         this.turn = 'white';

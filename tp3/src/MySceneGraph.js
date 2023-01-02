@@ -330,7 +330,6 @@ export class MySceneGraph {
      * @memberof MySceneGraph
      */
     stopAnimation(animation, callback){
-        console.log('Stopping animation ' + animation.id);
         animation.stopAnimation((a)=> {
             if(callback != undefined){
                 callback();
