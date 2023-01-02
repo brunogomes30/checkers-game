@@ -127,6 +127,7 @@ export class BoardController {
         this.clockController.startGameClock();
         this.startingColor = 'black';
         this.startingTurn(this.startingColor);
+        this.gameOver = false;
     }
 
     detachKing(component){
@@ -242,7 +243,7 @@ export class BoardController {
 
 
         if (this.gameOver) {
-            addGrowlMessage('Game Finished');
+            this.messageController.displayTopComponent('Game already finished', element, this.currentColor);
             return;
         }
         const TILE_SIZE = 2 / 8;
@@ -315,11 +316,16 @@ export class BoardController {
             this.clockController.endGameClock();
             if (moveResult.winner == null) {
                 // Change to draw camera
+                this.messageController.displayTopComponent('Draw!', element, this.currentColor, [0, 0.5, 0], true);
             } else {
                 if (moveResult.changeTurn) {
-                    // Change to winner camera
-                    this.cameraController.resetCamera(0.5, () => { this.cameraController.switchSides(1.5) })
+                    if(moveResult.winner != this.currentColor){
+                        // Change to winner camera
+                        this.cameraController.resetCamera(0.5, () => { this.cameraController.switchSides(1.5) });
+                    }    
                 }
+                const msg = 'Player ' + moveResult.winner + ' won!';
+                this.messageController.displayTopComponent(msg, element, moveResult.winner, [0, 0.5, 0], true);
             }
             // Show game over screen and options
             console.log('Game over! Winner: ' + moveResult.winner)
@@ -388,9 +394,8 @@ export class BoardController {
             return;
         }
 
-
         if (this.gameOver) {
-            addGrowlMessage('Game Finished');
+            this.messageController.displayTopComponent('Game already finished', element.pieceComponent, this.currentColor);
             return;
         }
 
