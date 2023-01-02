@@ -9,6 +9,7 @@ import { CameraController } from "./CameraController.js";
 import { CounterController } from "./CounterController.js";
 import { StorageController } from "./StorageController.js";
 import { MessageController } from "./MessageController.js";
+import { Component } from "../../components/Component.js";
 export class BoardController {
     constructor(scene, size, clockController) {
         this.scene = scene;
@@ -113,10 +114,14 @@ export class BoardController {
         for (let i = 0; i < 12; i++) {
             const white = this.whitePieces[i];
             const black = this.blackPieces[i];
+
+            //Detach kings
+
+            this.detachKing(white);
+            this.detachKing(black);
             this.jumpToBoard(white);
             this.jumpToBoard(black);
-            this.pieceController.resetPieceComponent(white);
-            this.pieceController.resetPieceComponent(black);
+            
         }
         this.unlockInput(lockId);
         this.clockController.startGameClock();
@@ -124,11 +129,31 @@ export class BoardController {
         this.startingTurn(this.startingColor);
     }
 
-    jumpToBoard(component) {
+    detachKing(component){
+        for(let j =0;j<component.children.length; j++){
+            const child = component.children[j];
+            if(child instanceof Component){
+                const componentPiece  = this.checkersBoard.pieceMap[component.id];
+                //Attach child to board
+                this.checkersBoard.component.children.push(child);
+                child.transformation = [...component.transformation];
+                child.position = [...component.position];
+                const piece = this.checkersBoard.pieceMap[component.id];
+                piece.position = {...componentPiece.position};
+                //remove from component
+                component.children.splice(j, 1);
+                break;
+            }
+        }
+    }
 
+    jumpToBoard(component){
         const piece = this.checkersBoard.pieceMap[component.id];
-        let y = Number(component.id.split('-')[1]);
+
+        const jumpAction = () => {
+            let y = Number(component.id.split('-')[1]);
         let x = Number(component.id.split('-')[2]);
+        piece.position = {};
         piece.position.y = y;
         piece.position.x = x;
         const translation = calculateBoardPosition(y, x, this.checkersBoard.component);
@@ -139,6 +164,15 @@ export class BoardController {
         const animId = ++this.nlock;
         this.lockInput(animId);
         this.pieceController.jumpPiece(component, position, [0, 0, 0], () => this.unlockInput(animId));
+        this.pieceController.resetPieceComponent(component);
+        }
+
+        //unmakeKing
+        if(piece.king){
+            this.pieceController.unmakeKing(component, jumpAction);
+        } else {
+            jumpAction();
+        }
     }
 
     createBoard() {
