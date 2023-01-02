@@ -78,8 +78,8 @@ export class MySceneGraph {
     /**
      * Parses the XML scene file, processing each block and included XML files.
      */
-    parseSceneGraph() {
-        this.reader.updateGraph();
+    async parseSceneGraph() {
+        await this.reader.updateGraph();
 
         this.rootElement = this.components[this.idRoot];
         if (this.rootElement === undefined) {
