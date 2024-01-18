@@ -420,7 +420,6 @@ export class XMLscene extends CGFscene {
                     if(obj == null){
                         continue;
                     }
-                    console.log(...this.pickResults);
                     const component = this.pickResults[i][0];
                     pickHandler(component, this);
 				}

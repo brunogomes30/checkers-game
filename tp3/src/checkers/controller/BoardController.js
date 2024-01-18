@@ -247,7 +247,6 @@ export class BoardController {
     handleButtonClick(component, callback) {
         const animation = this.scene.graph.cloneAnimation('button-click', 'button-click-' + component.id);
         component.addAnimation(animation);
-        console.log('button click', component.id);
         this.scene.graph.stopAnimation(animation, () => {
             component.removeAnimation(animation);
             if(callback != undefined){
@@ -292,7 +291,6 @@ export class BoardController {
         let y = element.id.split('x')[0];
         y = Number(y.substring(y.search(/[0-9]/)));
         let x = Number(element.id.split('_')[0].split('x')[1]);
-        console.log('Board click: ' + y + ' ' + x);
         if (!this.logicController.selectTile({ x, y })) {
             this.tileController.unhiglightTiles();
             if (this.selectedPiece != undefined) {
@@ -329,7 +327,6 @@ export class BoardController {
         const animId = this.nlock;
         const moveCallback = () => {
             if (moveResult.promoted) {
-                console.log('Promoting piece', piece)
                 this.pieceController.makeKing(piece, this.checkersBoard,
                     () => this.unlockInput(animId)
                 );
@@ -409,7 +406,6 @@ export class BoardController {
     }
 
     changeTurn(color, singlePossibleMove = false) {
-        console.log('change turn', color);
         this.currentColor = color;
         // Change view and stuff
         this.lockInput(++this.nlock);
@@ -423,7 +419,6 @@ export class BoardController {
     }
 
     startingTurn(color) {
-        console.log('Starting turn', color);
         
         // Change view and stuff
         if (this.currentColor != color || (this.currentColor == undefined && color == 'black')) {
@@ -452,7 +447,6 @@ export class BoardController {
 
         const className = element.className;
         const component = element.pieceComponent;
-        console.log('Piece click: ' + className + ' ' + component.id);
         const checkerPiece = this.checkersBoard.pieceMap[element.pieceComponent.id];
         if (checkerPiece == undefined) {
             return;
@@ -525,12 +519,10 @@ export class BoardController {
         // Switch turn
         this.changeTurn(undoResult.piece.color, this.logicController.currentValidMoves.length == 1);
 
-        console.log(undoResult);
 
         // Relocate moved piece
         let y = undoResult.position.y - undoResult.move.y;
         let x = undoResult.position.x - undoResult.move.x;
-        console.log('y: ' + y + ' x: ' + x)
         this.lockInput(++this.nlock);
         const translateId = this.nlock;
         this.pieceController.translate(undoResult.piece.component, - y * TILE_SIZE, x * TILE_SIZE,
@@ -593,7 +585,6 @@ export class BoardController {
 
             const state = states[stateIndex];
             // Select piece
-            console.log(state)
             const piece = this.checkersBoard.board[state.position.y][state.position.x].piece;
             this.selectedPiece = 
             this.logicController.selectPiece(piece);
@@ -622,19 +613,16 @@ export class BoardController {
 
     lockInput(id) {
         this.locks[id] = true;
-        console.log('Locking input: ' + id);
     }
 
     unlockInput(id) {
         delete this.locks[id];
-        console.log('unlocking input: ' + id);
         if (this.canReceiveInput()) {
             this.highlightTiles();
         }
     }
 
     canReceiveInput() {
-        console.log('locks ', this.locks);
         return Object.keys(this.locks).length == 0;
     }
 

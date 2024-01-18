@@ -12,7 +12,6 @@ export class CameraController {
         const camera = graph.getCamera('board-camera')
         const board = graph.getComponent('board');
         if (camera && board) {
-            console.log(board.getPosition());
             let newPos = vec4.create();
             camera.setPosition(vec4.add(newPos, [...board.getPosition(), 0], camera.position));
             let newTarget = vec4.create();

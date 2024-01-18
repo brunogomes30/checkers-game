@@ -1,5 +1,4 @@
 export function pickHandler(component, scene) {
-    console.log('Picked: ' + component.className);
     let c;
     switch (component.className) {
         case 'white-piece':
@@ -12,7 +11,6 @@ export function pickHandler(component, scene) {
             scene.triggerEvent('tile-click', component);
             break;
         case 'button':
-            console.log(component,);
             c = component.buttonComponent;
             processButton(c, scene);
             break;
@@ -20,7 +18,6 @@ export function pickHandler(component, scene) {
 }
 
 function processButton(component, scene){
-    console.log('class: ' + component.className + ' clicked!');
     switch (component.className) {
         case 'undo-button':
             scene.triggerEvent('undo-button-click', component);

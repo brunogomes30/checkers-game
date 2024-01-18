@@ -35,7 +35,7 @@ async function main() {
 
     myScene.graph = myGraph;
     myScene.graph.selected = true;
-
+    const gameController = new GameController(myScene);
     await new Promise((resolve) => {setTimeout(resolve, 1000)});
     changeEnvironment(environments, currentEnvironment, myScene.graph);
 
@@ -46,7 +46,7 @@ async function main() {
         changeEnvironment(environments, currentEnvironment, myScene.graph);
     });
 
-    const gameController = new GameController(myScene);
+    
     app.run();
 }
 

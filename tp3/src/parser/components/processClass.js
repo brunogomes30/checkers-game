@@ -44,7 +44,6 @@ function processBoard(component){
                 //set all tiles to pickable
                 child.setPickable(true, (id) => id.includes('tile'));
                 child.setClass('tile', (id) => id.includes('tile'));
-                console.log('tile: ' , child);
                 for(const key of Object.keys(child.objects)){
                     const obj = child.objects[key];
                     

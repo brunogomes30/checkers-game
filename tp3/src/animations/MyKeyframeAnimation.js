@@ -120,7 +120,6 @@ export class MyKeyframeAnimation extends MyAnimation {
                 if (keyFramesKeys.length > 1) {
                     this.index = 0;
                     this.advanceKeyframe();
-                    console.log('animation ended');
                 }
             } else if (this.willRemove && !this.isFinished) {
                 this.removeCallBack(this);
