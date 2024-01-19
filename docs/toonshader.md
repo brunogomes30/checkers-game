@@ -169,9 +169,7 @@ The ShaderPass has a initilization, where it initializes the texture it is going
 This shader lacks alot of features/polish when compared to released games, it's worth to point out that this was a university project and we had time constraints and another projects to develop in the semester.
 
 The code is not the cleanest, for sure there are optimizations that can be done. However it can be a starting point, or help anyone that wants to do something similar.
-
-However, it still produced a decent result, and is something we are proud of.
-
+However, it still produced a decent result, and is something we are proud of. [Déjà vu. I've just been in this place before](https://brunogomes30.github.io/checkers-game/tp3/?file=trueno.xml&game=false)
 
 <img src="../screenshots/toonshade/car-goraud-2.png"/>
 
