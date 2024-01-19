@@ -47,8 +47,10 @@ void main() {
 	}
 
 	//Multiply depth factor by 5.0 to make it more visible
-	sumX.a *= 10.0;
-	sumY.a *= 10.0;
+	sumX.a *= 15.0;
+	sumY.a *= 15.0;
+	sumX.rgb *= 1.5;
+	sumY.rgb *= 1.5;
 
 	float G = max(
         dot(sqrt(sumX * sumX + sumY * sumY), vec4(1.0, 1.0, 1.0, 1.0)),
