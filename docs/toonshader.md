@@ -90,7 +90,12 @@ By taking the color, normals and depth of the neighbour pixels, it's possible to
 
 This was the moment where it got tricky, the framework ***CGF*** didn't support render passes, so we had to use pure WebGL. It took a couple of iterations to come to our current solution, which seems like a good scalable solution, if we wanted to add more render passes.
 
-For this, we have 2 files. [shaderPass.js](../tp3/src/toonShade/shaderPass.js) and [toonShader.js](../tp3/src/toonShade/toonShader.js).
+The shader files are:
+- Depth pass: [depthVert.glsl](../tp3/shaders/depthVert.glsl) [depthFrag.glsl](../tp3/shaders/depthFrag.glsl)
+- Color pass: [toon.glsl](../tp3/shaders/toon.glsl) [toonFrag.glsl](../tp3/shaders/toonFrag.glsl)
+- Outline pass: [outlinevert.glsl](../tp3/shaders/outlineVert.glsl) [outlineFrag.glsl](../tp3/shaders/outlineFrag.glsl)
+
+The 2 JS classes handling the shader passes are:  [shaderPass.js](../tp3/src/toonShade/shaderPass.js) and [toonShader.js](../tp3/src/toonShade/toonShader.js).
 
 In the ToonShader class, we initialize all the shaders and passes.
 
@@ -168,7 +173,7 @@ The code is not the cleanest, for sure there are optimizations that can be done.
 However, it still produced a decent result, and is something we are proud of.
 
 
-
+<img src="../screenshots/toonshade/car-goraud-2.png"/>
 
 
 
